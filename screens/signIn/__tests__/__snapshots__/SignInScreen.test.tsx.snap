@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignInScreen should match snapshot 1`] = `
+<FullScreenTemplate
+  extraStyles={
+    Object {
+      "backgroundColor": "#F0F0FD",
+    }
+  }
+  padded={true}
+>
+  <SignInBackground />
+  <View
+    style={
+      Object {
+        "alignSelf": "center",
+        "marginHorizontal": "auto",
+        "width": 272,
+      }
+    }
+  >
+    <StyledText
+      style={
+        Object {
+          "color": "#6654EB",
+          "fontSize": 48,
+          "marginBottom": 48,
+        }
+      }
+    >
+      Friendly Plan 
+    </StyledText>
+    <SignInFormContainer />
+    <Button
+      backgroundColor="#FFFFFF"
+      buttonStyle={
+        Object {
+          "borderRadius": 12,
+          "height": 44,
+        }
+      }
+      containerStyle={
+        Object {
+          "marginBottom": 20,
+          "marginTop": 8,
+        }
+      }
+      onPress={[Function]}
+      title="Sign Up"
+      titleStyle={
+        Object {
+          "color": "#6654EB",
+        }
+      }
+    />
+  </View>
+</FullScreenTemplate>
+`;

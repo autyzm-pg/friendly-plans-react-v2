@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableRow renders correctly 1`] = `
+<TouchableOpacity
+  activeOpacity={0.2}
+  onLongPress={[MockFunction]}
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "alignSelf": "stretch",
+        "flexDirection": "row",
+        "height": 64,
+        "paddingHorizontal": 24,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "marginRight": 15,
+      }
+    }
+  >
+    <CheckboxInput
+      onPress={[Function]}
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "marginRight": 10,
+      }
+    }
+  >
+    <Icon
+      type="material"
+    />
+  </View>
+  <Text
+    style={
+      Object {
+        "color": "#4E4E4E",
+        "fontFamily": "Rubik-Regular",
+        "fontSize": 14,
+        "letterSpacing": 0,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "position": "absolute",
+        "right": 38,
+      }
+    }
+  >
+    <IconButton
+      color="#C8CBFA"
+      name="delete"
+      onPress={[Function]}
+      size={24}
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "position": "absolute",
+        "right": 80,
+      }
+    }
+  >
+    <IconButton
+      name="pencil"
+      onPress={[Function]}
+      size={24}
+    />
+  </View>
+</TouchableOpacity>
+`;

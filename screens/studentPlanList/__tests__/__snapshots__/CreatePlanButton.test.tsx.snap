@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreatePlanButton renders correctly 1`] = `
+<Button
+  backgroundColor="#6654EB"
+  icon={
+    Object {
+      "color": "rgba(255, 255, 255, 1)",
+      "name": "addfile",
+      "size": 13,
+      "type": "antdesign",
+    }
+  }
+  isUppercase={true}
+  onPress={[MockFunction]}
+  title="Add new plan"
+/>
+`;

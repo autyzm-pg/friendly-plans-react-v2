@@ -1,0 +1,204 @@
+import every from 'lodash.every';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { DragEndParams } from 'react-native-draggable-flatlist';
+import { NavigationInjectedProps } from 'react-navigation';
+
+import { FullScreenTemplate } from 'components';
+import { i18n } from 'locale';
+import {ModelSubscriber, Plan, PlanItem, PlanItemType} from 'models';
+import { Route } from '../navigation';
+import { getElevation, palette } from '../styles';
+import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
+import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
+import { TaskTable } from './TaskTable';
+
+interface State {
+  plan: Plan;
+  planItemList: PlanItem[];
+}
+
+export class PlanActivityScreen extends React.PureComponent<NavigationInjectedProps, State> {
+  static navigationOptions = {
+    title: i18n.t('planList:viewTitle'),
+  };
+
+  state: State = {
+    planItemList: [],
+    plan: this.props.navigation.getParam('plan'),
+  };
+
+  planItemsSubscriber: ModelSubscriber<PlanItem> = new ModelSubscriber();
+
+  subscribeToPlanItems() {
+    this.planItemsSubscriber.subscribeCollectionUpdates(this.state.plan, (planItemList: PlanItem[]) =>
+      this.setState({ planItemList }),
+    );
+  }
+
+  unsubscribeToPlanItems() {
+    this.planItemsSubscriber.unsubscribeCollectionUpdates();
+  }
+
+  componentDidMount() {
+    if (this.state.plan) {
+      this.subscribeToPlanItems();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.state.plan) {
+      this.unsubscribeToPlanItems();
+    }
+  }
+
+  validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
+    const errors: PlanFormError = {};
+    if (planInput === '') {
+      errors.planInput = i18n.t('validation:planNameRequired');
+      throw errors;
+    }
+
+    const { id } = this.props.navigation.getParam('student');
+
+    const { id: planId } = { ...this.state.plan };
+
+    const isPlanExist: boolean = await Plan.isPlanExist(id, planInput, planId);
+
+    if (isPlanExist) {
+      errors.planInput = i18n.t('validation:duplicatedPlan');
+      throw errors;
+    }
+  };
+
+  createPlan = async (name: string) => {
+    const { id } = this.props.navigation.getParam('student');
+
+    const plan = await Plan.createPlan(id, name);
+
+    this.setState({ plan }, () => {
+      this.subscribeToPlanItems();
+    });
+  };
+
+  updatePlan = async (name: string, emoji: string) => {
+    await this.state.plan.update({
+      name,
+      emoji,
+    });
+
+    this.setState({ plan: { ...this.state.plan, name } });
+  };
+
+  onSubmit = ({ planInput, emoji }: PlanFormData) =>
+    this.state.plan ? this.updatePlan(planInput, emoji) : this.createPlan(planInput);
+
+  navigateToCreatePlanItem = async (name: string) => {
+
+    const {plan, planItemList} = this.state;
+    let planItemType = '';
+
+    switch (name){
+      case 'create-simple-task':
+        planItemType = PlanItemType.SimpleTask;
+        break;
+      case 'create-complex-task':
+        planItemType = PlanItemType.ComplexTask;
+        break;
+      case 'create-interaction':
+        planItemType = PlanItemType.Interaction;
+        break;
+      case 'create-break':
+        planItemType = PlanItemType.Break;
+        break;
+    }
+
+    this.props.navigation.navigate(Route.PlanItemTask, {
+      plan,
+      planItemList,
+      planItemType,
+    });
+
+  };
+
+  shuffleDisabled(): boolean {
+    const { planItemList } = this.state;
+
+    return !planItemList || planItemList.length < 2;
+  }
+
+  playDisabled(): boolean {
+    const { planItemList } = this.state;
+    if (!planItemList) {
+      return true;
+    }
+
+    return every(planItemList, 'completed');
+  }
+
+  handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
+    const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
+    planItemListRightOrder.forEach(item => item.setOrder(item.order));
+    this.setState({ planItemList: planItemListRightOrder });
+  };
+
+  shuffle(array: PlanItem[]) {
+    let currentIndex = array.length;
+    let temporaryValue;
+    let randomIndex;
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
+  shuffleTasks = () => {
+    const { planItemList } = this.state;
+    let array = planItemList;
+    array = this.shuffle(array);
+    array.forEach((item, index) => item.setOrder(index));
+    this.setState({ planItemList: array });
+  };
+
+  render() {
+    const { plan, planItemList } = this.state;
+    const numberPlan = this.props.navigation.getParam('numberPlan');
+    return (
+      <>
+        <FullScreenTemplate extraStyles={styles.fullScreen}>
+          <View style={styles.headerContainer}>
+            <PlanForm
+              onSubmit={this.onSubmit}
+              plan={plan}
+              numberPlan={numberPlan}
+              onValidate={this.validatePlan}
+              shuffleDisabled={this.shuffleDisabled()}
+              playDisabled={this.playDisabled()}
+              onShuffle={this.shuffleTasks}
+            />
+          </View>
+          <TaskTable planItemList={planItemList} handlePlanListOrderChanged={this.handlePlanListOrderChanged} />
+        </FullScreenTemplate>
+        {plan && <FixedCreatePlanItemButton onPress={this.navigateToCreatePlanItem} />}
+      </>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    ...getElevation(5),
+    backgroundColor: palette.background,
+  },
+  fullScreen: {
+    // paddingHorizontal: 24,
+    backgroundColor: palette.backgroundSurface,
+    width: '100%'
+  },
+});

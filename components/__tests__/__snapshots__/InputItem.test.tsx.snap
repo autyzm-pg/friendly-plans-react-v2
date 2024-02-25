@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputItem should match snapshot 1`] = `
+<View>
+  <StyledText
+    style={
+      Object {
+        "color": "#9B9B9B",
+        "fontFamily": "Rubik-Medium",
+        "fontSize": 12,
+        "letterSpacing": 0,
+        "marginBottom": 4,
+      }
+    }
+  >
+    input label
+  </StyledText>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#dedede",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "height": 44,
+        },
+        undefined,
+      ]
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      label="input label"
+      rejectResponderTermination={true}
+      style={
+        Array [
+          Object {
+            "color": "#16107B",
+            "fontFamily": "Rubik-Regular",
+            "fontSize": 16,
+            "height": 42,
+            "justifyContent": "center",
+            "letterSpacing": 0,
+            "paddingHorizontal": 16,
+          },
+          undefined,
+        ]
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>
+</View>
+`;

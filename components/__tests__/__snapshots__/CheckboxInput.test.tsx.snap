@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should match snapshot 1`] = `
+<Fragment>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <IconButton
+      color="#6654EB"
+      containerStyle={
+        Object {
+          "alignItems": "flex-start",
+        }
+      }
+      name="checkbox-marked"
+      onPress={[Function]}
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "flex-start",
+          "flex": 1,
+          "flexDirection": "row",
+        }
+      }
+    >
+      <StyledText
+        style={
+          Object {
+            "color": "#16107B",
+          }
+        }
+      >
+        title
+      </StyledText>
+    </View>
+  </View>
+</Fragment>
+`;

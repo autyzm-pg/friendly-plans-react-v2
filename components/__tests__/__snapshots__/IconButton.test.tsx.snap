@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconButton should match snapshot 1`] = `
+<TouchableOpacity
+  activeOpacity={0.2}
+  onPress={[MockFunction]}
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "center",
+      },
+      undefined,
+      undefined,
+    ]
+  }
+>
+  <Icon
+    disabledStyle={
+      Object {
+        "backgroundColor": "transparent",
+      }
+    }
+    name="content-paste"
+  />
+</TouchableOpacity>
+`;

@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DialogScreen should match snapshot 1`] = `
+<ModalTemplate
+  buttonTitle="buttonTitle"
+  navigation={
+    Object {
+      "getParam": [MockFunction] {
+        "calls": Array [
+          Array [
+            "title",
+          ],
+          Array [
+            "description",
+          ],
+          Array [
+            "onPress",
+          ],
+          Array [
+            "buttonTitle",
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": "title",
+          },
+          Object {
+            "type": "return",
+            "value": "description",
+          },
+          Object {
+            "type": "return",
+            "value": "onPress",
+          },
+          Object {
+            "type": "return",
+            "value": "buttonTitle",
+          },
+        ],
+      },
+      "goBack": [MockFunction],
+      "navigate": [MockFunction],
+    }
+  }
+  onPress="onPress"
+>
+  <StyledText
+    style={
+      Object {
+        "fontFamily": "Rubik-Regular",
+        "fontSize": 16,
+        "letterSpacing": 0,
+        "marginBottom": 6,
+        "textAlign": "center",
+      }
+    }
+  >
+    title
+  </StyledText>
+  <StyledText
+    style={
+      Object {
+        "fontFamily": "Rubik-Regular",
+        "fontSize": 14,
+        "letterSpacing": 0,
+        "textAlign": "center",
+      }
+    }
+  >
+    description
+  </StyledText>
+</ModalTemplate>
+`;

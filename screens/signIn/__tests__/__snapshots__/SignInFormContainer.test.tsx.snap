@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignInFormContainer should match snapshot 1`] = `
+<Formik
+  enableReinitialize={false}
+  initialValues={
+    Object {
+      "email": "",
+      "password": "",
+    }
+  }
+  isInitialValid={false}
+  onSubmit={[Function]}
+  render={[Function]}
+  validateOnBlur={true}
+  validateOnChange={true}
+  validationSchema={
+    ObjectSchema {
+      "_blacklist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "_conditions": Array [],
+      "_defaultDefault": [Function],
+      "_deps": Array [],
+      "_excludedEdges": Array [],
+      "_exclusive": Object {},
+      "_mutate": undefined,
+      "_nodes": Array [
+        "password",
+        "email",
+      ],
+      "_options": Object {
+        "abortEarly": true,
+        "recursive": true,
+      },
+      "_type": "object",
+      "_typeError": [Function],
+      "_whitelist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "fields": Object {
+        "email": StringSchema {
+          "_blacklist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {
+            "required": true,
+            "undefined": false,
+          },
+          "_mutate": undefined,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_type": "string",
+          "_typeError": [Function],
+          "_whitelist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "tests": Array [
+            [Function],
+            [Function],
+          ],
+          "transforms": Array [
+            [Function],
+          ],
+        },
+        "password": StringSchema {
+          "_blacklist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {
+            "min": true,
+            "required": true,
+          },
+          "_mutate": undefined,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_type": "string",
+          "_typeError": [Function],
+          "_whitelist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "tests": Array [
+            [Function],
+            [Function],
+          ],
+          "transforms": Array [
+            [Function],
+          ],
+        },
+      },
+      "tests": Array [],
+      "transforms": Array [
+        [Function],
+      ],
+    }
+  }
+/>
+`;
+
+exports[`SignInFormContainer should render form correctly 1`] = `
+<View>
+  <InputItem
+    autoCapitalize="none"
+    blurOnSubmit={true}
+    error=""
+    keyboardType="email-address"
+    placeholder="Email address"
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12,
+        "height": 44,
+      }
+    }
+    styleContainer={
+      Object {
+        "borderWidth": 0,
+        "marginBottom": 12,
+      }
+    }
+    textContentType="emailAddress"
+    touched={false}
+    value="email@domain.com"
+  />
+  <InputItem
+    blurOnSubmit={true}
+    error=""
+    placeholder="Password"
+    secureTextEntry={true}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12,
+        "height": 44,
+      }
+    }
+    styleContainer={
+      Object {
+        "borderWidth": 0,
+        "marginBottom": 12,
+      }
+    }
+    textContentType="password"
+    touched={false}
+    value="topsecretpassword"
+  />
+  <FlatButton
+    buttonStyle={
+      Object {
+        "height": 36,
+        "justifyContent": "flex-end",
+      }
+    }
+    containerStyle={
+      Object {
+        "alignSelf": "center",
+        "top": -8,
+      }
+    }
+    onPress={[Function]}
+    title="forgot password?"
+    titleStyle={
+      Object {
+        "fontFamily": "Rubik-Medium",
+        "fontSize": 12,
+        "letterSpacing": 0,
+      }
+    }
+  />
+  <Button
+    backgroundColor="#6654EB"
+    buttonStyle={
+      Object {
+        "borderRadius": 12,
+        "height": 44,
+      }
+    }
+    containerStyle={
+      Object {
+        "borderRadius": 12,
+        "height": 44,
+      }
+    }
+    loading={false}
+    onPress={[MockFunction]}
+    title="Sign In"
+  />
+</View>
+`;

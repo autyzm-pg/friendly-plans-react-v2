@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should match snapshot 1`] = `
+<ForwardRef(Themed.Button)
+  buttonStyle={
+    Array [
+      Object {
+        "borderRadius": 16,
+        "elevation": 0,
+        "height": 36,
+      },
+      false,
+      Object {
+        "backgroundColor": "blue",
+      },
+      undefined,
+    ]
+  }
+  title="blue button"
+  titleStyle={
+    Array [
+      Object {
+        "color": "rgba(255, 255, 255, 1)",
+        "fontFamily": "Rubik-Medium",
+        "fontSize": 14,
+        "letterSpacing": 0,
+      },
+      false,
+      undefined,
+      undefined,
+    ]
+  }
+/>
+`;
