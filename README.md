@@ -34,16 +34,23 @@ Plan view<br>
 Preparing a task<br>
 <img src="./doc-assets/app screenshot3.jpg" width="900"/><br>
 
-## License
-The project is developed by people who want to make other people's lives easier. Because of that Friendly Plans is going to be free to use, download and develop for everybody, forever.
-Except as otherwise noted, this software is licensed under the [GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.txt).
+## Run the application
 
-## Partners
-<img src="./doc-assets/kdp-logo.jpg" height="150" /><img src="/doc-assets/iwrd-logo.png" height="150" />
-<img src="./doc-assets/pg-logo.jpg" height="150" /><img src="/doc-assets/stx_logo.png" height="150" />
+### Step 1: Install required dependencies
 
+First, you will need to download the libraries that the app is using.
 
-## Step 1: Start the Metro Server
+To download the dependencies, run the following command from the _root_ of your React Native project:
+
+```bash
+# using npm
+npm install
+
+# OR using Yarn
+yarn install
+```
+
+### Step 2: Start the Metro Server
 
 First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
@@ -57,11 +64,11 @@ npm start
 yarn start
 ```
 
-## Step 2: Start your Application
+### Step 3: Start your Application
 
 Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ app:
 
-### For Android
+#### For Android
 
 ```bash
 # using npm
@@ -70,3 +77,22 @@ npm run android
 # OR using Yarn
 yarn android
 ```
+
+## Environment configuration 
+Below are listed recommended versions of tools used for the app development:
+
+* Node.js: **v20.10.0**
+* Java Development Kit: **17.0.10**
+* react-native-cli: **2.0.1**
+* react-native: **0.73.4**
+
+Note: newer/older versions may work as well. Versions listed above are currently used for development.
+
+## License
+The project is developed by people who want to make other people's lives easier. Because of that Friendly Plans is going to be free to use, download and develop for everybody, forever.
+Except as otherwise noted, this software is licensed under the [GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.txt).
+
+## Partners
+<img src="./doc-assets/kdp-logo.jpg" height="150" /><img src="/doc-assets/iwrd-logo.png" height="150" />
+<img src="./doc-assets/pg-logo.jpg" height="150" /><img src="/doc-assets/stx_logo.png" height="150" />
+
