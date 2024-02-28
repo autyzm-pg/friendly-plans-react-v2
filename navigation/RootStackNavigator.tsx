@@ -20,6 +20,7 @@ import {Route} from './routes';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
+import DashboardScreen from '../screens/dashboard/DashboardScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,11 @@ export function RootStack() {
       <Stack.Screen
         name={Route.Unauthenticated}
         component={UnauthenticatedStackNavigator}
+        options={{title: 'My app'}}
+      />
+      <Stack.Screen
+        name={Route.Dashboard}
+        component={DashboardScreen}
         options={{title: 'My app'}}
       />
     </Stack.Navigator>

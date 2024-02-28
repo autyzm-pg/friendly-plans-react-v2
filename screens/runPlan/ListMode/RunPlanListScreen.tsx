@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StyleSheet, View } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
 import {FullScreenTemplate} from 'components';
 import { Route } from '../navigation';

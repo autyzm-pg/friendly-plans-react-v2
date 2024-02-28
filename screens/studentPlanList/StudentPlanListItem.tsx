@@ -1,97 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TouchableHighlight, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { NavigationProp } from '@react-navigation/native';
 
-import PlayButton, { Card, Emoji, Icon, StyledText } from 'components';
-import { i18n } from 'locale';
-import { ModelSubscriber, Plan, Student } from 'models';
-import { Route } from '../navigation';
-import { dimensions, palette, typography } from '../styles';
+import { Card, Emoji, Icon, StyledText, PlayButton } from '../../components';
+import { i18n } from '../../locale';
+import { ModelSubscriber, Plan, Student } from '../../models';
+import { Route } from '../../navigation';
+import { dimensions, palette, typography } from '../../styles';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   plan: Plan;
   student: Student;
+  navigation: NavigationProp<any>;
 }
 
-interface State {
-  student: Student;
-  isSwipeableOpen: boolean;
-}
+const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => {
+  const [isSwipeableOpen, setIsSwipeableOpen] = useState<boolean>(false);
 
-export class StudentPlanListItem extends React.PureComponent<Props, State> {
-  studentSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setIsSwipeableOpen(false);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-  state: State = {
-    student: this.props.student,
-    isSwipeableOpen: false,
-  };
-
-  componentDidMount() {
-    this.studentSubscriber.subscribeElementUpdates(this.props.student, student => this.setState({ student }));
-  }
-
-  componentWillUnmount() {
-    this.studentSubscriber.unsubscribeElementUpdates();
-  }
-
-  navigateToUpdatePlan = () => {
-    const { student, plan } = this.props;
-
-    this.props.navigation.navigate(Route.PlanActivity, {
+  const navigateToUpdatePlan = () => {
+    navigation.navigate(Route.PlanActivity, {
       student,
       plan,
     });
   };
 
-  renderRightActions = () => {
-    return(
-          <View style={[styles.deleteContainer]}>
-            <Icon name="delete" onPress={this.handlePressDelete} />
-          </View>
+  const renderRightActions = () => {
+    return (
+      <View style={[styles.deleteContainer]}>
+        <Icon name="delete" onPress={handlePressDelete} />
+      </View>
     );
   };
 
-  handleOpenSwipeable = () => this.setState({ isSwipeableOpen: true });
+  const handleOpenSwipeable = () => setIsSwipeableOpen(true);
 
-  handleCloseSwipeable = () => this.setState({ isSwipeableOpen: false });
+  const handleCloseSwipeable = () => setIsSwipeableOpen(false);
 
-  handlePressDelete = () => Alert.alert(i18n.t('planList:deletePlan'), i18n.t('planList:deletePlanDescription'), [
+  const handlePressDelete = () =>
+    Alert.alert(i18n.t('planList:deletePlan'), i18n.t('planList:deletePlanDescription'), [
       { text: i18n.t('common:cancel') },
       {
         text: i18n.t('common:confirm'),
-        onPress: this.props.plan.delete,
+        onPress: plan.delete,
       },
     ]);
 
-  render() {
-    const { emoji, name } = this.props.plan;
-    const { isSwipeableOpen } = this.state;
-
-    return (
-      <View style={styles.container}>
-        <TouchableHighlight
-          onPress={isSwipeableOpen ? this.handlePressDelete : this.navigateToUpdatePlan}
-          underlayColor="transparent"
+  return (
+    <View style={styles.container}>
+      <TouchableHighlight onPress={isSwipeableOpen ? handlePressDelete : navigateToUpdatePlan} underlayColor="transparent">
+        <Swipeable
+          renderRightActions={renderRightActions}
+          onSwipeableRightWillOpen={handleOpenSwipeable}
+          onSwipeableWillClose={handleCloseSwipeable}
         >
-          <Swipeable
-            renderRightActions={this.renderRightActions}
-            onSwipeableRightWillOpen={this.handleOpenSwipeable}
-            onSwipeableWillClose={this.handleCloseSwipeable}
-          >
-            <Card style={[styles.card, isSwipeableOpen && styles.swipeableContainerOpen]}>
-              <View style={styles.cardTextContainer}>
-                {!isSwipeableOpen && <Emoji symbol={emoji} />}
-                <StyledText style={styles.cardText}>{name}</StyledText>
-              </View>
-              {!isSwipeableOpen && <PlayButton plan={this.props.plan} size={50} />}
-            </Card>
-          </Swipeable>
-        </TouchableHighlight>
-      </View>
-    );
-  }
-}
+          <View style={styles.card}>
+            <View style={styles.cardTextContainer}>
+              {!isSwipeableOpen && <Emoji symbol={plan.emoji} />}
+              <StyledText style={styles.cardText}>{plan.name}</StyledText>
+            </View>
+            {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation}/>}
+          </View>
+        </Swipeable>
+      </TouchableHighlight>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -134,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(StudentPlanListItem);
+export default StudentPlanListItem;

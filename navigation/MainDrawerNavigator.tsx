@@ -1,4 +1,4 @@
-// import { createDrawerNavigator } from 'react-navigation';
+// import { createDrawerNavigator } from '@react-navigation/native';
 
 // import { DrawerContent } from 'components';
 // import { palette } from '../styles';

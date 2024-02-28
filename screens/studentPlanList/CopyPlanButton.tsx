@@ -1,8 +1,8 @@
-import {Button} from 'components';
-import { i18n } from 'locale';
+import {Button} from '../../components';
+import { i18n } from '../../locale';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { dimensions, palette } from '../styles';
+import { dimensions, palette } from '../../styles';
 
 interface Props {
     onPress: () => void;

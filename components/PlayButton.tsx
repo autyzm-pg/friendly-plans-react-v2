@@ -1,40 +1,41 @@
-import React, { SFC } from 'react';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import React, { FC } from 'react';
+import { NavigationProp } from '@react-navigation/native';
 
-import { Plan, StudentDisplayOption } from 'models';
+import { Plan, StudentDisplayOption } from '../models';
 import { Route } from '../navigation';
 import { palette } from '../styles';
 import { IconButton } from './IconButton';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   plan?: Plan;
   disabled?: boolean;
   size?: number;
+  navigation: NavigationProp<any>;
 }
 
-export const PlayButton: SFC<Props> = ({ plan, disabled, size, navigation }) => {
+export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation }) => {
   const navigateToRunPlan = () => {
     if (!plan) {
       return;
     }
+    // TODO: get students settings
+    // const student = navigation.getParam('student');
 
-    const student = navigation.getParam('student');
-
-    switch (student.displaySettings) {
-      case StudentDisplayOption.LargeImageSlide:
-      case StudentDisplayOption.ImageWithTextSlide:
-      case StudentDisplayOption.TextSlide:
-        navigation.navigate(Route.RunPlanSlide, {
-          plan,
-          student,
-        });
-        break;
-      default:
-        navigation.navigate(Route.RunPlanList, {
-          itemParent: plan,
-          student,
-        });
-    }
+    // switch (student.displaySettings) {
+    //   case StudentDisplayOption.LargeImageSlide:
+    //   case StudentDisplayOption.ImageWithTextSlide:
+    //   case StudentDisplayOption.TextSlide:
+    //     navigation.navigate(Route.RunPlanSlide, {
+    //       plan,
+    //       student,
+    //     });
+    //     break;
+    //   default:
+    //     navigation.navigate(Route.RunPlanList, {
+    //       itemParent: plan,
+    //       student,
+    //     });
+    // }
   };
 
   return (
@@ -47,5 +48,3 @@ export const PlayButton: SFC<Props> = ({ plan, disabled, size, navigation }) => 
     />
   );
 };
-
-export default withNavigation(PlayButton);

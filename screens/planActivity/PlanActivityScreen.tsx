@@ -2,7 +2,7 @@ import every from 'lodash.every';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DragEndParams } from 'react-native-draggable-flatlist';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { FullScreenTemplate } from 'components';
 import { i18n } from 'locale';

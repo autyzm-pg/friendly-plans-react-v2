@@ -1,6 +1,6 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { NarrowScreenTemplate, StudentSettings } from 'components';
 import { i18n } from 'locale';

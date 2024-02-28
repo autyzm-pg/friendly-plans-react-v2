@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button, FullScreenTemplate, StyledText } from '../../components';
@@ -8,8 +8,13 @@ import { palette, typography } from '../../styles';
 
 import { SignInBackground } from './SignInBackground';
 import { SignInFormContainer } from './SignInFormContainer';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-export function SignInScreen({ navigation }) {
+interface Props {
+  navigation: NavigationProp<any>;
+}
+
+export const SignInScreen: FC<Props> = ({navigation}) => {
   const navigateToSignUp = (): void => navigation.navigate(Route.SignUp);
 
   return (
@@ -19,7 +24,7 @@ export function SignInScreen({ navigation }) {
         <StyledText style={styles.title}>{i18n.t('rest:title')}</StyledText>
         <SignInFormContainer />
         <Button
-          onPress={navigateToSignUp}
+          onPress={() => navigation.navigate(Route.Dashboard)}
           title={i18n.t('signUp:signUp')}
           containerStyle={styles.buttonContainer}
           titleStyle={styles.titleButton}

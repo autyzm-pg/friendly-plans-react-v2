@@ -1,7 +1,7 @@
 import {i18n} from 'locale';
 import {PlanItem, PlanItemType, PlanSubItem} from 'models';
 import React from 'react';
-import {NavigationInjectedProps} from 'react-navigation';
+import {NavigationInjectedProps} from '@react-navigation/native';
 import {PlanItemForm, PlanItemFormData} from './PlanItemForm';
 
 interface State {

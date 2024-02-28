@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { IconProps } from 'react-native-elements';
 
@@ -11,15 +11,26 @@ interface Props extends IconProps {
   iconButtonStyle?: StyleProp<ViewStyle>;
 }
 
-export const IconButton: SFC<Props> = ({ delayLongPress, onLongPress,
-                                         onPress, containerStyle,
-                                         label, disabled, iconButtonStyle, ...props }) => {
+export const IconButton: FC<Props> = ({ 
+  delayLongPress, 
+  onLongPress,                                 
+  onPress, 
+  containerStyle,  
+  label, 
+  disabled, 
+  iconButtonStyle, 
+  ...props 
+}) => {
   return (
-    <TouchableOpacity disabled={disabled} delayLongPress={delayLongPress}
-                      onLongPress={onLongPress} onPress={onPress}
-                      style={[styles.container, containerStyle, iconButtonStyle]}>
-      <Icon {...props} disabledStyle={styles.iconDisabled} />
-      {!!label && <StyledText style={styles.label}>{label}</StyledText>}
+    <TouchableOpacity 
+      disabled={disabled} 
+      delayLongPress={delayLongPress}
+      onLongPress={onLongPress} 
+      onPress={onPress}
+      style={[styles.container, containerStyle, iconButtonStyle]}
+    >
+    <Icon {...props} disabledStyle={styles.iconDisabled} />
+    {!!label && <StyledText style={styles.label}>{label}</StyledText>}
     </TouchableOpacity>
   );
 };

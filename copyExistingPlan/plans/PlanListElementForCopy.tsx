@@ -1,15 +1,15 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, TouchableHighlight} from 'react-native';
 
-import {StyledText} from 'components';
-import {AuthUser, Plan, PlanItem, PlanItemType, PlanSubItem, Student} from 'models';
-import {Route} from 'navigation';
+import {StyledText} from '../../components';
+import {AuthUser, Plan, PlanItem, PlanItemType, PlanSubItem, Student} from '../../models';
+import {Route} from '../../navigation';
 import {RNFirebase} from 'react-native-firebase';
 import {DocumentSnapshot} from 'react-native-firebase/firestore';
 import RNFS, {DocumentDirectoryPath} from 'react-native-fs';
-import {NavigationInjectedProps, withNavigation} from 'react-navigation';
-import {NavigationService} from 'services';
-import {dimensions, palette, typography} from 'styles';
+import {NavigationInjectedProps, withNavigation} from '@react-navigation/native';
+import {NavigationService} from '../../services';
+import {dimensions, palette, typography} from '../../styles';
 import {getPlanSubItemsRef, getStudentRef} from '../../models/FirebaseRefProxy';
 import {SubscribableModel} from '../../models/SubscribableModel';
 

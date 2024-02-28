@@ -10,7 +10,7 @@ interface Props extends IconProps {
   type?: string;
 }
 
-export const Icon: React.FunctionComponent<Props> = ({ delayLongPress, onLongPress, onPress, 
+export const Icon: React.FC<Props> = ({ delayLongPress, onLongPress, onPress, 
   color = palette.primary, type = 'material-community', ...props }) => (
   <ElementsIcon
     onLongPress={onLongPress}

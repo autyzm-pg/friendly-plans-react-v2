@@ -4,7 +4,7 @@ import {ModelSubscriber, PlanItem, PlanItemType, Student} from 'models';
 import {Route} from '../navigation';
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight, TouchableHighlightComponent, View} from 'react-native';
-import {NavigationInjectedProps} from 'react-navigation';
+import {NavigationInjectedProps} from '@react-navigation/native';
 import {palette, typography} from '../styles';
 import {PlanSlideItem} from './PlanSlideItem';
 

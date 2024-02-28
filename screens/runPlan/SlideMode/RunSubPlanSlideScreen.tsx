@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
 import {Card, FlatButton, IconButton, StyledText} from 'components';
 import { i18n } from 'locale';

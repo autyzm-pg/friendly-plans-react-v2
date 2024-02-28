@@ -1,8 +1,8 @@
 import React from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import { NavigationRoute, NavigationScreenProp } from 'react-navigation';
+import { NavigationRoute, NavigationScreenProp } from '@react-navigation/native';
 
-import { i18n } from 'locale';
+import { i18n } from '../locale';
 import { palette } from '../styles';
 import { FlatButton } from './FlatButton';
 

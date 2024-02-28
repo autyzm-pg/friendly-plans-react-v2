@@ -1,7 +1,7 @@
-import { Button } from 'components';
-import { i18n } from 'locale';
+import { Button } from '../../components';
+import { i18n } from '../../locale';
 import React from 'react';
-import { palette } from '../styles';
+import { palette } from '../../styles';
 
 interface Props {
   onPress: () => void;

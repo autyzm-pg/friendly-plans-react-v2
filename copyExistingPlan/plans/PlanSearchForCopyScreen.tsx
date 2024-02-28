@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
-import { IconButton, NarrowScreenTemplate, TextInput } from 'components';
-import { i18n } from 'locale';
-import {Plan} from 'models';
-import { dimensions, palette } from 'styles';
+import { IconButton, NarrowScreenTemplate, TextInput } from '../../components';
+import { i18n } from '../../locale';
+import {Plan} from '../../models';
+import { dimensions, palette } from '../../styles';
 import {FilterablePlansListForCopy} from './FilterablePlansListForCopy';
 
 

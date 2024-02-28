@@ -2,7 +2,7 @@ import React from 'react';
 
 import { noop } from 'lodash';
 import { StyleSheet } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { ModalTemplate, StyledText } from '../components';
 import { DialogProps } from '../models';

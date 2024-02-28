@@ -1,5 +1,5 @@
 import firebase from '@react-native-firebase/app';
-import { NavigationState } from 'react-navigation';
+import { NavigationState } from '@react-navigation/native';
 
 import { User } from 'models';
 import NavigationService from './NavigationService';

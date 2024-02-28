@@ -1,14 +1,18 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 // import firebase from '@react-native-firebase/app';
 // import SplashScreen from 'react-native-splash-screen';
 
 import {FullScreenTemplate} from '../components/FullScreenTemplate';
 import { Route } from '../navigation/routes';
 // import {Route} from '../navigation';
-// import {NavigationInjectedProps} from 'react-navigation';
+// import {NavigationInjectedProps} from '@react-navigation/native';
 
-export function WelcomeScreen({ navigation }) {
+interface Props {
+  navigation: any
+}
+
+export const WelcomeScreen: FC<Props> = ({ navigation }) => {
   // componentDidMount() {
   //   const currentUser = firebase.auth().currentUser;
   //   if (currentUser) {

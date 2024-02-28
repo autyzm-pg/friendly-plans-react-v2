@@ -1,5 +1,5 @@
 // import React from 'react';
-// import { createStackNavigator } from 'react-navigation';
+// import { createStackNavigator } from '@react-navigation/native';
 
 // import { Icon } from 'components';
 // import { i18n } from 'locale';

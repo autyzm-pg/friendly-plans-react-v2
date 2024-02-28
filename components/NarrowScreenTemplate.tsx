@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animated, Dimensions, ScrollView, StyleSheet, View } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';

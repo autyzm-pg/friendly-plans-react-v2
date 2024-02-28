@@ -28,6 +28,7 @@ export interface StudentData {
   isSwipeBlocked: boolean;
 }
 
+// TODO: change so that student does not implement SubscribableModel
 export class Student implements SubscribableModel, StudentData {
   static create = (data: StudentData): Promise<RNFirebase.firestore.DocumentReference> => getStudentsRef().add(data);
 

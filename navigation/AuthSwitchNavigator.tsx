@@ -1,4 +1,4 @@
-// import { createSwitchNavigator } from 'react-navigation';
+// import { createSwitchNavigator } from '@react-navigation/native';
 
 // import { WelcomeScreen } from 'screens';
 // import { MainDrawerNavigator } from './MainDrawerNavigator';

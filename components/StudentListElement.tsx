@@ -1,17 +1,17 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native';
 
-import { StyledText } from 'components';
-import { AuthUser, Student } from 'models';
+import { StyledText } from '../components';
+import { AuthUser, Student } from '../models';
 import { Route } from '../navigation';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
 import { dimensions, palette, typography } from '../styles';
 
 interface Props extends NavigationInjectedProps {
   student: Student;
 }
 
-const StudentName: SFC<Props> = ({ student, navigation }) => {
+const StudentName: FC<Props> = ({ student, navigation }) => {
   const setCurrentStudent = async () => {
     await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
     navigation.navigate(Route.Dashboard, {

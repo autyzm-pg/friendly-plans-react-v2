@@ -1,91 +1,91 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+//import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
 
-import { FullScreenTemplate } from 'components';
-import {ModelSubscriber, Plan, PlanItemType, Student} from 'models';
-import { Route } from '../navigation';
-import EmptyStudentPlans from './EmptyStudentPlans';
+import { FullScreenTemplate } from '../../components';
+import { ModelSubscriber, Plan, PlanItemType, Student } from '../../models';
+import { Route } from '../../navigation';
+import { EmptyStudentPlans } from './EmptyStudentPlans';
 import { FixedCreatePlanButton } from './FixedCreatePlanButton';
 import StudentPlanListItem from './StudentPlanListItem';
+import { NavigationProp } from '@react-navigation/native';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   student: Student;
+  navigation: NavigationProp<any>;
 }
 
-interface State {
-  plans: Plan[];
-}
+const plansList: Plan[] = [
+  {
+    name: "Plan 1",
+    id: '111',
+    studentId: '1'
+  },
+  {
+    name: "Plan 2",
+    id: '222',
+    studentId: '1'
+  }
+]
 
-export class StudentPlanList extends React.PureComponent<Props, State> {
-  plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
-  state: Readonly<State> = {
-    plans: [],
+export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
+
+  const subscribeToPlans = () => {
+    //plansSubscriber.subscribeCollectionUpdates(student, plans => setPlans(plans));
+    setPlans(plansList)
   };
 
-  subscribeToPlans() {
-    this.plansSubscriber.subscribeCollectionUpdates(this.props.student, plans => this.setState({ plans }));
-  }
+  const unsubscribeFromPlans = () => {
+    setPlans([])
+  };
 
-  unsubsribeToPlans() {
-    this.plansSubscriber.unsubscribeCollectionUpdates();
-  }
+  useEffect(() => {
+    subscribeToPlans();
+    return () => {
+      unsubscribeFromPlans();
+    };
+  }, []);
 
-  componentDidMount() {
-    this.subscribeToPlans();
-  }
+  const extractKey = (plan: Plan) => plan.id;
 
-  componentDidUpdate() {
-    this.unsubsribeToPlans();
-    this.subscribeToPlans();
-  }
+  const renderItem = ({ item }: { item: Plan }) => (
+    <StudentPlanListItem plan={item} student={student} navigation={navigation}/>
+  );
 
-  componentWillUnmount() {
-    this.unsubsribeToPlans();
-  }
-
-  extractKey = (plan: Plan) => plan.id;
-
-  renderItem = ({ item }: { item: Plan }) => <StudentPlanListItem plan={item} student={this.props.student} />;
-
-  navigateTo = (name: string) => {
-
+  const navigateTo = (name: string) => {
     if (name === 'create-plan') {
-      const student = this.props.navigation.getParam('student');
-      this.props.navigation.navigate(Route.PlanActivity, {
+      navigation.navigate(Route.PlanActivity, {
         student,
-        numberPlan: this.state.plans.length + 1,
+        numberPlan: plans.length + 1,
       });
     } else if (name === 'copy-existing-plan') {
-      this.props.navigation.navigate(Route.StudentsListForCopyPlan);
+      navigation.navigate(Route.StudentsListForCopyPlan);
     }
-
   };
 
-  render() {
-    const { plans } = this.state;
-
-    if (!plans.length) {
-      return <EmptyStudentPlans />;
-    }
-
-    return (
-      <>
-        <FullScreenTemplate padded darkBackground>
-          <FlatList
-            data={this.state.plans}
-            renderItem={this.renderItem}
-            keyExtractor={this.extractKey}
-            numColumns={2}
-            columnWrapperStyle={styles.columnWrapper}
-            style={styles.contentContainer}
-          />
-        </FullScreenTemplate>
-        <FixedCreatePlanButton onPress={this.navigateTo} />
-      </>
-    );
+  if (!plans.length) {
+    return <EmptyStudentPlans navigation={navigation}/>;
   }
-}
+
+  return (
+    <>
+      <FullScreenTemplate padded darkBackground>
+        <FlatList
+          data={plans}
+          renderItem={renderItem}
+          keyExtractor={extractKey}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+          style={styles.contentContainer}
+        />
+      </FullScreenTemplate>
+      <FixedCreatePlanButton onPress={navigateTo} />
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -96,5 +96,3 @@ const styles = StyleSheet.create({
     marginEnd: 12,
   },
 });
-
-export default withNavigation(StudentPlanList);

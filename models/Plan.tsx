@@ -7,6 +7,7 @@ import { getPlanItemsRef, getPlanRef, getPlansRef } from './FirebaseRefProxy';
 import { PlanItem } from './PlanItem';
 import { ParameterlessConstructor, SubscribableModel } from './SubscribableModel';
 
+// TODO: SQLite: refactor to remove SubscribableModel and use SQL qeuries
 export class Plan implements SubscribableModel {
   static create = (studentId: string, name: string): Promise<RNFirebase.firestore.DocumentReference> =>
     getPlansRef(studentId).add({

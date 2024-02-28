@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import React, { SFC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
 import { dimensions } from '../styles';
 
 import { EMOJIS_LIST } from '../../assets/emojis';

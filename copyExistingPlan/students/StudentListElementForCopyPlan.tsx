@@ -4,7 +4,7 @@ import { StyleSheet, TouchableHighlight } from 'react-native';
 import { StyledText } from 'components';
 import { Student } from 'models';
 import { Route } from 'navigation';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
 import { dimensions, palette, typography } from 'styles';
 
 interface Props extends NavigationInjectedProps {
