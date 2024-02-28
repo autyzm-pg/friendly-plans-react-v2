@@ -17,7 +17,7 @@ interface Props {
 
 const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => {
   const [isSwipeableOpen, setIsSwipeableOpen] = useState<boolean>(false);
-
+  const { emoji, name } = plan;
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setIsSwipeableOpen(false);
@@ -55,22 +55,25 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
 
   return (
     <View style={styles.container}>
-      <TouchableHighlight onPress={isSwipeableOpen ? handlePressDelete : navigateToUpdatePlan} underlayColor="transparent">
-        <Swipeable
-          renderRightActions={renderRightActions}
-          onSwipeableRightWillOpen={handleOpenSwipeable}
-          onSwipeableWillClose={handleCloseSwipeable}
-        >
-          <View style={styles.card}>
-            <View style={styles.cardTextContainer}>
-              {!isSwipeableOpen && <Emoji symbol={plan.emoji} />}
-              <StyledText style={styles.cardText}>{plan.name}</StyledText>
-            </View>
-            {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation}/>}
+    <TouchableHighlight
+      onPress={isSwipeableOpen ? handlePressDelete : navigateToUpdatePlan}
+      underlayColor="transparent"
+    >
+      <Swipeable
+        renderRightActions={renderRightActions}
+        onSwipeableWillOpen={(direction) => {if (direction === 'right') handleOpenSwipeable}}
+        onSwipeableWillClose={handleCloseSwipeable}
+      >
+        <Card style={[styles.card, isSwipeableOpen && styles.swipeableContainerOpen]}>
+          <View style={styles.cardTextContainer}>
+            {!isSwipeableOpen && <Emoji symbol={emoji} />}
+            <StyledText style={styles.cardText}>{name}</StyledText>
           </View>
-        </Swipeable>
-      </TouchableHighlight>
-    </View>
+          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} />}
+        </Card>
+      </Swipeable>
+    </TouchableHighlight>
+  </View>
   );
 };
 
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: dimensions.spacingSmall,
-    zIndex: 1,
+    zIndex: 1
   },
   cardText: {
     ...typography.subtitle,

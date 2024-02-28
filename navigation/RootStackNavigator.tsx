@@ -24,7 +24,7 @@ import DashboardScreen from '../screens/dashboard/DashboardScreen';
 
 const Stack = createStackNavigator();
 
-export function RootStack() {
+export function RootStackNavigation() {
   return (
     <Stack.Navigator
       initialRouteName={Route.Home}
@@ -32,18 +32,99 @@ export function RootStack() {
       <Stack.Screen
         name={Route.Home}
         component={WelcomeScreen}
-        options={{title: 'My app'}}
+        options={{}}
       />
       <Stack.Screen
         name={Route.Unauthenticated}
         component={UnauthenticatedStackNavigator}
-        options={{title: 'My app'}}
+        options={{}}
       />
       <Stack.Screen
         name={Route.Dashboard}
         component={DashboardScreen}
-        options={{title: 'My app'}}
+        options={{}}
       />
+      {/* TODO: uncomment working screen */}
+      {/* <Stack.Screen
+        name={Route.PlanActivity}
+        component={PlanActivityScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.RunPlanList}
+        component={RunPlanListScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.RunPlanSlide}
+        component={RunPlanSlideScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.RunSubPlanList}
+        component={RunSubPlanListScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.PlanItemTask}
+        component={PlanItemTaskScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.ImageLibrary}
+        component={ImageLibraryScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.RunSubPlanSlide}
+        component={RunSubPlanSlideScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.Dialog}
+        component={DialogScreen}
+        options={{}}
+      />
+       <Stack.Screen
+        name={Route.StudentSettings}
+        component={StudentSettingsScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentCreate}
+        component={StudentCreateScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentsList}
+        component={StudentsListScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentsListSearch}
+        component={StudentsListSearchScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentsListSearchForCopyPlan}
+        component={StudentsListSearchForCopyPlanScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentsListForCopyPlan}
+        component={StudentsListForCopyPlanScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.PlanSearchForCopy}
+        component={PlanSearchForCopyScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.PlansListForCopy}
+        component={PlansListForCopyScreen}
+        options={{}}
+      /> */}
     </Stack.Navigator>
   );
 }
@@ -57,14 +138,14 @@ export function RootStack() {
 //   {
 //     [Route.Root]: AuthSwitchNavigator,
 //     [Route.Dialog]: DialogScreen,
-//     [Route.StudentSettings]: StudentSettingsScreen,
-//     [Route.StudentCreate]: StudentCreateScreen,
-//     [Route.StudentsList]: StudentsListScreen,
-//     [Route.StudentsListSearch]: StudentsListSearchScreen,
-//     [Route.StudentsListSearchForCopyPlan]: StudentsListSearchForCopyPlanScreen,
-//     [Route.StudentsListForCopyPlan]: StudentsListForCopyPlanScreen,
-//     [Route.PlanSearchForCopy]: PlanSearchForCopyScreen,
-//     [Route.PlansListForCopy]: PlansListForCopyScreen,
+    // [Route.StudentSettings]: StudentSettingsScreen,
+    // [Route.StudentCreate]: StudentCreateScreen,
+    // [Route.StudentsList]: StudentsListScreen,
+    // [Route.StudentsListSearch]: StudentsListSearchScreen,
+    // [Route.StudentsListSearchForCopyPlan]: StudentsListSearchForCopyPlanScreen,
+    // [Route.StudentsListForCopyPlan]: StudentsListForCopyPlanScreen,
+    // [Route.PlanSearchForCopy]: PlanSearchForCopyScreen,
+    // [Route.PlansListForCopy]: PlansListForCopyScreen,
 //   },
 //   {
 //     headerMode: 'none',

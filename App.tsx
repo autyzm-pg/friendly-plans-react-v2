@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import {I18nextProvider} from 'react-i18next';
 import {StatusBar} from 'react-native';
 import {i18n} from './locale';
-import {RootStack} from './navigation/RootStackNavigator';
+import {RootStackNavigation} from './navigation/RootStackNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { Platform } from 'react-native';
 // import {AnalyticsService, NavigationService} from './services';
@@ -32,7 +32,7 @@ export default function App() {
     <NavigationContainer>
     <I18nextProvider i18n={i18n}>
       <StatusBar hidden />
-      <RootStack />
+      <RootStackNavigation />
     </I18nextProvider>
     </NavigationContainer>
   );
