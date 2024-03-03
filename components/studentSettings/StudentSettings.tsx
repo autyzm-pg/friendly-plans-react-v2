@@ -89,7 +89,7 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
             <AlarmSoundSetting available={false} value="Beep"/>
             <Separator extraWide/>
 
-            {!!handleStudentCreate && (
+            {!!onStudentCreate && (
                 <View style={styles.iconButtonContainer}>
                     <StudentSettingsButton
                         name="pluscircleo"
