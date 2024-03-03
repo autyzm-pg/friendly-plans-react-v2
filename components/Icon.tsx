@@ -1,12 +1,13 @@
 import React from 'react';
 import { Icon as ElementsIcon, IconProps } from 'react-native-elements';
 import { palette } from '../styles/palette';
+import { ColorValue, GestureResponderEvent } from 'react-native';
 
 interface Props extends IconProps {
   delayLongPress?: number;
-  onLongPress?: () => void;
-  onPress?: () => void;
-  color?: string;
+  onLongPress?: ((event: GestureResponderEvent) => void);
+  onPress?: ((event: GestureResponderEvent) => void);
+  color?: number | ColorValue;
   type?: string;
 }
 

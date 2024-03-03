@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextProps } from 'react-native';
 import { fonts } from '../styles';
 
 interface Props extends TextProps {
-  children: string;
+  children: string | string[];
 }
 
 export const StyledText: React.FC<Props> = ({ children, ...props }) => (

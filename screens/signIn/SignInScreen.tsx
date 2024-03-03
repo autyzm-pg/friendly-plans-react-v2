@@ -24,7 +24,7 @@ export const SignInScreen: FC<Props> = ({navigation}) => {
         <StyledText style={styles.title}>{i18n.t('rest:title')}</StyledText>
         <SignInFormContainer />
         <Button
-          onPress={() => navigation.navigate(Route.Dashboard)}
+          onPress={() => navigation.navigate(Route.StudentSettings)}
           title={i18n.t('signUp:signUp')}
           containerStyle={styles.buttonContainer}
           titleStyle={styles.titleButton}

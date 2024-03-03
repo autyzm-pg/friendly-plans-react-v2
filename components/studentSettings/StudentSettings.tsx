@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import {i18n} from 'locale';
-import {Student, StudentData, StudentDisplayOption, StudentTextSizeOption} from 'models';
-import {dimensions, palette, typography} from '../styles';
+import {i18n} from '../../locale';
+import {StudentData, StudentDisplayOption, StudentTextSizeOption} from '../../models';
+import {dimensions, palette, typography} from '../../styles';
 
-import {FlatButton} from '../FlatButton';
-import {IconButton} from '../IconButton';
 import {Separator} from '../Separator';
 import {StudentSettingsButton} from '../StudentSettingsButton';
 import {StyledText} from '../StyledText';
@@ -19,110 +17,107 @@ import {TextCaseSetting} from './TextCaseSetting';
 import {TextSizeSetting} from './TextSizeSetting';
 
 interface Props {
-    student: Student;
-    onStudentCreate?: (data: State) => any;
+    student: StudentData;
+    onStudentCreate?: (data: StudentData) => any;
     onStudentRemove?: () => void;
-    onStudentUpdate?: (data: State) => any;
+    onStudentUpdate?: (data: StudentData) => any;
 }
 
-type State = StudentData;
 
-export class StudentSettings extends React.PureComponent<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            name: props.student.name,
-            displaySettings: props.student.displaySettings,
-            textSize: props.student.textSize,
-            isUpperCase: props.student.isUpperCase,
-            isSwipeBlocked: props.student.isSwipeBlocked,
-        };
+export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentRemove, onStudentUpdate}) => {
+    const [state, setState] = useState<StudentData>({
+        name: student.name,
+        displaySettings: student.displaySettings,
+        textSize: student.textSize,
+        isUpperCase: student.isUpperCase,
+        isSwipeBlocked: student.isSwipeBlocked,
+      });
+
+    const canCreate = () => {
+        return !!state.name;
     }
 
-    get canCreate(): boolean {
-        const {name} = this.state;
-        return !!name;
+    const handleNameChange = (name: string) => {
+        setState(prevState => ({ ...prevState, name }));
+        handleStudentUpdate()
     }
 
-    handleNameChange = (name: string) => this.setState({name}, this.onStudentUpdate);
-
-    onDisplaySettingsChange = (displaySettings: StudentDisplayOption) =>
-        this.setState({displaySettings}, this.onStudentUpdate);
-
-    onTextSizeChange = (textSize: StudentTextSizeOption) => this.setState({textSize}, this.onStudentUpdate);
-
-    onTextCaseChange = (isUpperCase: boolean) => this.setState({isUpperCase}, this.onStudentUpdate);
-
-    onSwipeBlockedChange = (isSwipeBlocked: boolean) => this.setState({isSwipeBlocked}, this.onStudentUpdate);
-
-    onStudentCreate = () => this.props.onStudentCreate!(this.state);
-
-    onStudentUpdate = () => this.props.onStudentUpdate && this.props.onStudentUpdate(this.state);
-
-    render() {
-        const {onStudentCreate, onStudentRemove} = this.props;
-        const {name, displaySettings, textSize, isUpperCase, isSwipeBlocked} = this.state;
-        return (
-            <>
-                <StyledText style={styles.label}>{i18n.t('studentSettings:studentName')}</StyledText>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder={i18n.t('studentSettings:studentNamePlaceholder')}
-                    value={name}
-                    onChangeText={this.handleNameChange}
-                />
-                <Separator extraWide/>
-                <StyledText
-                    style={[styles.label, styles.taskViewLabel]}>{i18n.t('studentSettings:taskView')}</StyledText>
-                <PlanDisplayPreview displaySettings={displaySettings} textSize={textSize} isUpperCase={isUpperCase}/>
-                <DisplaySetting value={displaySettings} onValueChange={this.onDisplaySettingsChange}/>
-                <TextSizeSetting value={textSize} onValueChange={this.onTextSizeChange}/>
-                <TextCaseSetting value={isUpperCase} onValueChange={this.onTextCaseChange}/>
-                <SlideCardSetting value={isSwipeBlocked} onValueChange={this.onSwipeBlockedChange}/>
-                <Separator extraWide/>
-                <StyledText
-                    style={[styles.label, styles.taskViewLabel]}>{i18n.t('studentSettings:soundSettings')}</StyledText>
-                <AlarmSoundSetting available={false} value="Beep"/>
-                <Separator extraWide/>
-
-                {!!onStudentCreate && (
-                    // <FlatButton
-                    //   title={i18n.t('studentSettings:createStudent')}
-                    //   onPress={this.onStudentCreate}
-                    //   disabled={!this.canCreate}
-                    // />
-
-                    <View style={styles.iconButtonContainer}>
-                        <StudentSettingsButton
-                            name="pluscircleo"
-                            type="antdesign"
-                            label={i18n.t('studentSettings:createStudent')}
-                            containerStyle={{backgroundColor: palette.primaryVariant}}
-                            size={24}
-                            disabled={!this.canCreate}
-                            onPress={this.onStudentCreate}
-                        />
-                    </View>
-
-                )}
-                {!!onStudentRemove && (
-                    // <FlatButton title={i18n.t('studentSettings:removeStudent')} onPress={this.props.onStudentRemove}/>
-
-                    <View style={styles.iconButtonContainer}>
-                        <StudentSettingsButton
-                            name="delete"
-                            type="material"
-                            label={i18n.t('studentSettings:removeStudent')}
-                            containerStyle={{backgroundColor: palette.deleteStudentButton}}
-                            size={24}
-                            disabled={false}
-                            onPress={this.props.onStudentRemove}
-                        />
-                    </View>
-                )}
-            </>
-        );
+    const onDisplaySettingsChange = (displaySettings: StudentDisplayOption) => {
+        setState(prevState => ({ ...prevState, displaySettings }));
+        handleStudentUpdate()
     }
+
+    const onTextSizeChange = (textSize: StudentTextSizeOption) => {
+        setState(prevState => ({ ...prevState, textSize }));
+        handleStudentUpdate();
+    }
+
+    const onTextCaseChange = (isUpperCase: boolean) => {
+        setState(prevState => ({ ...prevState, isUpperCase }));
+        handleStudentUpdate()
+    }
+
+    const onSwipeBlockedChange = (isSwipeBlocked: boolean) => {
+        setState(prevState => ({ ...prevState, isSwipeBlocked }));
+        handleStudentUpdate();
+    }
+
+    const handleStudentCreate = () => onStudentCreate && onStudentCreate(state);
+
+    const handleStudentUpdate = () => onStudentUpdate && onStudentUpdate(state);
+
+    return (
+        <>
+            <StyledText style={styles.label}>{i18n.t('studentSettings:studentName')}</StyledText>
+            <TextInput
+                style={styles.textInput}
+                placeholder={i18n.t('studentSettings:studentNamePlaceholder')}
+                value={state.name}
+                onChangeText={handleNameChange}
+            />
+            <Separator extraWide/>
+            <StyledText
+                style={[styles.label, styles.taskViewLabel]}>{i18n.t('studentSettings:taskView')}</StyledText>
+            <PlanDisplayPreview displaySettings={state.displaySettings} textSize={state.textSize} isUpperCase={state.isUpperCase}/>
+            <DisplaySetting value={state.displaySettings} onValueChange={onDisplaySettingsChange}/>
+            <TextSizeSetting value={state.textSize} onValueChange={onTextSizeChange}/>
+            <TextCaseSetting value={state.isUpperCase} onValueChange={onTextCaseChange}/>
+            <SlideCardSetting value={state.isSwipeBlocked} onValueChange={onSwipeBlockedChange}/>
+            <Separator extraWide/>
+            <StyledText
+                style={[styles.label, styles.taskViewLabel]}>{i18n.t('studentSettings:soundSettings')}</StyledText>
+            <AlarmSoundSetting available={false} value="Beep"/>
+            <Separator extraWide/>
+
+            {!!handleStudentCreate && (
+                <View style={styles.iconButtonContainer}>
+                    <StudentSettingsButton
+                        name="pluscircleo"
+                        type="antdesign"
+                        label={i18n.t('studentSettings:createStudent')}
+                        containerStyle={{backgroundColor: palette.primaryVariant}}
+                        size={24}
+                        disabled={!canCreate}
+                        onPress={handleStudentCreate}
+                    />
+                </View>
+
+            )}
+            {!!onStudentRemove && (
+                <View style={styles.iconButtonContainer}>
+                    <StudentSettingsButton
+                        name="delete"
+                        type="material"
+                        label={i18n.t('studentSettings:removeStudent')}
+                        containerStyle={{backgroundColor: palette.deleteStudentButton}}
+                        size={24}
+                        disabled={false}
+                        onPress={onStudentRemove}
+                    />
+                </View>
+            )}
+        </>
+    );
 }
 
 const styles = StyleSheet.create({

@@ -4,7 +4,7 @@ export { SignInScreen } from './signIn/SignInScreen';
 export { SignUpScreen } from './signUp/SignUpScreen';
 export { ResetPasswordScreen } from './resetPassword/ResetPasswordScreen';
 // export { default as DashboardScreen } from './dashboard/DashboardScreen';
-// export { StudentSettingsScreen } from './studentSettings/StudentSettingsScreen';
+export { StudentSettingsScreen } from './studentSettings/StudentSettingsScreen';
 // export { StudentsListScreen } from './studentsList/StudentsListScreen';
 // export { StudentsListSearchScreen } from './studentsListSearch/StudentsListSearchScreen';
 // export { RunPlanListScreen } from './runPlan/ListMode/RunPlanListScreen';

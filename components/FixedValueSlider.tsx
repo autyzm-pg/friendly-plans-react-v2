@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconProps, Slider } from 'react-native-elements';
 
@@ -19,65 +19,50 @@ interface Props {
   iconRight?: IconProps;
 }
 
-interface State {
-  index: number;
-}
+export const FixedValueSlider: FC<Props> = ({options, value, onSlidingComplete, iconLeft, iconRight}) => {
+  const [index, setIndex] = useState(options.findIndex(option => option.value === value));
 
-export class FixedValueSlider extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    const selectedOption = props.options.find(item => item.value === props.value)!;
-    this.state = {
-      index: selectedOption ? props.options.indexOf(selectedOption) : 0,
-    };
-  }
-
-  onSlidingComplete = (index: number) => {
-    this.props.onSlidingComplete(this.props.options[index].value);
+  const handleSlidingComplete = (idx: number) => {
+    onSlidingComplete(options[idx].value);
   };
 
-  setIndex = (index: number) => this.setState({ index });
-
-  render() {
-    const { iconLeft, iconRight, options } = this.props;
-    return (
-      <View style={styles.container}>
-        <StyledText style={styles.label}>{options[this.state.index].label}</StyledText>
-        <View style={styles.sliderContainer}>
-          {!!iconLeft && (
-            <View style={styles.iconContainer}>
-              <Icon size={32} color={palette.primary} {...iconLeft} />
-            </View>
-          )}
-          <View style={styles.sliderInnerContainer}>
-            <View style={styles.pointsContainer}>
-              {options.map((_, index) => (
-                <View key={index} style={[styles.point, index === this.state.index && styles.pointSelected]} />
-              ))}
-            </View>
-            <Slider
-              minimumValue={0}
-              maximumValue={options.length - 1}
-              step={1}
-              onSlidingComplete={this.onSlidingComplete}
-              onValueChange={this.setIndex}
-              value={this.state.index}
-              style={styles.slider}
-              trackStyle={styles.sliderTrack}
-              thumbStyle={styles.sliderThumb}
-              maximumTrackTintColor="transparent"
-              minimumTrackTintColor="transparent"
-            />
+  return (
+    <View style={styles.container}>
+      <StyledText style={styles.label}>{options[index].label}</StyledText>
+      <View style={styles.sliderContainer}>
+        {!!iconLeft && (
+          <View style={styles.iconContainer}>
+            <Icon size={32} color={palette.primary} {...iconLeft} />
           </View>
-          {!!iconRight && (
-            <View style={styles.iconContainer}>
-              <Icon size={24} color={palette.primary} {...iconRight} />
-            </View>
-          )}
+        )}
+        <View style={styles.sliderInnerContainer}>
+          <View style={styles.pointsContainer}>
+            {options.map((_, idx) => (
+              <View key={idx} style={[styles.point, idx === index && styles.pointSelected]} />
+            ))}
+          </View>
+          <Slider
+            minimumValue={0}
+            maximumValue={options.length - 1}
+            step={1}
+            onSlidingComplete={handleSlidingComplete}
+            onValueChange={setIndex}
+            value={index}
+            style={styles.slider}
+            trackStyle={styles.sliderTrack}
+            thumbStyle={styles.sliderThumb}
+            maximumTrackTintColor="transparent"
+            minimumTrackTintColor="transparent"
+          />
         </View>
+        {!!iconRight && (
+          <View style={styles.iconContainer}>
+            <Icon size={24} color={palette.primary} {...iconRight} />
+          </View>
+        )}
       </View>
-    );
-  }
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

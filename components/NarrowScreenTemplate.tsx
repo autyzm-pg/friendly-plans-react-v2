@@ -1,54 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Animated, Dimensions, ScrollView, StyleSheet, View } from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
 
+import { NavigationProp } from '@react-navigation/native';
+
 const { height: WINDOW_HEIGHT } = Dimensions.get('window');
 const CONTAINER_HEIGHT = WINDOW_HEIGHT - headerHeight;
 const MODAL_WIDTH = 528;
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   children?: React.ReactNode;
   title: React.ReactNode | string;
   buttons?: React.ReactNode;
   isSecondaryView?: boolean;
-  canNavigateBack: boolean;
+  canNavigateBack?: boolean;
+  navigation: NavigationProp<any>;
 }
 
-export class NarrowScreenTemplate extends React.PureComponent<Props> {
-  static defaultProps = {
-    canNavigateBack: true,
-  };
+export const NarrowScreenTemplate: React.FC<Props> = ({ children, title, buttons, isSecondaryView, canNavigateBack=true, navigation }) => {
+  const backgroundAnimation = new Animated.Value(0);
 
-  backgroundAnimation = new Animated.Value(0);
-
-  componentDidMount() {
-    Animated.timing(this.backgroundAnimation, {
+  useEffect(() => {
+    Animated.timing(backgroundAnimation, {
       toValue: 1,
       duration: 200,
       useNativeDriver: true,
     }).start();
-  }
+  }, []);
 
-  goBack = () => {
-    Animated.timing(this.backgroundAnimation, {
+  const goBack = () => {
+    Animated.timing(backgroundAnimation, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
     }).start();
-    setTimeout(() => this.props.navigation.goBack(), 200);
+    setTimeout(() => navigation.goBack(), 200);
   };
 
-  getHeaderColor = () => ({
-    backgroundColor: this.props.isSecondaryView ? palette.backgroundAdditional : palette.primaryVariant,
+  const getHeaderColor = () => ({
+    backgroundColor: isSecondaryView ? palette.backgroundAdditional : palette.primaryVariant,
   });
 
-  renderTitle = () => {
-    const { title } = this.props;
-
+  const renderTitle = () => {
     if (typeof title === 'string') {
       return <StyledText style={styles.headerText}>{title}</StyledText>;
     }
@@ -56,35 +52,33 @@ export class NarrowScreenTemplate extends React.PureComponent<Props> {
     return title;
   };
 
-  render() {
-    const translateY = this.backgroundAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [WINDOW_HEIGHT, 0],
-    });
-    const { children, buttons, isSecondaryView, canNavigateBack } = this.props;
-    return (
-      <Animated.View style={[styles.overlay]}>
-        <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-          <View style={[styles.header, this.getHeaderColor()]}>
-            {canNavigateBack && (
-              <IconButton
-                name="arrow-back"
-                type="material"
-                size={24}
-                color={isSecondaryView ? palette.textBody : palette.textWhite}
-                onPress={this.goBack}
-              />
-            )}
-            {this.renderTitle()}
-            {buttons}
-          </View>
-          <ScrollView bounces={false} alwaysBounceVertical={false} contentContainerStyle={styles.contentContainer}>
-            {children}
-          </ScrollView>
-        </Animated.View>
+  const translateY = backgroundAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [WINDOW_HEIGHT, 0],
+  });
+
+  return (
+    <Animated.View style={[styles.overlay]}>
+      <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+        <View style={[styles.header, getHeaderColor()]}>
+          {(canNavigateBack ?? true) && (
+            <IconButton
+              name="arrow-back"
+              type="material"
+              size={24}
+              color={isSecondaryView ? palette.textBody : palette.textWhite}
+              onPress={goBack}
+            />
+          )}
+          {renderTitle()}
+          {buttons}
+        </View>
+        <ScrollView bounces={false} alwaysBounceVertical={false} contentContainerStyle={styles.contentContainer}>
+          {children}
+        </ScrollView>
       </Animated.View>
-    );
-  }
+    </Animated.View>
+  );
 }
 
 const styles = StyleSheet.create({

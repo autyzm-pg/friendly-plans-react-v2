@@ -22,6 +22,7 @@ import { Easing } from 'react-native';
 import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
+import { StudentSettingsScreen } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,11 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.Dashboard}
         component={DashboardScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentSettings}
+        component={StudentSettingsScreen}
         options={{}}
       />
       {/* TODO: uncomment working screen */}
@@ -92,11 +98,6 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.Dialog}
         component={DialogScreen}
-        options={{}}
-      />
-       <Stack.Screen
-        name={Route.StudentSettings}
-        component={StudentSettingsScreen}
         options={{}}
       />
       <Stack.Screen

@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-import { SwitchItem } from 'components';
-import { i18n } from 'locale';
+import { SwitchItem } from '../../components';
+import { i18n } from '../../locale';
 
 interface Props {
   value: boolean;
   onValueChange: (isUpperCase: boolean) => void;
 }
 
-export class SlideCardSetting extends React.PureComponent<Props> {
-  render() {
-    return (
-      <SwitchItem
-        label={i18n.t('studentSettings:blockSwipe')}
-        value={this.props.value}
-        onValueChange={this.props.onValueChange}
-      />
-    );
-  }
+export const SlideCardSetting: FC<Props> = ({value, onValueChange}) => {
+  return (
+    <SwitchItem
+      label={i18n.t('studentSettings:blockSwipe')}
+      value={value}
+      onValueChange={onValueChange}
+    />
+  );
 }
