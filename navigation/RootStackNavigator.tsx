@@ -18,7 +18,8 @@ import {WelcomeScreen} from '../screens/WelcomeScreen';
 // import {AuthSwitchNavigator} from './AuthSwitchNavigator';
 import {Route} from './routes';
 
-import {createStackNavigator} from '@react-navigation/stack';
+import { Easing } from 'react-native';
+import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 
@@ -28,7 +29,15 @@ export function RootStackNavigation() {
   return (
     <Stack.Navigator
       initialRouteName={Route.Home}
-      screenOptions={{gestureEnabled: false, headerShown: false}}>
+      screenOptions={{
+        headerShown: true,
+        gestureEnabled: false,
+        transitionSpec: {
+          open: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
+          close: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
+        },
+        cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+      }}>
       <Stack.Screen
         name={Route.Home}
         component={WelcomeScreen}
