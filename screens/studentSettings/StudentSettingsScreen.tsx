@@ -4,11 +4,11 @@ import { Alert } from 'react-native';
 import { NarrowScreenTemplate, StudentSettings } from '../../components';
 import { i18n } from '../../locale';
 import { NavigationProp } from '@react-navigation/native';
-import { StudentData, StudentDisplayOption, StudentTextSizeOption } from '../../models';
+import { Student, StudentData, StudentDisplayOption, StudentTextSizeOption } from '../../models';
 
 interface Props {
   navigation: NavigationProp<any>;
-  //student: Student
+  student?: Student /* TODO: Student parameter shoudn't be optional. */
 }
 
 const defaultStudent: StudentData = {
@@ -19,7 +19,7 @@ const defaultStudent: StudentData = {
   isSwipeBlocked: false
 }
 
-export const StudentSettingsScreen: FC<Props> = ({navigation/*, student*/}) => {
+export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
   const [state, setState] = useState<StudentData>(defaultStudent)
 
   const getScreenName = () => {

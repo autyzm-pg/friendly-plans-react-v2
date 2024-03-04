@@ -23,6 +23,7 @@ import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/st
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { StudentSettingsScreen } from '../screens';
+import { Header } from '../components';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,7 @@ export function RootStackNavigation() {
           close: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
         },
         cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        header: ({navigation, route}) => <Header navigation={navigation} route={route} />,
       }}>
       <Stack.Screen
         name={Route.Home}

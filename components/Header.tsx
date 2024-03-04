@@ -1,74 +1,93 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { HeaderProps } from '@react-navigation/native';
 
-import { Student } from '../models';
 import { Route } from '../navigation';
-import { NavigationService } from '../services';
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { Student, StudentDisplayOption, StudentTextSizeOption } from '../models/Student';
 
-interface Props extends HeaderProps {
-  student: Student;
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+}
+
+//@ts-ignore
+const defaultStudent: Student = {
+  name: "Student 1",
+  displaySettings: StudentDisplayOption.ImageWithTextSlide,
+  textSize: StudentTextSizeOption.Medium,
+  isUpperCase: false,
+  isSwipeBlocked: false
 }
 
 const DASHBOARD = 'Dashboard';
 
-export class Header extends React.PureComponent<Props> {
-  get title() {
-    const { scene, student } = this.props;
-    const { options } = scene.descriptor;
+export const Header: FC<Props> =({navigation, route}) => {
+
+  const student = route.params?.student ? route.params?.student : defaultStudent; // TODO: How to pass student?
+
+  const getTitle = () => {
+
+    const containsStudentName = (route_name: Route) => {
+      return [Route.Dashboard].includes(route_name);
+    }
+
+    const isOverlaying = () => {
+      return [Route.StudentSettings].includes(route.name as Route);
+    }
 
     const headerTitle = (title: string) => {
       const studentPrefix = student ? `${student.name} / ` : '';
       return `${studentPrefix}${title}`;
     };
 
-    if (options.headerTitle && options.headerTitle !== 'function') {
-      return options.headerTitle;
+    if (containsStudentName(route.name as Route)) {
+      return headerTitle(route.name);
     }
 
-    return headerTitle(options.title || scene.route.routeName);
+    if(isOverlaying()) {
+      const routes = navigation.getState()?.routes;
+      const prev_route = routes[routes.length-2];
+
+      if (containsStudentName(prev_route.name as Route)) {
+        return headerTitle(prev_route.name);
+      }
+
+      return prev_route.name
+    }
+
+    return route.name;
   }
 
-  openDrawer = () => this.props.navigation.openDrawer();
+  const goBack = () => navigation.goBack();
 
-  goBack = () => NavigationService.goBack();
-
-  navigateToStudentsList = () => {
-    NavigationService.navigate(Route.StudentsList);
+  const navigateToStudentsList = () => {
+    navigation.navigate(Route.StudentsList);
   };
 
-  navigateToStudentSettings = () => {
-    NavigationService.navigate(Route.StudentSettings, {
-      student: this.props.student,
+  const navigateToStudentSettings = () => {
+    navigation.navigate(Route.StudentSettings, {
+      student: student,
     });
   };
 
-  get isRoot(): boolean {
-    return this.props.navigation.state.routes.length <= 1;
+  const isDashboard = () => {
+    return route.name === DASHBOARD;
   }
 
-  isDashboard() {
-    const { routes } = this.props.navigation.state;
-
-    const { routeName } = routes[routes.length - 1];
-
-    return routeName === DASHBOARD;
-  }
-
-  renderButtons() {
-    return this.isDashboard() ? (
+  const renderButtons = () => {
+    return isDashboard() ? (
       <>
-        {this.props.student && (
+        {student && (
           <IconButton
             name="settings"
             type="material"
             color={palette.textWhite}
             size={24}
             containerStyle={styles.iconContainer}
-            onPress={this.navigateToStudentSettings}
+            onPress={navigateToStudentSettings}
           />
         )}
         <IconButton
@@ -77,28 +96,30 @@ export class Header extends React.PureComponent<Props> {
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
-          onPress={this.navigateToStudentsList}
+          onPress={navigateToStudentsList}
         />
       </>
     ) : null;
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <IconButton
-          name={this.isRoot ? 'menu' : 'arrow-back'}
+  return (
+    <View style={styles.container}>
+      {!isDashboard() ?
+          <IconButton
+          name={'arrow-back'}
           type="material"
-          onPress={this.isRoot ? this.openDrawer : this.goBack}
+          onPress={goBack}
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
         />
-        <StyledText style={styles.headerText}>{this.title as string}</StyledText>
-        {this.renderButtons()}
-      </View>
-    );
-  }
+        :
+        <></>
+      }
+      <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
+      {renderButtons()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

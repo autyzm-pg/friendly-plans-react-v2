@@ -6,7 +6,7 @@ export {Emoji} from './Emoji';
 export {FixedValueSlider} from './FixedValueSlider';
 export {FlatButton} from './FlatButton';
 export {FullScreenTemplate} from './FullScreenTemplate';
-// export {Header} from './Header';
+export {Header} from './Header';
 export {Icon} from './Icon';
 export {IconButton} from './IconButton';
 // export {IconToggleButton} from './IconToggleButton';
