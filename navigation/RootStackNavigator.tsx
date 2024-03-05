@@ -9,6 +9,7 @@ import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { StudentSettingsScreen } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
+import { defaults } from '../mocks/defaults'
 
 const Stack = createStackNavigator();
 
@@ -27,7 +28,7 @@ export function RootStackNavigation() {
         header: (headerProps) => (
           <Header
             {...headerProps}
-            student={route.params && route.params.student ? route.params.student : undefined}
+            student={route.params && route.params.student ? route.params.student : defaults.student}
             navigation={navigation}
           />
         )})}>

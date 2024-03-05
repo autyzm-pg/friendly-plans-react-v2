@@ -7,6 +7,7 @@ import { dimensions, getElevation, headerHeight, palette, typography } from '../
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
 import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/native';
+import { Student } from '../models';
 
 interface Props extends StackHeaderProps {
   student: Student;
@@ -44,9 +45,8 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
   };
 
   const isDashboard = () => {
-    const routes = navigation.getState();
-
-    const routeName = routes?.routes[routes.routes.length - 1].name;
+    const { route } = props;
+    const routeName = route.name
 
     return routeName === DASHBOARD;
   }
