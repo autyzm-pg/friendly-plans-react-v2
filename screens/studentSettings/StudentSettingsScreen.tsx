@@ -4,23 +4,17 @@ import { Alert } from 'react-native';
 import { NarrowScreenTemplate, StudentSettings } from '../../components';
 import { i18n } from '../../locale';
 import { NavigationProp } from '@react-navigation/native';
-import { Student, StudentData, StudentDisplayOption, StudentTextSizeOption } from '../../models';
+import { Student, StudentData } from '../../models';
+
+import { defaults } from "../../mocks/defaults"
 
 interface Props {
   navigation: NavigationProp<any>;
   student?: Student /* TODO: Student parameter shoudn't be optional. */
 }
 
-const defaultStudent: StudentData = {
-  name: "Student 1",
-  displaySettings: StudentDisplayOption.ImageWithTextSlide,
-  textSize: StudentTextSizeOption.Medium,
-  isUpperCase: false,
-  isSwipeBlocked: false
-}
-
 export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
-  const [state, setState] = useState<StudentData>(defaultStudent)
+  const [state, setState] = useState<StudentData>(defaults.student as StudentData)
 
   const getScreenName = () => {
     return i18n.t('studentSettings:settingsTitle', {

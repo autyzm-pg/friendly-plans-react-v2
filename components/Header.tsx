@@ -6,27 +6,18 @@ import { dimensions, getElevation, headerHeight, palette, typography } from '../
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { Student, StudentDisplayOption, StudentTextSizeOption } from '../models/Student';
+import { defaults } from "../mocks/defaults"
 
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
 }
 
-//@ts-ignore
-const defaultStudent: Student = {
-  name: "Student 1",
-  displaySettings: StudentDisplayOption.ImageWithTextSlide,
-  textSize: StudentTextSizeOption.Medium,
-  isUpperCase: false,
-  isSwipeBlocked: false
-}
-
 const DASHBOARD = 'Dashboard';
 
 export const Header: FC<Props> =({navigation, route}) => {
 
-  const student = route.params?.student ? route.params?.student : defaultStudent; // TODO: How to pass student?
+  const student = route.params?.student ? route.params?.student : defaults.student; // TODO: How to pass student?
 
   const getTitle = () => {
 
