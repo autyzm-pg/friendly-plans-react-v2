@@ -8,6 +8,7 @@ import { Route } from '../../navigation';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, useIsFocused } from '@react-navigation/native';
+import { defaults } from "../../mocks/defaults"
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -54,18 +55,9 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
     }
   }, [isFocused, nextRoute]);
 
-  const student: Student = {
-    name: "Student 1",
-    displaySettings: StudentDisplayOption.ImageWithTextSlide,
-    textSize: StudentTextSizeOption.Medium,
-    isUpperCase: false,
-    isSwipeBlocked: false,
-    id: '1'
-  }
-
   return (
     <View style={styles.container}>
-      {student && <StudentPlanList student={student} navigation={navigation}/>}
+      {defaults.student && <StudentPlanList student={defaults.student} navigation={navigation}/>}
     </View>
   );
 };
