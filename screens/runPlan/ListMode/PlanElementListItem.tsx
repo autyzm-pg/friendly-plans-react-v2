@@ -1,13 +1,13 @@
-import {Card, IconButton, PlanNameText} from 'components';
-import {Plan, PlanElement, PlanItem, PlanItemType, Student, StudentDisplayOption} from 'models';
-import {Route} from '../navigation';
+import {Card, IconButton, PlanNameText} from '../../components';
+import {Plan, PlanElement, PlanItem, PlanItemType, Student, StudentDisplayOption} from '../../models';
+import {Route} from '../../navigation';
 import React from 'react';
 import {Image, StyleSheet, TouchableHighlight, View, ViewStyle} from 'react-native';
 import {Icon} from 'react-native-elements';
 import Sound from 'react-native-sound';
 import Tts from 'react-native-tts';
 import {NavigationService} from 'services';
-import {palette} from '../styles';
+import {palette} from '../../styles';
 import {PlanItemTimer} from '../PlanItemTimer';
 
 interface Props {

@@ -1,10 +1,7 @@
 import {CheckboxInput, Icon, IconButton} from '../../components';
 import {PlanItem, PlanItemType} from '../../models';
-import {Route} from '../../navigation';
 import React, {useEffect, useState} from 'react';
-
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {NavigationService} from '../../services';
 import {palette, typography} from '../../styles';
 
 import { getIconName } from '../../mocks/defaults';
@@ -21,12 +18,12 @@ export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
 
 
   useEffect(() => {
-    // if (planItem.type === PlanItemType.ComplexTask) {
-    //   planItem
-    //     .getChildCollectionRef()
-    //     .get()
-    //     .then(snap => setSubtaskCount(snap.size));
-    // }
+    if (planItem.type === PlanItemType.ComplexTask) {
+      // planItem
+      //   .getChildCollectionRef()
+      //   .get()
+      //   .then(snap => setSubtaskCount(snap.size));
+    }
   });
 
   const refresh = () => {
@@ -37,9 +34,9 @@ export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
   };
 
   const navigateToPlanItemUpdate = () => {
-    NavigationService.navigate(Route.PlanItemTask, {
-      planItem,
-    });
+    // NavigationService.navigate(Route.PlanItemTask, {
+    //   planItem,
+    // });
   };
 
   const onDelete = () => {

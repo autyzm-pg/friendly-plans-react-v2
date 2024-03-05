@@ -24,6 +24,8 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     plan: route.params?.plan ?? undefined,
     planItemList: defaults.planItemsList
   });
+  
+  const {plan, planItemList} = state;
 
   // const navigationOptions = {
   //   title: i18n.t('planList:viewTitle'),
@@ -47,9 +49,9 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
     // const { id: planId } = state.plan;
 
-    const isPlanExist: boolean = false; // await Plan.isPlanExist(id, planInput, planId);
+    const planExists: boolean = false; // await Plan.isPlanExist(id, planInput, planId);
 
-    if (isPlanExist) {
+    if (planExists) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
       throw errors;
     }
@@ -85,12 +87,11 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     }
   };
 
+
   const onSubmit = ({ planInput, emoji }: PlanFormData) =>
-    state.plan ? updatePlan(planInput, emoji) : createPlan(planInput);
+    plan ? updatePlan(planInput, emoji) : createPlan(planInput);
 
   const navigateToCreatePlanItem = async (name: string) => {
-
-    const {plan, planItemList} = state;
     let planItemType = '';
 
     switch (name){
@@ -120,16 +121,14 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     const { planItemList } = state;
 
     return !planItemList || planItemList.length < 2;
-  }
+  };
 
-  const playDisabled = (): boolean => {
-    const { planItemList } = state;
+  const playDisabled = () => {
     if (!planItemList) {
       return true;
     }
-
     return every(planItemList, 'completed');
-  }
+  };
 
   const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
@@ -185,7 +184,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
         </View>
         <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} />
       </FullScreenTemplate>
-      {state.plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
+      {plan && <FixedCreatePlanItemButton onPress={() => navigateToCreatePlanItem('')} />}
     </>
   );
 }

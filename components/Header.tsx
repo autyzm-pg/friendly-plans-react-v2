@@ -1,55 +1,35 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { StackHeaderProps } from '@react-navigation/stack';
 
 import { Route } from '../navigation';
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { defaults } from "../mocks/defaults"
+import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/native';
+import { Student } from '../models';
 
-interface Props {
-  navigation: NavigationProp<any>;
-  route: RouteProp<any>;
+interface Props extends StackHeaderProps {
+  student: Student;
 }
 
 const DASHBOARD = 'Dashboard';
 
-export const Header: FC<Props> =({navigation, route}) => {
-
-  const student = route.params?.student ? route.params?.student : defaults.student; // TODO: How to pass student?
-
+export const Header: React.FC<Props> = ({student, ...props}) => {
+  const navigation = props.navigation
   const getTitle = () => {
-
-    const containsStudentName = (route_name: Route) => {
-      return [Route.Dashboard].includes(route_name);
-    }
-
-    const isOverlaying = () => {
-      return [Route.StudentSettings].includes(route.name as Route);
-    }
+    const { route, options } = props;
 
     const headerTitle = (title: string) => {
       const studentPrefix = student ? `${student.name} / ` : '';
       return `${studentPrefix}${title}`;
     };
 
-    if (containsStudentName(route.name as Route)) {
-      return headerTitle(route.name);
+    if (options.headerTitle && options.headerTitle !== 'function') {
+      return options.headerTitle;
     }
 
-    if(isOverlaying()) {
-      const routes = navigation.getState()?.routes;
-      const prev_route = routes[routes.length-2];
-
-      if (containsStudentName(prev_route.name as Route)) {
-        return headerTitle(prev_route.name);
-      }
-
-      return prev_route.name
-    }
-
-    return route.name;
+    return headerTitle(options.title || route.name);
   }
 
   const goBack = () => navigation.goBack();
@@ -65,7 +45,10 @@ export const Header: FC<Props> =({navigation, route}) => {
   };
 
   const isDashboard = () => {
-    return route.name === DASHBOARD;
+    const { route } = props;
+    const routeName = route.name
+
+    return routeName === DASHBOARD;
   }
 
   const renderButtons = () => {
@@ -95,7 +78,7 @@ export const Header: FC<Props> =({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {!isDashboard() ?
+      {!isDashboard() &&
           <IconButton
           name={'arrow-back'}
           type="material"
@@ -104,8 +87,6 @@ export const Header: FC<Props> =({navigation, route}) => {
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
         />
-        :
-        <></>
       }
       <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
       {renderButtons()}

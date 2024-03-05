@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
-import {Card, Icon, IconButton, ModalTrigger, StyledText, TextInput} from 'components';
+import {Card, Icon, IconButton, ModalTrigger, StyledText, TextInput} from '../../components';
 import {Image} from 'react-native-elements';
 import {i18n} from '../../locale';
 import { dimensions, palette, typography } from '../../styles';

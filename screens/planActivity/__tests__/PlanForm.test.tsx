@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import { navigationMock } from 'helpers';
-import { Plan } from 'models';
+import { Plan } from '../../models';
 import { PlanForm } from '../PlanForm';
 
 describe('PlanFormControls', () => {

@@ -1,5 +1,5 @@
-import { StudentListElement } from 'components';
-import { Student } from 'models';
+import { StudentListElement } from '../../components';
+import { Student } from '../../models';
 import React, {FunctionComponent} from 'react';
 import { View } from 'react-native';
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
+//import { NavigationInjectedProps } from '@react-navigation/native';
 
-import { NarrowScreenTemplate, StudentSettings } from 'components';
-import { i18n } from 'locale';
-import {AuthUser, Student, StudentData, StudentDisplayOption, StudentTextSizeOption} from 'models';
-import { Route } from '../navigation';
+import { NarrowScreenTemplate, StudentSettings } from '../../components';
+import { i18n } from '../../locale';
+import {AuthUser, Student, StudentData, StudentDisplayOption, StudentTextSizeOption} from '../../models';
+import { Route } from '../../navigation';
 
 interface State {
   student: Student;

@@ -1,9 +1,9 @@
 import React, { SFC, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { Slider } from 'components';
-import { i18n } from 'locale';
-import { palette } from '../styles';
+import { Slider } from '../../components';
+import { i18n } from '../../locale';
+import { palette } from '../../styles';
 
 interface Props {
   min: number[];

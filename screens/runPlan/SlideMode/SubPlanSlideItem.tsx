@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import {IconButton, PlanNameText} from 'components';
-import {PlanItem, PlanSubItem, StudentDisplayOption} from 'models';
+import {IconButton, PlanNameText} from '../../components';
+import {PlanItem, PlanSubItem, StudentDisplayOption} from '../../models';
 import Sound from 'react-native-sound';
 import Tts from 'react-native-tts';
-import { palette } from '../styles';
+import { palette } from '../../styles';
 import { PlanItemTimer } from '../PlanItemTimer';
 
 interface Props {

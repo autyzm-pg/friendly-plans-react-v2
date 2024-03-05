@@ -1,21 +1,6 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
-// import {Animated, Easing} from 'react-native';
 import {WelcomeScreen} from '../screens/WelcomeScreen';
+import { Header } from '../components';
 
-// import {
-//   DialogScreen,
-//   PlanSearchForCopyScreen,
-//   PlansListForCopyScreen,
-//   StudentCreateScreen,
-//   StudentSettingsScreen,
-//   StudentsListForCopyPlanScreen,
-//   StudentsListScreen,
-//   StudentsListSearchForCopyPlanScreen,
-//   StudentsListSearchScreen,
-// } from 'screens';
-
-// import {AuthSwitchNavigator} from './AuthSwitchNavigator';
 import {Route} from './routes';
 
 import { Easing } from 'react-native';
@@ -23,8 +8,8 @@ import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/st
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { StudentSettingsScreen } from '../screens';
-import { Header } from '../components';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
+import { defaults } from '../mocks/defaults'
 
 const Stack = createStackNavigator();
 
@@ -32,16 +17,21 @@ export function RootStackNavigation() {
   return (
     <Stack.Navigator
       initialRouteName={Route.Home}
-      screenOptions={{
+      screenOptions={({ navigation, route }) => ({
+        gestureEnabled: false, 
         headerShown: true,
-        gestureEnabled: false,
         transitionSpec: {
           open: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
           close: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
         },
         cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
-        header: ({navigation, route}) => <Header navigation={navigation} route={route} />,
-      }}>
+        header: (headerProps) => (
+          <Header
+            {...headerProps}
+            student={route.params && route.params.student ? route.params.student : defaults.student}
+            navigation={navigation}
+          />
+        )})}>
       <Stack.Screen
         name={Route.Home}
         component={WelcomeScreen}
@@ -57,6 +47,11 @@ export function RootStackNavigation() {
         component={DashboardScreen}
         options={{}}
       />
+      {/* <Stack.Screen
+        name={Route.PlanItemTask}
+        component={PlanItemTaskScreen}
+        options={{}}
+      /> */}
       <Stack.Screen
         name={Route.StudentSettings}
         component={StudentSettingsScreen}
@@ -68,7 +63,7 @@ export function RootStackNavigation() {
         options={{}}
       />
       {/* TODO: uncomment working screen */}
-      {/*
+      {/* 
       <Stack.Screen
         name={Route.RunPlanList}
         component={RunPlanListScreen}
@@ -82,11 +77,6 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.RunSubPlanList}
         component={RunSubPlanListScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.PlanItemTask}
-        component={PlanItemTaskScreen}
         options={{}}
       />
       <Stack.Screen

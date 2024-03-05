@@ -1,9 +1,9 @@
-import {Separator, StudentListElement, StyledText} from 'components';
+import {Separator, StudentListElement, StyledText} from '../../components';
 import {sortBy} from 'lodash';
-import {Student} from 'models';
+import {Student} from '../../models';
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {dimensions, palette, typography} from '../styles';
+import {dimensions, palette, typography} from '../../styles';
 
 
 interface Props {

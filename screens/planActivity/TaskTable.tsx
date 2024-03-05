@@ -14,35 +14,29 @@ interface Props {
 
 export const TaskTable: FC<Props> = ({ planItemList, handlePlanListOrderChanged }) => {
   const data = planItemList.map(item => ({ ...item, key: item.id, label: item.name }));
- 
-  const renderItem = ({ item, getIndex, drag }: RenderItemParams<PlanItem>) => {
-    const index = getIndex();
-    return (
-      <View style={styles.tableContainer}>
-        <TableRow
-          planItem={item}
-          border={index !== planItemList.length - 1}
-          key={index}
-          rowNumber={index ? index + 1 : 0}
-          drag={drag}
-        />
-      </View>
-    );
-  };
 
   const keyExtractor = (item: PlanItem) => `draggable-item-${item.id}`;
+
   return (
-
-      <FullScreenTemplate darkBackground extraStyles={styles.fullScreen}>
-        <DraggableFlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            onDragEnd={handlePlanListOrderChanged}
-            activationDistance={10}
-        />
-      </FullScreenTemplate>
-
+    <FullScreenTemplate darkBackground extraStyles={styles.fullScreen}>
+      <DraggableFlatList
+        data={data}
+        renderItem={({ item, index, drag }: RenderItemParams<PlanItem>) => (
+          <View style={styles.tableContainer}>
+            <TableRow
+              planItem={item}
+              border={index !== planItemList.length - 1}
+              key={index}
+              rowNumber={index ? index + 1 : 0}
+              drag={drag}
+            />
+          </View>
+        )}
+        keyExtractor={keyExtractor}
+        onDragEnd={handlePlanListOrderChanged}
+        activationDistance={10}
+      />
+    </FullScreenTemplate>
   );
 };
 

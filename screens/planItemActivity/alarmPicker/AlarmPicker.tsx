@@ -3,10 +3,10 @@ import React, {FunctionComponent, PureComponent, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Image} from 'react-native-elements';
 
-import {Icon, ModalTrigger} from 'components';
-import {i18n} from 'locale';
-import {PlanItem} from 'models';
-import {palette} from '../styles';
+import {Icon, ModalTrigger} from '../../components';
+import {i18n} from '../../locale';
+import {PlanItem} from '../../models';
+import {palette} from '../../styles';
 import {PlanItemFormData} from '../PlanItemForm';
 import {AlarmPickerModal} from './AlarmPickerModal';
 
