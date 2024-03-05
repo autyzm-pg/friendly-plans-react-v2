@@ -4,9 +4,12 @@ import {
     StudentTextSizeOption, 
     Plan, 
     PlanItemType, 
-    PlanItem} from '../models';
+    PlanItem,
+    PLAN_ITEMS_ICONS} from '../models';
 import { DEFAULT_EMOJI } from '../assets/emojis';
 import i18n from '../locale/i18n';
+
+export const getIconName = (item_type: string): string => PLAN_ITEMS_ICONS[item_type];
 
 export class defaults {
     //@ts-ignore
@@ -40,7 +43,7 @@ export class defaults {
         //@ts-ignore
         {
             id: "11",
-            name: "A",
+            name: "LetterA",
             studentId: "1",
             planId: "111",
             type: PlanItemType.SimpleTask,
@@ -55,7 +58,7 @@ export class defaults {
         //@ts-ignore
         {
             id: "22",
-            name: "B",
+            name: "Break",
             studentId: "1",
             planId: "111",
             type: PlanItemType.Break,

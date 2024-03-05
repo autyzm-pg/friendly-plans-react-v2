@@ -133,7 +133,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
-    planItemListRightOrder.forEach(item => item.setOrder(item.order));
+    //planItemListRightOrder.forEach(item => item.setOrder(item.order));
     setState(prevState => ({
       ...prevState,
       planItemList: planItemListRightOrder as []
@@ -183,7 +183,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             navigation={navigation}
           />
         </View>
-        {/* <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} /> */}
+        <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} />
       </FullScreenTemplate>
       {state.plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
     </>

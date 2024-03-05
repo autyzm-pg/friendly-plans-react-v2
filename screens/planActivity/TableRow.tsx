@@ -7,6 +7,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {NavigationService} from '../../services';
 import {palette, typography} from '../../styles';
 
+import { getIconName } from '../../mocks/defaults';
+
 interface Props {
   rowNumber: number;
   border?: boolean;
@@ -61,7 +63,7 @@ export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
         <CheckboxInput checked={planItem.completed} onPress={handleCheckboxChange} />
       </View>
       <View style={styles.planIcon}>
-        <Icon name={planItem.getIconName()} type="material" />
+        <Icon name={getIconName(planItem.type)} type="material" />
       </View>
       <Text style={styles.textName}>{planItem.name}</Text>
       {(planItem.type === PlanItemType.ComplexTask)&&<Text onPress={refresh} style={styles.text}>{` (${subtaskCount})`}</Text>}
