@@ -1,10 +1,10 @@
-import React, { SFC } from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, View } from 'react-native';
 import DraggableFlatList, { DragEndParams, RenderItemParams } from 'react-native-draggable-flatlist';
 
-import { FullScreenTemplate } from 'components';
-import { PlanItem } from 'models';
-import { dimensions, getElevation, palette } from '../styles';
+import { FullScreenTemplate } from '../../components';
+import { PlanItem } from '../../models';
+import { dimensions, getElevation, palette } from '../../styles';
 import { TableRow } from './TableRow';
 
 interface Props {
@@ -12,9 +12,11 @@ interface Props {
   handlePlanListOrderChanged: (planItemList: DragEndParams<PlanItem>) => void;
 }
 
-export const TaskTable: SFC<Props> = ({ planItemList, handlePlanListOrderChanged }) => {
+export const TaskTable: FC<Props> = ({ planItemList, handlePlanListOrderChanged }) => {
   const data = planItemList.map(item => ({ ...item, key: item.id, label: item.name }));
-  const renderItem = ({ item, index, drag }: RenderItemParams<PlanItem>) => {
+ 
+  const renderItem = ({ item, getIndex, drag }: RenderItemParams<PlanItem>) => {
+    const index = getIndex();
     return (
       <View style={styles.tableContainer}>
         <TableRow

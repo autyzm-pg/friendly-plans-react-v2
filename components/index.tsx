@@ -1,6 +1,6 @@
 export {Button} from './Button';
 export {Card} from './Card';
-// export {CheckboxInput} from './CheckboxInput';
+export {CheckboxInput} from './CheckboxInput';
 // export {DrawerContent} from './DrawerContent';
 export {Emoji} from './Emoji';
 export {FixedValueSlider} from './FixedValueSlider';
@@ -12,7 +12,7 @@ export {IconButton} from './IconButton';
 // export {IconToggleButton} from './IconToggleButton';
 export {InputItem} from './InputItem';
 // export {ModalTemplate} from './ModalTemplate';
-// export {ModalTrigger} from './ModalTrigger';
+export {ModalTrigger} from './ModalTrigger';
 export {NarrowScreenTemplate} from './NarrowScreenTemplate';
 // export {PlanNameText} from './PlanNameText';
 export {Separator} from './Separator';

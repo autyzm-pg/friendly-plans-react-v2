@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
 
-import { Icon } from 'components';
-import { i18n } from 'locale';
-import { palette, typography } from '../styles';
+import { Icon } from '../../components';
+import { i18n } from '../../locale';
+import { palette, typography } from '../../styles';
 
 const actionNames = {
   simpleTask: 'create-simple-task',
@@ -69,49 +69,53 @@ interface State {
   isOpen: boolean;
 }
 
-export class FixedCreatePlanItemButton extends React.PureComponent<Props, State> {
-  state: State = {
+export const FixedCreatePlanItemButton: FC<Props> = ({onPress}) => {
+  const [state, setState] = useState<State>({
     actionName: '',
     isOpen: false,
+  })
+
+  const onPressItem = (actionName: string = actionNames.simpleTask) => {
+    onPress(actionName);
   };
 
-  onPressItem = (actionName: string = actionNames.simpleTask) => {
-    this.props.onPress(actionName);
+  const onOpen = () => {
+    setState(prevState => ({
+      ...prevState,
+      isOpen: true
+    }));
   };
 
-  onOpen = () => {
-    this.setState({ isOpen: true });
+
+  const onClose = () => {
+    setState(prevState => ({
+      ...prevState,
+      isOpen: false
+    }));
   };
 
-
-  onClose = () => {
-    this.setState({ isOpen: false });
-  };
-
-  renderFloatingIcon = () => {
-    return this.state.isOpen ? (
+  const renderFloatingIcon = () => {
+    return state.isOpen ? (
       <Icon name="close" type="material" color={palette.primaryVariant} size={40} />
     ) : (
       <Icon name="add" type="material" color={palette.secondary} size={40} />
     );
   };
 
-  render() {
-    return (
-      <>
-        {this.state.isOpen && <Animated.View style={[styles.overlay]} />}
-        <FloatingAction
-          color={this.state.isOpen ? palette.secondary : palette.primaryVariant}
-          actions={actions}
-          showBackground={false}
-          onPressItem={this.onPressItem}
-          floatingIcon={this.renderFloatingIcon()}
-          onOpen={this.onOpen}
-          onClose={this.onClose}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      {state.isOpen && <Animated.View style={[styles.overlay]} />}
+      <FloatingAction
+        color={state.isOpen ? palette.secondary : palette.primaryVariant}
+        actions={actions}
+        showBackground={false}
+        onPressItem={onPressItem}
+        floatingIcon={renderFloatingIcon()}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -24,6 +24,7 @@ import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { StudentSettingsScreen } from '../screens';
 import { Header } from '../components';
+import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 
 const Stack = createStackNavigator();
 
@@ -61,12 +62,13 @@ export function RootStackNavigation() {
         component={StudentSettingsScreen}
         options={{}}
       />
-      {/* TODO: uncomment working screen */}
-      {/* <Stack.Screen
+       <Stack.Screen
         name={Route.PlanActivity}
         component={PlanActivityScreen}
         options={{}}
       />
+      {/* TODO: uncomment working screen */}
+      {/*
       <Stack.Screen
         name={Route.RunPlanList}
         component={RunPlanListScreen}

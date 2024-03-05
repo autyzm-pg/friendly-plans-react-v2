@@ -1,6 +1,6 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 
-import { Emoji } from 'components';
+import { Emoji } from '../../components';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   onPress: (emoji: string) => void;
 }
 
-export const EmojiButton: SFC<Props> = ({ emoji, onPress }) => {
+export const EmojiButton: FC<Props> = ({ emoji, onPress }) => {
   const selectEmoji = () => onPress(emoji);
 
   return (

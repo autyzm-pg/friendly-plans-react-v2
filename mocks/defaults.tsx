@@ -36,19 +36,36 @@ export class defaults {
         }
     ]
 
-    //@ts-ignore
-    static planItem: PlanItem = {
-        id: "11",
-        name: "A",
-        studentId: "1",
-        planId: "111",
-        type: PlanItemType.SimpleTask,
-        completed: false,
-        lector: false,
-        nameForChild: i18n.t('planItemActivity:taskNameForChild'),
-        order: 1,
-        time: 5,
-        image: "",
-        voicePath: "",
-    }
+    static planItemsList: PlanItem[] = [
+        //@ts-ignore
+        {
+            id: "11",
+            name: "A",
+            studentId: "1",
+            planId: "111",
+            type: PlanItemType.SimpleTask,
+            completed: false,
+            lector: false,
+            nameForChild: i18n.t('planItemActivity:taskNameForChild'),
+            order: 1,
+            time: 5,
+            image: "",
+            voicePath: "",
+        },
+        //@ts-ignore
+        {
+            id: "22",
+            name: "B",
+            studentId: "1",
+            planId: "111",
+            type: PlanItemType.Break,
+            completed: false,
+            lector: false,
+            nameForChild: i18n.t('planItemActivity:taskNameForChild'),
+            order: 2,
+            time: 5,
+            image: "",
+            voicePath: "",
+        }
+    ]
 }

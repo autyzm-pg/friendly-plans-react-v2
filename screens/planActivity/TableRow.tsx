@@ -1,11 +1,11 @@
-import {CheckboxInput, Icon, IconButton} from 'components';
-import {PlanItem, PlanItemType} from 'models';
-import {Route} from '../navigation';
-import React, {useEffect, useRef, useState} from 'react';
+import {CheckboxInput, Icon, IconButton} from '../../components';
+import {PlanItem, PlanItemType} from '../../models';
+import {Route} from '../../navigation';
+import React, {useEffect, useState} from 'react';
 
-import {AppState, AppStateStatus, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {NavigationService} from 'services';
-import {palette, typography} from '../styles';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {NavigationService} from '../../services';
+import {palette, typography} from '../../styles';
 
 interface Props {
   rowNumber: number;
@@ -14,25 +14,24 @@ interface Props {
   drag: () => void;
 }
 
-export const TableRow: React.FunctionComponent<Props> = ({ planItem, border, drag }) => {
+export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
   const [subtaskCount, setSubtaskCount] = useState(0);
 
 
   useEffect(() => {
-    if (planItem.type === PlanItemType.ComplexTask) {
-      planItem
-        .getChildCollectionRef()
-        .get()
-        .then(snap => setSubtaskCount(snap.size));
-    }
-
+    // if (planItem.type === PlanItemType.ComplexTask) {
+    //   planItem
+    //     .getChildCollectionRef()
+    //     .get()
+    //     .then(snap => setSubtaskCount(snap.size));
+    // }
   });
 
   const refresh = () => {
-    planItem
-        .getChildCollectionRef()
-        .get()
-        .then(snap => setSubtaskCount(snap.size));
+    // planItem
+    //     .getChildCollectionRef()
+    //     .get()
+    //     .then(snap => setSubtaskCount(snap.size));
   };
 
   const navigateToPlanItemUpdate = () => {
@@ -42,11 +41,12 @@ export const TableRow: React.FunctionComponent<Props> = ({ planItem, border, dra
   };
 
   const onDelete = () => {
-    planItem.delete();
+    // planItem.delete();
   };
 
   const handleCheckboxChange = () => {
-    planItem.setComplete(!planItem.completed);
+    // planItem.setComplete(!planItem.completed);
+    planItem.completed = !planItem.completed;
   };
 
   const hours = Math.floor(planItem.time / 3600);

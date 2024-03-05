@@ -1,14 +1,15 @@
 import { ErrorMessage, Formik, FormikProps } from 'formik';
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import PlayButton, { Emoji, Icon, ModalTrigger, TextInput } from 'components';
-import { i18n } from 'locale';
-import { Plan } from 'models';
-import { dimensions, palette } from '../styles';
+import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
+import { i18n } from '../../locale';
+import { Plan, Student } from '../../models';
+import { dimensions, palette } from '../../styles';
 import { DEFAULT_EMOJI } from '../../assets/emojis';
 import { IconSelectModal } from './IconSelectModal';
 import { ShuffleButton } from './ShuffleButton';
+import { NavigationProp } from '@react-navigation/native';
 
 export interface PlanFormData {
   planInput: string;
@@ -25,11 +26,13 @@ interface Props {
   plan?: Plan;
   shuffleDisabled?: boolean;
   playDisabled?: boolean;
-  numberPlan: number;
+  numberPlan?: number;
   onShuffle?: () => void;
+  student?: Student;
+  navigation: NavigationProp<any>;
 }
 
-export const PlanForm: SFC<Props> = ({
+export const PlanForm: FC<Props> = ({
   plan,
   numberPlan,
   onSubmit,
@@ -37,6 +40,8 @@ export const PlanForm: SFC<Props> = ({
   shuffleDisabled = false,
   playDisabled = false,
   onShuffle,
+  student,
+  navigation
 }) => {
   const initialValues: PlanFormData = {
     planInput: plan ? plan.name : `${i18n.t('planActivity:newPlan')}${numberPlan}`,
@@ -73,7 +78,7 @@ export const PlanForm: SFC<Props> = ({
         </View>
         <View style={styles.buttonContainer}>
           <ShuffleButton disabled={shuffleDisabled} onPress={onShuffle} />
-          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} />
+          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={student}/>
         </View>
       </View>
     );

@@ -1,69 +1,55 @@
 import every from 'lodash.every';
-import React from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DragEndParams } from 'react-native-draggable-flatlist';
-import { NavigationInjectedProps } from '@react-navigation/native';
 
-import { FullScreenTemplate } from 'components';
-import { i18n } from 'locale';
-import {ModelSubscriber, Plan, PlanItem, PlanItemType} from 'models';
-import { Route } from '../navigation';
-import { getElevation, palette } from '../styles';
+import { FullScreenTemplate } from '../../components';
+import { i18n } from '../../locale';
+import { Plan, PlanItem, PlanItemType, Student } from '../../models';
+import { Route } from '../../navigation';
+import { getElevation, palette } from '../../styles';
 import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
+import { NavigationProp } from '@react-navigation/native';
+import { defaults } from "../../mocks/defaults"
 
-interface State {
-  plan: Plan;
-  planItemList: PlanItem[];
+interface Props {
+  navigation: NavigationProp<any>;
+  student?: Student;
+  plan?: Plan;
+  numberPlan?: number;
 }
 
-export class PlanActivityScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  static navigationOptions = {
-    title: i18n.t('planList:viewTitle'),
-  };
+export const PlanActivityScreen: FC<Props> = ({navigation, student, plan, numberPlan}) => {
+  const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
+    plan: plan,
+    planItemList: []
+  });
 
-  state: State = {
-    planItemList: [],
-    plan: this.props.navigation.getParam('plan'),
-  };
+  // const navigationOptions = {
+  //   title: i18n.t('planList:viewTitle'),
+  // };
 
-  planItemsSubscriber: ModelSubscriber<PlanItem> = new ModelSubscriber();
+  useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
+      planItemList: defaults.planItemsList
+    }));
+  }, []);
 
-  subscribeToPlanItems() {
-    this.planItemsSubscriber.subscribeCollectionUpdates(this.state.plan, (planItemList: PlanItem[]) =>
-      this.setState({ planItemList }),
-    );
-  }
-
-  unsubscribeToPlanItems() {
-    this.planItemsSubscriber.unsubscribeCollectionUpdates();
-  }
-
-  componentDidMount() {
-    if (this.state.plan) {
-      this.subscribeToPlanItems();
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.state.plan) {
-      this.unsubscribeToPlanItems();
-    }
-  }
-
-  validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
+  const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
     if (planInput === '') {
       errors.planInput = i18n.t('validation:planNameRequired');
       throw errors;
     }
 
-    const { id } = this.props.navigation.getParam('student');
+    // const { id } = student;
 
-    const { id: planId } = { ...this.state.plan };
+    // const { id: planId } = state.plan;
 
-    const isPlanExist: boolean = await Plan.isPlanExist(id, planInput, planId);
+    const isPlanExist: boolean = true; // await Plan.isPlanExist(id, planInput, planId);
 
     if (isPlanExist) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
@@ -71,31 +57,42 @@ export class PlanActivityScreen extends React.PureComponent<NavigationInjectedPr
     }
   };
 
-  createPlan = async (name: string) => {
-    const { id } = this.props.navigation.getParam('student');
+  const createPlan = async (name: string) => {
+    // const { id } = student;
 
-    const plan = await Plan.createPlan(id, name);
+    // const plan = await Plan.createPlan(id, name);
 
-    this.setState({ plan }, () => {
-      this.subscribeToPlanItems();
-    });
+    // this.setState({ plan }, () => {
+    //   this.subscribeToPlanItems();
+    // });
   };
 
-  updatePlan = async (name: string, emoji: string) => {
-    await this.state.plan.update({
-      name,
-      emoji,
-    });
+  const updatePlan = async (name: string, emoji: string) => {
+    // await this.state.plan.update({
+    //   name,
+    //   emoji,
+    // });
 
-    this.setState({ plan: { ...this.state.plan, name } });
+    if (state.plan) {
+      const updatedPlan: Plan = {
+        ...state.plan,
+        name: name,
+        emoji: emoji
+      };
+  
+      setState(prevState => ({
+        ...prevState,
+        plan: updatedPlan
+      }));
+    }
   };
 
-  onSubmit = ({ planInput, emoji }: PlanFormData) =>
-    this.state.plan ? this.updatePlan(planInput, emoji) : this.createPlan(planInput);
+  const onSubmit = ({ planInput, emoji }: PlanFormData) =>
+    state.plan ? updatePlan(planInput, emoji) : createPlan(planInput);
 
-  navigateToCreatePlanItem = async (name: string) => {
+  const navigateToCreatePlanItem = async (name: string) => {
 
-    const {plan, planItemList} = this.state;
+    const {plan, planItemList} = state;
     let planItemType = '';
 
     switch (name){
@@ -113,7 +110,7 @@ export class PlanActivityScreen extends React.PureComponent<NavigationInjectedPr
         break;
     }
 
-    this.props.navigation.navigate(Route.PlanItemTask, {
+    navigation.navigate(Route.PlanItemTask, {
       plan,
       planItemList,
       planItemType,
@@ -121,14 +118,14 @@ export class PlanActivityScreen extends React.PureComponent<NavigationInjectedPr
 
   };
 
-  shuffleDisabled(): boolean {
-    const { planItemList } = this.state;
+  const shuffleDisabled = (): boolean => {
+    const { planItemList } = state;
 
     return !planItemList || planItemList.length < 2;
   }
 
-  playDisabled(): boolean {
-    const { planItemList } = this.state;
+  const playDisabled = (): boolean => {
+    const { planItemList } = state;
     if (!planItemList) {
       return true;
     }
@@ -136,13 +133,16 @@ export class PlanActivityScreen extends React.PureComponent<NavigationInjectedPr
     return every(planItemList, 'completed');
   }
 
-  handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
+  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
     planItemListRightOrder.forEach(item => item.setOrder(item.order));
-    this.setState({ planItemList: planItemListRightOrder });
+    setState(prevState => ({
+      ...prevState,
+      planItemList: planItemListRightOrder as []
+    }));
   };
 
-  shuffle(array: PlanItem[]) {
+  const shuffle = (array: PlanItem[]) => {
     let currentIndex = array.length;
     let temporaryValue;
     let randomIndex;
@@ -158,37 +158,38 @@ export class PlanActivityScreen extends React.PureComponent<NavigationInjectedPr
     return array;
   }
 
-  shuffleTasks = () => {
-    const { planItemList } = this.state;
+  const shuffleTasks = () => {
+    const { planItemList } = state;
     let array = planItemList;
-    array = this.shuffle(array);
+    array = shuffle(array);
     array.forEach((item, index) => item.setOrder(index));
-    this.setState({ planItemList: array });
+    setState(prevState => ({
+      ...prevState,
+      planItemList: array
+    }));
   };
 
-  render() {
-    const { plan, planItemList } = this.state;
-    const numberPlan = this.props.navigation.getParam('numberPlan');
-    return (
-      <>
-        <FullScreenTemplate extraStyles={styles.fullScreen}>
-          <View style={styles.headerContainer}>
-            <PlanForm
-              onSubmit={this.onSubmit}
-              plan={plan}
-              numberPlan={numberPlan}
-              onValidate={this.validatePlan}
-              shuffleDisabled={this.shuffleDisabled()}
-              playDisabled={this.playDisabled()}
-              onShuffle={this.shuffleTasks}
-            />
-          </View>
-          <TaskTable planItemList={planItemList} handlePlanListOrderChanged={this.handlePlanListOrderChanged} />
-        </FullScreenTemplate>
-        {plan && <FixedCreatePlanItemButton onPress={this.navigateToCreatePlanItem} />}
-      </>
-    );
-  }
+  return (
+    <>
+      <FullScreenTemplate extraStyles={styles.fullScreen}>
+        <View style={styles.headerContainer}>
+          <PlanForm
+            onSubmit={onSubmit}
+            plan={plan}
+            numberPlan={numberPlan}
+            onValidate={validatePlan}
+            shuffleDisabled={shuffleDisabled()}
+            playDisabled={playDisabled()}
+            onShuffle={shuffleTasks}
+            student={student}
+            navigation={navigation}
+          />
+        </View>
+        {/* <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} /> */}
+      </FullScreenTemplate>
+      {plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -197,7 +198,6 @@ const styles = StyleSheet.create({
     backgroundColor: palette.background,
   },
   fullScreen: {
-    // paddingHorizontal: 24,
     backgroundColor: palette.backgroundSurface,
     width: '100%'
   },

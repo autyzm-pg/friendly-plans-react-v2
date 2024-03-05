@@ -1,18 +1,17 @@
 import { noop } from 'lodash';
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
-import { dimensions } from '../styles';
+import { dimensions } from '../../styles';
 
 import { EMOJIS_LIST } from '../../assets/emojis';
 import { EmojiButton } from './EmojiButton';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   onEmojiSelect: (emoji: string) => void;
   closeModal?: () => void;
 }
 
-const IconSelectModalBase: SFC<Props> = ({ closeModal = noop, onEmojiSelect }) => {
+export const IconSelectModal: FC<Props> = ({ closeModal = noop, onEmojiSelect }) => {
   const onEmojiPress = (emoji: string) => {
     onEmojiSelect(emoji);
     closeModal();
@@ -34,5 +33,3 @@ const styles = StyleSheet.create({
     paddingTop: dimensions.spacingSmall,
   },
 });
-
-export const IconSelectModal = withNavigation(IconSelectModalBase);
