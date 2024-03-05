@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import {
   KeyboardAvoidingView,
   StyleProp,
@@ -15,47 +15,36 @@ interface Props extends TextInputProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-interface State {
-  isEditable: boolean;
-}
+export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, ...inputProps}) => {
+  const [isEditable, setIsEditable] = useState<boolean>(!inputProps.value);
 
-export class TextInput extends React.PureComponent<Props, State> {
-  state: State = {
-    isEditable: !this.props.value,
-  };
+  const handleFocus = () => setIsEditable(true);
 
-  handleFocus = () => this.setState({ isEditable: true });
-
-  handleBlur = () => {
-    if (this.props.value) {
-      this.setState({ isEditable: false });
+  const handleBlur = () => {
+    if (inputProps.value) {
+      setIsEditable(false);
     }
   };
 
-  render() {
-    const { isEditable } = this.state;
-    const { style, hideUnderline, textStyle, ...inputProps } = this.props;
-
-    return (
-      <KeyboardAvoidingView
-        style={[
-          styles.container,
-          style,
-          !hideUnderline && isEditable && styles.inputUnderline,
-          isEditable && styles.inputBackground,
-        ]}
-      >
-        <BaseTextInput
-          style={[styles.input, textStyle]}
-          placeholderTextColor={palette.textInputPlaceholder}
-          autoCorrect={false}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
-          {...inputProps}
-        />
-      </KeyboardAvoidingView>
-    );
-  }
+  return (
+    <KeyboardAvoidingView
+      style={[
+        styles.container,
+        style,
+        !hideUnderline && isEditable && styles.inputUnderline,
+        isEditable && styles.inputBackground,
+      ]}
+    >
+      <BaseTextInput
+        style={[styles.input, textStyle]}
+        placeholderTextColor={palette.textInputPlaceholder}
+        autoCorrect={false}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...inputProps}
+      />
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({

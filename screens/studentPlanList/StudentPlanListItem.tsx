@@ -69,7 +69,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
             {!isSwipeableOpen && <Emoji symbol={emoji} />}
             <StyledText style={styles.cardText}>{name}</StyledText>
           </View>
-          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} />}
+          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} student={student} />}
         </Card>
       </Swipeable>
     </TouchableHighlight>

@@ -1,17 +1,15 @@
-import {IconButton, StyledText} from 'components';
-import {i18n} from 'locale';
-import {assignIn} from 'lodash';
-import React, {SFC} from 'react';
+import {IconButton, StyledText} from '../../components';
+import {i18n} from '../../locale';
+import React, {FC} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {dimensions, palette, typography} from '../styles';
+import {dimensions, palette, typography} from '../../styles';
 
 interface Props {
     value: string;
-    onChange?: (value: boolean) => void;
     available: boolean;
 }
 
-export const AlarmSoundSetting: SFC<Props> = ({value, onChange, available}) => (
+export const AlarmSoundSetting: FC<Props> = ({value, available}) => (
     <View style={styles.container}>
         <StyledText style={styles.label}>
             {i18n.t('studentSettings:alarmSound')} {!available ? i18n.t('studentSettings:workInProgress') : ''}

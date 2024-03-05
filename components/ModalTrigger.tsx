@@ -1,5 +1,4 @@
-import { i18n } from 'locale';
-import React, { ReactElement, SFC, useState } from 'react';
+import React, { ReactElement, FC, useState } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { dimensions, getElevation, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
@@ -11,7 +10,7 @@ interface Props {
   title: string;
 }
 
-export const ModalTrigger: SFC<Props> = ({ children, modalContent, title }) => {
+export const ModalTrigger: FC<Props> = ({ children, modalContent, title }) => {
   const [isVisible, setModalVisibility] = useState(false);
 
   const onOpen = () => setModalVisibility(true);

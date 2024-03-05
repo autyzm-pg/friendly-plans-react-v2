@@ -1,7 +1,7 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { i18n } from 'locale';
+import { i18n } from '../../locale';
 import { FlatButton } from '../../components';
 import { dimensions, palette } from '../../styles';
 
@@ -10,7 +10,7 @@ interface Props {
   onPress?: () => void;
 }
 
-export const ShuffleButton: SFC<Props> = ({ disabled, onPress }) => (
+export const ShuffleButton: FC<Props> = ({ disabled, onPress }) => (
   <FlatButton
     title={i18n.t('planActivity:shuffleTasks')}
     icon={{

@@ -16,7 +16,11 @@ export enum PlanItemType {
   SubElement = 'subElement',
 }
 
-const PLAN_ITEMS_ICONS = {
+interface PlanItemsIcons {
+  [key: string]: string;
+}
+
+export const PLAN_ITEMS_ICONS: PlanItemsIcons = {
   simpleTask: 'layers-clear',
   complexTask: 'layers',
   break: 'notifications',

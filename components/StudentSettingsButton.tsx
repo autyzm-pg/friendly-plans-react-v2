@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import { IconProps } from 'react-native-elements';
 
@@ -11,7 +11,7 @@ interface Props extends IconProps {
     iconButtonStyle?: StyleProp<ViewStyle>;
 }
 
-export const StudentSettingsButton: SFC<Props> = ({ delayLongPress, onLongPress,
+export const StudentSettingsButton: FC<Props> = ({ delayLongPress, onLongPress,
                                            onPress, containerStyle,
                                            label, disabled, iconButtonStyle, ...props }) => {
     return (
@@ -41,8 +41,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: palette.primaryVariant,
-        // paddingVertical: 4,
-        // paddingHorizontal: dimensions.spacingSmall,
         height: '100%',
         paddingTop: 12,
         paddingBottom: 12,

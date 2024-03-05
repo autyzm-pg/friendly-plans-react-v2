@@ -1,9 +1,9 @@
-import { i18n } from 'locale';
-import React, { SFC } from 'react';
+import { i18n } from '../../locale';
+import React, { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import { StudentDisplayOption } from 'models';
-import { dimensions, getElevation, palette } from '../styles';
+import { StudentDisplayOption } from '../../models';
+import { dimensions, getElevation, palette } from '../../styles';
 import { PlanNameText } from '../PlanNameText';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   isUpperCase: boolean;
 }
 
-export const PlanDisplayPreview: SFC<Props> = ({ displaySettings, textSize, isUpperCase }) => {
+export const PlanDisplayPreview: FC<Props> = ({ displaySettings, textSize, isUpperCase }) => {
   const renderImage = () => {
     if (displaySettings !== StudentDisplayOption.TextSlide && displaySettings !== StudentDisplayOption.TextList) {
       return <Image style={styles.planImage} source={require('../../assets/images/kids-playing.png')} />;

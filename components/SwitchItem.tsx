@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Switch, View } from 'react-native';
 
 import { dimensions, palette, typography } from '../styles';
@@ -10,22 +10,19 @@ interface Props {
   onValueChange: (value: boolean) => void;
 }
 
-export class SwitchItem extends React.PureComponent<Props> {
-  render() {
-    const { label, value, onValueChange } = this.props;
-    return (
-      <View style={styles.container}>
-        <StyledText style={styles.label}>{label}</StyledText>
-        <Switch
-          style={styles.switch}
-          value={value}
-          onValueChange={onValueChange}
-          thumbColor={value ? palette.primary : palette.background}
-          trackColor={{ false: palette.sliderInactive, true: palette.sliderActive }}
-        />
-      </View>
-    );
-  }
+export const SwitchItem: FC<Props> = ({ label, value, onValueChange }) => {
+  return (
+    <View style={styles.container}>
+      <StyledText style={styles.label}>{label}</StyledText>
+      <Switch
+        style={styles.switch}
+        value={value}
+        onValueChange={onValueChange}
+        thumbColor={value ? palette.primary : palette.background}
+        trackColor={{ false: palette.sliderInactive, true: palette.sliderActive }}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

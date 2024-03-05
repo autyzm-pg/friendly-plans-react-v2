@@ -1,14 +1,15 @@
-import { ErrorMessage, Formik, FormikProps } from 'formik';
-import React, { SFC } from 'react';
+import { Formik, FormikHelpers } from 'formik';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import PlayButton, { Emoji, Icon, ModalTrigger, TextInput } from 'components';
-import { i18n } from 'locale';
-import { Plan } from 'models';
-import { dimensions, palette } from '../styles';
+import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
+import { i18n } from '../../locale';
+import { Plan, Student } from '../../models';
+import { dimensions, palette } from '../../styles';
 import { DEFAULT_EMOJI } from '../../assets/emojis';
 import { IconSelectModal } from './IconSelectModal';
 import { ShuffleButton } from './ShuffleButton';
+import { NavigationProp } from '@react-navigation/native';
 
 export interface PlanFormData {
   planInput: string;
@@ -20,16 +21,18 @@ export interface PlanFormError {
 }
 
 interface Props {
-  onSubmit: (planFormData: PlanFormData) => Promise<void>;
-  onValidate: (planFormData: PlanFormData) => Promise<void>;
+  onSubmit: (values: PlanFormData, actions: FormikHelpers<PlanFormData>) => void | Promise<any>;
+  onValidate: (values: PlanFormData) => void | Promise<any>;
   plan?: Plan;
   shuffleDisabled?: boolean;
   playDisabled?: boolean;
-  numberPlan: number;
+  numberPlan?: number;
   onShuffle?: () => void;
+  student: Student;
+  navigation: NavigationProp<any>;
 }
 
-export const PlanForm: SFC<Props> = ({
+export const PlanForm: FC<Props> = ({
   plan,
   numberPlan,
   onSubmit,
@@ -37,17 +40,18 @@ export const PlanForm: SFC<Props> = ({
   shuffleDisabled = false,
   playDisabled = false,
   onShuffle,
+  student,
+  navigation
 }) => {
   const initialValues: PlanFormData = {
     planInput: plan ? plan.name : `${i18n.t('planActivity:newPlan')}${numberPlan}`,
-    emoji: plan ? plan.emoji : DEFAULT_EMOJI,
+    emoji: plan ? DEFAULT_EMOJI : DEFAULT_EMOJI,
   };
 
-  const renderFormControls = ({ values, setFieldValue, submitForm }: FormikProps<PlanFormData>) => {
-    const handleChangeText = (value: string) => setFieldValue('planInput', value);
+  const renderFormControls = ({ values, handleChange, handleSubmit, errors }: any) => {
     const updateEmoji = async (emoji: string) => {
-      await setFieldValue('emoji', emoji);
-      submitForm();
+      handleChange('emoji')(emoji);
+      handleSubmit();
     };
 
     return (
@@ -64,22 +68,28 @@ export const PlanForm: SFC<Props> = ({
             style={styles.textInput}
             placeholder={i18n.t('planActivity:planNamePlaceholder')}
             value={values.planInput}
-            onChangeText={handleChangeText}
-            onEndEditing={submitForm}
+            onChangeText={handleChange('planInput')}
+            onBlur={handleSubmit}
           />
-          <Text style={styles.errorMessage}>
-            <ErrorMessage name="planInput" />
-          </Text>
+          <Text style={styles.errorMessage}>{errors.planInput}</Text>
         </View>
         <View style={styles.buttonContainer}>
           <ShuffleButton disabled={shuffleDisabled} onPress={onShuffle} />
-          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} />
+          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={student}/>
         </View>
       </View>
     );
   };
 
-  return <Formik initialValues={initialValues} onSubmit={onSubmit} render={renderFormControls} validate={onValidate} />;
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      validate={onValidate}
+    >
+      {renderFormControls}
+    </Formik>
+  );
 };
 
 const styles = StyleSheet.create({

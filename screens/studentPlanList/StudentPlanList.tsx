@@ -9,24 +9,12 @@ import { EmptyStudentPlans } from './EmptyStudentPlans';
 import { FixedCreatePlanButton } from './FixedCreatePlanButton';
 import StudentPlanListItem from './StudentPlanListItem';
 import { NavigationProp } from '@react-navigation/native';
+import { defaults } from '../../mocks/defaults';
 
 interface Props {
   student: Student;
   navigation: NavigationProp<any>;
 }
-
-const plansList: Plan[] = [
-  {
-    name: "Plan 1",
-    id: '111',
-    studentId: '1'
-  },
-  {
-    name: "Plan 2",
-    id: '222',
-    studentId: '1'
-  }
-]
 
 export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -35,7 +23,7 @@ export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
 
   const subscribeToPlans = () => {
     //plansSubscriber.subscribeCollectionUpdates(student, plans => setPlans(plans));
-    setPlans(plansList)
+    setPlans(defaults.plansList)
   };
 
   const unsubscribeFromPlans = () => {
