@@ -84,7 +84,7 @@ export const PlanForm: FC<Props> = ({
     );
   };
 
-  return <Formik initialValues={initialValues} onSubmit={onSubmit} render={renderFormControls} validate={onValidate} />;
+  return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={onValidate}>{renderFormControls}</Formik>;
 };
 
 const styles = StyleSheet.create({

@@ -5,26 +5,24 @@ import { DragEndParams } from 'react-native-draggable-flatlist';
 
 import { FullScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
-import { Plan, PlanItem, PlanItemType, Student } from '../../models';
+import { Plan, PlanItem, PlanItemType } from '../../models';
 import { Route } from '../../navigation';
 import { getElevation, palette } from '../../styles';
 import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { defaults } from "../../mocks/defaults"
 
 interface Props {
   navigation: NavigationProp<any>;
-  student?: Student;
-  plan?: Plan;
-  numberPlan?: number;
+  route: RouteProp<any>;
 }
 
-export const PlanActivityScreen: FC<Props> = ({navigation, student, plan, numberPlan}) => {
+export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
-    plan: plan,
-    planItemList: []
+    plan: route.params?.plan ?? undefined,
+    planItemList: defaults.planItemsList
   });
 
   // const navigationOptions = {
@@ -32,10 +30,10 @@ export const PlanActivityScreen: FC<Props> = ({navigation, student, plan, number
   // };
 
   useEffect(() => {
-    setState(prevState => ({
-      ...prevState,
-      planItemList: defaults.planItemsList
-    }));
+    // setState(prevState => ({
+    //   ...prevState,
+    //   planItemList: []
+    // }));
   }, []);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
@@ -49,7 +47,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, student, plan, number
 
     // const { id: planId } = state.plan;
 
-    const isPlanExist: boolean = true; // await Plan.isPlanExist(id, planInput, planId);
+    const isPlanExist: boolean = false; // await Plan.isPlanExist(id, planInput, planId);
 
     if (isPlanExist) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
@@ -162,7 +160,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, student, plan, number
     const { planItemList } = state;
     let array = planItemList;
     array = shuffle(array);
-    array.forEach((item, index) => item.setOrder(index));
+    //array.forEach((item, index) => item.setOrder(index));
     setState(prevState => ({
       ...prevState,
       planItemList: array
@@ -175,19 +173,19 @@ export const PlanActivityScreen: FC<Props> = ({navigation, student, plan, number
         <View style={styles.headerContainer}>
           <PlanForm
             onSubmit={onSubmit}
-            plan={plan}
-            numberPlan={numberPlan}
+            plan={state.plan}
+            numberPlan={route.params?.numberPlan ?? undefined}
             onValidate={validatePlan}
             shuffleDisabled={shuffleDisabled()}
             playDisabled={playDisabled()}
             onShuffle={shuffleTasks}
-            student={student}
+            student={route.params?.student ?? undefined}
             navigation={navigation}
           />
         </View>
         {/* <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} /> */}
       </FullScreenTemplate>
-      {plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
+      {state.plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
     </>
   );
 }

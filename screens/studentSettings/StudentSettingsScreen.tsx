@@ -50,7 +50,7 @@ export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
   return (
     <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
       <StudentSettings
-        student={defaultStudent}
+        student={defaults.student}
         onStudentRemove={handleRemoveStudentPressed}
         onStudentUpdate={updateStudent}
       />
