@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
 
-import { Student } from '../models';
 import { Route } from '../navigation';
-import { NavigationService } from '../services';
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
@@ -18,9 +16,8 @@ const DASHBOARD = 'Dashboard';
 
 export const Header: React.FC<Props> = ({student, ...props}) => {
   const navigation = props.navigation
-  const title = () => {
+  const getTitle = () => {
     const { route, options } = props;
-    //const { options } = scene.descriptor;
 
     const headerTitle = (title: string) => {
       const studentPrefix = student ? `${student.name} / ` : '';
@@ -34,10 +31,6 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
     return headerTitle(options.title || route.name);
   }
 
-  const openDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
-
   const goBack = () => navigation.goBack();
 
   const navigateToStudentsList = () => {
@@ -45,15 +38,10 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
   };
 
   const navigateToStudentSettings = () => {
-    // NavigationService.navigate(Route.StudentSettings, {
-    //   student
-    // });
-    navigation.navigate(Route.StudentSettings, student)
+    navigation.navigate(Route.StudentSettings, {
+      student: student,
+    });
   };
-
-  // const isRoot = (): boolean => {
-  //   return navigation.getState().routes.length <= 1;
-  // }
 
   const isDashboard = () => {
     const routes = navigation.getState();
@@ -88,22 +76,22 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
     ) : null;
   }
 
-
-    return (
-      <View style={styles.container}>
-        {!isDashboard() && <IconButton
-          name={isDashboard() ? 'menu' : 'arrow-back'}
+  return (
+    <View style={styles.container}>
+      {!isDashboard() &&
+          <IconButton
+          name={'arrow-back'}
           type="material"
-          onPress={isDashboard() ? openDrawer : goBack}
+          onPress={goBack}
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
-        />}
-        <StyledText style={styles.headerText}>{title() as string}</StyledText>
-        {renderButtons()}
-      </View>
-    );
-  
+        />
+      }
+      <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
+      {renderButtons()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

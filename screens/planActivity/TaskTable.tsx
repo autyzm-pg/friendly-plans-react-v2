@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import DraggableFlatList, { DragEndParams, RenderItemParams } from 'react-native-draggable-flatlist';
 
 import { FullScreenTemplate } from '../../components';

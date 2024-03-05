@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { palette, typography } from '../styles';
@@ -18,38 +18,34 @@ interface Props {
   error?: string;
 }
 
-export class CheckboxInput extends React.PureComponent<Props> {
-  onPress = () => {
-    const { checked, onPress } = this.props;
+export const CheckboxInput: FC<Props> = ({checked, onPress, title, children, error}) => {
+  const handleOnPress = () => {
     onPress(!checked);
   };
 
-  render() {
-    const { checked, children, error, title } = this.props;
-    return (
-      <>
-        <View style={styles.container}>
-          <IconButton
-            onPress={this.onPress}
-            name={checked ? icons.checked : icons.unchecked}
-            containerStyle={styles.iconContainer}
-            color={palette.primary}
-          />
-          {title && (
-            <View style={styles.contentContainer}>
-              <StyledText style={styles.label}>{title}</StyledText>
-              {children}
-            </View>
-          )}
-        </View>
-        {!!error && (
-          <View style={styles.errorContainer}>
-            <StyledText style={styles.error}>{error}</StyledText>
+  return (
+    <>
+      <View style={styles.container}>
+        <IconButton
+          onPress={handleOnPress}
+          name={checked ? icons.checked : icons.unchecked}
+          containerStyle={styles.iconContainer}
+          color={palette.primary}
+        />
+        {title && (
+          <View style={styles.contentContainer}>
+            <StyledText style={styles.label}>{title}</StyledText>
+            {children}
           </View>
         )}
-      </>
-    );
-  }
+      </View>
+      {!!error && (
+        <View style={styles.errorContainer}>
+          <StyledText style={styles.error}>{error}</StyledText>
+        </View>
+      )}
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

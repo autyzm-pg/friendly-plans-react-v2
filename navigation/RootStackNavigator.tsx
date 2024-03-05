@@ -1,27 +1,13 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
-// import {Animated, Easing} from 'react-native';
 import {WelcomeScreen} from '../screens/WelcomeScreen';
 import { Header } from '../components';
 
-// import {
-//   DialogScreen,
-//   PlanSearchForCopyScreen,
-//   PlansListForCopyScreen,
-//   StudentCreateScreen,
-//   StudentSettingsScreen,
-//   StudentsListForCopyPlanScreen,
-//   StudentsListScreen,
-//   StudentsListSearchForCopyPlanScreen,
-//   StudentsListSearchScreen,
-// } from 'screens';
-
-// import {AuthSwitchNavigator} from './AuthSwitchNavigator';
 import {Route} from './routes';
 
-import {createStackNavigator} from '@react-navigation/stack';
+import { Easing } from 'react-native';
+import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
+import { StudentSettingsScreen } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 
 const Stack = createStackNavigator();
@@ -33,6 +19,11 @@ export function RootStackNavigation() {
       screenOptions={({ navigation, route }) => ({
         gestureEnabled: false, 
         headerShown: true,
+        transitionSpec: {
+          open: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
+          close: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
+        },
+        cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
         header: (headerProps) => (
           <Header
             {...headerProps}
@@ -61,6 +52,11 @@ export function RootStackNavigation() {
         options={{}}
       /> */}
       <Stack.Screen
+        name={Route.StudentSettings}
+        component={StudentSettingsScreen}
+        options={{}}
+      />
+       <Stack.Screen
         name={Route.PlanActivity}
         component={PlanActivityScreen}
         options={{}}
@@ -95,11 +91,6 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.Dialog}
         component={DialogScreen}
-        options={{}}
-      />
-       <Stack.Screen
-        name={Route.StudentSettings}
-        component={StudentSettingsScreen}
         options={{}}
       />
       <Stack.Screen

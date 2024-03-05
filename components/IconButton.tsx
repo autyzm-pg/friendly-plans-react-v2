@@ -8,6 +8,7 @@ import { StyledText } from './StyledText';
 
 interface Props extends IconProps {
   label?: string;
+  color?: string;
   iconButtonStyle?: StyleProp<ViewStyle>;
 }
 

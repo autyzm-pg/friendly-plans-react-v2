@@ -1,72 +1,59 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Alert } from 'react-native';
-//import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { NarrowScreenTemplate, StudentSettings } from '../../components';
 import { i18n } from '../../locale';
-import { AuthUser, ModelSubscriber, Student, StudentData } from '../../models';
+import { NavigationProp } from '@react-navigation/native';
+import { Student, StudentData } from '../../models';
 
-interface State {
-  student: Student;
+import { defaults } from "../../mocks/defaults"
+
+interface Props {
+  navigation: NavigationProp<any>;
+  student?: Student /* TODO: Student parameter shoudn't be optional. */
 }
 
-export class StudentSettingsScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  studentSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
+export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
+  const [state, setState] = useState<StudentData>(defaults.student as StudentData)
 
-  constructor(props: NavigationInjectedProps) {
-    super(props);
-    this.state = {
-      student: props.navigation.getParam('student'),
-    };
-  }
-
-  componentDidMount() {
-    const student = this.props.navigation.getParam('student');
-    this.studentSubscriber.subscribeElementUpdates(student, updatedStudent =>
-      this.setState({ student: updatedStudent }),
-    );
-  }
-
-  componentWillUnmount() {
-    this.studentSubscriber.unsubscribeElementUpdates();
-  }
-
-  get screenName(): string {
+  const getScreenName = () => {
     return i18n.t('studentSettings:settingsTitle', {
-      studentName: this.props.navigation.getParam('student').name,
+      studentName: state.name,
     });
+  };
+
+  // TODO: Handling removing students and personal data updates from database side.
+
+  const removeStudent = async () => {
+    // await AuthUser.getAuthenticatedUser().setCurrentStudent('');
+    // await this.state.student.delete();
+    navigation.goBack();
   }
 
-  removeStudent = async () => {
-    await AuthUser.getAuthenticatedUser().setCurrentStudent('');
-    await this.state.student.delete();
-    this.props.navigation.goBack();
-  }
-
-  handleRemoveStudentPressed = () => {
+  const handleRemoveStudentPressed = () => {
     Alert.alert(
       i18n.t('studentSettings:deleteStudent'),
       i18n.t('studentSettings:deleteMessage'),
       [
         { text: i18n.t('studentSettings:cancel') },
-        { text: i18n.t('studentSettings:delete'), onPress: this.removeStudent },
+        { text: i18n.t('studentSettings:delete'), onPress: removeStudent },
       ],
       { cancelable: false },
     );
   };
 
-  updateStudent = (data: StudentData) => this.state.student.update(data);
-
-  render() {
-    const { student } = this.state;
-    return (
-      <NarrowScreenTemplate title={this.screenName} navigation={this.props.navigation}>
-        <StudentSettings
-          student={student}
-          onStudentRemove={this.handleRemoveStudentPressed}
-          onStudentUpdate={this.updateStudent}
-        />
-      </NarrowScreenTemplate>
-    );
+  const updateStudent = (updated: StudentData) => {
+    // ...
+    setState(updated);
   }
+
+  return (
+    <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
+      <StudentSettings
+        student={defaults.student}
+        onStudentRemove={handleRemoveStudentPressed}
+        onStudentUpdate={updateStudent}
+      />
+    </NarrowScreenTemplate>
+  );
 }

@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { dimensions, palette } from '../styles';
@@ -7,7 +7,7 @@ interface Props {
   extraWide?: boolean;
 }
 
-export const Separator: SFC<Props> = ({ extraWide, ...props }) => (
+export const Separator: FC<Props> = ({ extraWide, ...props }) => (
   <View style={[styles.separator, extraWide && styles.extraWide]} />
 );
 

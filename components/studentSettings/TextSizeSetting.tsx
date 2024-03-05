@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { FixedValueSlider } from 'components';
-import { i18n } from 'locale';
-import { StudentTextSizeOption } from 'models';
+import { FixedValueSlider } from '../../components';
+import { i18n } from '../../locale';
+import { StudentTextSizeOption } from '../../models';
 
 interface Props {
   value: StudentTextSizeOption;

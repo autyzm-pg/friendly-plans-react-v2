@@ -1,7 +1,7 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { StyledText } from 'components';
+import { StyledText } from '../components';
 import { palette, typography } from '../styles';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   isSettingsPreview?: boolean;
 }
 
-const planNameTypography = {
+const planNameTypography: Record<string, any> = {
   studentView: {
     xl: typography.headline1,
     l: typography.headline2,
@@ -26,7 +26,7 @@ const planNameTypography = {
   },
 };
 
-export const PlanNameText: SFC<Props> = ({
+export const PlanNameText: FC<Props> = ({
   planName,
   textSize,
   isUpperCase = false,

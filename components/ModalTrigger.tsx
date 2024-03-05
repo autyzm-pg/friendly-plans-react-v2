@@ -1,4 +1,3 @@
-import { i18n } from '../locale';
 import React, { ReactElement, FC, useState } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { dimensions, getElevation, palette, typography } from '../styles';

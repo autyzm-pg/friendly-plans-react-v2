@@ -41,7 +41,7 @@ const actions: Action[] = [
   },
   {
 	  name: actionNames.copy,
-	  icon: <Icon name="ios-copy" type="ionicon" color={palette.primary} size={24} />,
+	  icon: <Icon name="copy" type="ionicon" color={palette.primary} size={24} />,
 	  text: i18n.t('planList:copyPlanAction'),
 	  position: 2,
 	  color: palette.background,
