@@ -10,6 +10,12 @@ import { SignInBackground } from './SignInBackground';
 import { SignInFormContainer } from './SignInFormContainer';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 
+/*
+  Warning
+  This component is now unused. 
+  It was used when Firebase was in use instead of SQLite.
+*/
+
 interface Props {
   navigation: NavigationProp<any>;
 }

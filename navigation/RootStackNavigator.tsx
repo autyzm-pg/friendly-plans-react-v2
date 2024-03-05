@@ -38,11 +38,6 @@ export function RootStackNavigation() {
         options={{}}
       />
       <Stack.Screen
-        name={Route.Unauthenticated}
-        component={UnauthenticatedStackNavigator}
-        options={{}}
-      />
-      <Stack.Screen
         name={Route.Dashboard}
         component={DashboardScreen}
         options={{}}
