@@ -32,7 +32,7 @@ export const WelcomeScreen: FC<Props> = ({ navigation }) => {
     //if (currentUser) {
     //  this.props.navigation.navigate(Route.Authenticated);
     //} else {
-    navigation.navigate(Route.Unauthenticated);
+    navigation.navigate(Route.Dashboard);
     //}
     // const handleAppStateChange = (nextAppState) => {
     //   console.log('App state changed to:', nextAppState);
