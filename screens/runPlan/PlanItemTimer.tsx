@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Icon, StyledText } from 'components';
+import { Icon, StyledText } from '../../components';
 
 import Sound from 'react-native-sound';
 import sounds from '../../assets/sounds/sounds';

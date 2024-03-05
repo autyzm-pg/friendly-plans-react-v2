@@ -2,9 +2,9 @@ import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
 
-import { Icon } from 'components';
-import { i18n } from 'locale';
-import { palette, typography } from '../styles';
+import { Icon } from '../../components';
+import { i18n } from '../../locale';
+import { palette, typography } from '../../styles';
 
 const actionNames = {
   simpleTask: 'create-simple-task',

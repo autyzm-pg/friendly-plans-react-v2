@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
+//import { NavigationInjectedProps } from '@react-navigation/native';
 
-import {Card, FlatButton, IconButton, StyledText} from 'components';
-import { i18n } from 'locale';
-import {ModelSubscriber, PlanItem, PlanSubItem, Student} from 'models';
-import { Route } from '../navigation';
-import { palette, typography } from '../styles';
+import {Card, FlatButton, IconButton, StyledText} from '../../components';
+import { i18n } from '../../locale';
+import {ModelSubscriber, PlanItem, PlanSubItem, Student} from '../../models';
+import { Route } from '../../navigation';
+import { palette, typography } from '../../styles';
 import {SubPlanSlideItem} from './SubPlanSlideItem';
 
 interface State {

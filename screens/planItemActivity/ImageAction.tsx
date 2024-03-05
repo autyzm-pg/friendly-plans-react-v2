@@ -1,8 +1,8 @@
 import React, { SFC } from 'react';
 
-import { StyledText } from 'components';
+import { StyledText } from '../../components';
 import { StyleSheet, View } from 'react-native';
-import { palette, typography } from '../styles';
+import { palette, typography } from '../../styles';
 
 interface Props {
   children: JSX.Element;

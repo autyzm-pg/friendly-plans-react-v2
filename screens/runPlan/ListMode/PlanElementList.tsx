@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { ModelSubscriber, Plan, PlanElement, PlanItem, Student } from 'models';
+import { ModelSubscriber, Plan, PlanElement, PlanItem, Student } from '../../models';
 import { PlanElementListItem } from './PlanElementListItem';
 
 interface Props {

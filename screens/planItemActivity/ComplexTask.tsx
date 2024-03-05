@@ -3,8 +3,8 @@ import i18n from 'i18next';
 import React from 'react';
 import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 
-import {ModelSubscriber, PlanItem, PlanSubItem} from 'models';
-import {dimensions, palette} from '../styles';
+import {ModelSubscriber, PlanItem, PlanSubItem} from '../../models';
+import {dimensions, palette} from '../../styles';
 import {Button} from '../../components';
 import {ComplexTaskCoverCard} from './ComplexTaskCoverCard';
 import {ComplexTaskItem} from './ComplexTaskItem';

@@ -1,11 +1,11 @@
-import {CheckboxInput, Icon, IconButton} from 'components';
-import {PlanItem, PlanItemType} from 'models';
-import {Route} from '../navigation';
+import {CheckboxInput, Icon, IconButton} from '../../components';
+import {PlanItem, PlanItemType} from '../../models';
+import {Route} from '../../navigation';
 import React, {useEffect, useRef, useState} from 'react';
 
 import {AppState, AppStateStatus, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {NavigationService} from 'services';
-import {palette, typography} from '../styles';
+//import {NavigationService} from 'services';
+import {palette, typography} from '../../styles';
 
 interface Props {
   rowNumber: number;
@@ -20,25 +20,25 @@ export const TableRow: React.FunctionComponent<Props> = ({ planItem, border, dra
 
   useEffect(() => {
     if (planItem.type === PlanItemType.ComplexTask) {
-      planItem
-        .getChildCollectionRef()
-        .get()
-        .then(snap => setSubtaskCount(snap.size));
+      // planItem
+      //   .getChildCollectionRef()
+      //   .get()
+      //   .then(snap => setSubtaskCount(snap.size));
     }
 
   });
 
   const refresh = () => {
-    planItem
-        .getChildCollectionRef()
-        .get()
-        .then(snap => setSubtaskCount(snap.size));
+    // planItem
+    //     .getChildCollectionRef()
+    //     .get()
+    //     .then(snap => setSubtaskCount(snap.size));
   };
 
   const navigateToPlanItemUpdate = () => {
-    NavigationService.navigate(Route.PlanItemTask, {
-      planItem,
-    });
+    // NavigationService.navigate(Route.PlanItemTask, {
+    //   planItem,
+    // });
   };
 
   const onDelete = () => {

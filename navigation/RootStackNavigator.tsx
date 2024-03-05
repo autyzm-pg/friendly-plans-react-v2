@@ -2,6 +2,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 // import {Animated, Easing} from 'react-native';
 import {WelcomeScreen} from '../screens/WelcomeScreen';
+import { Header } from '../components';
 
 // import {
 //   DialogScreen,
@@ -21,6 +22,7 @@ import {Route} from './routes';
 import {createStackNavigator} from '@react-navigation/stack';
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
+import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,7 +30,16 @@ export function RootStackNavigation() {
   return (
     <Stack.Navigator
       initialRouteName={Route.Home}
-      screenOptions={{gestureEnabled: false, headerShown: false}}>
+      screenOptions={({ navigation, route }) => ({
+        gestureEnabled: false, 
+        headerShown: true,
+        header: (headerProps) => (
+          <Header
+            {...headerProps}
+            student={route.params && route.params.student ? route.params.student : undefined}
+            navigation={navigation}
+          />
+        )})}>
       <Stack.Screen
         name={Route.Home}
         component={WelcomeScreen}
@@ -44,12 +55,18 @@ export function RootStackNavigation() {
         component={DashboardScreen}
         options={{}}
       />
-      {/* TODO: uncomment working screen */}
       {/* <Stack.Screen
+        name={Route.PlanItemTask}
+        component={PlanItemTaskScreen}
+        options={{}}
+      /> */}
+      <Stack.Screen
         name={Route.PlanActivity}
         component={PlanActivityScreen}
         options={{}}
       />
+      {/* TODO: uncomment working screen */}
+      {/* 
       <Stack.Screen
         name={Route.RunPlanList}
         component={RunPlanListScreen}
@@ -63,11 +80,6 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.RunSubPlanList}
         component={RunSubPlanListScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.PlanItemTask}
-        component={PlanItemTaskScreen}
         options={{}}
       />
       <Stack.Screen

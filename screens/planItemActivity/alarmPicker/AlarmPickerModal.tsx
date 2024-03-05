@@ -1,11 +1,11 @@
-import {IconButton} from 'components';
-import {i18n} from 'locale';
+import {IconButton} from '../../components';
+import {i18n} from '../../locale';
 import {noop} from 'lodash';
-import {PlanItem} from 'models';
+import {PlanItem} from '../../models';
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, View} from 'react-native';
 import DocumentPicker, {types} from 'react-native-document-picker';
-import {dimensions} from '../styles';
+import {dimensions} from '../../styles';
 import {ImageAction} from '../ImageAction';
 
 interface Props {

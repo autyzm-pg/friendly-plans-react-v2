@@ -1,101 +1,130 @@
 import every from 'lodash.every';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DragEndParams } from 'react-native-draggable-flatlist';
-import { NavigationInjectedProps } from '@react-navigation/native';
+//import { NavigationInjectedProps } from '@react-navigation/native';
 
-import { FullScreenTemplate } from 'components';
-import { i18n } from 'locale';
-import {ModelSubscriber, Plan, PlanItem, PlanItemType} from 'models';
-import { Route } from '../navigation';
-import { getElevation, palette } from '../styles';
+import { FullScreenTemplate } from '../../components';
+import { i18n } from '../../locale';
+import {ModelSubscriber, Plan, PlanItem, PlanItemType, Student} from '../../models';
+import { Route } from '../../navigation';
+import { getElevation, palette } from '../../styles';
 import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+
+type RouteParams = {
+  params: {
+    plan: Plan,
+    student: Student
+  },
+  routes: {
+    test: Route.PlanItemTask
+  }
+}
+
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+}
+
 
 interface State {
   plan: Plan;
   planItemList: PlanItem[];
 }
 
-export class PlanActivityScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  static navigationOptions = {
+
+export const PlanActivityScreen: React.FC<Props> = ({navigation, route}) => {
+  const navigationOptions = {
     title: i18n.t('planList:viewTitle'),
   };
 
-  state: State = {
-    planItemList: [],
-    plan: this.props.navigation.getParam('plan'),
-  };
+  //const { navigation } = props
+  const student = route.params?.student;
 
-  planItemsSubscriber: ModelSubscriber<PlanItem> = new ModelSubscriber();
+  const [plan, setPlan] = useState({...route.params?.plan});
 
-  subscribeToPlanItems() {
-    this.planItemsSubscriber.subscribeCollectionUpdates(this.state.plan, (planItemList: PlanItem[]) =>
-      this.setState({ planItemList }),
-    );
+  const [planItemList, setPlanItemList] = useState<PlanItem[]>([]);
+
+  const planItemsSubscriber: ModelSubscriber<PlanItem> = new ModelSubscriber();
+
+  const subscribeToPlanItems = async () => {
+    // this.planItemsSubscriber.subscribeCollectionUpdates(this.state.plan, (planItemList: PlanItem[]) =>
+    //   this.setState({ planItemList }),
+    // );
+    // TODO: SQLite: pobieranie itemów z bazy
+    
+    const planItems = await PlanItem.createPlanItem(
+      plan, 
+      PlanItemType.SimpleTask, {
+        name: `${i18n.t('planItemActivity:newTask')}${1}`,
+        nameForChild: '',
+        time:  0,
+        subItems: [],
+        deleteSubItems: [],
+        type: PlanItemType.SimpleTask,
+        imageUri: '',
+        lector: false,
+        voicePath:  ''
+      }, 
+      1)
+    setPlanItemList([planItems])
   }
 
-  unsubscribeToPlanItems() {
-    this.planItemsSubscriber.unsubscribeCollectionUpdates();
+  const unsubscribeToPlanItems = () => {
+    setPlanItemList([])
   }
 
-  componentDidMount() {
-    if (this.state.plan) {
-      this.subscribeToPlanItems();
+  useEffect(() => {
+    if (plan) {
+      subscribeToPlanItems();
     }
-  }
+    return unsubscribeToPlanItems()
+  }, [plan]);
 
-  componentWillUnmount() {
-    if (this.state.plan) {
-      this.unsubscribeToPlanItems();
-    }
-  }
-
-  validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
+  const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
     if (planInput === '') {
       errors.planInput = i18n.t('validation:planNameRequired');
       throw errors;
     }
 
-    const { id } = this.props.navigation.getParam('student');
+    const { id } = student;
 
-    const { id: planId } = { ...this.state.plan };
+    const { id: planId } = plan;
 
-    const isPlanExist: boolean = await Plan.isPlanExist(id, planInput, planId);
+    const planExists: boolean = await Plan.isPlanExist(id, planInput, planId);
 
-    if (isPlanExist) {
+    if (planExists) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
       throw errors;
     }
   };
 
-  createPlan = async (name: string) => {
-    const { id } = this.props.navigation.getParam('student');
+  const createPlan = async (name: string) => {
+    const { id } = student;
 
-    const plan = await Plan.createPlan(id, name);
+    const newPlan = await Plan.createPlan(id, name);
+    setPlan(newPlan)
 
-    this.setState({ plan }, () => {
-      this.subscribeToPlanItems();
-    });
+    // (?) should be deleted?
+    //subscribeToPlanItems();
   };
 
-  updatePlan = async (name: string, emoji: string) => {
-    await this.state.plan.update({
-      name,
-      emoji,
-    });
-
-    this.setState({ plan: { ...this.state.plan, name } });
+  const updatePlan = async (name: string, emoji: string) => {
+    if (plan) {
+      await plan.update({ name, emoji });
+      setPlan({ ...plan, name });
+    }
   };
 
-  onSubmit = ({ planInput, emoji }: PlanFormData) =>
-    this.state.plan ? this.updatePlan(planInput, emoji) : this.createPlan(planInput);
+  const onSubmit = ({ planInput, emoji }: PlanFormData) =>
+    plan ? updatePlan(planInput, emoji) : createPlan(planInput);
 
-  navigateToCreatePlanItem = async (name: string) => {
-
-    const {plan, planItemList} = this.state;
+  const navigateToCreatePlanItem = async (name: string) => {
     let planItemType = '';
 
     switch (name){
@@ -113,82 +142,58 @@ export class PlanActivityScreen extends React.PureComponent<NavigationInjectedPr
         break;
     }
 
-    this.props.navigation.navigate(Route.PlanItemTask, {
-      plan,
-      planItemList,
-      planItemType,
-    });
+    // navigation.navigate(Route.PlanItemTask, {
+    //   plan,
+    //   planItemList,
+    //   planItemType,
+    // });
 
   };
 
-  shuffleDisabled(): boolean {
-    const { planItemList } = this.state;
-
+  const shuffleDisabled = () => {
     return !planItemList || planItemList.length < 2;
-  }
+  };
 
-  playDisabled(): boolean {
-    const { planItemList } = this.state;
+  const playDisabled = () => {
     if (!planItemList) {
       return true;
     }
-
     return every(planItemList, 'completed');
-  }
+  };
 
-  handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
+  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
     planItemListRightOrder.forEach(item => item.setOrder(item.order));
-    this.setState({ planItemList: planItemListRightOrder });
+    setPlanItemList(planItemListRightOrder);
   };
 
-  shuffle(array: PlanItem[]) {
-    let currentIndex = array.length;
-    let temporaryValue;
-    let randomIndex;
-
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
-
-  shuffleTasks = () => {
-    const { planItemList } = this.state;
-    let array = planItemList;
-    array = this.shuffle(array);
+  const shuffleTasks = () => {
+    let array = [...planItemList];
+    array.sort(() => Math.random() - 0.5);
     array.forEach((item, index) => item.setOrder(index));
-    this.setState({ planItemList: array });
+    setPlanItemList(array);
   };
 
-  render() {
-    const { plan, planItemList } = this.state;
-    const numberPlan = this.props.navigation.getParam('numberPlan');
     return (
       <>
         <FullScreenTemplate extraStyles={styles.fullScreen}>
           <View style={styles.headerContainer}>
             <PlanForm
-              onSubmit={this.onSubmit}
+              onSubmit={onSubmit}
               plan={plan}
-              numberPlan={numberPlan}
-              onValidate={this.validatePlan}
-              shuffleDisabled={this.shuffleDisabled()}
-              playDisabled={this.playDisabled()}
-              onShuffle={this.shuffleTasks}
+              numberPlan={route.params?.numberPlan}
+              onValidate={validatePlan}
+              shuffleDisabled={shuffleDisabled()}
+              playDisabled={playDisabled()}
+              onShuffle={shuffleTasks}
+              navigation={navigation}
             />
           </View>
-          <TaskTable planItemList={planItemList} handlePlanListOrderChanged={this.handlePlanListOrderChanged} />
+          <TaskTable planItemList={planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} />
         </FullScreenTemplate>
-        {plan && <FixedCreatePlanItemButton onPress={this.navigateToCreatePlanItem} />}
+        {plan && <FixedCreatePlanItemButton onPress={() => navigateToCreatePlanItem('')} />}
       </>
     );
-  }
 }
 
 const styles = StyleSheet.create({

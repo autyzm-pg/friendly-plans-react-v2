@@ -1,21 +1,30 @@
-// import { createDrawerNavigator } from '@react-navigation/native';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 
-// import { DrawerContent } from 'components';
-// import { palette } from '../styles';
-// import { MainStackNavigator } from './MainStackNavigator';
-// import { Route } from './routes';
+// // import { DrawerContent } from 'components';
+// // import { palette } from '../styles';
+// // import { MainStackNavigator } from './MainStackNavigator';
+// // import { Route } from './routes';
 
-// export const MainDrawerNavigator = createDrawerNavigator(
-//   {
-//     [Route.Home]: MainStackNavigator,
-//     [Route.Logout]: 'Logout',
-//   },
-//   {
-//     contentOptions: {
-//       activeTintColor: palette.primaryVariant,
-//       inactiveTintColor: palette.primary,
-//     },
-//     edgeWidth: -100, // to disable opening gesture
-//     contentComponent: DrawerContent,
-//   },
-// );
+// const Drawer = createDrawerNavigator();
+
+// export function MainDrawerNavigation() {
+//     return (
+//       <Drawer.Navigator
+//         initialRouteName={Route.Home}
+//         screenOptions={({ navigation, route }) => ({
+//           gestureEnabled: false, 
+//           headerShown: true,
+//           header: (headerProps) => (
+//             <Header
+//               {...headerProps}
+//               student={route.params && route.params.student ? route.params.student : undefined}
+//             />
+//           )})}>
+//         <Drawer.Screen
+//           name={Route.Home}
+//           component={WelcomeScreen}
+//           options={{}}
+//         />
+//         </Drawer.Navigator>
+//     )
+// }

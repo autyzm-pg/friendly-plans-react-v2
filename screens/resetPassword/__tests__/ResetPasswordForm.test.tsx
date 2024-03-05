@@ -3,7 +3,7 @@ import React from 'react';
 import { Alert } from 'react-native';
 import firebase from '@react-native-firebase/app';
 
-import { i18n } from 'locale';
+import { i18n } from '../../locale';
 import { NavigationService } from 'services';
 import { ResetPasswordForm } from '../ResetPasswordForm';
 

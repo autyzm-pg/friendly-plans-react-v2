@@ -1,10 +1,10 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
+//import { NavigationInjectedProps } from '@react-navigation/native';
 
-import { NarrowScreenTemplate, StudentSettings } from 'components';
-import { i18n } from 'locale';
-import { AuthUser, ModelSubscriber, Student, StudentData } from 'models';
+import { NarrowScreenTemplate, StudentSettings } from '../../components';
+import { i18n } from '../../locale';
+import { AuthUser, ModelSubscriber, Student, StudentData } from '../../models';
 
 interface State {
   student: Student;

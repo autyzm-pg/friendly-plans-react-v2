@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { StyleSheet, View } from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
+//import { NavigationInjectedProps } from '@react-navigation/native';
 
-import {FullScreenTemplate} from 'components';
-import { Route } from '../navigation';
-import { palette } from '../styles';
+import {FullScreenTemplate} from '../../components';
+import { Route } from '../../navigation';
+import { palette } from '../../styles';
 import { PlanElementList } from './PlanElementList';
 
 export class RunPlanListScreen extends React.PureComponent<NavigationInjectedProps> {

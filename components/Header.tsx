@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { HeaderProps } from '@react-navigation/native';
+import { StackHeaderProps } from '@react-navigation/stack';
 
 import { Student } from '../models';
 import { Route } from '../navigation';
@@ -8,17 +8,19 @@ import { NavigationService } from '../services';
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
+import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/native';
 
-interface Props extends HeaderProps {
+interface Props extends StackHeaderProps {
   student: Student;
 }
 
 const DASHBOARD = 'Dashboard';
 
-export class Header extends React.PureComponent<Props> {
-  get title() {
-    const { scene, student } = this.props;
-    const { options } = scene.descriptor;
+export const Header: React.FC<Props> = ({student, ...props}) => {
+  const navigation = props.navigation
+  const title = () => {
+    const { route, options } = props;
+    //const { options } = scene.descriptor;
 
     const headerTitle = (title: string) => {
       const studentPrefix = student ? `${student.name} / ` : '';
@@ -29,46 +31,49 @@ export class Header extends React.PureComponent<Props> {
       return options.headerTitle;
     }
 
-    return headerTitle(options.title || scene.route.routeName);
+    return headerTitle(options.title || route.name);
   }
 
-  openDrawer = () => this.props.navigation.openDrawer();
-
-  goBack = () => NavigationService.goBack();
-
-  navigateToStudentsList = () => {
-    NavigationService.navigate(Route.StudentsList);
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
   };
 
-  navigateToStudentSettings = () => {
-    NavigationService.navigate(Route.StudentSettings, {
-      student: this.props.student,
-    });
+  const goBack = () => navigation.goBack();
+
+  const navigateToStudentsList = () => {
+    navigation.navigate(Route.StudentsList);
   };
 
-  get isRoot(): boolean {
-    return this.props.navigation.state.routes.length <= 1;
-  }
+  const navigateToStudentSettings = () => {
+    // NavigationService.navigate(Route.StudentSettings, {
+    //   student
+    // });
+    navigation.navigate(Route.StudentSettings, student)
+  };
 
-  isDashboard() {
-    const { routes } = this.props.navigation.state;
+  // const isRoot = (): boolean => {
+  //   return navigation.getState().routes.length <= 1;
+  // }
 
-    const { routeName } = routes[routes.length - 1];
+  const isDashboard = () => {
+    const routes = navigation.getState();
+
+    const routeName = routes?.routes[routes.routes.length - 1].name;
 
     return routeName === DASHBOARD;
   }
 
-  renderButtons() {
-    return this.isDashboard() ? (
+  const renderButtons = () => {
+    return isDashboard() ? (
       <>
-        {this.props.student && (
+        {student && (
           <IconButton
             name="settings"
             type="material"
             color={palette.textWhite}
             size={24}
             containerStyle={styles.iconContainer}
-            onPress={this.navigateToStudentSettings}
+            onPress={navigateToStudentSettings}
           />
         )}
         <IconButton
@@ -77,28 +82,28 @@ export class Header extends React.PureComponent<Props> {
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
-          onPress={this.navigateToStudentsList}
+          onPress={navigateToStudentsList}
         />
       </>
     ) : null;
   }
 
-  render() {
+
     return (
       <View style={styles.container}>
-        <IconButton
-          name={this.isRoot ? 'menu' : 'arrow-back'}
+        {!isDashboard() && <IconButton
+          name={isDashboard() ? 'menu' : 'arrow-back'}
           type="material"
-          onPress={this.isRoot ? this.openDrawer : this.goBack}
+          onPress={isDashboard() ? openDrawer : goBack}
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
-        />
-        <StyledText style={styles.headerText}>{this.title as string}</StyledText>
-        {this.renderButtons()}
+        />}
+        <StyledText style={styles.headerText}>{title() as string}</StyledText>
+        {renderButtons()}
       </View>
     );
-  }
+  
 }
 
 const styles = StyleSheet.create({

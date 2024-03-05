@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import firebase from '@react-native-firebase/app';
 
-import { Icon } from 'components';
-import { i18n } from 'locale';
-import { Route } from '../navigation';
+import { Icon } from '../../components';
+import { i18n } from '../../locale';
+import { Route } from '../../navigation';
 import { NavigationService } from 'services';
-import { palette } from '../styles';
+import { palette } from '../../styles';
 
 export class SignOutButton extends React.PureComponent {
   signOut = async () => {

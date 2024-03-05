@@ -1,10 +1,10 @@
-import {StyledText, TextInput} from 'components';
+import {StyledText, TextInput} from '../../components';
 import {Formik, FormikProps} from 'formik';
-import {i18n} from 'locale';
-import {PlanItem, PlanItemType, PlanSubItem} from 'models';
+import {i18n} from '../../locale';
+import {PlanItem, PlanItemType, PlanSubItem} from '../../models';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {dimensions, getElevation, palette, typography} from '../styles';
+import {dimensions, getElevation, palette, typography} from '../../styles';
 import * as Yup from 'yup';
 import {Break} from './Break';
 import {ComplexTask} from './ComplexTask';

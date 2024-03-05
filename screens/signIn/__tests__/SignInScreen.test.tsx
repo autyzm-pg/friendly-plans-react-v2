@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import { navigationMock } from 'helpers';
-import { i18n } from 'locale';
+import { i18n } from '../../locale';
 import { SignInScreen } from '../SignInScreen';
 
 describe('SignInScreen', () => {

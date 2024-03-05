@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {Alert, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
-import { Card, IconButton, ModalTrigger, TextInput } from 'components';
+import { Card, IconButton, ModalTrigger, TextInput } from '../../components';
 import { FormikProps } from 'formik';
-import { i18n } from 'locale';
-import { PlanElement, PlanItem, Student } from 'models';
+import { i18n } from '../../locale';
+import { PlanElement, PlanItem, Student } from '../../models';
 import {Text} from 'react-native-elements';
-import { dimensions, palette, typography } from '../styles';
+import { dimensions, palette, typography } from '../../styles';
 import { ImagePicker } from './ImagePicker';
 import { PlanItemFormData } from './PlanItemForm';
 import { TimeSlider } from './TimeSlider';

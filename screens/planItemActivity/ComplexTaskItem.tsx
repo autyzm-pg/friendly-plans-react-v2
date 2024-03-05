@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {StyleSheet, TouchableHighlight, View} from 'react-native';
 
-import {Card, IconButton, StyledText} from 'components';
+import {Card, IconButton, StyledText} from '../../components';
 import {Image} from 'react-native-elements';
 import {i18n} from '../../locale';
 import {dimensions, palette, typography} from '../../styles';
