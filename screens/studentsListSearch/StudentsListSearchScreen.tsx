@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 //import { NavigationInjectedProps } from '@react-navigation/native';
 
@@ -7,62 +7,62 @@ import { i18n } from '../../locale';
 import { Student } from '../../models';
 import { dimensions, palette } from '../../styles';
 import { FilterableStudentsList } from './FilterableStudentsList';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 
-interface Props extends NavigationInjectedProps {
-  students: Student[];
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 }
 
 interface State {
   searchQuery: string;
 }
 
-export class StudentsListSearchScreen extends React.PureComponent<Props, State> {
-  state: State = {
-    searchQuery: '',
+export const StudentsListSearchScreen: React.FC<Props> = ({navigation, route}) => {
+
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const onSearch = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
   };
 
-  onSearch = (searchQuery: string) => {
-    this.setState({ searchQuery });
+  const onSearchInputClear = () => {
+    setSearchQuery('');
   };
 
-  onSearchInputClear = () => {
-    this.setState({ searchQuery: '' });
-  };
-
-  renderSearchInput = () => (
+  const renderSearchInput = () => (
     <TextInput
       style={styles.searchInput}
       placeholder={i18n.t('studentList:search')}
       hideUnderline
-      onChangeText={this.onSearch}
-      value={this.state.searchQuery}
+      onChangeText={onSearch}
+      value={searchQuery}
     />
   );
-  renderClearInputButton = () => {
-    if (!this.state.searchQuery) {
+
+  const renderClearInputButton = () => {
+    if (!searchQuery) {
       return null;
     }
 
     return (
-      <IconButton type="material" name="close" size={24} color={palette.textBody} onPress={this.onSearchInputClear} />
+      <IconButton type="material" name="close" size={24} color={palette.textBody} onPress={onSearchInputClear} />
     );
   };
 
-  render() {
-    const { navigation } = this.props;
-    const students = navigation.getParam('students');
+  const students = route.params?.students
 
-    return (
-      <NarrowScreenTemplate
-        title={this.renderSearchInput()}
-        navigation={navigation}
-        buttons={this.renderClearInputButton()}
-        isSecondaryView
-      >
-        <FilterableStudentsList students={students} searchQuery={this.state.searchQuery} />
-      </NarrowScreenTemplate>
-    );
-  }
+  return (
+    <NarrowScreenTemplate
+      title={renderSearchInput()}
+      navigation={navigation}
+      buttons={renderClearInputButton()}
+      isSecondaryView
+    >
+      <FilterableStudentsList students={students} searchQuery={searchQuery} />
+    </NarrowScreenTemplate>
+  );
+  
 }
 
 const styles = StyleSheet.create({
