@@ -5,15 +5,18 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {palette, typography} from '../../styles';
 
 import { getIconName } from '../../mocks/defaults';
+import { NavigationProp } from '@react-navigation/native';
+import { Route } from '../../navigation';
 
 interface Props {
   rowNumber: number;
   border?: boolean;
   planItem: PlanItem;
   drag: () => void;
+  navigation: NavigationProp<any>;
 }
 
-export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
+export const TableRow: React.FC<Props> = ({ navigation, planItem, border, drag }) => {
   const [subtaskCount, setSubtaskCount] = useState(0);
 
 
@@ -24,7 +27,7 @@ export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
       //   .get()
       //   .then(snap => setSubtaskCount(snap.size));
     }
-  });
+  }, []);
 
   const refresh = () => {
     // planItem
@@ -34,9 +37,9 @@ export const TableRow: React.FC<Props> = ({ planItem, border, drag }) => {
   };
 
   const navigateToPlanItemUpdate = () => {
-    // NavigationService.navigate(Route.PlanItemTask, {
-    //   planItem,
-    // });
+    navigation.navigate(Route.PlanItemTask, {
+      planItem,
+    });
   };
 
   const onDelete = () => {

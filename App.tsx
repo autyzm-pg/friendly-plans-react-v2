@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import 'react-native-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import {I18nextProvider} from 'react-i18next';
 import {StatusBar} from 'react-native';
@@ -31,10 +31,10 @@ export default function App() {
   }, []);
   return (
     <NavigationContainer>
-    <I18nextProvider i18n={i18n}>
-      <StatusBar hidden />
-      <RootStackNavigation />
-    </I18nextProvider>
+      <I18nextProvider i18n={i18n}>
+        <StatusBar hidden />
+        <RootStackNavigation />
+      </I18nextProvider>
     </NavigationContainer>
   );
 }

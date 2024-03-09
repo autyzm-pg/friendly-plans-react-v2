@@ -6,13 +6,15 @@ import { FullScreenTemplate } from '../../components';
 import { PlanItem } from '../../models';
 import { dimensions, getElevation, palette } from '../../styles';
 import { TableRow } from './TableRow';
+import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
   planItemList: PlanItem[];
   handlePlanListOrderChanged: (planItemList: DragEndParams<PlanItem>) => void;
+  navigation: NavigationProp<any>;
 }
 
-export const TaskTable: FC<Props> = ({ planItemList, handlePlanListOrderChanged }) => {
+export const TaskTable: FC<Props> = ({ navigation, planItemList, handlePlanListOrderChanged }) => {
   const data = planItemList.map(item => ({ ...item, key: item.id, label: item.name }));
 
   const keyExtractor = (item: PlanItem) => `draggable-item-${item.id}`;
@@ -21,17 +23,21 @@ export const TaskTable: FC<Props> = ({ planItemList, handlePlanListOrderChanged 
     <FullScreenTemplate darkBackground extraStyles={styles.fullScreen}>
       <DraggableFlatList
         data={data}
-        renderItem={({ item, index, drag }: RenderItemParams<PlanItem>) => (
-          <View style={styles.tableContainer}>
-            <TableRow
-              planItem={item}
-              border={index !== planItemList.length - 1}
-              key={index}
-              rowNumber={index ? index + 1 : 0}
-              drag={drag}
-            />
-          </View>
-        )}
+        renderItem={({ item, getIndex, drag }: RenderItemParams<PlanItem>) => {
+          const index = getIndex();
+          return (
+            <View style={styles.tableContainer}>
+              <TableRow
+                planItem={item}
+                border={index !== planItemList.length - 1}
+                key={index}
+                rowNumber={index ? index + 1 : 0}
+                drag={drag}
+                navigation={navigation}
+              />
+            </View>
+          );
+        }}
         keyExtractor={keyExtractor}
         onDragEnd={handlePlanListOrderChanged}
         activationDistance={10}

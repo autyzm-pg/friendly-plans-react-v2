@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet} from 'react-native';
 import {Button as ElementsButton, ButtonProps} from 'react-native-elements';
 
@@ -9,7 +9,7 @@ interface Props extends ButtonProps {
   isUppercase?: boolean;
 }
 
-export const Button: React.FunctionComponent<Props> = ({ backgroundColor, isUppercase, icon, ...props }) => (
+export const Button: FC<Props> = ({ backgroundColor, isUppercase, icon, ...props }) => (
   <ElementsButton
     {...props}
     icon={icon}

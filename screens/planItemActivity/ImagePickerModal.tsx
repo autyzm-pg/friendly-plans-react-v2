@@ -2,7 +2,7 @@ import {IconButton} from '../../components';
 import {i18n} from '../../locale';
 import {noop} from 'lodash';
 import {PlanItem} from '../../models';
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, View} from 'react-native';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -22,7 +22,7 @@ interface Props {
     };
 }
 
-export const ImagePickerModal: FunctionComponent<Props> = ({
+export const ImagePickerModal: FC<Props> = ({
                                                                closeModal = noop,
                                                                imageUriUpdate,
                                                                deleteImageUri,

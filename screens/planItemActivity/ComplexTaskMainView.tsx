@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {SafeAreaView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 import {Card, IconButton, ModalTrigger, StyledText, TextInput} from '../../components';
@@ -30,7 +30,7 @@ interface Props {
     };
 }
 
-export const ComplexTaskMainView: FunctionComponent<Props> = ({
+export const ComplexTaskMainView: FC<Props> = ({
                                                                   itemInfo,
                                                                   style,
                                                                   onChange,
@@ -100,7 +100,7 @@ export const ComplexTaskMainView: FunctionComponent<Props> = ({
             {/*            }*/}
 
             {/*        >*/}
-            {/*            <IconButton containerStyle={{marginTop: 53}} name={'md-information-circle'} type={'ionicon'}*/}
+            {/*            <IconButton containerStyle={{marginTop: 53}} name={'information-circle'} type={'ionicon'}*/}
             {/*                        size={40}*/}
             {/*                        disabled color={palette.informationIcon}/>*/}
             {/*        </ModalTrigger>*/}
@@ -198,7 +198,7 @@ export const ComplexTaskMainView: FunctionComponent<Props> = ({
                                 showInfo()
                             }
                         >
-                            <IconButton containerStyle={{marginTop: 15, marginLeft: 10}} name={'md-information-circle'}
+                            <IconButton containerStyle={{marginTop: 15, marginLeft: 10}} name={'information-circle'}
                                         type={'ionicon'}
                                         size={40} disabled color={palette.informationIcon}/>
                         </ModalTrigger>

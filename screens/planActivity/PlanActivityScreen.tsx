@@ -22,20 +22,25 @@ interface Props {
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
     plan: route.params?.plan ?? undefined,
-    planItemList: defaults.planItemsList
+    planItemList: []
   });
   
   const {plan, planItemList} = state;
 
-  // const navigationOptions = {
-  //   title: i18n.t('planList:viewTitle'),
-  // };
+  const setScreenTitle = (title: string) => {
+    navigation.setOptions({
+      title: title,
+    });
+  };
 
   useEffect(() => {
-    // setState(prevState => ({
-    //   ...prevState,
-    //   planItemList: []
-    // }));
+    if(state.plan) {
+      setState(prevState => ({
+        ...prevState,
+        planItemList: defaults.planItemsList
+      }));
+    }
+    setScreenTitle(i18n.t('planList:viewTitle'))
   }, []);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
@@ -132,10 +137,9 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
-    //planItemListRightOrder.forEach(item => item.setOrder(item.order));
     setState(prevState => ({
       ...prevState,
-      planItemList: planItemListRightOrder as []
+      planItemList: planItemListRightOrder as PlanItem[]
     }));
   };
 
@@ -159,7 +163,6 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     const { planItemList } = state;
     let array = planItemList;
     array = shuffle(array);
-    //array.forEach((item, index) => item.setOrder(index));
     setState(prevState => ({
       ...prevState,
       planItemList: array
@@ -173,18 +176,18 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
           <PlanForm
             onSubmit={onSubmit}
             plan={state.plan}
-            numberPlan={route.params?.numberPlan ?? undefined}
+            numberPlan={route.params?.numberPlan ?? {}}
             onValidate={validatePlan}
             shuffleDisabled={shuffleDisabled()}
             playDisabled={playDisabled()}
             onShuffle={shuffleTasks}
-            student={route.params?.student ?? undefined}
+            student={route.params?.student ?? {}}
             navigation={navigation}
           />
         </View>
-        <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} />
+        <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} navigation={navigation}/>
       </FullScreenTemplate>
-      {plan && <FixedCreatePlanItemButton onPress={() => navigateToCreatePlanItem('')} />}
+      {plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
     </>
   );
 }

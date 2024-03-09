@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {StyleSheet, TouchableHighlight, View} from 'react-native';
 
 import {Card, IconButton, StyledText} from '../../components';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 
-export const ComplexTaskItem: FunctionComponent<Props> = ({
+export const ComplexTaskItem: FC<Props> = ({
                                                               name, image, initialTime,
                                                               selected,
                                                               onDelete, onSelectChange

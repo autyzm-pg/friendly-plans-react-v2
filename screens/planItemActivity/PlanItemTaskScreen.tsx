@@ -1,24 +1,33 @@
 import {i18n} from '../../locale';
 import {PlanItem, PlanItemType, PlanSubItem} from '../../models';
-import React from 'react';
-import {NavigationInjectedProps} from '@react-navigation/native';
+import React, { FC, useEffect, useState } from 'react';
 import {PlanItemForm, PlanItemFormData} from './PlanItemForm';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 interface State {
   planItem: PlanItem;
 }
 
-export class PlanItemTaskScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  static navigationOptions = {
-    title: i18n.t('planItemActivity:viewTitleTask'),
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+}
+
+export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
+  const [state, setState] = useState<State>({ planItem: route.params?.planItem ?? undefined });
+  
+  const setScreenTitle = (title: string) => {
+    navigation.setOptions({
+      title: title,
+    });
   };
 
-  state: State = {
-    planItem: this.props.navigation.getParam('planItem'),
-  };
+  React.useEffect(() => {
+    setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
+  }, []);
 
-  getLastItemOrder = (): number => {
-    const planItemList = this.props.navigation.getParam('planItemList');
+  const getLastItemOrder = (): number => {
+    const planItemList = route.params?.planItemList;
     if (!planItemList.length) {
       return 0;
     }
@@ -26,76 +35,89 @@ export class PlanItemTaskScreen extends React.PureComponent<NavigationInjectedPr
     return order;
   };
 
-  createPlanItem = async (data: PlanItemFormData) => {
-    const plan = this.props.navigation.getParam('plan');
-    const planItem = await PlanItem.createPlanItem(plan, data.type, data, this.getLastItemOrder());
+  const createPlanItem = async (data: PlanItemFormData) => {
+    const plan = route.params?.plan;
 
-    if (data.type === PlanItemType.ComplexTask){
-      if(data.subItems.length > 0) {
-        await planItem.getRef().update({nameForChild: data.nameForChild});
-        for (const subItem of data.subItems) {
-          const planSubItemRef = await PlanSubItem.create(planItem);
-          await planSubItemRef.update({'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
-            'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath });
-        }
-      }
+    //@ts-ignore
+    const planItem: PlanItem = {
+      id: "33",
+      name: "LetterB",
+      studentId: "1",
+      planId: plan.id,
+      type: data.type,
+      completed: false,
+      lector: false,
+      nameForChild: i18n.t('planItemActivity:taskNameForChild'),
+      order: getLastItemOrder(),
+      time: data.time,
+      image: "",
+      voicePath: "",
     }
+    // const planItem = await PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder());
 
-    this.setState({planItem});
+    // if (data.type === PlanItemType.ComplexTask){
+    //   if(data.subItems.length > 0) {
+    //     await planItem.getRef().update({nameForChild: data.nameForChild});
+    //     for (const subItem of data.subItems) {
+    //       const planSubItemRef = await PlanSubItem.create(planItem);
+    //       await planSubItemRef.update({'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
+    //         'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath });
+    //     }
+    //   }
+    // }
+
+    setState({planItem: planItem});
   };
 
-  updatePlanItem = async (formData: PlanItemFormData) => {
+  const updatePlanItem = async (formData: PlanItemFormData) => {
     const { name, nameForChild, time, imageUri, lector, voicePath } = formData;
-    await this.state.planItem.update({
-      name,
-      nameForChild,
-      time,
-      image: imageUri,
-      lector,
-      voicePath,
-    });
+    // await state.planItem.update({
+    //   name,
+    //   nameForChild,
+    //   time,
+    //   image: imageUri,
+    //   lector,
+    //   voicePath,
+    // });
 
-    if(formData.type === PlanItemType.ComplexTask) {
+    // if(formData.type === PlanItemType.ComplexTask) {
 
-      for (let i = 0; i < formData.subItems.length; i++) {
-        formData.subItems[i].order = i;
-      }
+    //   for (let i = 0; i < formData.subItems.length; i++) {
+    //     formData.subItems[i].order = i;
+    //   }
 
-      for (const subItem of formData.subItems) {
-        if (subItem.id) {
-          const planSubItemRef = await subItem.getRef();
-          await planSubItemRef.update({
-            'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
-            'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath
-          });
-        } else {
-          const planSubItemRef = await PlanSubItem.create(this.state.planItem);
-          await planSubItemRef.update({
-            'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
-            'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath
-          });
-        }
-      }
+    //   for (const subItem of formData.subItems) {
+    //     if (subItem.id) {
+    //       const planSubItemRef = await subItem.getRef();
+    //       await planSubItemRef.update({
+    //         'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
+    //         'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath
+    //       });
+    //     } else {
+    //       const planSubItemRef = await PlanSubItem.create(this.state.planItem);
+    //       await planSubItemRef.update({
+    //         'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
+    //         'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath
+    //       });
+    //     }
+    //   }
 
-      for (const subItem of formData.deleteSubItems) {
-        subItem.delete();
-      }
+    //   for (const subItem of formData.deleteSubItems) {
+    //     subItem.delete();
+    //   }
 
-    }
+    // }
 
-    this.setState({ planItem: { ...this.state.planItem, name, nameForChild, time, image: imageUri, lector, voicePath } });
+    // setState({ planItem: { ...state.planItem, name, nameForChild, time, image: imageUri, lector, voicePath } });
   };
 
-  onSubmit = (formData: PlanItemFormData) =>
-    this.state.planItem ? this.updatePlanItem(formData) : this.createPlanItem(formData);
+  const onSubmit = (formData: PlanItemFormData) =>
+    state.planItem ? updatePlanItem(formData) : createPlanItem(formData);
 
-  render() {
-    const { planItem } = this.state;
-
-    const planItemList = this.props.navigation.getParam('planItemList');
-    const planItemListCount = planItemList ? planItemList.length + 1 : 0;
-    const planItemType = this.props.navigation.getParam('planItemType');
-
-    return <PlanItemForm itemType={planItemType} planItem={planItem} onSubmit={this.onSubmit} taskNumber={planItemListCount} />;
-  }
+  return <PlanItemForm 
+  itemType={route.params?.planItemType} 
+  planItem={state.planItem} 
+  onSubmit={onSubmit} 
+  taskNumber={route.params?.planItemList ? route.params?.planItemList.length + 1 : 0}
+  navigation={navigation} />;
 }

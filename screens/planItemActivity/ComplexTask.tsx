@@ -1,9 +1,9 @@
 import {FormikProps} from 'formik';
 import i18n from 'i18next';
-import React from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 
-import {ModelSubscriber, PlanItem, PlanSubItem} from '../../models';
+import {/*ModelSubscriber,*/ PlanItem, PlanSubItem} from '../../models';
 import {dimensions, palette} from '../../styles';
 import {Button} from '../../components';
 import {ComplexTaskCoverCard} from './ComplexTaskCoverCard';
@@ -25,223 +25,237 @@ interface State {
     deletedItems: PlanSubItem[];
 }
 
-export class ComplexTask extends React.PureComponent<Props, State> {
-    modelSubscriber: ModelSubscriber<PlanSubItem> = new ModelSubscriber();
-    state: State = {
-        planItem: this.props.planItem,
+export const ComplexTask: FC<Props> = ({planItem, formikProps}) => {
+    const [state, setState] = useState<State>({
+        planItem: planItem,
         subItems: [],
-        formik: this.props.formikProps,
+        formik: formikProps,
         selected: -1,
         deletedItems: [],
+    })
+    const [forceUpdateFlag, setForceUpdateFlag] = useState(false);
+
+    const forceUpdate = () => {
+        setForceUpdateFlag(prevFlag => !prevFlag);
     };
 
-    componentDidMount() {
-        if (this.state.planItem && this.state.planItem.id) {
-            this.modelSubscriber.subscribeCollectionUpdates(this.state.planItem, (subItems: PlanSubItem[]) => {
-                const sortedItems = subItems.sort((a, b) => (a.order > b.order) ? 1 : -1);
-                this.setState({subItems: sortedItems});
-            });
+    useEffect(() => {
+        componentDidMount();
+        return () => {
+            componentWillUnmount();
         }
+      }, []);
+
+    const componentDidMount = () => {
+        // if (state.planItem && state.planItem.id) {
+        //     modelSubscriber.subscribeCollectionUpdates(state.planItem, (subItems: PlanSubItem[]) => {
+        //         const sortedItems = subItems.sort((a, b) => (a.order > b.order) ? 1 : -1);
+        //         setState({subItems: sortedItems});
+        //     });
+        // }
     }
 
 
-    addSubItem = () => {
+    const addSubItem = () => {
         const planSubItem = new PlanSubItem();
         planSubItem.name = '';
         planSubItem.time = 0;
         planSubItem.image = '';
-        planSubItem.order = this.state.subItems.length;
-        const subItems = [...this.state.subItems, planSubItem];
-        this.state.formik.values.subItems = subItems;
-        this.setState({subItems});
+        planSubItem.order = state.subItems.length;
+        const subItems = [...state.subItems, planSubItem];
+        state.formik.values.subItems = subItems;
+        setState(prevState => ({
+            ...prevState,
+            subItems: subItems
+          }));
     };
 
 
-    removeSubItem = (indexToDelete: number) => {
-        const deletedItems = [...this.state.deletedItems];
-        if (this.state.subItems[indexToDelete].id) {
-            deletedItems.push(this.state.subItems[indexToDelete]);
+    const removeSubItem = (indexToDelete: number) => {
+        const deletedItems = [...state.deletedItems];
+        if (state.subItems[indexToDelete].id) {
+            deletedItems.push(state.subItems[indexToDelete]);
         }
 
-        const subItems = [...this.state.subItems];
+        const subItems = [...state.subItems];
         subItems.splice(indexToDelete, 1);
 
-        this.state.formik.values.subItems = subItems;
-        this.state.formik.values.deleteSubItems = deletedItems;
-        this.setState({
-            subItems,
-            selected: indexToDelete === this.state.selected ? -1 : indexToDelete < this.state.selected ? this.state.selected - 1 : this.state.selected,
-            deletedItems,
-        });
+        state.formik.values.subItems = subItems;
+        state.formik.values.deleteSubItems = deletedItems;
+        setState(prevState => ({
+            ...prevState,
+            subItems: subItems,
+            selected: (indexToDelete === state.selected ? -1 : indexToDelete < state.selected ? state.selected - 1 : state.selected),
+            deletedItems: deletedItems,
+        }));
     };
 
 
-    handleTimeChange = (time: number, indexToUpdate: number) => {
-        const subItems = [...this.state.subItems];
+    const handleTimeChange = (time: number, indexToUpdate: number) => {
+        const subItems = [...state.subItems];
         subItems[indexToUpdate].time = time;
 
-        this.state.formik.values.subItems = subItems;
-        this.setState({subItems});
+        state.formik.values.subItems = subItems;
+        setState(prevState => ({...prevState, subItems: subItems}));
     };
 
 
-    changeName = (text: string, index: number) => {
+    const changeName = (text: string, index: number) => {
         if (index === -1) {
-            this.updateTaskName(text);
+            updateTaskName(text);
             return;
         }
-        this.updateSubItemName(text, index);
+        updateSubItemName(text, index);
     };
 
-    updateTaskName = (name: string) => {
-        this.state.formik.values.nameForChild = name;
-        this.forceUpdate();
+    const updateTaskName = (name: string) => {
+        state.formik.values.nameForChild = name;
+        forceUpdate();
     };
 
-    updateSubItemName = (text: string, indexToUpdate: number) => {
-        const subItems = [...this.state.subItems];
+    const updateSubItemName = (text: string, indexToUpdate: number) => {
+        const subItems = [...state.subItems];
         subItems[indexToUpdate].name = text;
 
-        this.state.formik.values.subItems = subItems;
-        this.setState({subItems});
+        state.formik.values.subItems = subItems;
+        setState(prevState => ({...prevState, subItems: subItems}));
     };
 
 
-    updateImage = (image: string, index: number) => {
+    const updateImage = (image: string, index: number) => {
         if (index === -1) {
-            this.updateTaskImage(image);
+            updateTaskImage(image);
             return;
         }
 
-        this.updateSubItemImage(image, index);
+        updateSubItemImage(image, index);
     };
 
-    updateTaskImage = (image: string) => {
-        this.state.formik.values.imageUri = image;
-        this.forceUpdate();
+    const updateTaskImage = (image: string) => {
+        state.formik.values.imageUri = image;
+        forceUpdate();
     };
 
-    updateSubItemImage = (image: string, indexToUpdate: number) => {
-        const subItems = [...this.state.subItems];
+    const updateSubItemImage = (image: string, indexToUpdate: number) => {
+        const subItems = [...state.subItems];
         subItems[indexToUpdate].image = image;
 
-        this.state.formik.values.subItems = subItems;
-        this.setState({subItems});
+        state.formik.values.subItems = subItems;
+        setState(prevState => ({...prevState, subItems: subItems}));
     };
 
 
-    changeSelected = (indexToSelect: number) => {
-        this.setState({selected: indexToSelect});
+    const changeSelected = (indexToSelect: number) => {
+        setState(prevState => ({...prevState, selected: indexToSelect}));
     };
 
 
-    updateVoice = (voice: { voicePath: string, lector: boolean }, index: number) => {
+    const updateVoice = (voice: { voicePath: string, lector: boolean }, index: number) => {
         if (index === -1) {
-            this.updateTaskVoice(voice);
+            updateTaskVoice(voice);
             return;
         }
 
-        this.updateSubItemVoice(voice, index);
+        updateSubItemVoice(voice, index);
     };
 
-    updateTaskVoice = (voice: { voicePath: string, lector: boolean }) => {
-        this.state.formik.values.voicePath = voice.voicePath;
-        this.state.formik.values.lector = voice.lector;
-        this.forceUpdate();
+    const updateTaskVoice = (voice: { voicePath: string, lector: boolean }) => {
+        state.formik.values.voicePath = voice.voicePath;
+        state.formik.values.lector = voice.lector;
+        forceUpdate();
     };
 
-    updateSubItemVoice = (voice: { voicePath: string, lector: boolean }, indexToUpdate: number) => {
-        const subItems = [...this.state.subItems];
+    const updateSubItemVoice = (voice: { voicePath: string, lector: boolean }, indexToUpdate: number) => {
+        const subItems = [...state.subItems];
         subItems[indexToUpdate].voicePath = voice.voicePath;
         subItems[indexToUpdate].lector = voice.lector;
 
-        this.state.formik.values.subItems = subItems;
-        this.setState({subItems});
+        state.formik.values.subItems = subItems;
+        setState(prevState => ({...prevState, subItems: subItems}));
     };
 
 
-    renderSubItems = () => {
-        const subItems = [...this.state.subItems];
+    const renderSubItems = () => {
+        const subItems = [...state.subItems];
         const subItemsTSX = [];
         for (let i = 0; i < subItems.length; i++) {
             subItemsTSX.push(<ComplexTaskItem key={i} name={subItems[i].name} image={subItems[i].image}
-                                              selected={this.state.selected === i}
-                                              initialTime={subItems[i].time} onDelete={() => this.removeSubItem(i)}
-                                              onSelectChange={() => this.changeSelected(i)}/>);
+                                              selected={state.selected === i}
+                                              initialTime={subItems[i].time} onDelete={() => removeSubItem(i)}
+                                              onSelectChange={() => changeSelected(i)}/>);
         }
         return subItemsTSX;
     };
 
 
-    renderMainView = () => {
+    const renderMainView = () => {
         const itemInfo = {name: '', time: 0, key: -1, image: '', lector: false, voicePath: ''};
-        if (this.state.selected === -1) {
-            itemInfo.name = this.state.formik.values.nameForChild;
-            itemInfo.image = this.state.formik.values.imageUri;
-            itemInfo.lector = this.state.formik.values.lector;
-            itemInfo.voicePath = this.state.formik.values.voicePath;
+        if (state.selected === -1) {
+            itemInfo.name = state.formik.values.nameForChild;
+            itemInfo.image = state.formik.values.imageUri;
+            itemInfo.lector = state.formik.values.lector;
+            itemInfo.voicePath = state.formik.values.voicePath;
 
             return <ComplexTaskMainView key={itemInfo.key}
-                                        updateImage={image => this.updateImage(image, this.state.selected)}
-                                        onTimeChange={time => this.handleTimeChange(time, this.state.selected)}
-                                        onChange={text => this.changeName(text, this.state.selected)}
-                                        voiceChange={voice => this.updateVoice(voice, this.state.selected)}
-                                        style={styles.simpleTask} planItem={this.props.planItem}
-                                        formikProps={this.state.formik}
+                                        updateImage={image => updateImage(image, state.selected)}
+                                        onTimeChange={time => handleTimeChange(time, state.selected)}
+                                        onChange={text => changeName(text, state.selected)}
+                                        voiceChange={voice => updateVoice(voice, state.selected)}
+                                        style={styles.simpleTask} planItem={planItem}
+                                        formikProps={state.formik}
                                         itemInfo={itemInfo}/>;
         }
 
-        const subItem = this.state.subItems[this.state.selected];
-        itemInfo.key = this.state.selected;
+        const subItem = state.subItems[state.selected];
+        itemInfo.key = state.selected;
         itemInfo.time = subItem.time;
         itemInfo.name = subItem.name;
         itemInfo.image = subItem.image;
         itemInfo.lector = subItem.lector;
         itemInfo.voicePath = subItem.voicePath;
         return <ComplexTaskMainView key={itemInfo.key}
-                                    updateImage={image => this.updateImage(image, this.state.selected)}
-                                    onTimeChange={time => this.handleTimeChange(time, this.state.selected)}
-                                    onChange={text => this.changeName(text, this.state.selected)}
-                                    voiceChange={voice => this.updateVoice(voice, this.state.selected)}
-                                    style={styles.simpleTask} planItem={this.props.planItem}
-                                    formikProps={this.state.formik}
+                                    updateImage={image => updateImage(image, state.selected)}
+                                    onTimeChange={time => handleTimeChange(time, state.selected)}
+                                    onChange={text => changeName(text, state.selected)}
+                                    voiceChange={voice => updateVoice(voice, state.selected)}
+                                    style={styles.simpleTask} planItem={planItem}
+                                    formikProps={state.formik}
                                     itemInfo={itemInfo}/>;
     };
 
 
-    componentWillUnmount() {
-        this.state.formik.submitForm();
+    const componentWillUnmount = () => {
+        state.formik.submitForm();
 
-        if (this.state.planItem && this.state.planItem.id) {
-            this.modelSubscriber.unsubscribeCollectionUpdates();
+        if (state.planItem && state.planItem.id) {
+            // modelSubscriber.unsubscribeCollectionUpdates();
         }
 
         Alert.alert(
             i18n.t('planItemActivity:alertTitle'),
-            this.props.planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
+            planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
         );
     }
 
-    render() {
-        return (
-            <SafeAreaView style={styles.safeAreaView}>
-                <View style={styles.container}>
-                    <View style={styles.complexTask}>
-                        <ComplexTaskCoverCard selected={this.state.selected === -1}
-                                              name={this.state.formik.values.nameForChild}
-                                              image={this.state.formik.values.imageUri}
-                                              onSelectChange={() => this.changeSelected(-1)}/>
-                        <ScrollView>
-                            {this.renderSubItems()}
-                            <Button buttonStyle={{borderRadius: 12, paddingBottom: 24, paddingTop: 24}} onPress={this.addSubItem}
-                                    title={i18n.t('planItemActivity:complexTaskAddSubTaskButton')}/>
-                        </ScrollView>
-                    </View>
-                    {this.renderMainView()}
+
+    return (
+        <SafeAreaView style={styles.safeAreaView}>
+            <View style={styles.container}>
+                <View style={styles.complexTask}>
+                    <ComplexTaskCoverCard selected={state.selected === -1}
+                                            name={state.formik.values.nameForChild}
+                                            image={state.formik.values.imageUri}
+                                            onSelectChange={() => changeSelected(-1)}/>
+                    <ScrollView>
+                        {renderSubItems()}
+                        <Button buttonStyle={{borderRadius: 12, paddingBottom: 24, paddingTop: 24}} onPress={addSubItem}
+                                title={i18n.t('planItemActivity:complexTaskAddSubTaskButton')}/>
+                    </ScrollView>
                 </View>
-            </SafeAreaView>
-        );
-    }
+                {renderMainView()}
+            </View>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

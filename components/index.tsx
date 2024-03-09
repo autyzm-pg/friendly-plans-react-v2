@@ -20,6 +20,6 @@ export {StudentListElement} from './StudentListElement';
 export {StyledText} from './StyledText';
 export {SwitchItem} from './SwitchItem';
 export {TextInput} from './TextInput';
-// export {Slider} from './Slider';
+export {Slider} from './Slider';
 export {StudentSettings} from './studentSettings/StudentSettings';
 export {PlayButton} from './PlayButton';
