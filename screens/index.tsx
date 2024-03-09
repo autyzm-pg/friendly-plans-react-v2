@@ -13,7 +13,7 @@ export { StudentsListSearchScreen } from './studentsListSearch/StudentsListSearc
 // export { PlanActivityScreen } from './planActivity/PlanActivityScreen';
 // export { PlanItemTaskScreen } from './planItemActivity/PlanItemTaskScreen';
 // export { ImageLibraryScreen } from './planItemActivity/ImageLibraryScreen';
-// export { StudentCreateScreen } from './studentCreate/StudentCreateScreen';
+export { StudentCreateScreen } from './studentCreate/StudentCreateScreen';
 // // export { StudentsListForCopyPlanScreen } from '../copyExistingPlan/students/StudentsListForCopyPlanScreen';
 // // export { StudentsListSearchForCopyPlanScreen } from '../copyExistingPlan/students/StudentsListSearchForCopyPlanScreen';
 // // export { PlansListForCopyScreen } from '../copyExistingPlan/plans/PlansListForCopyScreen';

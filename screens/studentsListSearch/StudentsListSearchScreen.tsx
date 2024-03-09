@@ -59,7 +59,7 @@ export const StudentsListSearchScreen: React.FC<Props> = ({navigation, route}) =
       buttons={renderClearInputButton()}
       isSecondaryView
     >
-      <FilterableStudentsList students={students} searchQuery={searchQuery} />
+      <FilterableStudentsList students={students} searchQuery={searchQuery} navigation={navigation}/>
     </NarrowScreenTemplate>
   );
   

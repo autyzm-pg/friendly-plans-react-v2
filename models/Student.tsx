@@ -30,9 +30,11 @@ export interface StudentData {
 
 // TODO: change so that student does not implement SubscribableModel
 export class Student implements SubscribableModel, StudentData {
-  static create = (data: StudentData): Promise<RNFirebase.firestore.DocumentReference> => getStudentsRef().add(data);
 
-
+  // TODO: save new student to database
+  static create = (data: StudentData): void => {
+    console.log("Adding new student", data)
+  }
 
   id!: string;
   name: string;
