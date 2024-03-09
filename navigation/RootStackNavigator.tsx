@@ -5,11 +5,11 @@ import {Route} from './routes';
 
 import { Easing } from 'react-native';
 import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
-import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { StudentSettingsScreen } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
+import { PlanItemTaskScreen } from '../screens/planItemActivity/PlanItemTaskScreen';
 
 const Stack = createStackNavigator();
 
@@ -42,11 +42,11 @@ export function RootStackNavigation() {
         component={DashboardScreen}
         options={{}}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name={Route.PlanItemTask}
         component={PlanItemTaskScreen}
         options={{}}
-      /> */}
+      />
       <Stack.Screen
         name={Route.StudentSettings}
         component={StudentSettingsScreen}

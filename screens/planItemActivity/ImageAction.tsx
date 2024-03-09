@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 
 import { StyledText } from '../../components';
 import { StyleSheet, View } from 'react-native';
@@ -9,7 +9,7 @@ interface Props {
   title: string;
 }
 
-export const ImageAction: SFC<Props> = ({ children, title }) => (
+export const ImageAction: FC<Props> = ({ children, title }) => (
   <View style={styles.container}>
     <View style={styles.icon}>{children}</View>
     <StyledText style={styles.title}>{title}</StyledText>

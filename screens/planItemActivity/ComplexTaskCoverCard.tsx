@@ -1,11 +1,10 @@
-import React, {FunctionComponent, useState} from 'react';
-import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import React, {FC} from 'react';
+import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
-import {Card, Icon, IconButton, ModalTrigger, StyledText, TextInput} from '../../components';
+import {Card, StyledText} from '../../components';
 import {Image} from 'react-native-elements';
 import {i18n} from '../../locale';
 import { dimensions, palette, typography } from '../../styles';
-import {TimeSlider} from './TimeSlider';
 
 interface Props {
   name: string;
@@ -16,7 +15,7 @@ interface Props {
 
 
 
-export const ComplexTaskCoverCard: FunctionComponent<Props> = ({ name, image,
+export const ComplexTaskCoverCard: FC<Props> = ({ name, image,
                                                             selected = false, onSelectChange}) => {
 
   const showInfo = () => {

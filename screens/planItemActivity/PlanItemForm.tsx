@@ -2,7 +2,7 @@ import {StyledText, TextInput} from '../../components';
 import {Formik, FormikProps} from 'formik';
 import {i18n} from '../../locale';
 import {PlanItem, PlanItemType, PlanSubItem} from '../../models';
-import React from 'react';
+import React, {FC, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {dimensions, getElevation, palette, typography} from '../../styles';
 import * as Yup from 'yup';
@@ -10,6 +10,7 @@ import {Break} from './Break';
 import {ComplexTask} from './ComplexTask';
 import {Interaction} from './Interaction';
 import {SimpleTask} from './SimpleTask';
+import {NavigationProp} from '@react-navigation/native';
 
 export interface PlanItemFormData {
   name: string;
@@ -28,39 +29,40 @@ interface Props {
   planItem: PlanItem;
   taskNumber: number;
   itemType: PlanItemType;
+  navigation: NavigationProp<any>;
 }
 
 interface State {
   taskType: PlanItemType;
 }
 
-export class PlanItemForm extends React.PureComponent<Props, State> {
-  state: State = {
-    taskType: this.props.planItem ? this.props.planItem.type : this.props.itemType,
-  };
+export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNumber, itemType}) => {
+  const [state, setState] = useState<State>({
+    taskType: planItem ? planItem.type : itemType
+  })
 
-  initialValues: PlanItemFormData = {
-    name: this.props.planItem
-      ? this.props.planItem.name
-      : `${i18n.t('planItemActivity:newTask')}${this.props.taskNumber}`,
-    nameForChild: this.props.planItem ? this.props.planItem.nameForChild : '',
-    time: this.props.planItem ? this.props.planItem.time : 0,
+  const initialValues: PlanItemFormData = {
+    name: planItem
+      ? planItem.name
+      : `${i18n.t('planItemActivity:newTask')}${taskNumber}`,
+    nameForChild: planItem ? planItem.nameForChild : '',
+    time: planItem ? planItem.time : 0,
     subItems: [],
     deleteSubItems: [],
-    type: this.props.planItem ? this.props.planItem.type : this.props.itemType,
-    imageUri: this.props.planItem ? this.props.planItem.image : '',
-    lector: this.props.planItem ? this.props.planItem.lector : false,
-    voicePath: this.props.planItem ? this.props.planItem.voicePath : '',
+    type: planItem ? planItem.type : itemType,
+    imageUri: planItem ? planItem.image : '',
+    lector: planItem ? planItem.lector : false,
+    voicePath: planItem ? planItem.voicePath : '',
   };
 
-  validationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     name: Yup.string().required('Required!'),
     nameForChild: Yup.string(),
     time: Yup.number(),
   });
 
 
-  renderFormControls = (formikProps: FormikProps<PlanItemFormData>) => {
+  const renderFormControls = (formikProps: FormikProps<PlanItemFormData>) => {
     const { values, handleChange, errors, touched } = formikProps;
 
     return (
@@ -75,27 +77,25 @@ export class PlanItemForm extends React.PureComponent<Props, State> {
               onChangeText={handleChange('name')}
             />
             {errors.name && touched.name && <StyledText style={styles.errorMessage}>{errors.name}</StyledText>}
-
           </View>
         </View>
-        {(this.state.taskType === PlanItemType.SimpleTask) && <SimpleTask style={styles.simpleTaskContainer} planItem={this.props.planItem} formikProps={formikProps} />}
-        {(this.state.taskType === PlanItemType.ComplexTask) && <ComplexTask planItem={this.props.planItem} formikProps={formikProps} />}
-        {(this.state.taskType === PlanItemType.Interaction) && <Interaction style={styles.simpleTaskContainer} planItem={this.props.planItem} formikProps={formikProps}/>}
-        {(this.state.taskType === PlanItemType.Break) && <Break style={styles.simpleTaskContainer} planItem={this.props.planItem} formikProps={formikProps}/>}
+        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} />}
+        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask planItem={planItem} formikProps={formikProps} />}
+        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
+        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
       </>
     );
   };
 
-  render() {
-    return (
-      <Formik
-        initialValues={this.initialValues}
-        validationSchema={this.validationSchema}
-        onSubmit={this.props.onSubmit}
-        render={this.renderFormControls}
-      />
-    );
-  }
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
+      {(formikProps) => (renderFormControls(formikProps))}
+      </Formik>
+  );
 }
 
 const styles = StyleSheet.create({

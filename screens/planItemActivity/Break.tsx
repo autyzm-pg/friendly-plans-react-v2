@@ -1,50 +1,62 @@
-import React, { useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {Alert, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 import { Card, IconButton, ModalTrigger, TextInput } from '../../components';
 import { FormikProps } from 'formik';
 import { i18n } from '../../locale';
-import { PlanElement, PlanItem, Student } from '../../models';
+import { PlanItem } from '../../models';
 import {Text} from 'react-native-elements';
 import { dimensions, palette, typography } from '../../styles';
 import { ImagePicker } from './ImagePicker';
 import { PlanItemFormData } from './PlanItemForm';
 import { TimeSlider } from './TimeSlider';
-import {VoicePicker} from './voicePicker/VoicePicker';
+import { VoicePicker } from './voicePicker/VoicePicker';
+import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
   planItem: PlanItem;
   formikProps: FormikProps<PlanItemFormData>;
   style?: StyleProp<ViewStyle>;
+  navigation: NavigationProp<any>;
 }
 
 interface State {
   selectedTime: number;
 }
 
-export class Break extends React.PureComponent<Props, State> {
-  static navigationOptions = {
-    title: i18n.t('planItemActivity:viewTitleTask'),
-  };
-  state: Readonly<State> = {
-    selectedTime: this.props.formikProps.initialValues.time,
+export const Break: FC<Props> = ({ navigation, planItem, formikProps, style }) => {
+  const [state, setState] = useState<State>({
+    selectedTime: formikProps.initialValues.time
+  })
+
+  const setScreenTitle = (title: string) => {
+    navigation.setOptions({
+      title: title,
+    });
   };
 
-  timeInfo = () => {
-    const hours = Math.floor(this.state.selectedTime / 3600);
-    const minutes = Math.floor((this.state.selectedTime - hours*3600) / 60);
-    const seconds = this.state.selectedTime - minutes*60 - hours*3600;
+  useEffect(() => {
+    setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
+    return () => {
+      componentWillUnmount();
+    }
+  }, []);
+
+  const timeInfo = () => {
+    const hours = Math.floor(state.selectedTime / 3600);
+    const minutes = Math.floor((state.selectedTime - hours*3600) / 60);
+    const seconds = state.selectedTime - minutes*60 - hours*3600;
 
     return (hours + minutes + seconds) > 0 ? (hours + ':' + minutes + ':' + seconds) : 'none';
   };
 
-  handleConfirmTimer = (time: number) => {
-    this.props.formikProps.setFieldValue('time', time);
-    this.setState({ selectedTime: time });
+  const handleConfirmTimer = (time: number) => {
+    formikProps.setFieldValue('time', time);
+    setState({ selectedTime: time });
   };
 
 
-  showInfo = () => {
+  const showInfo = () => {
     return (
         <View style={styles.imageActionContainer}>
           <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('planItemActivity:infoBoxNameForChild')}</Text>
@@ -52,75 +64,70 @@ export class Break extends React.PureComponent<Props, State> {
     );
   };
 
-  componentWillUnmount() {
-    this.props.formikProps.submitForm();
+  const componentWillUnmount = () => {
+    formikProps.submitForm();
     Alert.alert(
         i18n.t('planItemActivity:alertTitle'),
-        this.props.planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
+        planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
     );
   }
 
-  render() {
-    const {values, handleChange} = this.props.formikProps;
-    const timeInfo = this.timeInfo;
+  return (
+      <SafeAreaView style={style}>
+        <Card style={[styles.container]}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+            <VoicePicker planItem={planItem} formikProps={formikProps}
+                          isComplexTask={false} selected={{key: -2, voicePath: '', lector: false}}/>
 
-    return (
-        <SafeAreaView style={this.props.style}>
-          <Card style={[styles.container]}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-              <VoicePicker planItem={this.props.planItem} formikProps={this.props.formikProps}
-                           isComplexTask={false} selected={{key: -2, voicePath: '', lector: false}}/>
+            <ModalTrigger
+                title={i18n.t('break:setTimer')}
+                modalContent={
+                  <TimeSlider min={[0, 0, 0]} max={[2, 60, 60]} onConfirm={handleConfirmTimer}
+                              savedTime={state.selectedTime}/>
+                }
+            >
+              <IconButton
+                  name={timeInfo() !== 'none' ? 'timer' : 'alarm-off'}
+                  type="material"
+                  label={timeInfo() === 'none' ? i18n.t('planItemActivity:timerButton') : timeInfo()}
+                  containerStyle={styles.iconButtonContainer}
+                  size={40}
+                  color={palette.primaryVariant}
+                  disabled
+              />
+            </ModalTrigger>
+          </View>
+
+
+          <View style={{flexDirection: 'column', alignItems: 'center', marginBottom: 20, height: '100%', width: '100%'}}>
+            <ImagePicker planItem={planItem} formikProps={formikProps}
+                          isComplexTask={false} selected={{key: -2, image: ''}}/>
+
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <TextInput
+                  style={styles.imageInputTextContainer}
+                  textStyle={styles.imageInputText}
+                  placeholder={i18n.t('planItemActivity:taskNameForChild')}
+                  value={formikProps.values.nameForChild}
+                  onChangeText={formikProps.handleChange('nameForChild')}
+              />
 
               <ModalTrigger
-                  title={i18n.t('break:setTimer')}
+                  title={i18n.t('planItemActivity:infoBox')}
                   modalContent={
-                    <TimeSlider min={[0, 0, 0]} max={[2, 60, 60]} onConfirm={this.handleConfirmTimer}
-                                savedTime={this.state.selectedTime}/>
+                    showInfo()
                   }
               >
-                <IconButton
-                    name={timeInfo() !== 'none' ? 'timer' : 'alarm-off'}
-                    type="material"
-                    label={timeInfo() === 'none' ? i18n.t('planItemActivity:timerButton') : timeInfo()}
-                    containerStyle={styles.iconButtonContainer}
-                    size={40}
-                    color={palette.primaryVariant}
-                    disabled
-                />
+                <IconButton containerStyle={{marginTop: 15, marginLeft: 10}} name={'information-circle'}
+                            type={'ionicon'}
+                            size={40} disabled color={palette.informationIcon}/>
               </ModalTrigger>
             </View>
+          </View>
 
-
-            <View style={{flexDirection: 'column', alignItems: 'center', marginBottom: 20, height: '100%', width: '100%'}}>
-              <ImagePicker planItem={this.props.planItem} formikProps={this.props.formikProps}
-                           isComplexTask={false} selected={{key: -2, image: ''}}/>
-
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <TextInput
-                    style={styles.imageInputTextContainer}
-                    textStyle={styles.imageInputText}
-                    placeholder={i18n.t('planItemActivity:taskNameForChild')}
-                    value={values.nameForChild}
-                    onChangeText={handleChange('nameForChild')}
-                />
-
-                <ModalTrigger
-                    title={i18n.t('planItemActivity:infoBox')}
-                    modalContent={
-                      this.showInfo()
-                    }
-                >
-                  <IconButton containerStyle={{marginTop: 15, marginLeft: 10}} name={'md-information-circle'}
-                              type={'ionicon'}
-                              size={40} disabled color={palette.informationIcon}/>
-                </ModalTrigger>
-              </View>
-            </View>
-
-          </Card>
-        </SafeAreaView>
-    );
-  }
+        </Card>
+      </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({

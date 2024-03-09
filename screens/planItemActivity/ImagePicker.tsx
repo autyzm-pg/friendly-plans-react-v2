@@ -1,5 +1,5 @@
 import {FormikProps} from 'formik';
-import React, {FunctionComponent, PureComponent, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Image} from 'react-native-elements';
 
@@ -21,7 +21,7 @@ interface Props {
     };
 }
 
-export const ImagePicker: FunctionComponent<Props> = ({
+export const ImagePicker: FC<Props> = ({
                                                           planItem,
                                                           formikProps,
                                                           updateComplexTaskImage,

@@ -1,12 +1,12 @@
-import {IconButton} from '../../components';
-import {i18n} from '../../locale';
+import {IconButton} from '../../../components';
+import {i18n} from '../../../locale';
 import {noop} from 'lodash';
-import {PlanItem} from '../../models';
-import React, {FunctionComponent} from 'react';
+import {PlanItem} from '../../../models';
+import React, {FC} from 'react';
 import {StyleSheet, View} from 'react-native';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import {dimensions} from '../../styles';
+import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
     };
 }
 
-export const VoicePickerModal: FunctionComponent<Props> = ({
+export const VoicePickerModal: FC<Props> = ({
                                                                closeModal = noop,
                                                                voiceUriUpdate, deleteVoice,
                                                                currentVoiceUri,
@@ -68,7 +68,6 @@ export const VoicePickerModal: FunctionComponent<Props> = ({
         } else if (selected!.voicePath && isComplexTask) {
             await ImagePicker.cleanSingle(selected!.voicePath.substring(0, selected!.voicePath.lastIndexOf('/')))
                 .catch(deleteVoice);
-            // selected!.voicePath = '';
         }
         deleteVoice();
     };

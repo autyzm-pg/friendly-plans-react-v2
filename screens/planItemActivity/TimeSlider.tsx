@@ -1,4 +1,4 @@
-import React, { SFC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Slider } from '../../components';
@@ -13,7 +13,7 @@ interface Props {
   onConfirm?: (time: number) => void;
 }
 
-export const TimeSlider: SFC<Props> = ({ min, max, closeModal, onConfirm,
+export const TimeSlider: FC<Props> = ({ min, max, closeModal, onConfirm,
                                          savedTime}) => {
 
   const initHours = Math.floor(savedTime / 3600);

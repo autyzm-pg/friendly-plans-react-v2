@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {
   RegisteredStyle,
   StyleProp,
@@ -14,11 +14,8 @@ interface Props {
   style?: RegisteredStyle<ViewStyle> | ViewStyle | StyleProp<ViewStyle>;
 }
 
-export class Card extends React.PureComponent<Props> {
-  render() {
-    const {children, style} = this.props;
-    return <View style={[styles.container, style]}>{children}</View>;
-  }
+export const Card: FC<Props> = ({style, children}) => {
+  return <View style={[styles.container, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
