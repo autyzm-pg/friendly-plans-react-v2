@@ -4,16 +4,18 @@ import { StyleSheet, TouchableHighlight } from 'react-native';
 import { StyledText } from '../components';
 import { AuthUser, Student } from '../models';
 import { Route } from '../navigation';
-import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
 import { dimensions, palette, typography } from '../styles';
+import { NavigationProp } from '@react-navigation/native';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   student: Student;
+  navigation: NavigationProp<any>;
 }
 
-const StudentName: FC<Props> = ({ student, navigation }) => {
+export const StudentListElement: FC<Props> = ({ student, navigation }) => {
   const setCurrentStudent = async () => {
-    await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
+    // TODO: Setting current user
+    // await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
     navigation.navigate(Route.Dashboard, {
       student,
     });
@@ -38,5 +40,3 @@ const styles = StyleSheet.create({
     marginBottom: dimensions.spacingSmall,
   },
 });
-
-export const StudentListElement = withNavigation(StudentName);

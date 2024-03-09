@@ -7,9 +7,10 @@ import { Easing } from 'react-native';
 import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import {UnauthenticatedStackNavigator} from './UnauthenticatedStackNavigator';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
-import { StudentSettingsScreen } from '../screens';
+import { StudentCreateScreen, StudentSettingsScreen, StudentsListSearchScreen } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
+import { StudentsListScreen } from '../screens/studentsList/StudentsListScreen';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,21 @@ export function RootStackNavigation() {
         component={PlanActivityScreen}
         options={{}}
       />
+      <Stack.Screen
+        name={Route.StudentsList}
+        component={StudentsListScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentsListSearch}
+        component={StudentsListSearchScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentCreate}
+        component={StudentCreateScreen}
+        options={{}}
+      />
       {/* TODO: uncomment working screen */}
       {/* 
       <Stack.Screen
@@ -87,21 +103,6 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.Dialog}
         component={DialogScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentCreate}
-        component={StudentCreateScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentsList}
-        component={StudentsListScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentsListSearch}
-        component={StudentsListSearchScreen}
         options={{}}
       />
       <Stack.Screen

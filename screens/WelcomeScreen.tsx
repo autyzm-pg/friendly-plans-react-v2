@@ -27,7 +27,6 @@ export const WelcomeScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
-    console.log('Component mounted');
     //const currentUser = firebase.auth().currentUser;
     //if (currentUser) {
     //  this.props.navigation.navigate(Route.Authenticated);

@@ -1,56 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
-//import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { NarrowScreenTemplate, StudentSettings } from '../../components';
 import { i18n } from '../../locale';
 import {AuthUser, Student, StudentData, StudentDisplayOption, StudentTextSizeOption} from '../../models';
 import { Route } from '../../navigation';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 interface State {
   student: Student;
 }
 
-export class StudentCreateScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  state = {
-    student: new Student(),
-  };
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+}
 
-  componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
+export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
+  const [student, setStudent] = useState(new Student())
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    }
+  }, []);
 
-  handleBackButtonPressAndroid = () => {
-    if (!this.props.navigation.isFocused()) {
+  const handleBackButtonPressAndroid = () => {
+    if (!navigation.isFocused()) {
       return false;
     }
-    return !this.canNavigateBack;
+    return !canNavigateBack();
   };
 
-  createStudent = async (data: StudentData) => {
+  const createStudent = async (data: StudentData) => {
+    // TODO: create new student
     const student = await Student.create(data);
-    await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
-    this.props.navigation.navigate(Route.Dashboard);
+    // TODO: set current user
+    //await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
+    navigation.navigate(Route.Dashboard);
   };
 
-  get canNavigateBack(): boolean {
-    return this.props.navigation.getParam('canNavigateBack') !== false;
+  const canNavigateBack = (): boolean => {
+    return route.params?.canNavigateBack !== false;
   }
 
-  render() {
-    const { student } = this.state;
-    return (
-      <NarrowScreenTemplate
-        canNavigateBack={this.canNavigateBack}
-        title={i18n.t('studentSettings:createStudentTitle')}
-        navigation={this.props.navigation}
-      >
-        <StudentSettings student={student} onStudentCreate={this.createStudent} />
-      </NarrowScreenTemplate>
-    );
-  }
+  return (
+    <NarrowScreenTemplate
+      canNavigateBack={canNavigateBack()}
+      title={i18n.t('studentSettings:createStudentTitle')}
+      navigation={navigation}
+    >
+      <StudentSettings student={student} onStudentCreate={createStudent} />
+    </NarrowScreenTemplate>
+  );
 }

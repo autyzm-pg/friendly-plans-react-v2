@@ -1,65 +1,60 @@
-import React from 'react';
-import { BackHandler, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, StyleSheet, Text } from 'react-native';
 //import { NavigationInjectedProps } from '@react-navigation/native';
 
 import { IconButton, NarrowScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
-import {AuthUser, ModelSubscriber, Student} from '../../models';
+import { AuthUser, ModelSubscriber, Student } from '../../models';
 import { Route } from '../../navigation';
 import { dimensions, palette } from '../../styles';
 import { StudentsList } from './StudentsList';
+import { NavigationProp } from '@react-navigation/native';
 
-interface State {
-  students: Student[];
+import { defaults } from '../../mocks/defaults'
+
+interface Props {
+  navigation: NavigationProp<any>;
 }
 
-export class StudentsListScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  modelSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
+export const StudentsListScreen: React.FC<Props> = ({ navigation }) => {
 
-  state: State = {
-    students: [],
-  };
-
-  componentDidMount() {
-      this.modelSubscriber.subscribeCollectionUpdates(AuthUser.getAuthenticatedUser(), (students: Student[]) => {
-        this.setState({ students });
-      });
-
-      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
+  const [students, setStudents] = useState<Student[]>(defaults.studentsList);
 
 
+  useEffect(() => {
+    // TODO: pobieranie listy studentów
+    setStudents(defaults.studentsList);
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    };
+  }, []);
 
 
-  componentWillUnmount() {
-    this.modelSubscriber.unsubscribeCollectionUpdates();
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
 
-  handleBackButtonPressAndroid = () => {
-    if (!this.props.navigation.isFocused()) {
+  const handleBackButtonPressAndroid = () => {
+    if (!navigation.isFocused()) {
       return false;
     }
-    return !this.canNavigateBack;
+    return !canNavigateBack;
   };
 
-  navigateToStudentsSearch = () => {
-    this.props.navigation.navigate(Route.StudentsListSearch, {
-      students: this.state.students,
+  const navigateToStudentsSearch = () => {
+    navigation.navigate(Route.StudentsListSearch, {
+      students: students,
     });
   };
 
-  get screenName(): string {
+  const screenName = (): string => {
     return i18n.t('studentList:screenTitle');
   }
 
-  handleNavigateToCreateStudent = () => {
-    this.props.navigation.navigate(Route.StudentCreate);
+  const handleNavigateToCreateStudent = () => {
+    navigation.navigate(Route.StudentCreate);
   };
 
-
-
-  renderHeaderButtons() {
+  const renderHeaderButtons = () => {
     return (
       <>
         <IconButton
@@ -68,7 +63,7 @@ export class StudentsListScreen extends React.PureComponent<NavigationInjectedPr
           type="material"
           size={24}
           color={palette.textWhite}
-          onPress={this.handleNavigateToCreateStudent}
+          onPress={handleNavigateToCreateStudent}
         />
         <IconButton
           containerStyle={styles.iconContainer}
@@ -76,34 +71,26 @@ export class StudentsListScreen extends React.PureComponent<NavigationInjectedPr
           type="material"
           size={24}
           color={palette.textWhite}
-          onPress={this.navigateToStudentsSearch}
+          onPress={navigateToStudentsSearch}
         />
       </>
     );
   }
 
-  get canNavigateBack(): boolean {
-    return this.props.navigation.getParam('canNavigateBack') !== false;
+  const canNavigateBack = (): boolean => {
+    return navigation.canGoBack() !== false;
   }
 
-  render() {
-    const { navigation } = this.props;
-    const { students } = this.state;
-
-    return (
-      <NarrowScreenTemplate
-        canNavigateBack={this.canNavigateBack}
-        title={this.screenName}
-        navigation={navigation}
-        buttons={this.renderHeaderButtons()}
-      >
-        <StudentsList students={students} />
-      </NarrowScreenTemplate>
-    );
-  }
-
-
-
+  return (
+    <NarrowScreenTemplate
+      canNavigateBack={canNavigateBack()}
+      title={screenName()}
+      navigation={navigation}
+      buttons={renderHeaderButtons()}
+    >
+      <StudentsList students={students} navigation={navigation}/>
+    </NarrowScreenTemplate>
+  );
 }
 
 const styles = StyleSheet.create({
