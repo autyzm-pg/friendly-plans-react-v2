@@ -16,7 +16,7 @@ export {ModalTrigger} from './ModalTrigger';
 export {NarrowScreenTemplate} from './NarrowScreenTemplate';
 // export {PlanNameText} from './PlanNameText';
 export {Separator} from './Separator';
-// export {StudentListElement} from './StudentListElement';
+export {StudentListElement} from './StudentListElement';
 export {StyledText} from './StyledText';
 export {SwitchItem} from './SwitchItem';
 export {TextInput} from './TextInput';

@@ -71,4 +71,34 @@ export class defaults {
       voicePath: "",
     }
   ]
+
+  static studentsList: Student[] = [
+    //@ts-ignore
+    {
+      name: "Student 1",
+      displaySettings: StudentDisplayOption.ImageWithTextSlide,
+      textSize: StudentTextSizeOption.Medium,
+      isUpperCase: false,
+      isSwipeBlocked: false,
+      id: '1'
+    },
+    //@ts-ignore
+    {
+      name: "Student 2",
+      displaySettings: StudentDisplayOption.LargeImageSlide,
+      textSize: StudentTextSizeOption.Small,
+      isUpperCase: false,
+      isSwipeBlocked: false,
+      id: '3'
+    },
+    //@ts-ignore
+    {
+      name: "Osoba 3",
+      displaySettings: StudentDisplayOption.ImageWithTextSlide,
+      textSize: StudentTextSizeOption.Medium,
+      isUpperCase: false,
+      isSwipeBlocked: false,
+      id: '4'
+    },
+  ]
 }
