@@ -41,7 +41,7 @@ export const PlanDisplayPreview: FC<Props> = ({ displaySettings, textSize, isUpp
 
   const planCardStyles = [styles.planCard, isListPreview && styles.planCardList];
   const firstCardStyles = [...planCardStyles, styles.firstPlanCard, isListPreview && styles.firstPlanCardList];
-  const secondCardStyles = [...planCardStyles, styles.secondPlanCard, isListPreview && styles.secondPlanCardList];
+  const secondCardStyles = [...planCardStyles, styles.secondPlanCard, isListPreview && styles.secondPlanCardList, !isListPreview && styles.secondPlanCardNotList];
 
   return (
     <View style={styles.previewContainer}>
@@ -91,9 +91,11 @@ const styles = StyleSheet.create({
   },
   secondPlanCard: {
     ...getElevation(3),
-    height: 30,
-    width: 320,
-    translateY: -22,
+    height: 35,
+    width: 320
+  },
+  secondPlanCardNotList: {
+    top: -19
   },
   secondPlanCardList: {
     flexDirection: 'row',
