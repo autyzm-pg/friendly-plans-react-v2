@@ -19,6 +19,10 @@ export function RootStackNavigation() {
     <Stack.Navigator
       initialRouteName={Route.Home}
       screenOptions={({ navigation, route }) => ({
+        presentation: 'transparentModal',
+        cardStyle: {
+          backgroundColor: 'transparent',
+        },
         gestureEnabled: false, 
         headerShown: true,
         transitionSpec: {
