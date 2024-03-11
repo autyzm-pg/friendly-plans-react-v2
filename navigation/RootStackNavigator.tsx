@@ -55,7 +55,7 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.StudentSettings}
         component={StudentSettingsScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
        <Stack.Screen
         name={Route.PlanActivity}
@@ -65,37 +65,37 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.StudentsList}
         component={StudentsListScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.StudentsListSearch}
         component={StudentsListSearchScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.StudentCreate}
         component={StudentCreateScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.StudentsListSearchForCopyPlan}
         component={StudentsListSearchForCopyPlanScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.StudentsListForCopyPlan}
         component={StudentsListForCopyPlanScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.PlanSearchForCopy}
         component={PlanSearchForCopyScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.PlansListForCopy}
         component={PlansListForCopyScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       {/* TODO: uncomment working screen */}
       {/* 
