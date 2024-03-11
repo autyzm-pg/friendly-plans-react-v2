@@ -80,7 +80,8 @@ export class defaults {
       textSize: StudentTextSizeOption.Medium,
       isUpperCase: false,
       isSwipeBlocked: false,
-      id: '1'
+      id: '1',
+      collectionCount: 2
     },
     //@ts-ignore
     {
@@ -89,7 +90,8 @@ export class defaults {
       textSize: StudentTextSizeOption.Small,
       isUpperCase: false,
       isSwipeBlocked: false,
-      id: '3'
+      id: '3',
+      collectionCount: 2
     },
     //@ts-ignore
     {
@@ -98,7 +100,8 @@ export class defaults {
       textSize: StudentTextSizeOption.Medium,
       isUpperCase: false,
       isSwipeBlocked: false,
-      id: '4'
+      id: '4',
+      collectionCount: 2
     },
   ]
 }

@@ -1,20 +1,18 @@
-import {Separator, StyledText} from 'components';
+import {Separator, StyledText} from '../../components';
 import {sortBy} from 'lodash';
-import {Plan} from 'models';
-import React, {FunctionComponent} from 'react';
+import {Plan} from '../../models';
+import React, {FC, ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {dimensions, palette, typography} from 'styles';
+import {dimensions, palette, typography} from '../../styles';
 import {PlanListElementForCopy} from './PlanListElementForCopy';
-
+import {NavigationProp} from '@react-navigation/native';
 
 interface Props {
   plans: Plan[];
+  navigation: NavigationProp<any>;
 }
 
-
-
-export const PlansListForCopy: FunctionComponent<Props> = ({plans}) => {
-
+export const PlansListForCopy: FC<Props> = ({plans, navigation}) => {
 
   const renderLetterGroupLabel = (letter: string) => (
     <StyledText key={letter} style={styles.label}>
@@ -28,7 +26,7 @@ export const PlansListForCopy: FunctionComponent<Props> = ({plans}) => {
     const firstLetter = plan.name.charAt(0).toLowerCase();
     const shouldRenderSeparator = !grouped[firstLetter] && !!Object.keys(grouped).length;
 
-    const planEntry = <PlanListElementForCopy plan={plan} key={plan.id}/>;
+    const planEntry = <PlanListElementForCopy plan={plan} key={plan.id} navigation={navigation}/>;
 
     grouped[firstLetter] = grouped[firstLetter]
       ? [...grouped[firstLetter], planEntry]
@@ -41,7 +39,7 @@ export const PlansListForCopy: FunctionComponent<Props> = ({plans}) => {
     return grouped;
   }, {});
 
-  return <View>{Object.values(plansLetterGrouped).flat()}</View>;
+  return <View>{Object.values(plansLetterGrouped).flat() as ReactElement[]}</View>;
 };
 
 const styles = StyleSheet.create({

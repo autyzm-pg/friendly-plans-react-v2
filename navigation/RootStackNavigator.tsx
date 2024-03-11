@@ -6,7 +6,7 @@ import {Route} from './routes';
 import { Easing } from 'react-native';
 import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
-import { StudentCreateScreen, StudentSettingsScreen, StudentsListSearchScreen } from '../screens';
+import { PlanSearchForCopyScreen, PlansListForCopyScreen, StudentCreateScreen, StudentSettingsScreen, StudentsListForCopyPlanScreen, StudentsListSearchForCopyPlanScreen, StudentsListSearchScreen } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
 import { PlanItemTaskScreen } from '../screens/planItemActivity/PlanItemTaskScreen';
@@ -73,6 +73,26 @@ export function RootStackNavigation() {
         component={StudentCreateScreen}
         options={{}}
       />
+      <Stack.Screen
+        name={Route.StudentsListSearchForCopyPlan}
+        component={StudentsListSearchForCopyPlanScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.StudentsListForCopyPlan}
+        component={StudentsListForCopyPlanScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.PlanSearchForCopy}
+        component={PlanSearchForCopyScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name={Route.PlansListForCopy}
+        component={PlansListForCopyScreen}
+        options={{}}
+      />
       {/* TODO: uncomment working screen */}
       {/* 
       <Stack.Screen
@@ -104,27 +124,8 @@ export function RootStackNavigation() {
         name={Route.Dialog}
         component={DialogScreen}
         options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentsListSearchForCopyPlan}
-        component={StudentsListSearchForCopyPlanScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentsListForCopyPlan}
-        component={StudentsListForCopyPlanScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.PlanSearchForCopy}
-        component={PlanSearchForCopyScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.PlansListForCopy}
-        component={PlansListForCopyScreen}
-        options={{}}
-      /> */}
+      />*/
+      }
     </Stack.Navigator>
   );
 }

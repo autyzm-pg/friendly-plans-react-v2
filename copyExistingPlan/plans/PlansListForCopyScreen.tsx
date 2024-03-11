@@ -1,68 +1,62 @@
-import React from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { BackHandler, StyleSheet } from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
 
-import { IconButton, NarrowScreenTemplate } from 'components';
-import { i18n } from 'locale';
-import { ModelSubscriber, Plan } from 'models';
-import { Route } from 'navigation';
-import { dimensions, palette } from 'styles';
+import { IconButton, NarrowScreenTemplate } from '../../components';
+import { i18n } from '../../locale';
+import { Route } from '../../navigation';
+import { dimensions, palette } from '../../styles';
 import { PlansListForCopy } from './PlansListForCopy';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { defaults } from '../../mocks/defaults';
+import { Plan } from '../../models';
 
-interface State {
-  plans: Plan[];
-  collections: number[];
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 }
 
-export class PlansListForCopyScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  modelSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
+export const PlansListForCopyScreen: FC<Props> = ({ navigation, route }) => {
+  const [plans, setPlans] = useState<Plan[]>(defaults.plansList);
 
-  state: State = {
-    plans: [],
-    collections: [],
+  const [collections, setCollections] = useState<number[]>([]);
+
+  useEffect(() => {
+    const student = route.params?.student;
+    // ...
+    setPlans(defaults.plansList);
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    return () => {
+      handleBackButtonPressAndroid();
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    }
+  }, []);
+
+  const canNavigateBack = (): boolean => {
+    return route.params?.canNavigateBack !== false;
+  }
+
+  const getScreenTitle = () => {
+    return i18n.t('planList:copyPlanScreenTitle');
   };
 
-  componentDidMount() {
-    const student = this.props.navigation.getParam('student');
-    this.modelSubscriber.subscribeCollectionUpdates(student, (plans: Plan[]) => {
-        this.setState({ plans });
+  const navigateToPlansSearch = () => {
+    navigation.navigate(Route.PlanSearchForCopy, {
+      plans: plans,
     });
+  };
 
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
+  const handleNavigateToCreateStudent = () => {
+    navigation.navigate(Route.StudentCreate);
+  };
 
-
-
-
-  componentWillUnmount() {
-    this.modelSubscriber.unsubscribeCollectionUpdates();
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
-
-  handleBackButtonPressAndroid = () => {
-    if (!this.props.navigation.isFocused()) {
+  const handleBackButtonPressAndroid = () => {
+    if (!navigation.isFocused()) {
       return false;
     }
-    return !this.canNavigateBack;
+    return !canNavigateBack();
   };
 
-  navigateToPlansSearch = () => {
-    this.props.navigation.navigate(Route.PlanSearchForCopy, {
-      plans: this.state.plans,
-    });
-  };
-
-  get screenName(): string {
-    return i18n.t('planList:copyPlanScreenTitle');
-  }
-
-  handleNavigateToCreateStudent = () => {
-    this.props.navigation.navigate(Route.StudentCreate);
-  };
-
-
-
-  renderHeaderButtons() {
+  const renderHeaderButtons = () => {
     return (
       <>
         <IconButton
@@ -71,7 +65,7 @@ export class PlansListForCopyScreen extends React.PureComponent<NavigationInject
           type="material"
           size={24}
           color={palette.textWhite}
-          onPress={this.handleNavigateToCreateStudent}
+          onPress={handleNavigateToCreateStudent}
         />
         <IconButton
           containerStyle={styles.iconContainer}
@@ -79,34 +73,22 @@ export class PlansListForCopyScreen extends React.PureComponent<NavigationInject
           type="material"
           size={24}
           color={palette.textWhite}
-          onPress={this.navigateToPlansSearch}
+          onPress={navigateToPlansSearch}
         />
       </>
     );
   }
 
-  get canNavigateBack(): boolean {
-    return this.props.navigation.getParam('canNavigateBack') !== false;
-  }
-
-  render() {
-    const { navigation } = this.props;
-    const { plans } = this.state;
-
-    return (
-      <NarrowScreenTemplate
-        canNavigateBack={this.canNavigateBack}
-        title={this.screenName}
-        navigation={navigation}
-        buttons={this.renderHeaderButtons()}
-      >
-        <PlansListForCopy plans={plans} />
-      </NarrowScreenTemplate>
-    );
-  }
-
-
-
+  return (
+    <NarrowScreenTemplate
+      canNavigateBack={canNavigateBack()}
+      title={getScreenTitle()}
+      navigation={navigation}
+      buttons={renderHeaderButtons()}
+    >
+      <PlansListForCopy plans={plans} navigation={navigation}/>
+    </NarrowScreenTemplate>
+  );
 }
 
 const styles = StyleSheet.create({
