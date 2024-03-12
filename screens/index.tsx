@@ -1,6 +1,5 @@
 export { WelcomeScreen } from './WelcomeScreen';
 // export { DialogScreen } from './DialogScreen';
-export { ResetPasswordScreen } from './resetPassword/ResetPasswordScreen';
 export { default as DashboardScreen } from './dashboard/DashboardScreen';
 export { StudentSettingsScreen } from './studentSettings/StudentSettingsScreen';
 export { StudentsListScreen } from './studentsList/StudentsListScreen';
