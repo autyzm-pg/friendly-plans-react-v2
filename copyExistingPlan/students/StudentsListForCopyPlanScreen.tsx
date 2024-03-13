@@ -1,76 +1,53 @@
-import React from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { BackHandler, StyleSheet } from 'react-native';
-import { NavigationInjectedProps } from '@react-navigation/native';
-
-import { IconButton, NarrowScreenTemplate } from 'components';
-import { i18n } from 'locale';
-import {AuthUser, ModelSubscriber, Student} from 'models';
-import { Route } from 'navigation';
-import { dimensions, palette } from 'styles';
+import { IconButton, NarrowScreenTemplate } from '../../components';
+import { i18n } from '../../locale';
+import { Student } from '../../models';
+import { Route } from '../../navigation';
+import { dimensions, palette } from '../../styles';
 import { StudentsListForCopyPlan } from './StudentsListForCopyPlan';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { defaults } from '../../mocks/defaults';
 
-interface State {
-  students: Student[];
-  collections: number[];
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 }
 
-export class StudentsListForCopyPlanScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  modelSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
+export const StudentsListForCopyPlanScreen: FC<Props> = ({ navigation, route }) => {
+  const [students, setStudents] = useState<Student[]>(defaults.studentsList);
+  const [collections, setCollections] = useState<number[]>([]);
 
-  state: State = {
-    students: [],
-    collections: [],
-  };
+  useEffect(() => {
+    setStudents(defaults.studentsList)
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    }
+  }, []);
 
-  componentDidMount() {
-      this.modelSubscriber.subscribeCollectionUpdates(AuthUser.getAuthenticatedUser(), (students: Student[]) => {
-
-        for (const student of students){
-          student.getCollectionCount((count: number) => {
-            student.setCollectionCount(count);
-            this.setState({collections: [1]});
-          });
-        }
-
-        this.setState({ students });
-
-      });
-
-      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
-
-
-
-
-  componentWillUnmount() {
-    this.modelSubscriber.unsubscribeCollectionUpdates();
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonPressAndroid);
-  }
-
-  handleBackButtonPressAndroid = () => {
-    if (!this.props.navigation.isFocused()) {
+  const handleBackButtonPressAndroid = () => {
+    if (!navigation.isFocused()) {
       return false;
     }
-    return !this.canNavigateBack;
+    return !getCanNavigateBack();
   };
 
-  navigateToStudentsSearch = () => {
-    this.props.navigation.navigate(Route.StudentsListSearchForCopyPlan, {
-      students: this.state.students,
+  const navigateToStudentsSearch = () => {
+    navigation.navigate(Route.StudentsListSearchForCopyPlan, {
+      students: students,
     });
   };
 
-  get screenName(): string {
+  const getScreenName = (): string => {
     return i18n.t('studentList:screenTitle');
   }
 
-  handleNavigateToCreateStudent = () => {
-    this.props.navigation.navigate(Route.StudentCreate);
+  const handleNavigateToCreateStudent = () => {
+    navigation.navigate(Route.StudentCreate);
   };
 
-
-
-  renderHeaderButtons() {
+  const renderHeaderButtons = () => {
     return (
       <>
         <IconButton
@@ -79,7 +56,7 @@ export class StudentsListForCopyPlanScreen extends React.PureComponent<Navigatio
           type="material"
           size={24}
           color={palette.textWhite}
-          onPress={this.handleNavigateToCreateStudent}
+          onPress={handleNavigateToCreateStudent}
         />
         <IconButton
           containerStyle={styles.iconContainer}
@@ -87,34 +64,26 @@ export class StudentsListForCopyPlanScreen extends React.PureComponent<Navigatio
           type="material"
           size={24}
           color={palette.textWhite}
-          onPress={this.navigateToStudentsSearch}
+          onPress={navigateToStudentsSearch}
         />
       </>
     );
   }
 
-  get canNavigateBack(): boolean {
-    return this.props.navigation.getParam('canNavigateBack') !== false;
+  const getCanNavigateBack = (): boolean => {
+    return route.params?.canNavigateBack !== false;
   }
 
-  render() {
-    const { navigation } = this.props;
-    const { students } = this.state;
-
-    return (
-      <NarrowScreenTemplate
-        canNavigateBack={this.canNavigateBack}
-        title={this.screenName}
-        navigation={navigation}
-        buttons={this.renderHeaderButtons()}
-      >
-        <StudentsListForCopyPlan students={students} />
-      </NarrowScreenTemplate>
-    );
-  }
-
-
-
+  return (
+    <NarrowScreenTemplate
+      canNavigateBack={getCanNavigateBack()}
+      title={getScreenName()}
+      navigation={navigation}
+      buttons={renderHeaderButtons()}
+    >
+    <StudentsListForCopyPlan students={students} navigation={navigation} />
+    </NarrowScreenTemplate>
+  );
 }
 
 const styles = StyleSheet.create({

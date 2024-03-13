@@ -1,17 +1,18 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native';
 
-import { StyledText } from 'components';
-import { Student } from 'models';
-import { Route } from 'navigation';
-import { NavigationInjectedProps, withNavigation } from '@react-navigation/native';
-import { dimensions, palette, typography } from 'styles';
+import { StyledText } from '../../components';
+import { Student } from '../../models';
+import { Route } from '../../navigation';
+import { dimensions, palette, typography } from '../../styles';
+import { NavigationProp } from '@react-navigation/native';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   student: Student;
+  navigation: NavigationProp<any>;
 }
 
-const StudentNameForCopy: FunctionComponent<Props> = ({ student, navigation }) => {
+export const StudentListElementForCopyPlan: FC<Props> = ({ student, navigation }) => {
   const navigateToPlansList = async () => {
     navigation.navigate(Route.PlansListForCopy, {
       student,
@@ -37,5 +38,3 @@ const styles = StyleSheet.create({
     marginBottom: dimensions.spacingSmall,
   },
 });
-
-export const StudentListElementForCopyPlan = withNavigation(StudentNameForCopy);

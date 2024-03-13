@@ -30,6 +30,7 @@ export const ShuffleButton: FC<Props> = ({ disabled, onPress }) => (
 const styles = StyleSheet.create({
   button: {
     marginRight: dimensions.spacingBig,
+    minHeight: dimensions.spacingHuge
   },
   iconDisabled: {
     backgroundColor: 'transparent',

@@ -6,7 +6,7 @@ import {Route} from './routes';
 import { Easing } from 'react-native';
 import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
-import { StudentCreateScreen, StudentSettingsScreen, StudentsListSearchScreen } from '../screens';
+import { PlanSearchForCopyScreen, PlansListForCopyScreen, StudentCreateScreen, StudentSettingsScreen, StudentsListForCopyPlanScreen, StudentsListSearchForCopyPlanScreen, StudentsListSearchScreen } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
 import { PlanItemTaskScreen } from '../screens/planItemActivity/PlanItemTaskScreen';
@@ -20,6 +20,10 @@ export function RootStackNavigation() {
     <Stack.Navigator
       initialRouteName={Route.Home}
       screenOptions={({ navigation, route }) => ({
+        presentation: 'transparentModal',
+        cardStyle: {
+          backgroundColor: 'transparent',
+        },
         gestureEnabled: false, 
         headerShown: true,
         transitionSpec: {
@@ -52,7 +56,7 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.StudentSettings}
         component={StudentSettingsScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
        <Stack.Screen
         name={Route.PlanActivity}
@@ -62,17 +66,37 @@ export function RootStackNavigation() {
       <Stack.Screen
         name={Route.StudentsList}
         component={StudentsListScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.StudentsListSearch}
         component={StudentsListSearchScreen}
-        options={{}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.StudentCreate}
         component={StudentCreateScreen}
-        options={{}}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={Route.StudentsListSearchForCopyPlan}
+        component={StudentsListSearchForCopyPlanScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={Route.StudentsListForCopyPlan}
+        component={StudentsListForCopyPlanScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={Route.PlanSearchForCopy}
+        component={PlanSearchForCopyScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={Route.PlansListForCopy}
+        component={PlansListForCopyScreen}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={Route.RunPlanSlide}
@@ -105,27 +129,8 @@ export function RootStackNavigation() {
         name={Route.Dialog}
         component={DialogScreen}
         options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentsListSearchForCopyPlan}
-        component={StudentsListSearchForCopyPlanScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.StudentsListForCopyPlan}
-        component={StudentsListForCopyPlanScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.PlanSearchForCopy}
-        component={PlanSearchForCopyScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.PlansListForCopy}
-        component={PlansListForCopyScreen}
-        options={{}}
-      /> */}
+      />*/
+      }
     </Stack.Navigator>
   );
 }
