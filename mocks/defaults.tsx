@@ -52,7 +52,7 @@ export class defaults {
       nameForChild: "Letter A",
       order: 1,
       time: 5,
-      image: "",
+      image: "https://cdn3.iconfinder.com/data/icons/letters-and-numbers-1/32/letter_A_red-512.png",
       voicePath: "",
     },
     //@ts-ignore
@@ -67,7 +67,7 @@ export class defaults {
       nameForChild: "Get a quick rest!",
       order: 2,
       time: 5,
-      image: "",
+      image: "https://school.iqdoodle.com/wp-content/uploads/2020/02/how-to-doodle-a-task-269x300.jpg",
       voicePath: "",
     }
   ]

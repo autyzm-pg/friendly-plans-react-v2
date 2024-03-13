@@ -2,11 +2,11 @@ import React from 'react';
 import { Image, NativeModules, StyleSheet, View } from 'react-native';
 
 import Voice from '@react-native-voice/voice';
-import {IconButton, PlanNameText} from '../../components';
-import { PlanItem, StudentDisplayOption } from '../../models';
+import {IconButton, PlanNameText} from '../../../components';
+import { PlanItem, StudentDisplayOption } from '../../../models';
 import Sound from 'react-native-sound';
 import Tts from 'react-native-tts';
-import { palette } from '../../styles';
+import { palette } from '../../../styles';
 import sounds from '../../../assets/sounds/sounds';
 import { PlanItemTimer } from '../PlanItemTimer';
 
@@ -18,9 +18,6 @@ interface Props {
   type: StudentDisplayOption;
   timerStop: boolean;
 }
-
-
-
 
 export class PlanSlideItem extends React.PureComponent<Props> {
   soundTrack: any;
