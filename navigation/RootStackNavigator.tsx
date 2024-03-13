@@ -11,6 +11,7 @@ import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
 import { PlanItemTaskScreen } from '../screens/planItemActivity/PlanItemTaskScreen';
 import { StudentsListScreen } from '../screens/studentsList/StudentsListScreen';
+import { RunPlanSlideScreen } from '../screens/runPlan/SlideMode/RunPlanSlideScreen';
 
 const Stack = createStackNavigator();
 
@@ -73,16 +74,16 @@ export function RootStackNavigation() {
         component={StudentCreateScreen}
         options={{}}
       />
+      <Stack.Screen
+        name={Route.RunPlanSlide}
+        component={RunPlanSlideScreen}
+        options={{}}
+      />
       {/* TODO: uncomment working screen */}
       {/* 
       <Stack.Screen
         name={Route.RunPlanList}
         component={RunPlanListScreen}
-        options={{}}
-      />
-      <Stack.Screen
-        name={Route.RunPlanSlide}
-        component={RunPlanSlideScreen}
         options={{}}
       />
       <Stack.Screen

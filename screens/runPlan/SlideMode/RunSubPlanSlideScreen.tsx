@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 //import { NavigationInjectedProps } from '@react-navigation/native';
 
-import {Card, FlatButton, IconButton, StyledText} from '../../components';
-import { i18n } from '../../locale';
-import {ModelSubscriber, PlanItem, PlanSubItem, Student} from '../../models';
-import { Route } from '../../navigation';
-import { palette, typography } from '../../styles';
+import {Card, FlatButton, IconButton, StyledText} from '../../../components';
+import { i18n } from '../../../locale';
+import {ModelSubscriber, PlanItem, PlanSubItem, Student} from '../../../models';
+import { Route } from '../../../navigation';
+import { palette, typography } from '../../../styles';
 import {SubPlanSlideItem} from './SubPlanSlideItem';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 interface State {
   pageNumber: number;
@@ -18,21 +19,26 @@ interface State {
   subPageNumber: number;
 }
 
-export class RunSubPlanSlideScreen extends React.PureComponent<NavigationInjectedProps, State> {
-  static navigationOptions = {
+interface Props {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+}
+
+// TODO
+
+export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
+  const navigationOptions = {
     header: null,
   };
 
-  studentSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
-  planItemsSubscriber: ModelSubscriber<PlanSubItem> = new ModelSubscriber();
-  state: Readonly<State> = {
-    pageNumber: this.props.navigation.getParam('pageNumber'),
-    planItem: this.props.navigation.getParam('planItem'),
-    planItemsAmount: this.props.navigation.getParam('planItemsAmount'),
-    student: this.props.navigation.getParam('student'),
+  const [state, setState] = useState({
+    pageNumber: route.params?.pageNumber,
+    planItem: route.params?.planItem,
+    planItemsAmount: route.params?.planItemsAmount,
+    student: route.params?.student,
     planSubItems: [],
-    subPageNumber: this.props.navigation.getParam('startPage') ? this.props.navigation.getParam('startPage') : 0,
-  };
+    subPageNumber: route.params?.startPage ? route.params?.startPage : 0,
+  });
 
   componentDidMount() {
     const student = this.props.navigation.getParam('student');

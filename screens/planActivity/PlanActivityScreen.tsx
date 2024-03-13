@@ -12,7 +12,7 @@ import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { defaults } from "../../mocks/defaults"
+import { defaults } from "../../mocks/defaults";
 
 interface Props {
   navigation: NavigationProp<any>;
