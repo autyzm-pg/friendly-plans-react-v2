@@ -11,6 +11,7 @@ import { Platform } from 'react-native';
 import {statusBarHeight} from './styles';
 import SafeAreaView  from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
+import DatabaseService, { executeQuery } from './services/DatabaseService';
 
 // // Set status bar height on Android to support windowTranslucentStatus style
 /* istanbul ignore next */
@@ -26,8 +27,23 @@ import SplashScreen from 'react-native-splash-screen';
 // };
 
 export default function App() {
+  // Only for testing if it works
+  // After checking move operations to proper files,
+  // for example to repositories for each model (Plan, PlanItem, etc.)
+  const testDB = async () => {
+    const db = new DatabaseService();
+    await db.initializeDatabase();
+    await executeQuery('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)');
+    await executeQuery('INSERT INTO users (name) VALUES (?)', ['John Doe']);
+    const resultSet = await executeQuery('SELECT * FROM users');
+    for (let i = 0; i < resultSet.rows.length; i++) {
+      let row = resultSet.rows.item(i);
+      console.log(row);
+    }
+  }
   useEffect(() => {
     SplashScreen.hide();
+    testDB();
   }, []);
   return (
     <NavigationContainer>
