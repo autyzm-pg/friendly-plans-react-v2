@@ -20,7 +20,7 @@ export const ModeSetting: FC = () => {
     [editionMode: false] [child view]
     Press short -> long -> short combination with one finger and then tap short once with two fingers to change to edition mode.
       - After some time, defined in useEffect, combination will be reseted.
-      - If pressed shortly multiple times, one can also long press to reset combination.
+      - If pressed shortly multiple times, one can short press once with two fingers to reset combination.
     
     [editionMode: true] [therapist / caregiver view]
     Press shortly once to change to play mode.
@@ -44,15 +44,10 @@ export const ModeSetting: FC = () => {
   }
 
   const handleLongPressUnlock = () => {    
-    if ((combination.short === 1 && combination.long === 0)) {
-      setCombination(prevState => ({
-        ...prevState,
-        long: combination.long + 1
-      }));
-    }
-    else {
-      setCombination(emptyComb)
-    }
+    setCombination(prevState => ({
+      ...prevState,
+      long: combination.long + 1
+    }));
   }
 
   return (
@@ -66,9 +61,9 @@ export const ModeSetting: FC = () => {
       }}
       onResponderRelease={() => {
         if (combination.short === 2 && combination.long === 1) {
-          setCombination(emptyComb)
           setEditionMode();
         }
+        setCombination(emptyComb)
       }}
       {...(!editionMode ? { hitSlop: hitSlop } : {})}
     >
@@ -84,7 +79,7 @@ export const ModeSetting: FC = () => {
         onPress={() => (setEditionMode())}
       />
       :
-        <IconButtonNoFeedback /* TODO: Lock and key icons should be in the same place. */
+        <IconButtonNoFeedback
           name={"key"}
           type="material"
           color={palette.textDisabled}

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import { IconProps } from 'react-native-elements';
 import { Icon } from './Icon';
+import { dimensions } from '../styles';
 
 interface Props extends IconProps {
   label?: string;
@@ -28,7 +29,7 @@ export const IconButtonNoFeedback: FC<Props> = ({
       style={[styles.container, containerStyle, iconButtonStyle]}
       touchSoundDisabled={true}
     >
-    <Icon {...props} disabledStyle={styles.iconDisabled} />
+    <Icon {...props} disabledStyle={styles.iconDisabled} style={{ marginRight: dimensions.spacingSmall }}/>
     </TouchableWithoutFeedback>
   );
 };

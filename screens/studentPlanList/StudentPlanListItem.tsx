@@ -29,11 +29,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
     return unsubscribe;
   }, [navigation]);
 
-  const navigateToUpdatePlan = () => {
-    if (!editionMode) {
-      return;
-    }
-    
+  const navigateToUpdatePlan = () => {    
     navigation.navigate(Route.PlanActivity, {
       student,
       plan,
@@ -66,8 +62,10 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
     <TouchableHighlight
       onPress={isSwipeableOpen ? handlePressDelete : navigateToUpdatePlan}
       underlayColor="transparent"
+      disabled={!editionMode}
     >
       <Swipeable
+        enabled={editionMode}
         renderRightActions={renderRightActions}
         onSwipeableWillOpen={(direction) => {if (direction === 'right') handleOpenSwipeable}}
         onSwipeableWillClose={handleCloseSwipeable}
