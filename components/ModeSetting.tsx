@@ -1,19 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { dimensions, palette } from '../styles';
-import { IconButton } from './IconButton';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { dimensions, palette, headerHeight } from '../styles';
 import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
-
-interface Props {
-}
+import { IconButtonNoFeedback } from './IconButtonNoFeedback';
+import { IconButton } from './IconButton';
 
 const emptyComb = {
   short: 0,
   long: 0
 }
 const longPressTime = 2000;
+const hitSlop = {top: headerHeight/2, bottom: headerHeight/2, left: 60, right: 60}
 
-export const ModeSetting: FC<Props> = () => {
+export const ModeSetting: FC = () => {
   const [combination, setCombination] = useState(emptyComb)
   const {editionMode, setEditionMode} = useRootNavigatorContext();
 
@@ -33,7 +32,7 @@ export const ModeSetting: FC<Props> = () => {
     const timer = setTimeout(() => {
       setCombination(emptyComb);
     }, longPressTime*5);
-    // console.log(combination);
+    console.log(combination);
     return () => clearTimeout(timer);
   }, [combination])
 
@@ -57,29 +56,46 @@ export const ModeSetting: FC<Props> = () => {
   }
 
   return (
-    <View onStartShouldSetResponder={(event) => {
-      if (event.nativeEvent.touches.length === 2) {
-        return true;
-      }
-      return false;
-    }}
-    onResponderRelease={() => {
-      if (combination.short === 2 && combination.long === 1) {
-        setCombination(emptyComb)
-        setEditionMode();
-      }
-    }}
+    <View 
+      onStartShouldSetResponder={(event) => {
+        if (event.nativeEvent.touches.length === 2) {
+          console.log("Mode button touched twiced.")
+          return true;
+        }
+        return false;
+      }}
+      onResponderRelease={() => {
+        if (combination.short === 2 && combination.long === 1) {
+          setCombination(emptyComb)
+          setEditionMode();
+        }
+      }}
+      {...(!editionMode ? { hitSlop: hitSlop } : {})}
     >
-      <IconButton
-        name={editionMode ? "lock": "key"}
+      {
+        editionMode ?
+        <IconButton
+        name={"lock"}
         type="material"
         color={palette.textWhite}
         size={24}
         containerStyle={styles.iconContainer}
-        onLongPress={editionMode ? () => {} : handleLongPressUnlock}
-        onPress={editionMode ? () => (setEditionMode()) : handleShortPressUnlock}
-        delayLongPress={longPressTime}
+        onLongPress={() => {}}
+        onPress={() => (setEditionMode())}
       />
+      :
+        <IconButtonNoFeedback /* TODO: Lock and key icons should be in the same place. */
+          name={"key"}
+          type="material"
+          color={palette.textDisabled}
+          size={24}
+          containerStyle={styles.iconContainer}
+          onLongPress={handleLongPressUnlock}
+          onPress={handleShortPressUnlock}
+          delayLongPress={longPressTime}
+          hitSlop={hitSlop}
+        />
+      }
     </View>
   );
 }

@@ -19,7 +19,7 @@ import { RootNavigatorContext } from '../contexts/RootNavigatorContext';
 const Stack = createStackNavigator();
 
 export function RootStackNavigation() {
-  const [editionMode, setEditionMode] = useState<boolean>(false);
+  const [editionMode, setEditionMode] = useState<boolean>(true);
 
   return (
     <RootNavigatorContext.Provider value={{editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode)}}>

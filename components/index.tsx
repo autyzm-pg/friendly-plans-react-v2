@@ -8,6 +8,7 @@ export {FlatButton} from './FlatButton';
 export {FullScreenTemplate} from './FullScreenTemplate';
 export {Header} from './Header';
 export {Icon} from './Icon';
+export {IconButtonNoFeedback} from './IconButtonNoFeedback';
 export {IconButton} from './IconButton';
 // export {IconToggleButton} from './IconToggleButton';
 export {InputItem} from './InputItem';
