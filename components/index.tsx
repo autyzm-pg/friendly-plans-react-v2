@@ -23,3 +23,4 @@ export {TextInput} from './TextInput';
 export {Slider} from './Slider';
 export {StudentSettings} from './studentSettings/StudentSettings';
 export {PlayButton} from './PlayButton';
+export {ModeSetting} from './ModeSetting'
