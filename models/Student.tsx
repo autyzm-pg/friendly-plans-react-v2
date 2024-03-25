@@ -1,9 +1,8 @@
-import { RNFirebase } from '@react-native-firebase/app';
-
-
 import {getPlansRef, getStudentRef, getStudentsRef} from './FirebaseRefProxy';
 import { Plan } from './Plan';
 import { ParameterlessConstructor, SubscribableModel } from './SubscribableModel';
+import { ResultSet } from 'react-native-sqlite-storage';
+import { executeQuery } from '../services/DatabaseService';
 
 export enum StudentDisplayOption {
   LargeImageSlide = 'largeImageSlide',
@@ -105,4 +104,30 @@ export class Student implements SubscribableModel, StudentData {
       callback(querySnapshot.size);
     };
   };
+
+  static createStudent = (student: StudentData): Promise<ResultSet> => {
+    // Sample data for inserting into StudentData table
+    const insertIntoStudentDataTable = `
+      INSERT INTO StudentData (name, displaySettings, textSize, isUpperCase, isSwipeBlocked)
+      VALUES ((?), (?), (?), (?), (?));
+    `;
+    return executeQuery(insertIntoStudentDataTable, [
+      student.name, 
+      student.displaySettings, 
+      student.textSize, 
+      student.isUpperCase ? 1 : 0, 
+      student.isSwipeBlocked ? 1 : 0
+    ])
+  }
+
+  static getStudents = async (): Promise<Student[]> => {
+    // Sample data for inserting into StudentData table
+    const selectAllFromStudentDataTable = `SELECT * FROM StudentData;`;
+    const resultSet = await executeQuery(selectAllFromStudentDataTable)
+    let resultsArray: Student[] = [];
+    for (let i = 0; i < resultSet.rows.length; i++) {
+      resultsArray.push(resultSet.rows.item(i));
+    }
+    return resultsArray;
+  }
 }

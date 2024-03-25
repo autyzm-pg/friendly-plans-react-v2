@@ -35,10 +35,10 @@ export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
 
   const createStudent = async (data: StudentData) => {
     // TODO: create new student
-    const student = await Student.create(data);
+    const student = await Student.createStudent(data);
     // TODO: set current user
     //await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
-    navigation.navigate(Route.Dashboard);
+    navigation.navigate(Route.Dashboard, {student});
   };
 
   const canNavigateBack = (): boolean => {

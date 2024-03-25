@@ -7,17 +7,18 @@ import { Student, StudentDisplayOption, StudentTextSizeOption } from '../../mode
 import { Route } from '../../navigation';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
-import { NavigationProp, useIsFocused } from '@react-navigation/native';
+import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { defaults } from "../../mocks/defaults"
 
 interface Props {
   navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 }
 
-export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
+export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
 
-  const [currentStudentId, setCurrentStudentId] = useState<string>('');
+  const [currentStudent, setCurrentStudent] = useState<Student>();
   const [students, setStudents] = useState<Student[]>([]);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [nextRoute, setNextRoute] = useState<any>(null);
@@ -26,20 +27,19 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
   //const studentSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
 
   useEffect(() => {
-    const fetchData = async () => {
-      // const user = await AuthUser.getAuthenticatedUser();
-      // userSubscriber.subscribeElementUpdates(user, async (user) => {
-      //   const currentStudentId = await user.getCurrentStudent();
-      //   setCurrentStudentId(currentStudentId);
-      // });
+    // const fetchData = async () => {
+    //   const user = await AuthUser.getAuthenticatedUser();
+    //   userSubscriber.subscribeElementUpdates(user, async (user) => {
+    //     const currentStudentId = await user.getCurrentStudent();
+    //     setCurrentStudentId(currentStudentId);
+    //   });
 
-      // studentSubscriber.subscribeCollectionUpdates(user, async (students: Student[]) => {
-      //   setStudents(students);
-      //   setIsInitialized(true);
-      // });
-    };
-
-    fetchData();
+    //   studentSubscriber.subscribeCollectionUpdates(user, async (students: Student[]) => {
+    //     setStudents(students);
+    //     setIsInitialized(true);
+    //   });
+    // };
+    setCurrentStudent(route.params?.student)
 
     return () => {
       // userSubscriber.unsubscribeElementUpdates();
@@ -57,7 +57,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {defaults.student && <StudentPlanList student={defaults.student} navigation={navigation}/>}
+      {currentStudent && <StudentPlanList student={currentStudent} navigation={navigation}/>}
     </View>
   );
 };
