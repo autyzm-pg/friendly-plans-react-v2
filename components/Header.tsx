@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
 
@@ -8,14 +8,19 @@ import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
 import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/native';
 import { Student } from '../models';
+import { ModeSetting } from '../components'
+import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
 
 interface Props extends StackHeaderProps {
   student: Student;
+
 }
 
 const DASHBOARD = 'Dashboard';
 
 export const Header: React.FC<Props> = ({student, ...props}) => {
+  const { editionMode } = useRootNavigatorContext();
+
   const navigation = props.navigation
   const getTitle = () => {
     const { route, options } = props;
@@ -54,7 +59,7 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
   const renderButtons = () => {
     return isDashboard() ? (
       <>
-        {student && (
+        {student && editionMode && (
           <IconButton
             name="settings"
             type="material"
@@ -64,14 +69,15 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
             onPress={navigateToStudentSettings}
           />
         )}
-        <IconButton
+        {editionMode && <IconButton
           name="people"
           type="material"
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
           onPress={navigateToStudentsList}
-        />
+        />}
+          <ModeSetting/>
       </>
     ) : null;
   }

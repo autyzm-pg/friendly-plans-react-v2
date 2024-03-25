@@ -8,6 +8,7 @@ import { i18n } from '../../locale';
 import { ModelSubscriber, Plan, Student } from '../../models';
 import { Route } from '../../navigation';
 import { dimensions, palette, typography } from '../../styles';
+import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 
 interface Props {
   plan: Plan;
@@ -18,6 +19,9 @@ interface Props {
 const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => {
   const [isSwipeableOpen, setIsSwipeableOpen] = useState<boolean>(false);
   const { emoji, name } = plan;
+
+  const { editionMode } = useRootNavigatorContext();
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setIsSwipeableOpen(false);
@@ -25,7 +29,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
     return unsubscribe;
   }, [navigation]);
 
-  const navigateToUpdatePlan = () => {
+  const navigateToUpdatePlan = () => {    
     navigation.navigate(Route.PlanActivity, {
       student,
       plan,
@@ -58,8 +62,10 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
     <TouchableHighlight
       onPress={isSwipeableOpen ? handlePressDelete : navigateToUpdatePlan}
       underlayColor="transparent"
+      disabled={!editionMode}
     >
       <Swipeable
+        enabled={editionMode}
         renderRightActions={renderRightActions}
         onSwipeableWillOpen={(direction) => {if (direction === 'right') handleOpenSwipeable}}
         onSwipeableWillClose={handleCloseSwipeable}

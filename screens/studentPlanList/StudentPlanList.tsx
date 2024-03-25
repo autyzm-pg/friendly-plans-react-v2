@@ -10,6 +10,7 @@ import { FixedCreatePlanButton } from './FixedCreatePlanButton';
 import StudentPlanListItem from './StudentPlanListItem';
 import { NavigationProp } from '@react-navigation/native';
 import { defaults } from '../../mocks/defaults';
+import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 
 interface Props {
   student: Student;
@@ -18,6 +19,7 @@ interface Props {
 
 export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
+  const {editionMode} = useRootNavigatorContext();
 
   const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
 
@@ -70,7 +72,7 @@ export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
           style={styles.contentContainer}
         />
       </FullScreenTemplate>
-      <FixedCreatePlanButton onPress={navigateTo} />
+      {editionMode && <FixedCreatePlanButton onPress={navigateTo} />}
     </>
   );
 };
