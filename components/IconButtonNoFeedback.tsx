@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import { IconProps } from 'react-native-elements';
 import { Icon } from './Icon';
 import { dimensions } from '../styles';
@@ -17,7 +17,8 @@ export const IconButtonNoFeedback: FC<Props> = ({
   containerStyle,  
   label, 
   disabled, 
-  iconButtonStyle, 
+  iconButtonStyle,
+  hitSlop,
   ...props 
 }) => {
   return (
@@ -28,8 +29,11 @@ export const IconButtonNoFeedback: FC<Props> = ({
       onPress={onPress}
       style={[styles.container, containerStyle, iconButtonStyle]}
       touchSoundDisabled={true}
+      hitSlop={hitSlop}
     >
-    <Icon {...props} disabledStyle={styles.iconDisabled} style={{ marginRight: dimensions.spacingSmall }}/>
+      <View>
+        <Icon {...props} disabledStyle={styles.iconDisabled} style={{ marginRight: dimensions.spacingSmall }}/>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
