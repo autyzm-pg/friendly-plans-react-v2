@@ -10,17 +10,16 @@ import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/
 import { Student } from '../models';
 import { ModeSetting } from '../components'
 import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
+import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 
-interface Props extends StackHeaderProps {
-  student: Student;
-
-}
+interface Props extends StackHeaderProps {}
 
 const DASHBOARD = 'Dashboard';
 
-export const Header: React.FC<Props> = ({student, ...props}) => {
+export const Header: React.FC<Props> = ({...props}) => {
   const { editionMode } = useRootNavigatorContext();
-
+  const {student, setStudent} = useCurrentStudentContext();
+  
   const navigation = props.navigation
   const getTitle = () => {
     const { route, options } = props;

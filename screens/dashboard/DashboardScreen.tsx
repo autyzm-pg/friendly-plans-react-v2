@@ -8,7 +8,8 @@ import { Route } from '../../navigation';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
-import { defaults } from "../../mocks/defaults"
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
+import DatabaseService from '../../services/DatabaseService';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -17,33 +18,26 @@ interface Props {
 
 export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
-
-  const [currentStudent, setCurrentStudent] = useState<Student>();
-  const [students, setStudents] = useState<Student[]>([]);
-  const [isInitialized, setIsInitialized] = useState<boolean>(false);
+  
+  const {student, setStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
 
-  //const userSubscriber: ModelSubscriber<AuthUser> = new ModelSubscriber();
-  //const studentSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
+  const connectToDatabase = async () => {
+    const db = new DatabaseService();
+    await db.initializeDatabase();
+  }
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const user = await AuthUser.getAuthenticatedUser();
-    //   userSubscriber.subscribeElementUpdates(user, async (user) => {
-    //     const currentStudentId = await user.getCurrentStudent();
-    //     setCurrentStudentId(currentStudentId);
-    //   });
-
-    //   studentSubscriber.subscribeCollectionUpdates(user, async (students: Student[]) => {
-    //     setStudents(students);
-    //     setIsInitialized(true);
-    //   });
-    // };
-    setCurrentStudent(route.params?.student)
+    
+    connectToDatabase().then(() => {
+      Student.getStudents().then(studentsList => {
+        if (studentsList.length)
+          setStudent(studentsList[0])
+      })
+    });
 
     return () => {
-      // userSubscriber.unsubscribeElementUpdates();
-      // studentSubscriber.unsubscribeCollectionUpdates();
+
     };
   }, []);
 
@@ -57,7 +51,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {currentStudent && <StudentPlanList student={currentStudent} navigation={navigation}/>}
+      {student && <StudentPlanList student={student} navigation={navigation}/>}
     </View>
   );
 };
