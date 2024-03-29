@@ -9,8 +9,8 @@ const emptyComb = {
   short: 0,
   long: 0
 }
-const longPressTime = 2000;
-const hitSlop = {top: headerHeight/2, bottom: headerHeight/2, left: 60, right: 60}
+const longPressTime = 500;
+const hitSlop = {top: headerHeight/2+20, bottom: headerHeight/2+20, left: headerHeight, right: headerHeight}
 
 export const ModeSetting: FC = () => {
   const [combination, setCombination] = useState(emptyComb)
@@ -31,8 +31,8 @@ export const ModeSetting: FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCombination(emptyComb);
-    }, longPressTime*5);
-    console.log(combination);
+    }, longPressTime*60);
+    // console.log(combination);
     return () => clearTimeout(timer);
   }, [combination])
 
@@ -54,7 +54,7 @@ export const ModeSetting: FC = () => {
     <View 
       onStartShouldSetResponder={(event) => {
         if (event.nativeEvent.touches.length === 2) {
-          console.log("Mode button touched twiced.")
+          //console.log("Mode button touched twiced.")
           return true;
         }
         return false;
