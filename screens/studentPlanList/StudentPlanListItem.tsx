@@ -9,18 +9,19 @@ import { ModelSubscriber, Plan, Student } from '../../models';
 import { Route } from '../../navigation';
 import { dimensions, palette, typography } from '../../styles';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface Props {
   plan: Plan;
-  student: Student;
   navigation: NavigationProp<any>;
 }
 
-const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => {
+const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
   const [isSwipeableOpen, setIsSwipeableOpen] = useState<boolean>(false);
   const { emoji, name } = plan;
 
   const { editionMode } = useRootNavigatorContext();
+  const {student} = useCurrentStudentContext();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {

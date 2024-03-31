@@ -28,7 +28,7 @@ export interface StudentData {
 }
 
 // TODO: change so that student does not implement SubscribableModel
-export class Student implements SubscribableModel, StudentData {
+export class Student implements StudentData {
 
   // TODO: save new student to database
   static create = (data: StudentData): void => {
@@ -51,73 +51,32 @@ export class Student implements SubscribableModel, StudentData {
     this.isSwipeBlocked = false;
   }
 
-  update = (changes: Partial<StudentData>) => getStudentRef(this.id).update(changes);
-  delete = () => {
-    this.deleteChildren();
-    this.getRef().delete();
-  };
+  static createStudent = async (student: StudentData): Promise<Student> => {
 
-  deleteChildren = () => {
-    this.getChildCollectionRef().get().then(planSnap => {
-      planSnap.docs.forEach(plan => {
-        this.deleteGrandChildren(plan.ref.collection('planItems'));
-        plan.ref.delete();
-      });
-    });
-  };
-
-  deleteGrandChildren = (grandChildrenRef: RNFirebase.firestore.CollectionReference) => {
-    grandChildrenRef.get().then(snap => {
-      snap.docs.forEach(doc => {
-        this.deleteGrandGrandChildren(doc.ref.collection('subItems'));
-        doc.ref.delete();
-      });
-    });
-  };
-
-  deleteGrandGrandChildren = (grandGrandChildrenRef: RNFirebase.firestore.CollectionReference) => {
-    grandGrandChildrenRef.get().then(snap => {
-      snap.docs.forEach(doc => {
-        doc.ref.delete();
-      });
-    });
-  };
-
-
-
-  getChildCollectionRef: () => RNFirebase.firestore.CollectionReference = () => getPlansRef(this.id);
-  getChildType: () => ParameterlessConstructor<SubscribableModel> = () => Plan;
-  getRef: () => RNFirebase.firestore.DocumentReference = () => getStudentRef(this.id);
-
-  getCollectionCount = (callback: (element: number) => void): void => {
-    this.getChildCollectionRef().onSnapshot(this.countCollection(callback));
-  };
-
-  setCollectionCount = (count: number) => {
-    this.collectionCount = count;
-  };
-
-  private countCollection = (
-      callback: (element: number) => void,
-  ): ((querySnapshot: RNFirebase.firestore.QuerySnapshot) => void) => {
-    return querySnapshot => {
-      callback(querySnapshot.size);
-    };
-  };
-
-  static createStudent = (student: StudentData): Promise<ResultSet> => {
-    // Sample data for inserting into StudentData table
     const insertIntoStudentDataTable = `
       INSERT INTO StudentData (name, displaySettings, textSize, isUpperCase, isSwipeBlocked)
       VALUES ((?), (?), (?), (?), (?));
     `;
-    return executeQuery(insertIntoStudentDataTable, [
+    await executeQuery('BEGIN TRANSACTION;');
+
+    await executeQuery(insertIntoStudentDataTable, [
       student.name, 
       student.displaySettings, 
       student.textSize, 
       student.isUpperCase ? 1 : 0, 
       student.isSwipeBlocked ? 1 : 0
-    ])
+    ]);
+    
+    const resultSet = await executeQuery(`SELECT * FROM StudentData WHERE name = (?) ORDER BY id DESC LIMIT 1`, [student.name])
+    
+    if (!(resultSet.rows.length)) {
+      await executeQuery('ROLLBACK;');
+      throw new Error('Could not create new student')
+    } else {
+      await executeQuery('COMMIT;');
+    }
+    
+    return resultSet.rows.item(0)
   }
 
   static getStudents = async (): Promise<Student[]> => {

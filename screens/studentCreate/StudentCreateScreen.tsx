@@ -6,6 +6,7 @@ import { i18n } from '../../locale';
 import {AuthUser, Student, StudentData, StudentDisplayOption, StudentTextSizeOption} from '../../models';
 import { Route } from '../../navigation';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface State {
   student: Student;
@@ -17,7 +18,9 @@ interface Props {
 }
 
 export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
-  const [student, setStudent] = useState(new Student())
+  const [student] = useState(new Student())
+  const {setStudent} = useCurrentStudentContext();
+
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
@@ -34,10 +37,9 @@ export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   const createStudent = async (data: StudentData) => {
-    // TODO: create new student
     const student = await Student.createStudent(data);
-    // TODO: set current user
-    //await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
+    
+    setStudent(student);
     navigation.navigate(Route.Dashboard, {student});
   };
 

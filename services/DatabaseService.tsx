@@ -77,7 +77,6 @@ export const createTables = async () => {
   await executeQuery(createPlanElementTable);
   await executeQuery(createPlanSubItemTable);
   await executeQuery(createStudentDataTable);
-  insertTestData()
 }
 
 export const insertTestData = async () => {

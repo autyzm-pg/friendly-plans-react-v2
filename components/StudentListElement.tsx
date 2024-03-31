@@ -6,6 +6,7 @@ import { AuthUser, Student } from '../models';
 import { Route } from '../navigation';
 import { dimensions, palette, typography } from '../styles';
 import { NavigationProp } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 
 interface Props {
   student: Student;
@@ -13,12 +14,11 @@ interface Props {
 }
 
 export const StudentListElement: FC<Props> = ({ student, navigation }) => {
+  const {setStudent} = useCurrentStudentContext();
+
   const setCurrentStudent = async () => {
-    // TODO: Setting current user
-    // await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
-    navigation.navigate(Route.Dashboard, {
-      student,
-    });
+    setStudent(student);
+    navigation.navigate(Route.Dashboard);
   };
 
   return (

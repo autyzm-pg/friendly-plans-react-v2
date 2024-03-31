@@ -30,7 +30,7 @@ const Stack = createStackNavigator();
 
 export function RootStackNavigation() {
   const [editionMode, setEditionMode] = useState<boolean>(true);
-  const [student, setStudent] = useState<Student | null>(null);
+  const [student, setStudent] = useState<Student | undefined>();
 
   return (
     <RootNavigatorContext.Provider value={{editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode)}}>
@@ -52,7 +52,6 @@ export function RootStackNavigation() {
           header: (headerProps) => (
             <Header
               {...headerProps}
-              student={student}
               navigation={navigation}
             />
           )})}>

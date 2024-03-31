@@ -11,15 +11,16 @@ import StudentPlanListItem from './StudentPlanListItem';
 import { NavigationProp } from '@react-navigation/native';
 import { defaults } from '../../mocks/defaults';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface Props {
-  student: Student;
   navigation: NavigationProp<any>;
 }
 
-export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
+export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const {editionMode} = useRootNavigatorContext();
+  const {student} = useCurrentStudentContext();
 
   const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
 
@@ -42,7 +43,7 @@ export const StudentPlanList: React.FC<Props> = ({ student, navigation }) => {
   const extractKey = (plan: Plan) => plan.id;
 
   const renderItem = ({ item }: { item: Plan }) => (
-    <StudentPlanListItem plan={item} student={student} navigation={navigation}/>
+    <StudentPlanListItem plan={item} navigation={navigation}/>
   );
 
   const navigateTo = (name: string) => {

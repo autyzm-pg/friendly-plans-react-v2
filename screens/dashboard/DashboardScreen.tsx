@@ -51,7 +51,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {student && <StudentPlanList student={student} navigation={navigation}/>}
+      {student && <StudentPlanList navigation={navigation}/>}
     </View>
   );
 };
