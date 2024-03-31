@@ -2,13 +2,13 @@ import { createContext, useContext } from "react";
 import { Student } from "../models";
 
 interface Props {
-  student: Student | undefined;
-  setStudent: (student: Student) => void;
+  currentStudent: Student | undefined;
+  setCurrentStudent: (student: Student) => void;
 }
 
 export const CurrentStudentContext = createContext<Props | undefined>({
-  student: undefined,
-  setStudent: () => {}
+  currentStudent: undefined,
+  setCurrentStudent: () => {}
 });
 
 export function useCurrentStudentContext() {

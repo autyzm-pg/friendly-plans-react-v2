@@ -14,15 +14,15 @@ interface Props {
 }
 
 export const StudentListElement: FC<Props> = ({ student, navigation }) => {
-  const {setStudent} = useCurrentStudentContext();
+  const {setCurrentStudent} = useCurrentStudentContext();
 
-  const setCurrentStudent = async () => {
-    setStudent(student);
+  const setStudent = async () => {
+    setCurrentStudent(student);
     navigation.navigate(Route.Dashboard);
   };
 
   return (
-    <TouchableHighlight style={styles.touchable} underlayColor={palette.underlay} onPress={setCurrentStudent}>
+    <TouchableHighlight style={styles.touchable} underlayColor={palette.underlay} onPress={setStudent}>
       <StyledText style={styles.studentName}>{student.name}</StyledText>
     </TouchableHighlight>
   );

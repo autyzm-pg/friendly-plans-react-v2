@@ -7,14 +7,16 @@ import { NavigationProp } from '@react-navigation/native';
 import { Student, StudentData } from '../../models';
 
 import { defaults } from "../../mocks/defaults"
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
+import { Route } from '../../navigation';
 
 interface Props {
   navigation: NavigationProp<any>;
-  student?: Student /* TODO: Student parameter shoudn't be optional. */
 }
 
-export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
-  const [state, setState] = useState<StudentData>(defaults.student as StudentData)
+export const StudentSettingsScreen: FC<Props> = ({navigation}) => {
+  const [state, setState] = useState<StudentData>(defaults.student as StudentData);
+  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
 
   const getScreenName = () => {
     return i18n.t('studentSettings:settingsTitle', {
@@ -22,12 +24,18 @@ export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
     });
   };
 
-  // TODO: Handling removing students and personal data updates from database side.
 
   const removeStudent = async () => {
-    // await AuthUser.getAuthenticatedUser().setCurrentStudent('');
-    // await this.state.student.delete();
+
+    if (currentStudent) {
+      await Student.deleteStudent(currentStudent)
+  
+      const firstStudent = await Student.getFirstStudent()
+      setCurrentStudent(firstStudent)
+    }
     navigation.goBack();
+    // TODO: remove if there is no need to choose another student
+    navigation.navigate(Route.StudentsList);
   }
 
   const handleRemoveStudentPressed = () => {
@@ -43,14 +51,14 @@ export const StudentSettingsScreen: FC<Props> = ({navigation, student}) => {
   };
 
   const updateStudent = (updated: StudentData) => {
-    // ...
+    // TODO: updating students
     setState(updated);
   }
 
   return (
     <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
       <StudentSettings
-        student={defaults.student}
+        student={currentStudent as StudentData}
         onStudentRemove={handleRemoveStudentPressed}
         onStudentUpdate={updateStudent}
       />

@@ -34,7 +34,7 @@ export function RootStackNavigation() {
 
   return (
     <RootNavigatorContext.Provider value={{editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode)}}>
-      <CurrentStudentContext.Provider value={{student: student, setStudent: setStudent}}>
+      <CurrentStudentContext.Provider value={{currentStudent: student, setCurrentStudent: setStudent}}>
       <Stack.Navigator
         initialRouteName={Route.Home}
         screenOptions={({ navigation, route }) => ({

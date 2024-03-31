@@ -18,14 +18,14 @@ const DASHBOARD = 'Dashboard';
 
 export const Header: React.FC<Props> = ({...props}) => {
   const { editionMode } = useRootNavigatorContext();
-  const {student, setStudent} = useCurrentStudentContext();
+  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   
   const navigation = props.navigation
   const getTitle = () => {
     const { route, options } = props;
 
     const headerTitle = (title: string) => {
-      const studentPrefix = student ? `${student.name} / ` : '';
+      const studentPrefix = currentStudent ? `${currentStudent.name} / ` : '';
       return `${studentPrefix}${title}`;
     };
 
@@ -44,7 +44,7 @@ export const Header: React.FC<Props> = ({...props}) => {
 
   const navigateToStudentSettings = () => {
     navigation.navigate(Route.StudentSettings, {
-      student: student,
+      student: currentStudent,
     });
   };
 
@@ -58,7 +58,7 @@ export const Header: React.FC<Props> = ({...props}) => {
   const renderButtons = () => {
     return isDashboard() ? (
       <>
-        {student && editionMode && (
+        {currentStudent && editionMode && (
           <IconButton
             name="settings"
             type="material"

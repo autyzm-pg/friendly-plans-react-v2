@@ -20,7 +20,7 @@ interface Props {
 export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const {editionMode} = useRootNavigatorContext();
-  const {student} = useCurrentStudentContext();
+  const {currentStudent} = useCurrentStudentContext();
 
   const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
 
@@ -49,7 +49,7 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
   const navigateTo = (name: string) => {
     if (name === 'create-plan') {
       navigation.navigate(Route.PlanActivity, {
-        student,
+        currentStudent,
         numberPlan: plans.length + 1,
       });
     } else if (name === 'copy-existing-plan') {

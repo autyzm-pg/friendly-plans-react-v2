@@ -21,7 +21,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
   const { emoji, name } = plan;
 
   const { editionMode } = useRootNavigatorContext();
-  const {student} = useCurrentStudentContext();
+  const {currentStudent} = useCurrentStudentContext();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -32,7 +32,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
 
   const navigateToUpdatePlan = () => {    
     navigation.navigate(Route.PlanActivity, {
-      student,
+      currentStudent,
       plan,
     });
   };
@@ -76,7 +76,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
             {!isSwipeableOpen && <Emoji symbol={emoji} />}
             <StyledText style={styles.cardText}>{name}</StyledText>
           </View>
-          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} student={student} />}
+          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} student={currentStudent} />}
         </Card>
       </Swipeable>
     </TouchableHighlight>

@@ -19,7 +19,7 @@ interface Props {
 export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   
-  const {student, setStudent} = useCurrentStudentContext();
+  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
 
   const connectToDatabase = async () => {
@@ -32,7 +32,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
     connectToDatabase().then(() => {
       Student.getStudents().then(studentsList => {
         if (studentsList.length)
-          setStudent(studentsList[0])
+          setCurrentStudent(studentsList[0])
       })
     });
 
@@ -51,7 +51,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {student && <StudentPlanList navigation={navigation}/>}
+      {currentStudent && <StudentPlanList navigation={navigation}/>}
     </View>
   );
 };

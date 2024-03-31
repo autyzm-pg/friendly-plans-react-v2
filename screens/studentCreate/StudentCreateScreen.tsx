@@ -18,8 +18,8 @@ interface Props {
 }
 
 export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
-  const [student] = useState(new Student())
-  const {setStudent} = useCurrentStudentContext();
+  const [student] = useState(new Student());
+  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
 
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
   const createStudent = async (data: StudentData) => {
     const student = await Student.createStudent(data);
     
-    setStudent(student);
+    setCurrentStudent(student);
     navigation.navigate(Route.Dashboard, {student});
   };
 

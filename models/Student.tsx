@@ -89,4 +89,23 @@ export class Student implements StudentData {
     }
     return resultsArray;
   }
+
+  static deleteStudent = async (student: Student): Promise<void> => {
+
+    const deleteStudentData = `DELETE FROM StudentData WHERE id = (?);`;
+    await executeQuery(deleteStudentData, [student.id]);
+
+    return 
+  }
+
+  static getFirstStudent = async (): Promise<Student> => {
+    
+    const resultSet = await executeQuery(`SELECT * FROM StudentData ORDER BY id ASC LIMIT 1;`);
+    
+    if (!(resultSet.rows.length)) {
+      throw new Error('Could not find any students')
+    }
+    
+    return resultSet.rows.item(0)
+  }
 }
