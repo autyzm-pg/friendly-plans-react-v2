@@ -10,23 +10,22 @@ import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/
 import { Student } from '../models';
 import { ModeSetting } from '../components'
 import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
+import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 
-interface Props extends StackHeaderProps {
-  student: Student;
-
-}
+interface Props extends StackHeaderProps {}
 
 const DASHBOARD = 'Dashboard';
 
-export const Header: React.FC<Props> = ({student, ...props}) => {
+export const Header: React.FC<Props> = ({...props}) => {
   const { editionMode } = useRootNavigatorContext();
-
+  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
+  
   const navigation = props.navigation
   const getTitle = () => {
     const { route, options } = props;
 
     const headerTitle = (title: string) => {
-      const studentPrefix = student ? `${student.name} / ` : '';
+      const studentPrefix = currentStudent ? `${currentStudent.name} / ` : '';
       return `${studentPrefix}${title}`;
     };
 
@@ -45,7 +44,7 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
 
   const navigateToStudentSettings = () => {
     navigation.navigate(Route.StudentSettings, {
-      student: student,
+      student: currentStudent,
     });
   };
 
@@ -59,7 +58,7 @@ export const Header: React.FC<Props> = ({student, ...props}) => {
   const renderButtons = () => {
     return isDashboard() ? (
       <>
-        {student && editionMode && (
+        {currentStudent && editionMode && (
           <IconButton
             name="settings"
             type="material"

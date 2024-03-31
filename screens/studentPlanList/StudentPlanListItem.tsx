@@ -9,18 +9,19 @@ import { ModelSubscriber, Plan, Student } from '../../models';
 import { Route } from '../../navigation';
 import { dimensions, palette, typography } from '../../styles';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface Props {
   plan: Plan;
-  student: Student;
   navigation: NavigationProp<any>;
 }
 
-const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => {
+const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
   const [isSwipeableOpen, setIsSwipeableOpen] = useState<boolean>(false);
   const { emoji, name } = plan;
 
   const { editionMode } = useRootNavigatorContext();
+  const {currentStudent} = useCurrentStudentContext();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -31,7 +32,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
 
   const navigateToUpdatePlan = () => {    
     navigation.navigate(Route.PlanActivity, {
-      student,
+      currentStudent,
       plan,
     });
   };
@@ -75,7 +76,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, student }) => 
             {!isSwipeableOpen && <Emoji symbol={emoji} />}
             <StyledText style={styles.cardText}>{name}</StyledText>
           </View>
-          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} student={student} />}
+          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} student={currentStudent} />}
         </Card>
       </Swipeable>
     </TouchableHighlight>

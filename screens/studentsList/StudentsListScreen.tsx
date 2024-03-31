@@ -10,20 +10,19 @@ import { dimensions, palette } from '../../styles';
 import { StudentsList } from './StudentsList';
 import { NavigationProp } from '@react-navigation/native';
 
-import { defaults } from '../../mocks/defaults'
-
 interface Props {
   navigation: NavigationProp<any>;
 }
 
 export const StudentsListScreen: React.FC<Props> = ({ navigation }) => {
 
-  const [students, setStudents] = useState<Student[]>(defaults.studentsList);
+  const [students, setStudents] = useState<Student[]>([]);
 
 
   useEffect(() => {
-    // TODO: pobieranie listy studentów
-    setStudents(defaults.studentsList);
+    Student.getStudents().then(response => {
+      setStudents(response);
+    });
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
 
     return () => {

@@ -7,7 +7,15 @@ import { useState } from 'react';
 import { Easing } from 'react-native';
 import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
-import { PlanSearchForCopyScreen, PlansListForCopyScreen, StudentCreateScreen, StudentSettingsScreen, StudentsListForCopyPlanScreen, StudentsListSearchForCopyPlanScreen, StudentsListSearchScreen } from '../screens';
+import { 
+  PlanSearchForCopyScreen, 
+  PlansListForCopyScreen, 
+  StudentCreateScreen, 
+  StudentSettingsScreen, 
+  StudentsListForCopyPlanScreen, 
+  StudentsListSearchForCopyPlanScreen, 
+  StudentsListSearchScreen 
+} from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
 import { PlanItemTaskScreen } from '../screens/planItemActivity/PlanItemTaskScreen';
@@ -15,14 +23,18 @@ import { StudentsListScreen } from '../screens/studentsList/StudentsListScreen';
 import { RunPlanSlideScreen } from '../screens/runPlan/SlideMode/RunPlanSlideScreen';
 
 import { RootNavigatorContext } from '../contexts/RootNavigatorContext';
+import { CurrentStudentContext } from '../contexts/CurrentStudentContext';
+import { Student } from '../models';
 
 const Stack = createStackNavigator();
 
 export function RootStackNavigation() {
   const [editionMode, setEditionMode] = useState<boolean>(true);
+  const [student, setStudent] = useState<Student | undefined>();
 
   return (
     <RootNavigatorContext.Provider value={{editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode)}}>
+      <CurrentStudentContext.Provider value={{currentStudent: student, setCurrentStudent: setStudent}}>
       <Stack.Navigator
         initialRouteName={Route.Home}
         screenOptions={({ navigation, route }) => ({
@@ -40,7 +52,6 @@ export function RootStackNavigation() {
           header: (headerProps) => (
             <Header
               {...headerProps}
-              student={route.params && route.params.student ? route.params.student : defaults.student}
               navigation={navigation}
             />
           )})}>
@@ -138,6 +149,7 @@ export function RootStackNavigation() {
         />*/
         }
       </Stack.Navigator>
+      </CurrentStudentContext.Provider>
     </RootNavigatorContext.Provider>
   );
 }

@@ -6,6 +6,7 @@ import { AuthUser, Student } from '../models';
 import { Route } from '../navigation';
 import { dimensions, palette, typography } from '../styles';
 import { NavigationProp } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 
 interface Props {
   student: Student;
@@ -13,16 +14,15 @@ interface Props {
 }
 
 export const StudentListElement: FC<Props> = ({ student, navigation }) => {
-  const setCurrentStudent = async () => {
-    // TODO: Setting current user
-    // await AuthUser.getAuthenticatedUser().setCurrentStudent(student.id);
-    navigation.navigate(Route.Dashboard, {
-      student,
-    });
+  const {setCurrentStudent} = useCurrentStudentContext();
+
+  const setStudent = async () => {
+    setCurrentStudent(student);
+    navigation.navigate(Route.Dashboard);
   };
 
   return (
-    <TouchableHighlight style={styles.touchable} underlayColor={palette.underlay} onPress={setCurrentStudent}>
+    <TouchableHighlight style={styles.touchable} underlayColor={palette.underlay} onPress={setStudent}>
       <StyledText style={styles.studentName}>{student.name}</StyledText>
     </TouchableHighlight>
   );

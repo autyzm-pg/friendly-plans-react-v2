@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {I18nextProvider} from 'react-i18next';
 import {StatusBar} from 'react-native';
 import {i18n} from './locale';
@@ -11,6 +11,8 @@ import { Platform } from 'react-native';
 import {statusBarHeight} from './styles';
 import SafeAreaView  from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
+import DatabaseService from './services/DatabaseService';
+import { Student } from './models';
 
 // // Set status bar height on Android to support windowTranslucentStatus style
 /* istanbul ignore next */
@@ -26,9 +28,11 @@ import SplashScreen from 'react-native-splash-screen';
 // };
 
 export default function App() {
+
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+
   return (
     <NavigationContainer>
       <I18nextProvider i18n={i18n}>
