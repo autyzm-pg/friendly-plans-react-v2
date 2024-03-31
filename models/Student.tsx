@@ -91,7 +91,6 @@ export class Student implements StudentData {
   }
 
   static deleteStudent = async (student: Student): Promise<void> => {
-
     const deleteStudentData = `DELETE FROM StudentData WHERE id = (?);`;
     await executeQuery(deleteStudentData, [student.id]);
 
@@ -99,7 +98,6 @@ export class Student implements StudentData {
   }
 
   static getFirstStudent = async (): Promise<Student> => {
-    
     const resultSet = await executeQuery(`SELECT * FROM StudentData ORDER BY id ASC LIMIT 1;`);
     
     if (!(resultSet.rows.length)) {
@@ -107,5 +105,39 @@ export class Student implements StudentData {
     }
     
     return resultSet.rows.item(0)
+  }
+
+  static updateStudentData = async (student: StudentData, studentId: string): Promise<void> => {
+    try {
+      console.log(student)
+      const updateQuery = `
+          UPDATE StudentData
+          SET name = (?), displaySettings = (?), textSize = (?), isUpperCase = (?), isSwipeBlocked = (?)
+          WHERE id = (?);
+      `;
+
+      const params = [
+        student.name,
+        student.displaySettings,
+        student.textSize,
+        student.isUpperCase ? 1 : 0,
+        student.isSwipeBlocked ? 1 : 0,
+        studentId
+      ];
+
+      await executeQuery(updateQuery, params);
+    } catch (error) {
+        console.error("Error updating student:", error);
+    }
+  }
+
+  static equals = (o1: StudentData, o2: StudentData) => {
+    return (
+      o1.name === o2.name
+      && o1.displaySettings === o2.displaySettings
+      && o1.isSwipeBlocked === o2.isSwipeBlocked
+      && o1.isUpperCase === o2.isUpperCase
+      && o1.textSize === o2.textSize
+    )
   }
 }

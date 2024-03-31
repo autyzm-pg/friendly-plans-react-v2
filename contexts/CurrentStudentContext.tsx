@@ -3,7 +3,7 @@ import { Student } from "../models";
 
 interface Props {
   currentStudent: Student | undefined;
-  setCurrentStudent: (student: Student) => void;
+  setCurrentStudent: (student: Student | undefined) => void;
 }
 
 export const CurrentStudentContext = createContext<Props | undefined>({

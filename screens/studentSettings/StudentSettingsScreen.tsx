@@ -20,18 +20,21 @@ export const StudentSettingsScreen: FC<Props> = ({navigation}) => {
 
   const getScreenName = () => {
     return i18n.t('studentSettings:settingsTitle', {
-      studentName: state.name,
+      studentName: currentStudent?.name,
     });
   };
 
 
   const removeStudent = async () => {
-
     if (currentStudent) {
       await Student.deleteStudent(currentStudent)
   
-      const firstStudent = await Student.getFirstStudent()
-      setCurrentStudent(firstStudent)
+      try {
+        const firstStudent = await Student.getFirstStudent()
+        setCurrentStudent(firstStudent)
+      } catch (error) {
+        setCurrentStudent(undefined)
+      }
     }
     navigation.goBack();
     // TODO: remove if there is no need to choose another student
@@ -53,15 +56,22 @@ export const StudentSettingsScreen: FC<Props> = ({navigation}) => {
   const updateStudent = (updated: StudentData) => {
     // TODO: updating students
     setState(updated);
+    if (currentStudent) {
+      Student.updateStudentData(updated, currentStudent.id)
+      setCurrentStudent({
+        ...currentStudent,
+        ...updated
+      })
+    }
   }
 
   return (
     <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
-      <StudentSettings
+      {currentStudent && <StudentSettings
         student={currentStudent as StudentData}
         onStudentRemove={handleRemoveStudentPressed}
         onStudentUpdate={updateStudent}
-      />
+      />}
     </NarrowScreenTemplate>
   );
 }
