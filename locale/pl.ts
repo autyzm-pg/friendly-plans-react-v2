@@ -110,6 +110,7 @@ const translations = {
     imageActionTakePhoto: 'ZRÓB ZDJĘCIE',
     imageActionDeletePhoto: 'USUŃ OBRAZEK',
     imageActionLibrary: 'WYBIERZ Z BIBLIOTEKI',
+    imageActionCroppPhoto: 'PRZYTNIJ OBRAZEK',
     imageActionBrowse: 'DODAJ Z URZĄDZENIA',
     imageLibraryTitle: 'Biblioteka zdjęć',
     newTask: 'Nowe Zadanie #',
