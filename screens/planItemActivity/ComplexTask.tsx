@@ -10,11 +10,13 @@ import {ComplexTaskCoverCard} from './ComplexTaskCoverCard';
 import {ComplexTaskItem} from './ComplexTaskItem';
 import {ComplexTaskMainView} from './ComplexTaskMainView';
 import {PlanItemFormData} from './PlanItemForm';
+import { NavigationProp } from '@react-navigation/native';
 
 
 interface Props {
     planItem: PlanItem;
     formikProps: FormikProps<PlanItemFormData>;
+    navigation: NavigationProp<any>;
 }
 
 interface State {
@@ -25,7 +27,7 @@ interface State {
     deletedItems: PlanSubItem[];
 }
 
-export const ComplexTask: FC<Props> = ({planItem, formikProps}) => {
+export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
     const [state, setState] = useState<State>({
         planItem: planItem,
         subItems: [],
@@ -203,7 +205,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps}) => {
                                         voiceChange={voice => updateVoice(voice, state.selected)}
                                         style={styles.simpleTask} planItem={planItem}
                                         formikProps={state.formik}
-                                        itemInfo={itemInfo}/>;
+                                        itemInfo={itemInfo}
+                                        navigation={navigation}/>;
         }
 
         const subItem = state.subItems[state.selected];
@@ -220,7 +223,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps}) => {
                                     voiceChange={voice => updateVoice(voice, state.selected)}
                                     style={styles.simpleTask} planItem={planItem}
                                     formikProps={state.formik}
-                                    itemInfo={itemInfo}/>;
+                                    itemInfo={itemInfo}
+                                    navigation={navigation}/>;
     };
 
 

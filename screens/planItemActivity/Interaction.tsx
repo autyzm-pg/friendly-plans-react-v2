@@ -101,7 +101,7 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
 
           <View style={{flexDirection: 'column', alignItems: 'center', marginBottom: 20, height: '100%', width: '100%'}}>
             <ImagePicker planItem={planItem} formikProps={formikProps}
-                          isComplexTask={false} selected={{key: -2, image: ''}}/>
+                          isComplexTask={false} selected={{key: -2, image: ''}} navigation={navigation}/>
 
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextInput

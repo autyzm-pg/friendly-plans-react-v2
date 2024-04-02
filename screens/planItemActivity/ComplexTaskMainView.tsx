@@ -11,6 +11,7 @@ import {ImagePicker} from './ImagePicker';
 import {PlanItemFormData} from './PlanItemForm';
 import {TimeSlider} from './TimeSlider';
 import {VoicePicker} from './voicePicker/VoicePicker';
+import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
     planItem: PlanItem;
@@ -28,18 +29,20 @@ interface Props {
         lector: boolean;
         voicePath: string;
     };
+    navigation: NavigationProp<any>;
 }
 
 export const ComplexTaskMainView: FC<Props> = ({
-                                                                  itemInfo,
-                                                                  style,
-                                                                  onChange,
-                                                                  onTimeChange,
-                                                                  planItem,
-                                                                  formikProps,
-                                                                  updateImage,
-                                                                  voiceChange
-                                                              }) => {
+                                                itemInfo,
+                                                style,
+                                                onChange,
+                                                onTimeChange,
+                                                planItem,
+                                                formikProps,
+                                                updateImage,
+                                                voiceChange,
+                                                navigation
+                                            }) => {
     const [time, setTime] = useState(itemInfo.time);
 
 
@@ -181,7 +184,8 @@ export const ComplexTaskMainView: FC<Props> = ({
                 <View style={{flexDirection: 'column', alignItems: 'center', marginBottom: 20, height: '100%', width: '100%'}}>
                     <ImagePicker planItem={planItem} formikProps={formikProps} isComplexTask
                                  selected={{key: itemInfo.key, image: itemInfo.image}}
-                                 updateComplexTaskImage={image => updateImage(image)}/>
+                                 updateComplexTaskImage={image => updateImage(image)}
+                                 navigation={navigation}/>
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <TextInput

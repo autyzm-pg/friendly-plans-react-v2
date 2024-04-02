@@ -9,6 +9,7 @@ import {PlanItem} from '../../models';
 import {palette} from '../../styles';
 import {ImagePickerModal} from './ImagePickerModal';
 import {PlanItemFormData} from './PlanItemForm';
+import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
     planItem: PlanItem;
@@ -19,15 +20,17 @@ interface Props {
         key: number;
         image: string;
     };
+    navigation: NavigationProp<any>;
 }
 
 export const ImagePicker: FC<Props> = ({
-                                                          planItem,
-                                                          formikProps,
-                                                          updateComplexTaskImage,
-                                                          isComplexTask,
-                                                          selected
-                                                      }) => {
+                                        planItem,
+                                        formikProps,
+                                        updateComplexTaskImage,
+                                        isComplexTask,
+                                        selected,
+                                        navigation
+                                    }) => {
 
     const [imageUri, setImageUri] = useState(isComplexTask ? selected.image : formikProps.values.imageUri);
 
@@ -68,7 +71,8 @@ export const ImagePicker: FC<Props> = ({
                                                 deleteImageUri={deleteImageUri}
                                                 currentImageUri={imageUri}
                                                 isComplexTask={isComplexTask}
-                                                selected={selected}/>}
+                                                selected={selected}
+                                                navigation={navigation}/>}
                 title={i18n.t('planItemActivity:addImage')}
             >
                 <View style={styles.imagePicker}>
