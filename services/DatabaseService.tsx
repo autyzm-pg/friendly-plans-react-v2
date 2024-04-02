@@ -39,7 +39,11 @@ export const createTables = async () => {
 
   const createPlanTable = `CREATE TABLE IF NOT EXISTS Plan (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,studentId INTEGER,emoji TEXT)`;
 
-  const createPlanItemTable = `CREATE TABLE IF NOT EXISTS PlanItem (id INTEGER PRIMARY KEY AUTOINCREMENT,planId INTEGER,planElementId INTEGER)`;
+  const createPlanItemTable = `CREATE TABLE IF NOT EXISTS PlanItem (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    planId INTEGER,
+    planElementId INTEGER,
+  )`;
 
   const createPlanElementTable = `CREATE TABLE IF NOT EXISTS PlanElement (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
