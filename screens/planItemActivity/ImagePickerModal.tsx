@@ -125,7 +125,7 @@ export const ImagePickerModal: FC<Props> = ({
         // })
         // await RNFS.exists(imagesDir + 'image-5182a1c4-6b32-47a8-b3d4-91dbdaa8100a771324797467554794.jpg')
         // .then((exists) => {console.log(exists)})
-        navigation.navigate(Route.ImageLibrary);
+        navigation.navigate(Route.ImageLibrary, {updateImage: imageUriUpdate});
     }
 
     const deleteImage = async () => {

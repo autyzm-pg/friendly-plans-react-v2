@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { FlatList, Image, StyleSheet, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import RNFS from 'react-native-fs';
 import { FullScreenTemplate } from '../../components';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { Route } from '../../navigation/routes';
 
 interface Props {
-  // planItem: PlanItem;
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 }
 
-export const ImageLibraryScreen: React.FC<Props> = ({}) => {
+export const ImageLibraryScreen: React.FC<Props> = ({navigation, route}) => {
 
   // static navigationOptions = {
   //   title: i18n.t('planItemActivity:imageLibraryTitle'),
@@ -22,6 +25,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({}) => {
         const result = await RNFS.readDir(imagesDir);
         console.log('Loaded images...');
         const imgPaths = result.map(res => 'file://' + res.path);
+        // const repeatedImages = Array.from(Array(100).keys()).map(() => imgPaths).flat();
         setImages(imgPaths);
       } catch (err: any) {
         console.log('Cannot load images...');
@@ -35,37 +39,44 @@ export const ImageLibraryScreen: React.FC<Props> = ({}) => {
       <TouchableOpacity onPress={() => handleImagePress(item)}>
         <Image
           source={{ uri: item }}
-          style={styles.image}
+          style={[styles.image, { width: Math.floor(Math.random() * 100) + 100, height: Math.floor(Math.random() * 100) + 100}]}
         />
       </TouchableOpacity>
     );
   };
 
   const handleImagePress = (uri: string) => {
-    // Tutaj możesz obsłużyć kliknięcie obrazka, np. otworzyć go w pełnym ekranie
+    route.params?.updateImage(uri);
+    navigation.goBack();
   };
 
   return (
     <FullScreenTemplate darkBackground>
-      <FlatList
-        data={images}
-        renderItem={renderImageItem}
-        keyExtractor={(item, index) => index.toString()}
-        numColumns={Math.floor(useWindowDimensions().width / 100)}
-        contentContainerStyle={styles.flatListContainer}
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={images}
+          renderItem={renderImageItem}
+          keyExtractor={(item, index) => index.toString()}
+          numColumns={Math.floor(useWindowDimensions().width / 100)}
+          contentContainerStyle={styles.flatListContainer}
+        />
+      </View>
     </FullScreenTemplate>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   flatListContainer: {
     paddingVertical: 10,
     paddingHorizontal: 5,
   },
   image: {
-    width: 100,
-    aspectRatio: 1,
     margin: 3,
+    borderRadius: 10,
   },
 });
