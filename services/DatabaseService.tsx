@@ -22,7 +22,7 @@ export default class DatabaseService {
         location: 'default' 
       });
       console.log('Database opened');
-      createTables();
+      await createTables();
     } catch (error) {
       console.error('Error opening database:', error);
     }
@@ -42,7 +42,7 @@ export const createTables = async () => {
   const createPlanItemTable = `CREATE TABLE IF NOT EXISTS PlanItem (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     planId INTEGER,
-    planElementId INTEGER,
+    planElementId INTEGER
   )`;
 
   const createPlanElementTable = `CREATE TABLE IF NOT EXISTS PlanElement (
@@ -146,7 +146,8 @@ export const executeQuery = async (query: string, params: (string | number | Dat
           console.log("Query completed");
           resolve(results);
         }, (tx, error) => {
-          console.log('Error:', error);
+          console.log('Error:', error,);
+          console.log('Query:', query)
           reject(error);
           return false;
         });

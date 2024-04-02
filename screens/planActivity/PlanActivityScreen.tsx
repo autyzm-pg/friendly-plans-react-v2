@@ -13,6 +13,7 @@ import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { defaults } from "../../mocks/defaults";
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -20,12 +21,20 @@ interface Props {
 }
 
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
-  const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
-    plan: route.params?.plan ?? undefined,
-    planItemList: []
-  });
+  // const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
+  //   plan: route.params?.plan ?? undefined,
+  //   planItemList: []
+  // });
+
+  const [plan, setPlan] = useState<Plan | undefined>(
+    route.params?.plan ?? undefined,
+  );
+
+  const [planItemList, setPlanItemList] = useState<PlanItem[]>([]);
   
-  const {plan, planItemList} = state;
+  // const {plan, planItemList} = state;
+
+  const {currentStudent} = useCurrentStudentContext();
 
   const setScreenTitle = (title: string) => {
     navigation.setOptions({
@@ -34,11 +43,8 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if(state.plan) {
-      setState(prevState => ({
-        ...prevState,
-        planItemList: defaults.planItemsList
-      }));
+    if(plan) {
+      setPlanItemList(defaults.planItemsList);
     }
     setScreenTitle(i18n.t('planList:viewTitle'))
   }, []);
@@ -70,6 +76,11 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     // this.setState({ plan }, () => {
     //   this.subscribeToPlanItems();
     // });
+    console.log('creating new plan')
+    if (currentStudent) {
+      const newPlan = await Plan.createPlan(currentStudent?.id, name)
+      
+    }
   };
 
   const updatePlan = async (name: string, emoji: string) => {
@@ -77,18 +88,16 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     //   name,
     //   emoji,
     // });
+    console.log('updating plan')
 
-    if (state.plan) {
+    if (plan) {
       const updatedPlan: Plan = {
-        ...state.plan,
+        ...plan,
         name: name,
         emoji: emoji
       };
   
-      setState(prevState => ({
-        ...prevState,
-        plan: updatedPlan
-      }));
+      setPlan(updatedPlan);
     }
   };
 
@@ -123,7 +132,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const shuffleDisabled = (): boolean => {
-    const { planItemList } = state;
+    // const { planItemList } = state;
 
     return !planItemList || planItemList.length < 2;
   };
@@ -137,10 +146,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
-    setState(prevState => ({
-      ...prevState,
-      planItemList: planItemListRightOrder as PlanItem[]
-    }));
+    setPlanItemList(planItemListRightOrder as PlanItem[]);
   };
 
   const shuffle = (array: PlanItem[]) => {
@@ -160,13 +166,10 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   }
 
   const shuffleTasks = () => {
-    const { planItemList } = state;
     let array = planItemList;
     array = shuffle(array);
-    setState(prevState => ({
-      ...prevState,
-      planItemList: array
-    }));
+
+    setPlanItemList(array);
   };
 
   return (
@@ -175,7 +178,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
         <View style={styles.headerContainer}>
           <PlanForm
             onSubmit={onSubmit}
-            plan={state.plan}
+            plan={plan}
             numberPlan={route.params?.numberPlan ?? {}}
             onValidate={validatePlan}
             shuffleDisabled={shuffleDisabled()}
@@ -185,9 +188,9 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             navigation={navigation}
           />
         </View>
-        <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} navigation={navigation}/>
+        <TaskTable planItemList={planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} navigation={navigation}/>
       </FullScreenTemplate>
-      {plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
+      <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />
     </>
   );
 }

@@ -24,9 +24,12 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
 
   const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
 
-  const subscribeToPlans = () => {
+  const subscribeToPlans = async () => {
     //plansSubscriber.subscribeCollectionUpdates(student, plans => setPlans(plans));
-    setPlans(defaults.plansList)
+    if (currentStudent) {
+      const plans = await Plan.getPlans(currentStudent.id);
+      setPlans(plans)
+    }
   };
 
   const unsubscribeFromPlans = () => {

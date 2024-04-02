@@ -108,10 +108,10 @@ export class Plan {
     return resultSet.rows.item(0)
   }
 
-  static getPlans = async (): Promise<Plan[]> => {
+  static getPlans = async (studentId: string): Promise<Plan[]> => {
     // Sample data for inserting into StudentData table
-    const selectAllFromPlanTable = `SELECT * FROM Plan;`;
-    const resultSet = await executeQuery(selectAllFromPlanTable)
+    const selectAllFromPlanTable = `SELECT * FROM Plan WHERE studentId = (?);`;
+    const resultSet = await executeQuery(selectAllFromPlanTable, [studentId])
     let resultsArray: Plan[] = [];
     for (let i = 0; i < resultSet.rows.length; i++) {
       resultsArray.push(resultSet.rows.item(i));
