@@ -1,15 +1,15 @@
-import {IconButton} from '../../components';
-import {i18n} from '../../locale';
+import {IconButton} from '../../../components';
+import {i18n} from '../../../locale';
 import {noop} from 'lodash';
-import {PlanItem} from '../../models';
+import {PlanItem} from '../../../models';
 import React, {FC, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import {dimensions} from '../../styles';
-import {ImageAction} from './ImageAction';
+import {dimensions} from '../../../styles';
+import {ImageAction} from '../ImageAction';
 import RNFS from 'react-native-fs';
 import { NavigationProp } from '@react-navigation/native';
-import {Route} from '../../navigation/routes';
+import {Route} from '../../../navigation/routes';
 
 interface Props {
     closeModal?: () => void;

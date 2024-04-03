@@ -7,7 +7,7 @@ import { i18n } from '../../locale';
 import { PlanItem } from '../../models';
 import { Text } from 'react-native-elements';
 import { dimensions, palette, typography } from '../../styles';
-import { ImagePicker } from './ImagePicker';
+import { ImagePicker } from './imagePicker/ImagePicker';
 import { PlanItemFormData } from './PlanItemForm';
 import { TimeSlider } from './TimeSlider';
 import { VoicePicker } from './voicePicker/VoicePicker';

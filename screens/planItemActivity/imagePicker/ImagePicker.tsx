@@ -3,12 +3,12 @@ import React, {FC, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Image} from 'react-native-elements';
 
-import {Icon, ModalTrigger} from '../../components';
-import {i18n} from '../../locale';
-import {PlanItem} from '../../models';
-import {palette} from '../../styles';
+import {Icon, ModalTrigger} from '../../../components';
+import {i18n} from '../../../locale';
+import {PlanItem} from '../../../models';
+import {palette} from '../../../styles';
 import {ImagePickerModal} from './ImagePickerModal';
-import {PlanItemFormData} from './PlanItemForm';
+import {PlanItemFormData} from '../PlanItemForm';
 import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
