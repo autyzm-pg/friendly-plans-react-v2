@@ -110,6 +110,7 @@ const translations = {
     imageActionTakePhoto: 'TAKE A PHOTO',
     imageActionDeletePhoto: 'DELETE PHOTO',
     imageActionLibrary: 'ADD FROM LIBRARY',
+    imageActionCropPhoto: 'CROP PHOTO',
     imageActionBrowse: 'ADD FROM DEVICE',
     imageLibraryTitle: 'Image Library',
     newTask: 'New Task #',

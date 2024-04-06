@@ -80,7 +80,7 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
           </View>
         </View>
         {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} />}
-        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask planItem={planItem} formikProps={formikProps} />}
+        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} />}
         {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
         {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
       </>

@@ -7,7 +7,7 @@ import {i18n} from '../../locale';
 import {PlanItem} from '../../models';
 import {Text} from 'react-native-elements';
 import {dimensions, palette, typography} from '../../styles';
-import {ImagePicker} from './ImagePicker';
+import {ImagePicker} from './imagePicker/ImagePicker';
 import {PlanItemFormData} from './PlanItemForm';
 import {TimeSlider} from './TimeSlider';
 import {VoicePicker} from './voicePicker/VoicePicker';
@@ -103,7 +103,7 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style}
 
                 <View style={{flexDirection: 'column', alignItems: 'center', marginBottom: 20, height: '100%', width: '100%'}}>
                     <ImagePicker planItem={planItem} formikProps={formikProps}
-                                    isComplexTask={false} selected={{key: -2, image: ''}}/>
+                                    isComplexTask={false} selected={{key: -2, image: ''}} navigation={navigation}/>
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <TextInput
