@@ -55,7 +55,7 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
   const extractKey = (plan: Plan) => plan.id;
 
   const renderItem = ({ item }: { item: Plan }) => (
-    <StudentPlanListItem plan={item} navigation={navigation}/>
+    <StudentPlanListItem plan={item} navigation={navigation} updatePlans={subscribeToPlans}/>
   );
 
   const navigateTo = (name: string) => {

@@ -14,9 +14,10 @@ import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 interface Props {
   plan: Plan;
   navigation: NavigationProp<any>;
+  updatePlans: () => void;
 }
 
-const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
+const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, updatePlans }) => {
   const [isSwipeableOpen, setIsSwipeableOpen] = useState<boolean>(false);
   const { emoji, name } = plan;
 
@@ -49,12 +50,18 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan }) => {
 
   const handleCloseSwipeable = () => setIsSwipeableOpen(false);
 
+  const deletePlan = () => {
+    Plan.deletePlan(plan).then(() => {
+      updatePlans()
+    })
+  }
+
   const handlePressDelete = () =>
     Alert.alert(i18n.t('planList:deletePlan'), i18n.t('planList:deletePlanDescription'), [
       { text: i18n.t('common:cancel') },
       {
         text: i18n.t('common:confirm'),
-        onPress: plan.delete,
+        onPress: deletePlan,
       },
     ]);
 
