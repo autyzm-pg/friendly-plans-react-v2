@@ -147,7 +147,6 @@ export const executeQuery = async (query: string, params: (string | number | Dat
           resolve(results);
         }, (tx, error) => {
           console.log('Error:', error,);
-          console.log('Query:', query)
           reject(error);
           return false;
         });

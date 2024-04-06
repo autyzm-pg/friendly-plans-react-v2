@@ -107,7 +107,7 @@ export class PlanItem implements PlanElement {
   };
 
   update = (item: Partial<PlanItem>) => {
-    
+
   }
 
   setOrder = (order: number) => {
@@ -198,9 +198,9 @@ export class PlanItem implements PlanElement {
     await executeQuery(insertIntoPlanElementTable, [
       data.name,
       type,
-      false,
+      0,
       data.time,
-      data.lector,
+      data.lector ? 1 : 0,
       data.nameForChild,
       data.imageUri,
       data.voicePath,
@@ -282,22 +282,29 @@ export class PlanItem implements PlanElement {
     return resultsArray;
   }
 
-  static updatePlanItem = async (plan: Plan, studentId: string): Promise<void> => {
+  static updatePlanItem = async (
+    planItem: PlanItem
+  ): Promise<void> => {
     try {
-      const updateQuery = `
-          UPDATE Plan
-          SET name = (?), studentId = (?), emoji = (?)
-          WHERE id = (?);
-      `;
+    const updatePlanElementTable = `
+      UPDATE PlanElement 
+      SET name = (?), type = (?), completed = (?), time = (?), lector = (?), nameForChild = (?), image = (?), voicePath = (?), [order] = (?)
+      WHERE id = (?);
+    `;
 
-      const params = [
-        plan.name,
-        studentId,
-        plan.emoji,
-        studentId
-      ];
+    await executeQuery(updatePlanElementTable, [
+      planItem.name,
+      planItem.type,
+      planItem.completed ? 1 : 0,
+      planItem.time,
+      planItem.lector ? 1 : 0,
+      planItem.nameForChild,
+      planItem.image,
+      planItem.voicePath,
+      planItem.order,
+      planItem.planElementId
+    ]);
 
-      await executeQuery(updateQuery, params);
     } catch (error) {
         console.error("Error updating plan:", error);
     }

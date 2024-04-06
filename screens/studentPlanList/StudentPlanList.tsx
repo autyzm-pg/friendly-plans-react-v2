@@ -8,7 +8,7 @@ import { Route } from '../../navigation';
 import { EmptyStudentPlans } from './EmptyStudentPlans';
 import { FixedCreatePlanButton } from './FixedCreatePlanButton';
 import StudentPlanListItem from './StudentPlanListItem';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useIsFocused } from '@react-navigation/native';
 import { defaults } from '../../mocks/defaults';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
@@ -23,13 +23,18 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
   const {currentStudent} = useCurrentStudentContext();
 
   const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
+  
+  const isFocused = useIsFocused();
 
-  const subscribeToPlans = async () => {
-    //plansSubscriber.subscribeCollectionUpdates(student, plans => setPlans(plans));
+  const getPlans = async () => {
     if (currentStudent) {
       const plans = await Plan.getPlans(currentStudent.id);
       setPlans(plans)
     }
+  }
+  
+  const subscribeToPlans = async () => {
+    getPlans()
   };
 
   const unsubscribeFromPlans = () => {
@@ -42,6 +47,10 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
       unsubscribeFromPlans();
     };
   }, []);
+
+  useEffect(() => {
+    subscribeToPlans();
+  }, [isFocused]);
 
   const extractKey = (plan: Plan) => plan.id;
 

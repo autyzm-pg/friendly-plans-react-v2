@@ -11,8 +11,7 @@ import { getElevation, palette } from '../../styles';
 import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { defaults } from "../../mocks/defaults";
+import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface Props {
@@ -36,18 +35,30 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   const {currentStudent} = useCurrentStudentContext();
 
+  const isFocused = useIsFocused();
+
   const setScreenTitle = (title: string) => {
     navigation.setOptions({
       title: title,
     });
   };
 
-  useEffect(() => {
-    if(plan) {
-      setPlanItemList(defaults.planItemsList);
+  const getPlanItems = async () => {
+    if (plan) {
+      const planItems = await PlanItem.getPlanItems(plan)
+      setPlanItemList(planItems)
     }
+  }
+
+  useEffect(() => {
     setScreenTitle(i18n.t('planList:viewTitle'))
   }, []);
+
+  
+  useEffect(() => {
+    if (isFocused)
+      getPlanItems()
+  }, [isFocused]);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};

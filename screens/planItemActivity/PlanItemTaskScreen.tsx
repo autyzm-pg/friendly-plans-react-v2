@@ -53,6 +53,8 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
       image: "",
       voicePath: "",
     }
+    
+    PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder())
     // const planItem = await PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder());
 
     // if (data.type === PlanItemType.ComplexTask){
@@ -69,8 +71,27 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     setState({planItem: planItem});
   };
 
-  const updatePlanItem = async (formData: PlanItemFormData) => {
-    const { name, nameForChild, time, imageUri, lector, voicePath } = formData;
+  const updatePlanItem = async (data: PlanItemFormData) => {
+    
+    const plan = route.params?.plan;
+
+    //@ts-ignore
+    const planItem: PlanItem = {
+      id: "33",
+      name: "LetterB",
+      studentId: "1",
+      planId: plan.id,
+      type: data.type,
+      completed: false,
+      lector: false,
+      nameForChild: i18n.t('planItemActivity:taskNameForChild'),
+      order: getLastItemOrder(),
+      time: data.time,
+      image: "",
+      voicePath: "",
+    }
+    
+    PlanItem.updatePlanItem(planItem)
     // await state.planItem.update({
     //   name,
     //   nameForChild,
