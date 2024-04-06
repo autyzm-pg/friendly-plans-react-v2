@@ -16,6 +16,7 @@ const translations = {
     success: 'Sukces',
     unknownError: 'Pojawił się nieznany błąd',
     addImage: 'DODAJ LOGO',
+    language: 'pl-PL',
   },
   validation: {
     email: 'Adres email musi być poprawny',
@@ -127,6 +128,7 @@ const translations = {
     voiceActionAddRecord: 'DODAJ NAGRANIE',
     voiceActionSetLector: 'USTAW LEKTORA',
     voiceActionDeleteVoice: 'USUŃ CZYTANIE TREŚCI',
+    voiceActionPlayAudio: 'PUŚĆ NAGRANIE',
     timerHour: 'godziny',
     timerMinutes: 'minuty',
     timerSeconds: 'sekundy',

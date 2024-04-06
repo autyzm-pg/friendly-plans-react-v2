@@ -77,7 +77,8 @@ export const Break: FC<Props> = ({ navigation, planItem, formikProps, style }) =
         <Card style={[styles.container]}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
             <VoicePicker planItem={planItem} formikProps={formikProps}
-                          isComplexTask={false} selected={{key: -2, voicePath: '', lector: false}}/>
+                          isComplexTask={false} selected={{key: -2, voicePath: '', lector: false}}
+                          navigation={navigation}/>
 
             <ModalTrigger
                 title={i18n.t('break:setTimer')}

@@ -16,6 +16,7 @@ const translations = {
     success: 'Success',
     unknownError: 'Unknown error occured',
     addImage: 'ADD IMAGE',
+    language: 'en-GB',
   },
   validation: {
     email: 'Must be a valid email',
@@ -127,6 +128,7 @@ const translations = {
     voiceActionAddRecord: 'ADD CUSTOM RECORD',
     voiceActionSetLector: 'SET LECTOR',
     voiceActionDeleteVoice: 'DELETE CONTENT READING',
+    voiceActionPlayAudio: 'PLAY AUDIO',
     timerHours: 'hours',
     timerMinutes: 'minutes',
     timerSeconds: 'seconds',

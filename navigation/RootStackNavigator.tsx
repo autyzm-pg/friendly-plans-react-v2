@@ -10,6 +10,7 @@ import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { 
   PlanSearchForCopyScreen, 
   PlansListForCopyScreen, 
+  RecordingLibraryScreen, 
   StudentCreateScreen, 
   StudentSettingsScreen, 
   StudentsListForCopyPlanScreen, 
@@ -25,7 +26,7 @@ import { RunPlanSlideScreen } from '../screens/runPlan/SlideMode/RunPlanSlideScr
 import { RootNavigatorContext } from '../contexts/RootNavigatorContext';
 import { CurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Student } from '../models';
-import { ImageLibraryScreen } from '../screens/planItemActivity/ImageLibraryScreen';
+import { ImageLibraryScreen } from '../screens/planItemActivity/imagePicker/ImageLibraryScreen';
 
 const Stack = createStackNavigator();
 
@@ -124,6 +125,11 @@ export function RootStackNavigation() {
         <Stack.Screen
           name={Route.ImageLibrary}
           component={ImageLibraryScreen}
+          options={{}}
+        />
+        <Stack.Screen
+          name={Route.RecordingLibrary}
+          component={RecordingLibraryScreen}
           options={{}}
         />
         {/* TODO: uncomment working screen */}

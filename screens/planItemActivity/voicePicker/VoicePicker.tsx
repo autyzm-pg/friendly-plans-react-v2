@@ -8,6 +8,7 @@ import {PlanItem} from '../../../models';
 import {palette} from '../../../styles';
 import {PlanItemFormData} from '../PlanItemForm';
 import {VoicePickerModal} from './VoicePickerModal';
+import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
     planItem: PlanItem;
@@ -19,6 +20,7 @@ interface Props {
         voicePath: string;
         lector: boolean;
     };
+    navigation: NavigationProp<any>;
 }
 
 export const VoicePicker: FunctionComponent<Props> = ({
@@ -26,7 +28,8 @@ export const VoicePicker: FunctionComponent<Props> = ({
                                                           formikProps,
                                                           isComplexTask,
                                                           selected,
-                                                          updateComplexTaskVoice
+                                                          updateComplexTaskVoice,
+                                                          navigation
                                                       }) => {
 
     const [voice, setVoice] = useState({
@@ -88,7 +91,9 @@ export const VoicePicker: FunctionComponent<Props> = ({
                                                 currentVoiceUri={voice.voicePath}
                                                 isComplexTask={isComplexTask}
                                                 setLector={setLector}
-                                                selected={selected}/>}
+                                                lector={voice.lector}
+                                                selected={selected}
+                                                navigation={navigation}/>}
                 title={i18n.t('planItemActivity:addVoice')}
             >
                 {renderIcon()}

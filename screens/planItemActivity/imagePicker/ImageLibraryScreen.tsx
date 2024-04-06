@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import RNFS from 'react-native-fs';
-import { FullScreenTemplate } from '../../components';
+import { FullScreenTemplate } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { Route } from '../../navigation/routes';
 
 interface Props {
   navigation: NavigationProp<any>;

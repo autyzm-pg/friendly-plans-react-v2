@@ -26,6 +26,7 @@ export enum Route {
   RunSubPlanSlide = 'RunSubPlanSlide',
   PlanItemTask = 'PlanItemTask',
   ImageLibrary = 'ImageLibrary',
+  RecordingLibrary = 'RecordingLibrary',
   // UnauthenticatedStackNavigator
   SignIn = 'SignIn',
   SignUp = 'SignUp',
