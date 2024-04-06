@@ -25,7 +25,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({navigation, route}) => {
         const result = await RNFS.readDir(imagesDir);
         console.log('Loaded images...');
         const imgPaths = result.map(res => 'file://' + res.path);
-        // const repeatedImages = Array.from(Array(100).keys()).map(() => imgPaths).flat();
+        //const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();
         setImages(imgPaths);
       } catch (err: any) {
         console.log('Cannot load images...');
@@ -39,7 +39,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({navigation, route}) => {
       <TouchableOpacity onPress={() => handleImagePress(item)}>
         <Image
           source={{ uri: item }}
-          style={[styles.image, { width: Math.floor(Math.random() * 100) + 100, height: Math.floor(Math.random() * 100) + 100}]}
+          style={[styles.image, { width: /*Math.floor(Math.random() * 100) +*/ 150, height: /*Math.floor(Math.random() * 100) +*/ 150}]}
         />
       </TouchableOpacity>
     );
@@ -57,7 +57,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({navigation, route}) => {
           data={images}
           renderItem={renderImageItem}
           keyExtractor={(item, index) => index.toString()}
-          numColumns={Math.floor(useWindowDimensions().width / 100)}
+          numColumns={Math.floor(useWindowDimensions().width / 150)}
           contentContainerStyle={styles.flatListContainer}
         />
       </View>
