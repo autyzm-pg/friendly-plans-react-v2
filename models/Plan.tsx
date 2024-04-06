@@ -79,7 +79,7 @@ export class Plan {
   // };
 
   // getChildCollectionRef: () => RNFirebase.firestore.Query = () =>
-  //   getPlanItemsRef(this.studentId, this.id).orderBy('order', 'asc');
+  //   getPlanItemsRef(this.studentId, this.id).orderBy('itemOrder', 'asc');
   // getChildType: () => ParameterlessConstructor<SubscribableModel> = () => PlanItem;
   // getRef: () => RNFirebase.firestore.DocumentReference = () => getPlanRef(this.studentId, this.id);
 

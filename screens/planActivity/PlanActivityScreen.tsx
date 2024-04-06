@@ -80,34 +80,19 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const createPlan = async (name: string) => {
-    // const { id } = student;
-
-    // const plan = await Plan.createPlan(id, name);
-
-    // this.setState({ plan }, () => {
-    //   this.subscribeToPlanItems();
-    // });
-    console.log('creating new plan')
     if (currentStudent) {
-      const newPlan = await Plan.createPlan(currentStudent?.id, name)
-      
+      await Plan.createPlan(currentStudent?.id, name)
     }
   };
 
   const updatePlan = async (name: string, emoji: string) => {
-    // await this.state.plan.update({
-    //   name,
-    //   emoji,
-    // });
-    console.log('updating plan')
-
-    if (plan) {
+    if (plan && currentStudent?.id) {
       const updatedPlan: Plan = {
         ...plan,
         name: name,
         emoji: emoji
       };
-  
+      await Plan.updatePlan(updatedPlan, currentStudent?.id)
       setPlan(updatedPlan);
     }
   };
@@ -156,8 +141,15 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
-    const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
+    const planItemListRightOrder = data.map((item, index) => ({ ...item, itemOrder: index + 1 }));
     setPlanItemList(planItemListRightOrder as PlanItem[]);
+    for (const planItem of planItemListRightOrder) {
+      //console.log(planItem)
+      PlanItem.updatePlanItem(planItem)
+    }
+    //if (plan)
+    //PlanItem.getPlanItems(plan).then(result => console.log(result))
+    //console.log(planItemList)
   };
 
   const shuffle = (array: PlanItem[]) => {
@@ -199,7 +191,12 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             navigation={navigation}
           />
         </View>
-        <TaskTable planItemList={planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} navigation={navigation}/>
+        <TaskTable 
+          plan={plan!}
+          planItemList={planItemList} 
+          handlePlanListOrderChanged={handlePlanListOrderChanged} 
+          navigation={navigation}
+        />
       </FullScreenTemplate>
       <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />
     </>

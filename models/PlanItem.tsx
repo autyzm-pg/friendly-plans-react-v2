@@ -43,7 +43,7 @@ export class PlanItem implements PlanElement {
   //     completed: false,
   //     lector: false,
   //     nameForChild: i18n.t('planItemActivity:taskNameForChild'),
-  //     order: lastItemOrder + 1,
+  //     itemOrder: lastItemOrder + 1,
   //     voicePath: '',
   //   });
 
@@ -61,7 +61,7 @@ export class PlanItem implements PlanElement {
   //     completed: false,
   //     lector: data.lector,
   //     nameForChild: data.nameForChild,
-  //     order: lastItemOrder + 1,
+  //     itemOrder: lastItemOrder + 1,
   //     time: data.time,
   //     image: data.imageUri,
   //     voicePath: data.voicePath,
@@ -76,7 +76,7 @@ export class PlanItem implements PlanElement {
   //     completed: false,
   //     lector: data.lector,
   //     nameForChild: data.nameForChild,
-  //     order: lastItemOrder + 1,
+  //     itemOrder: lastItemOrder + 1,
   //     time: data.time,
   //     image: data.imageUri,
   //     voicePath: data.voicePath,
@@ -93,7 +93,7 @@ export class PlanItem implements PlanElement {
   image!: string;
   lector!: boolean;
   nameForChild!: string;
-  order!: number;
+  itemOrder!: number;
   voicePath!: string;
   planElementId!: string;
   pressed?: boolean;
@@ -110,8 +110,8 @@ export class PlanItem implements PlanElement {
 
   }
 
-  setOrder = (order: number) => {
-    this.update({ order });
+  setOrder = (itemOrder: number) => {
+    this.update({ itemOrder });
   };
   setComplete = (completed: boolean) => {
     this.update({ completed });
@@ -178,7 +178,7 @@ export class PlanItem implements PlanElement {
       completed: false,
       lector: data.lector,
       nameForChild: data.nameForChild,
-      order: lastItemOrder + 1,
+      itemOrder: lastItemOrder + 1,
       time: data.time,
       image: data.imageUri,
       voicePath: data.voicePath,
@@ -189,10 +189,7 @@ export class PlanItem implements PlanElement {
       VALUES ((?), (?));
     `;
     
-    const insertIntoPlanElementTable = `
-      INSERT INTO PlanElement (name, type, completed, time, lector, nameForChild, image, voicePath, [order])
-      VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?));
-    `;
+    const insertIntoPlanElementTable = `INSERT INTO PlanElement (name, type, completed, time, lector, nameForChild, image, voicePath, itemOrder) VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?));`;
     await executeQuery('BEGIN TRANSACTION;');
 
     await executeQuery(insertIntoPlanElementTable, [
@@ -239,14 +236,16 @@ export class PlanItem implements PlanElement {
       completed: element.completed,
       lector: element.lector,
       nameForChild: element.nameForChild,
-      order: lastItemOrder + 1,
+      itemOrder: lastItemOrder + 1,
       time: element.time,
       image: element.image,
       voicePath: element.voicePath,
+      planElementId: element.id
     });
   }
 
   static getPlanItems = async (plan: Plan): Promise<PlanItem[]> => {
+    executeQuery(`SELECT * FROM PlanElement;`, []).then(res => console.log('RESULT', res.rows.item(0), res.rows.item(1),res.rows.item(2)));
     await executeQuery('BEGIN TRANSACTION;');
 
     const selectAllPlanItemsForPlan = `SELECT * FROM PlanItem WHERE planId = (?);`;
@@ -272,47 +271,51 @@ export class PlanItem implements PlanElement {
         completed: element.completed,
         lector: element.lector,
         nameForChild: element.nameForChild,
-        order: lastItemOrder + 1,
+        itemOrder: element.itemOrder,
         time: element.time,
         image: element.image,
         voicePath: element.voicePath,
+        planElementId: element.id
       }))
-      lastItemOrder += 1;
     }
-    return resultsArray;
+    await executeQuery('COMMIT;');
+    console.log(resultsArray)
+    return resultsArray.sort((a, b) => a.itemOrder - b.itemOrder);
   }
 
   static updatePlanItem = async (
     planItem: PlanItem
   ): Promise<void> => {
     try {
-    const updatePlanElementTable = `
-      UPDATE PlanElement 
-      SET name = (?), type = (?), completed = (?), time = (?), lector = (?), nameForChild = (?), image = (?), voicePath = (?), [order] = (?)
-      WHERE id = (?);
-    `;
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET name = (?), type = (?), completed = (?), time = (?), lector = (?), nameForChild = (?), image = (?), voicePath = (?), itemOrder = (?)
+        WHERE id = (?);
+      `;
 
-    await executeQuery(updatePlanElementTable, [
-      planItem.name,
-      planItem.type,
-      planItem.completed ? 1 : 0,
-      planItem.time,
-      planItem.lector ? 1 : 0,
-      planItem.nameForChild,
-      planItem.image,
-      planItem.voicePath,
-      planItem.order,
-      planItem.planElementId
-    ]);
+      await executeQuery(updatePlanElementTable, [
+        planItem.name,
+        planItem.type,
+        planItem.completed ? 1 : 0,
+        planItem.time,
+        planItem.lector ? 1 : 0,
+        planItem.nameForChild,
+        planItem.image,
+        planItem.voicePath,
+        planItem.itemOrder,
+        planItem.planElementId
+      ]);
 
+      executeQuery(`SELECT * FROM PlanElement;`, []);
+    
     } catch (error) {
         console.error("Error updating plan:", error);
     }
   }
 
-  static deletePlanItem = async (plan: Plan): Promise<void> => {
-    const deleteStudentData = `DELETE FROM Plan WHERE id = (?);`;
-    await executeQuery(deleteStudentData, [plan.id]);
+  static deletePlanItem = async (planItem: PlanItem): Promise<void> => {
+    const deleteStudentData = `DELETE FROM PlanItem WHERE id = (?);`;
+    await executeQuery(deleteStudentData, [planItem.id]);
     return 
   }
 }

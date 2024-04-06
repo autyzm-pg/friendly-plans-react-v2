@@ -48,7 +48,7 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
       if (planSubItems.length <= 0) {
         this.props.navigation.navigate(Route.Dashboard);
       }
-      planSubItems.sort((a: PlanSubItem, b: PlanSubItem) => a.order > b.order ? 1 : -1);
+      planSubItems.sort((a: PlanSubItem, b: PlanSubItem) => a.itemOrder > b.itemOrder ? 1 : -1);
       this.setState({ planSubItems });
     });
     this.studentSubscriber.subscribeElementUpdates(student, updatedStudent =>

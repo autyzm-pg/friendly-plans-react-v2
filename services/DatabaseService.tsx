@@ -36,7 +36,11 @@ export default class DatabaseService {
 }
 
 export const createTables = async () => {
-
+  // await executeQuery('DROP TABLE Plan');
+  // await executeQuery('DROP TABLE PlanItem');
+  // await executeQuery('DROP TABLE PlanElement');
+  // await executeQuery('DROP TABLE PlanSubItem');
+  // await executeQuery('DROP TABLE StudentData');
   const createPlanTable = `CREATE TABLE IF NOT EXISTS Plan (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,studentId INTEGER,emoji TEXT)`;
 
   const createPlanItemTable = `CREATE TABLE IF NOT EXISTS PlanItem (
@@ -55,7 +59,7 @@ export const createTables = async () => {
     nameForChild TEXT,
     image BLOB,
     voicePath BLOB,
-    [order] INTEGER,
+    itemOrder INTEGER,
     CHECK (type IN ('simpleTask', 'complexTask', 'break', 'interaction', 'subElement')))
   `;
 
@@ -104,7 +108,7 @@ export const insertTestData = async () => {
 
   // Sample data for inserting into PlanElement table
   const insertIntoPlanElementTable = `
-  INSERT INTO PlanElement (name, type, completed, time, lector, nameForChild, image, voicePath, [order])
+  INSERT INTO PlanElement (name, type, completed, time, lector, nameForChild, image, voicePath, itemOrder)
   VALUES ('Task 1', 'simpleTask', 0, 60, 0, 'Task 1 for Child', NULL, NULL, 1),
         ('Task 2', 'complexTask', 0, 120, 0, 'Task 2 for Child', NULL, NULL, 2),
         ('Task 1', 'simpleTask', 0, 60, 0, 'Task 3 for Child', NULL, NULL, 1),
@@ -142,11 +146,13 @@ export const executeQuery = async (query: string, params: (string | number | Dat
       return;
     }
     db.transaction((tx) => {
+      console.log(query, params)
       tx.executeSql(query, params, (tx, results) => {
           console.log("Query completed");
           resolve(results);
         }, (tx, error) => {
           console.log('Error:', error,);
+          console.log('In query:', query);
           reject(error);
           return false;
         });

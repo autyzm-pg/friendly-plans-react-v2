@@ -14,7 +14,7 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
     }
     return getPlanSubItemsRef(planItem.studentId, planItem.planId, planItem.id).add({
       name: i18n.t('updatePlan:planItemNamePlaceholder'),
-      order: 0,
+      itemOrder: 0,
       time: 0,
       planItemId: planItem.id,
       planId: planItem.planId,
@@ -26,9 +26,6 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
     });
   };
 
-
-
-
   name!: string;
   id!: string;
   planItemId!: string;
@@ -37,7 +34,7 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
   completed!: boolean;
   image!: string;
   time!: number;
-  order!: number;
+  itemOrder!: number;
   type: PlanItemType = PlanItemType.SubElement;
   lector!: boolean;
   voicePath!: string;
@@ -47,9 +44,9 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
     this.update({ completed: true });
   };
 
-  setOrder = (value: number) => this.order = value;
+  setOrder = (value: number) => this.itemOrder = value;
 
-  getOrder: () => number = () => this.order;
+  getOrder: () => number = () => this.itemOrder;
 
 
   update = (changes: object) =>
