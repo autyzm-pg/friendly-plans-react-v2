@@ -26,6 +26,7 @@ import { RootNavigatorContext } from '../contexts/RootNavigatorContext';
 import { CurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Student } from '../models';
 import { ImageLibraryScreen } from '../screens/planItemActivity/ImageLibraryScreen';
+import { RunSubPlanSlideScreen } from '../screens/runPlan/SlideMode/RunSubPlanSlideScreen';
 
 const Stack = createStackNavigator();
 
@@ -126,6 +127,11 @@ export function RootStackNavigation() {
           component={ImageLibraryScreen}
           options={{}}
         />
+        <Stack.Screen
+          name={Route.RunSubPlanSlide}
+          component={RunSubPlanSlideScreen}
+          options={{}}
+        />
         {/* TODO: uncomment working screen */}
         {/* 
         <Stack.Screen
@@ -136,11 +142,6 @@ export function RootStackNavigation() {
         <Stack.Screen
           name={Route.RunSubPlanList}
           component={RunSubPlanListScreen}
-          options={{}}
-        />
-        <Stack.Screen
-          name={Route.RunSubPlanSlide}
-          component={RunSubPlanSlideScreen}
           options={{}}
         />
         <Stack.Screen

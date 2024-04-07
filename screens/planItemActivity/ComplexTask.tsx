@@ -49,12 +49,14 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
       }, []);
 
     const componentDidMount = () => {
-        // if (state.planItem && state.planItem.id) {
-        //     modelSubscriber.subscribeCollectionUpdates(state.planItem, (subItems: PlanSubItem[]) => {
-        //         const sortedItems = subItems.sort((a, b) => (a.itemOrder > b.itemOrder) ? 1 : -1);
-        //         setState({subItems: sortedItems});
-        //     });
-        // }
+        if (state.planItem && state.planItem.id) {
+            PlanSubItem.getPlanSubItems(state.planItem).then(subItems => {
+                setState(prevState => ({
+                    ...prevState,
+                    subItems: subItems
+                  }));
+            })
+        }
     }
 
 

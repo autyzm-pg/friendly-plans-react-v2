@@ -170,6 +170,7 @@ export class PlanItem implements PlanElement {
     data: PlanItemFormData,
     lastItemOrder: number
   ): Promise<PlanItem> => {
+    console.log(data)
     const planItemData = {
       name: data.name,
       studentId: plan.studentId,
@@ -227,6 +228,15 @@ export class PlanItem implements PlanElement {
 
     const item = itemResultSet.rows.item(0) as PlanItem;
     const element = resultSet.rows.item(0) as PlanElement;
+
+    // Add subItems if it is a complex task
+
+    if (element.type === PlanItemType.ComplexTask && data.subItems) {
+      for (const subItem of data.subItems) {
+        await PlanSubItem.createPlanSubItem(item, type, subItem, lastItemOrder)
+      }
+    }
+
     return Object.assign(new PlanItem(), {
       id: item.id,
       name: element.name,
@@ -245,7 +255,6 @@ export class PlanItem implements PlanElement {
   }
 
   static getPlanItems = async (plan: Plan): Promise<PlanItem[]> => {
-    executeQuery(`SELECT * FROM PlanElement;`, []).then(res => console.log('RESULT', res.rows.item(0), res.rows.item(1),res.rows.item(2)));
     await executeQuery('BEGIN TRANSACTION;');
 
     const selectAllPlanItemsForPlan = `SELECT * FROM PlanItem WHERE planId = (?);`;

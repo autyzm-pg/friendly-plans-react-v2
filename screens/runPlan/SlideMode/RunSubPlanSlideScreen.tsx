@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 //import { NavigationInjectedProps } from '@react-navigation/native';
 
@@ -9,6 +9,7 @@ import { Route } from '../../../navigation';
 import { palette, typography } from '../../../styles';
 import {SubPlanSlideItem} from './SubPlanSlideItem';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../../../contexts/CurrentStudentContext';
 
 interface State {
   pageNumber: number;
@@ -30,105 +31,99 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   const navigationOptions = {
     header: null,
   };
+  const {currentStudent} = useCurrentStudentContext();
 
   const [state, setState] = useState({
     pageNumber: route.params?.pageNumber,
     planItem: route.params?.planItem,
     planItemsAmount: route.params?.planItemsAmount,
-    student: route.params?.student,
-    planSubItems: [],
-    subPageNumber: route.params?.startPage ? route.params?.startPage : 0,
+    student: currentStudent ?? route.params?.student,
+    planSubItems: [] as PlanSubItem[],
+    subPageNumber: 0,
   });
 
-  componentDidMount() {
-    const student = this.props.navigation.getParam('student');
-    const planItem = this.props.navigation.getParam('planItem');
+  useEffect(() => {
+    PlanSubItem.getPlanSubItems(state.planItem).then(subItems => {
+      setState(prevState => ({
+        ...prevState,
+        planSubItems: subItems
+      }));
+    })
+  }, [])
 
-    this.planItemsSubscriber.subscribeCollectionUpdates(planItem, planSubItems => {
-      if (planSubItems.length <= 0) {
-        this.props.navigation.navigate(Route.Dashboard);
-      }
-      planSubItems.sort((a: PlanSubItem, b: PlanSubItem) => a.itemOrder > b.itemOrder ? 1 : -1);
-      this.setState({ planSubItems });
-    });
-    this.studentSubscriber.subscribeElementUpdates(student, updatedStudent =>
-      this.setState({ student: updatedStudent }),
-    );
-  }
-
-  componentWillUnmount() {
-    this.planItemsSubscriber.unsubscribeCollectionUpdates();
-    this.studentSubscriber.unsubscribeElementUpdates();
-  }
-
-  nextPage = () => {
-    if (this.state.subPageNumber + 1 < this.state.planSubItems.length) {
-      this.setState(state => ({ subPageNumber: state.subPageNumber + 1 }));
+  const nextPage = () => {
+    if (state.subPageNumber + 1 < state.planSubItems?.length) {
+      setState(prevState => ({ 
+        ...prevState,
+        subPageNumber: prevState.subPageNumber + 1 
+      }));
     } else {
-      this.whereNavigate();
+      whereNavigate();
     }
   };
 
-  whereNavigate = () => {
-    if (this.state.pageNumber + 1 >= this.state.planItemsAmount){
-      this.props.navigation.navigate(Route.Dashboard);
+  const whereNavigate = () => {
+    if (state.pageNumber + 1 >= state.planItemsAmount){
+      navigation.navigate(Route.Dashboard);
     } else {
-      this.props.navigation.navigate(Route.RunPlanSlide, {backPage: this.state.pageNumber + 1, timerStop: false});
+      navigation.navigate(Route.RunPlanSlide, {backPage: state.pageNumber + 1, timerStop: false});
     }
   };
 
-  goBack = () => {
-    if (this.state.subPageNumber - 1 >= 0) {
-      this.setState(state => ({ subPageNumber: state.subPageNumber - 1 }));
+  const goBack = () => {
+    if (state.subPageNumber - 1 >= 0) {
+      setState(prevState => ({ 
+        ...prevState,
+        subPageNumber: state.subPageNumber - 1
+      }));
     } else {
-      this.props.navigation.navigate(Route.RunPlanSlide, {backPage: this.state.pageNumber, timerStop: false});
+      navigation.navigate(Route.RunPlanSlide, {backPage: state.pageNumber, timerStop: false});
     }
   };
 
-  renderPlan = () => {
-    const { student } = this.state;
+  const renderPlan = () => {
+    const { student } = state;
     return (
       <View style={styles.container}>
         <Card style={styles.slide}>
           <View style={styles.planItem}>
             <SubPlanSlideItem
               type={student.displaySettings}
-              planSubItem={this.state.planSubItems[this.state.subPageNumber]}
-              index={this.state.subPageNumber}
-              textSize={this.state.student.textSize}
-              isUpperCase={this.state.student.isUpperCase}
-              planItem={this.state.planItem}
+              planSubItem={state.planSubItems[state.subPageNumber]}
+              index={state.subPageNumber}
+              textSize={state.student.textSize}
+              isUpperCase={state.student.isUpperCase}
+              planItem={state.planItem}
             />
-            {/*<Text>{this.state.pageNumber}</Text>*/}
+            {/*<Text>{state.pageNumber}</Text>*/}
           </View>
           <View style={styles.containerForArrows}>
             <IconButton name="arrow-back"
                         type="material"
                         size={50}
                         color="#E7DCDA"
-                        onLongPress={this.goBack}
+                        onLongPress={goBack}
                         delayLongPress={2000}
             />
             <IconButton name="arrow-bold-right"
                         type="entypo"
                         size={120}
                         color={palette.playButton}
-                        onPress={this.nextPage}
+                        onPress={nextPage}
             />
           </View>
-          {/*<FlatButton style={styles.button} onPress={this.nextPage} title={i18n.t('runPlan:next')} />*/}
+          {/*<FlatButton style={styles.button} onPress={nextPage} title={i18n.t('runPlan:next')} />*/}
         </Card>
       </View>
     );
   };
 
-  renderLoader = () => {
+  const renderLoader = () => {
     return <StyledText>{i18n.t('runPlan:wait')}</StyledText>;
   };
 
-  render() {
-    return this.state.planSubItems.length ? this.renderPlan() : this.renderLoader();
-  }
+  return state.planSubItems?.length ? renderPlan() : renderLoader();
+  
 }
 
 const styles = StyleSheet.create({

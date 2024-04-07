@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import {IconButton, PlanNameText} from '../../components';
-import {PlanItem, PlanSubItem, StudentDisplayOption} from '../../models';
+import {IconButton, PlanNameText} from '../../../components';
+import {PlanItem, PlanSubItem, StudentDisplayOption} from '../../../models';
 import Sound from 'react-native-sound';
 import Tts from 'react-native-tts';
-import { palette } from '../../styles';
+import { palette } from '../../../styles';
 import { PlanItemTimer } from '../PlanItemTimer';
 
 interface Props {
@@ -21,7 +21,7 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
   soundTrack: any;
 
   componentDidMount() {
-    if (this.props.planSubItem.voicePath.length > 0) {
+    if (this.props.planSubItem.voicePath?.length > 0) {
       this.soundTrack = new Sound(this.props.planSubItem.voicePath
           .replace('file:///', '/')
           .split('%20').join(' '), Sound.MAIN_BUNDLE);
@@ -33,7 +33,7 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
       this.soundTrack.stop();
     }
 
-    if (this.props.planSubItem.voicePath.length > 0) {
+    if (this.props.planSubItem.voicePath?.length > 0) {
       this.soundTrack = new Sound(this.props.planSubItem.voicePath
           .replace('file:///', '/')
           .split('%20').join(' '), Sound.MAIN_BUNDLE);
@@ -86,7 +86,7 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
       <View style={styles.container}>
         <View style={styles.timer}>
           <View style={{justifyContent: 'flex-start'}}>
-            {(this.props.planSubItem.lector || this.props.planSubItem.voicePath.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
+            {(this.props.planSubItem.lector || this.props.planSubItem.voicePath?.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
           </View>
           <View style={{justifyContent: 'flex-end'}}>
             {!!this.props.planSubItem.time ? <PlanItemTimer itemTime={this.props.planSubItem.time} /> : null}
