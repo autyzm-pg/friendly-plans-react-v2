@@ -147,7 +147,7 @@ export const ImagePickerModal: FC<Props> = ({
                 <ImageAction title={i18n.t('planItemActivity:imageActionDeletePhoto')}>
                     <IconButton name="delete" type="material" size={24} onPress={deleteImage}/>
                 </ImageAction>
-                <ImageAction title={i18n.t('planItemActivity:imageActionCropPhoto')}>
+                <ImageAction title={i18n.t('planItemActivity:imageActionEditPhoto')}>
                     <IconButton name="crop" type="material" size={24} onPress={openCropper}/>
                 </ImageAction>
             </>
