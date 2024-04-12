@@ -1,6 +1,7 @@
 import React, { useState, FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconProps, Slider } from 'react-native-elements';
+import { IconProps } from 'react-native-elements';
+import { Slider } from '@rneui/themed';
 
 import { dimensions, palette, typography } from '../styles';
 import { Icon } from './Icon';
@@ -42,6 +43,7 @@ export const FixedValueSlider: FC<Props> = ({options, value, onSlidingComplete, 
             ))}
           </View>
           <Slider
+            allowTouchTrack
             minimumValue={0}
             maximumValue={options.length - 1}
             step={1}

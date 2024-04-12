@@ -18,6 +18,8 @@
     "@react-navigation/native": "^6.1.12",
     "@react-navigation/native-stack": "^6.9.20",
     "@react-navigation/stack": "^6.3.23",
+    "@rneui/base": "^4.0.0-rc.8",
+    "@rneui/themed": "^4.0.0-rc.8",
     "@types/lodash.every": "^4.6.9",
     "@types/lodash.isempty": "^4.4.9",
     "@types/lodash.noop": "^3.0.9",
