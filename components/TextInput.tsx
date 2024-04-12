@@ -41,6 +41,7 @@ export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, ...inputP
         autoCorrect={false}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        selectTextOnFocus={true}
         {...inputProps}
       />
     </KeyboardAvoidingView>
