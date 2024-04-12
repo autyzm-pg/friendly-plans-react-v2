@@ -4,6 +4,10 @@ const translations = {
     newPlan: 'New schedule #',
     shuffleTasks: 'Rotate tasks',
   },
+  header: {
+    activeStudent: 'Active student',
+    noStudentCreated: 'Click on the people icon on the right to create a student.'
+  },
   common: {
     cancel: 'CANCEL',
     confirm: 'CONFIRM',

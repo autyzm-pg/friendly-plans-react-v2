@@ -4,6 +4,10 @@ const translations = {
     newPlan: 'Nowy Plan #',
     shuffleTasks: 'Rotuj zadania',
   },
+  header: {
+    activeStudent: 'Aktywny uczeń',
+    noStudentCreated: 'Kliknij ikonę ludzi po prawej stronie, aby utworzyć studenta.'
+  },
   common: {
     cancel: 'ANULUJ',
     confirm: 'POTWIERDŹ',
