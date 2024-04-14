@@ -7,6 +7,7 @@ export interface PlanElement {
   completed: boolean;
   time: number;
   lector: boolean;
+  itemOrder: number;
   nameForChild?: string;
   image?: string;
   voicePath?: string;

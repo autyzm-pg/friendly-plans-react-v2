@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: dimensions.spacingMedium,
     elevation: 0,
-    height: 36,
+    height: 'auto',
   },
   buttonWithIcon: {
     paddingRight: dimensions.spacingMedium,

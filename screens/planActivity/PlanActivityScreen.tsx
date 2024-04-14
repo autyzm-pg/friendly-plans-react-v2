@@ -11,8 +11,8 @@ import { getElevation, palette } from '../../styles';
 import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { defaults } from "../../mocks/defaults";
+import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -20,12 +20,22 @@ interface Props {
 }
 
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
-  const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
-    plan: route.params?.plan ?? undefined,
-    planItemList: []
-  });
+  // const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
+  //   plan: route.params?.plan ?? undefined,
+  //   planItemList: []
+  // });
+
+  const [plan, setPlan] = useState<Plan | undefined>(
+    route.params?.plan ?? undefined,
+  );
+
+  const [planItemList, setPlanItemList] = useState<PlanItem[]>([]);
   
-  const {plan, planItemList} = state;
+  // const {plan, planItemList} = state;
+
+  const {currentStudent} = useCurrentStudentContext();
+
+  const isFocused = useIsFocused();
 
   const setScreenTitle = (title: string) => {
     navigation.setOptions({
@@ -33,15 +43,22 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     });
   };
 
-  useEffect(() => {
-    if(state.plan) {
-      setState(prevState => ({
-        ...prevState,
-        planItemList: defaults.planItemsList
-      }));
+  const getPlanItems = async () => {
+    if (plan) {
+      const planItems = await PlanItem.getPlanItems(plan)
+      setPlanItemList(planItems)
     }
+  }
+
+  useEffect(() => {
     setScreenTitle(i18n.t('planList:viewTitle'))
   }, []);
+
+  
+  useEffect(() => {
+    if (isFocused)
+      getPlanItems()
+  }, [isFocused]);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
@@ -63,32 +80,20 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const createPlan = async (name: string) => {
-    // const { id } = student;
-
-    // const plan = await Plan.createPlan(id, name);
-
-    // this.setState({ plan }, () => {
-    //   this.subscribeToPlanItems();
-    // });
+    if (currentStudent) {
+      await Plan.createPlan(currentStudent?.id, name)
+    }
   };
 
   const updatePlan = async (name: string, emoji: string) => {
-    // await this.state.plan.update({
-    //   name,
-    //   emoji,
-    // });
-
-    if (state.plan) {
+    if (plan && currentStudent?.id) {
       const updatedPlan: Plan = {
-        ...state.plan,
+        ...plan,
         name: name,
         emoji: emoji
       };
-  
-      setState(prevState => ({
-        ...prevState,
-        plan: updatedPlan
-      }));
+      await Plan.updatePlan(updatedPlan, currentStudent?.id)
+      setPlan(updatedPlan);
     }
   };
 
@@ -123,7 +128,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const shuffleDisabled = (): boolean => {
-    const { planItemList } = state;
+    // const { planItemList } = state;
 
     return !planItemList || planItemList.length < 2;
   };
@@ -136,11 +141,15 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
-    const planItemListRightOrder = data.map((item, index) => ({ ...item, order: index + 1 }));
-    setState(prevState => ({
-      ...prevState,
-      planItemList: planItemListRightOrder as PlanItem[]
-    }));
+    const planItemListRightOrder = data.map((item, index) => ({ ...item, itemOrder: index + 1 }));
+    setPlanItemList(planItemListRightOrder as PlanItem[]);
+    for (const planItem of planItemListRightOrder) {
+      //console.log(planItem)
+      PlanItem.updatePlanItem(planItem)
+    }
+    //if (plan)
+    //PlanItem.getPlanItems(plan).then(result => console.log(result))
+    //console.log(planItemList)
   };
 
   const shuffle = (array: PlanItem[]) => {
@@ -160,13 +169,10 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   }
 
   const shuffleTasks = () => {
-    const { planItemList } = state;
     let array = planItemList;
     array = shuffle(array);
-    setState(prevState => ({
-      ...prevState,
-      planItemList: array
-    }));
+
+    setPlanItemList(array);
   };
 
   return (
@@ -175,7 +181,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
         <View style={styles.headerContainer}>
           <PlanForm
             onSubmit={onSubmit}
-            plan={state.plan}
+            plan={plan}
             numberPlan={route.params?.numberPlan ?? {}}
             onValidate={validatePlan}
             shuffleDisabled={shuffleDisabled()}
@@ -185,9 +191,14 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             navigation={navigation}
           />
         </View>
-        <TaskTable planItemList={state.planItemList} handlePlanListOrderChanged={handlePlanListOrderChanged} navigation={navigation}/>
+        <TaskTable 
+          plan={plan!}
+          planItemList={planItemList} 
+          handlePlanListOrderChanged={handlePlanListOrderChanged} 
+          navigation={navigation}
+        />
       </FullScreenTemplate>
-      {plan && <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />}
+      <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import {StyledText, TextInput} from '../../components';
+import {Button, StyledText, TextInput} from '../../components';
 import {Formik, FormikProps} from 'formik';
 import {i18n} from '../../locale';
 import {PlanItem, PlanItemType, PlanSubItem} from '../../models';
@@ -61,9 +61,8 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
     time: Yup.number(),
   });
 
-
   const renderFormControls = (formikProps: FormikProps<PlanItemFormData>) => {
-    const { values, handleChange, errors, touched } = formikProps;
+    const { values, handleChange, errors, touched, handleSubmit } = formikProps;
 
     return (
       <>
@@ -79,10 +78,11 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
             {errors.name && touched.name && <StyledText style={styles.errorMessage}>{errors.name}</StyledText>}
           </View>
         </View>
-        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} />}
+        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
         {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} />}
         {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
         {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
+
       </>
     );
   };

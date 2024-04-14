@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import {Alert, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
-import { Card, IconButton, ModalTrigger, TextInput } from '../../components';
+import { Button, Card, IconButton, ModalTrigger, TextInput } from '../../components';
 import { FormikProps } from 'formik';
 import { i18n } from '../../locale';
 import { PlanItem } from '../../models';
@@ -64,13 +64,15 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
   };
 
   const componentWillUnmount = () => {
-    formikProps.submitForm();
     Alert.alert(
         i18n.t('planItemActivity:alertTitle'),
         planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
     );
   }
 
+  const saveNewTask = async () => {
+    formikProps.submitForm()
+  }
 
   return (
       <SafeAreaView style={style}>
@@ -123,6 +125,17 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
                             size={40} disabled color={palette.informationIcon}/>
               </ModalTrigger>
             </View>
+            <Button
+              title={i18n.t('planItemActivity:saveInteractionButton')}
+              icon={{
+                name: 'check',
+                type: 'material',
+                color: palette.textWhite,
+                size: 22,
+              }}
+              isUppercase
+              onPress={saveNewTask}
+            />
           </View>
 
         </Card>

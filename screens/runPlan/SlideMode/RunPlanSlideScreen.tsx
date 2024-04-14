@@ -7,7 +7,6 @@ import {StyleSheet, Text, TouchableHighlight, TouchableHighlightComponent, View}
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {palette, typography} from '../../../styles';
 import {PlanSlideItem} from './PlanSlideItem';
-import { defaults } from "../../../mocks/defaults";
 
 interface State {
   planItems: PlanItem[];
@@ -34,10 +33,12 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   });
 
   useEffect(() => {
-    setState(prevState => ({
-      ...prevState,
-      planItems: defaults.planItemsList
-    }));
+    PlanItem.getPlanItems(route.params?.plan).then(planItems => {
+      setState(prevState => ({
+        ...prevState,
+        planItems: planItems
+      }));
+    })
   }, [])
 
   useEffect(() => {

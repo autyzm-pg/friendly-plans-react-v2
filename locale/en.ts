@@ -130,6 +130,10 @@ const translations = {
     timerHours: 'hours',
     timerMinutes: 'minutes',
     timerSeconds: 'seconds',
+    saveSimpleTaskButton: 'SAVE TASK',
+    saveComplexTaskButton: 'SAVE COMPLEX TASK',
+    saveInteractionButton: 'SAVE INTERACTION',
+    saveBreakButton: 'SAVE BREAK',
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',

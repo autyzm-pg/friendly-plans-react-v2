@@ -90,26 +90,8 @@ export class Student implements StudentData {
     return resultsArray;
   }
 
-  static deleteStudent = async (student: Student): Promise<void> => {
-    const deleteStudentData = `DELETE FROM StudentData WHERE id = (?);`;
-    await executeQuery(deleteStudentData, [student.id]);
-
-    return 
-  }
-
-  static getFirstStudent = async (): Promise<Student> => {
-    const resultSet = await executeQuery(`SELECT * FROM StudentData ORDER BY id ASC LIMIT 1;`);
-    
-    if (!(resultSet.rows.length)) {
-      throw new Error('Could not find any students')
-    }
-    
-    return resultSet.rows.item(0)
-  }
-
   static updateStudentData = async (student: StudentData, studentId: string): Promise<void> => {
     try {
-      console.log(student)
       const updateQuery = `
           UPDATE StudentData
           SET name = (?), displaySettings = (?), textSize = (?), isUpperCase = (?), isSwipeBlocked = (?)
@@ -131,6 +113,22 @@ export class Student implements StudentData {
     }
   }
 
+  static deleteStudent = async (student: Student): Promise<void> => {
+    const deleteStudentData = `DELETE FROM StudentData WHERE id = (?);`;
+    await executeQuery(deleteStudentData, [student.id]);
+    return 
+  }
+
+  static getFirstStudent = async (): Promise<Student> => {
+    const resultSet = await executeQuery(`SELECT * FROM StudentData ORDER BY id ASC LIMIT 1;`);
+    
+    if (!(resultSet.rows.length)) {
+      throw new Error('Could not find any students')
+    }
+    
+    return resultSet.rows.item(0)
+  }
+
   static equals = (o1: StudentData, o2: StudentData) => {
     return (
       o1.name === o2.name
@@ -140,4 +138,6 @@ export class Student implements StudentData {
       && o1.textSize === o2.textSize
     )
   }
+
+  // TODO: removing student's plans if student is deleted
 }

@@ -49,12 +49,14 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
       }, []);
 
     const componentDidMount = () => {
-        // if (state.planItem && state.planItem.id) {
-        //     modelSubscriber.subscribeCollectionUpdates(state.planItem, (subItems: PlanSubItem[]) => {
-        //         const sortedItems = subItems.sort((a, b) => (a.order > b.order) ? 1 : -1);
-        //         setState({subItems: sortedItems});
-        //     });
-        // }
+        if (state.planItem && state.planItem.id) {
+            PlanSubItem.getPlanSubItems(state.planItem).then(subItems => {
+                setState(prevState => ({
+                    ...prevState,
+                    subItems: subItems
+                  }));
+            })
+        }
     }
 
 
@@ -63,7 +65,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
         planSubItem.name = '';
         planSubItem.time = 0;
         planSubItem.image = '';
-        planSubItem.order = state.subItems.length;
+        planSubItem.itemOrder = state.subItems.length;
         const subItems = [...state.subItems, planSubItem];
         state.formik.values.subItems = subItems;
         setState(prevState => ({
@@ -229,34 +231,46 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
 
 
     const componentWillUnmount = () => {
-        state.formik.submitForm();
-
-        if (state.planItem && state.planItem.id) {
-            // modelSubscriber.unsubscribeCollectionUpdates();
-        }
-
         Alert.alert(
             i18n.t('planItemActivity:alertTitle'),
             planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
         );
     }
 
+    const saveNewTask = async () => {
+        formikProps.submitForm()
+    }
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
+        <View style={styles.outerContainer}>
             <View style={styles.container}>
                 <View style={styles.complexTask}>
                     <ComplexTaskCoverCard selected={state.selected === -1}
-                                            name={state.formik.values.nameForChild}
-                                            image={state.formik.values.imageUri}
-                                            onSelectChange={() => changeSelected(-1)}/>
+                        name={state.formik.values.nameForChild}
+                        image={state.formik.values.imageUri}
+                        onSelectChange={() => changeSelected(-1)}/>
                     <ScrollView>
                         {renderSubItems()}
                         <Button buttonStyle={{borderRadius: 12, paddingBottom: 24, paddingTop: 24}} onPress={addSubItem}
-                                title={i18n.t('planItemActivity:complexTaskAddSubTaskButton')}/>
+                        title={i18n.t('planItemActivity:complexTaskAddSubTaskButton')}/>
                     </ScrollView>
                 </View>
-                {renderMainView()}
+                {renderMainView()}   
+            </View>
+            <View style={{width: '100%', height: 'auto', paddingHorizontal: dimensions.spacingHuge, alignItems: 'center'}}>
+                <Button
+                    title={i18n.t('planItemActivity:saveComplexTaskButton')}
+                    icon={{
+                        name: 'check',
+                        type: 'material',
+                        color: palette.textWhite,
+                        size: 22,
+                    }}
+                    isUppercase
+                    onPress={saveNewTask}
+                />
+            </View>
             </View>
         </SafeAreaView>
     );
@@ -281,6 +295,13 @@ const styles = StyleSheet.create({
         marginTop: 3,
         width: '40%',
         marginLeft: dimensions.spacingMedium,
-        paddingBottom: dimensions.spacingLarge,
+        paddingBottom: dimensions.spacingMedium,
+    },
+    outerContainer: {
+        flexDirection: 'column',
+        width: '100%',
+        height: '94%',
+        paddingHorizontal: 0,
+        paddingTop: 0,
     },
 });

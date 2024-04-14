@@ -31,93 +31,70 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     if (!planItemList.length) {
       return 0;
     }
-    const { order } = planItemList[planItemList.length - 1];
-    return order;
+    const { itemOrder } = planItemList[planItemList.length - 1];
+    return itemOrder;
   };
 
   const createPlanItem = async (data: PlanItemFormData) => {
     const plan = route.params?.plan;
 
     //@ts-ignore
-    const planItem: PlanItem = {
-      id: "33",
-      name: "LetterB",
-      studentId: "1",
-      planId: plan.id,
-      type: data.type,
-      completed: false,
-      lector: false,
-      nameForChild: i18n.t('planItemActivity:taskNameForChild'),
-      order: getLastItemOrder(),
-      time: data.time,
-      image: "",
-      voicePath: "",
-    }
-    // const planItem = await PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder());
-
-    // if (data.type === PlanItemType.ComplexTask){
-    //   if(data.subItems.length > 0) {
-    //     await planItem.getRef().update({nameForChild: data.nameForChild});
-    //     for (const subItem of data.subItems) {
-    //       const planSubItemRef = await PlanSubItem.create(planItem);
-    //       await planSubItemRef.update({'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
-    //         'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath });
-    //     }
-    //   }
+    // const planItem: PlanItem = {
+    //   name: data.name,
+    //   studentId: state.planItem.studentId,
+    //   planId: plan.id,
+    //   type: data.type,
+    //   completed: state.planItem.completed,
+    //   lector: data.lector,
+    //   nameForChild: i18n.t('planItemActivity:taskNameForChild'),
+    //   itemOrder: state.planItem.itemOrder,
+    //   time: data.time,
+    //   image: data.imageUri,
+    //   voicePath: data.voicePath,
     // }
+    
+    PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder()).then(() => {
+        navigation.goBack()
+    });
 
-    setState({planItem: planItem});
+    //setState({planItem: item});
   };
 
-  const updatePlanItem = async (formData: PlanItemFormData) => {
-    const { name, nameForChild, time, imageUri, lector, voicePath } = formData;
-    // await state.planItem.update({
-    //   name,
-    //   nameForChild,
-    //   time,
-    //   image: imageUri,
-    //   lector,
-    //   voicePath,
-    // });
+  const updatePlanItem = async (data: PlanItemFormData) => {
+    console.log('update')
+    const plan = route.params?.plan;
+    console.log(state.planItem)
 
-    // if(formData.type === PlanItemType.ComplexTask) {
-
-    //   for (let i = 0; i < formData.subItems.length; i++) {
-    //     formData.subItems[i].order = i;
-    //   }
-
-    //   for (const subItem of formData.subItems) {
-    //     if (subItem.id) {
-    //       const planSubItemRef = await subItem.getRef();
-    //       await planSubItemRef.update({
-    //         'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
-    //         'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath
-    //       });
-    //     } else {
-    //       const planSubItemRef = await PlanSubItem.create(this.state.planItem);
-    //       await planSubItemRef.update({
-    //         'name': subItem.name, 'order': subItem.order, 'time': subItem.time,
-    //         'image': subItem.image, 'lector': subItem.lector, 'voicePath': subItem.voicePath
-    //       });
-    //     }
-    //   }
-
-    //   for (const subItem of formData.deleteSubItems) {
-    //     subItem.delete();
-    //   }
-
-    // }
-
-    // setState({ planItem: { ...state.planItem, name, nameForChild, time, image: imageUri, lector, voicePath } });
+    //@ts-ignore
+    const planItem: PlanItem = {
+      id: state.planItem.id,
+      planElementId: state.planItem.planElementId,
+      name: data.name,
+      studentId: state.planItem.studentId,
+      planId: plan.id,
+      type: data.type,
+      completed: state.planItem.completed,
+      lector: data.lector,
+      nameForChild: data.nameForChild,
+      itemOrder: state.planItem.itemOrder,
+      time: data.time,
+      image: data.imageUri,
+      voicePath: data.voicePath,
+    }
+    
+    PlanItem.updatePlanItem(planItem).then(() => {
+      navigation.goBack()
+    });
   };
 
   const onSubmit = (formData: PlanItemFormData) =>
     state.planItem ? updatePlanItem(formData) : createPlanItem(formData);
 
   return <PlanItemForm 
-  itemType={route.params?.planItemType} 
-  planItem={state.planItem} 
-  onSubmit={onSubmit} 
-  taskNumber={route.params?.planItemList ? route.params?.planItemList.length + 1 : 0}
-  navigation={navigation} />;
+    itemType={route.params?.planItemType} 
+    planItem={state.planItem} 
+    onSubmit={onSubmit} 
+    taskNumber={route.params?.planItemList ? route.params?.planItemList.length + 1 : 0}
+    navigation={navigation}
+  />;
 }

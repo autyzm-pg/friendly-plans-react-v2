@@ -64,7 +64,7 @@ export const PlanListElementForCopy: FC<Props> = ({plan, navigation}) => {
         //             imageUri: planItem.image,
         //             voicePath: planItem.voicePath
         //         },
-        //         planItem.order - 1);
+        //         planItem.itemOrder - 1);
 
         //     if (newCopiedPlanItem.type === PlanItemType.ComplexTask) {
         //         const subItemsSnapshot = await getPlanSubItemsRef(plan.studentId, plan.id, planItemsSnapshot.docs[i].id).get();
@@ -74,7 +74,7 @@ export const PlanListElementForCopy: FC<Props> = ({plan, navigation}) => {
         //             const newCopiedPlanSubItemRef = await PlanSubItem.create(newCopiedPlanItem);
         //             await newCopiedPlanSubItemRef.update({
         //                 'name': planSubItem.name,
-        //                 'order': planSubItem.order,
+        //                 'itemOrder': planSubItem.itemOrder,
         //                 'time': planSubItem.time,
         //                 'image': planSubItem.image,
         //                 'lector': planSubItem.lector,

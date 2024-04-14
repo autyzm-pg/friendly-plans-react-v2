@@ -3,18 +3,19 @@ import { StyleSheet, View } from 'react-native';
 import DraggableFlatList, { DragEndParams, RenderItemParams } from 'react-native-draggable-flatlist';
 
 import { FullScreenTemplate } from '../../components';
-import { PlanItem } from '../../models';
+import { Plan, PlanItem } from '../../models';
 import { dimensions, getElevation, palette } from '../../styles';
 import { TableRow } from './TableRow';
 import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
+  plan: Plan;
   planItemList: PlanItem[];
-  handlePlanListOrderChanged: (planItemList: DragEndParams<PlanItem>) => void;
   navigation: NavigationProp<any>;
+  handlePlanListOrderChanged: (planItemList: DragEndParams<PlanItem>) => void;
 }
 
-export const TaskTable: FC<Props> = ({ navigation, planItemList, handlePlanListOrderChanged }) => {
+export const TaskTable: FC<Props> = ({ navigation, planItemList, plan, handlePlanListOrderChanged }) => {
   const data = planItemList.map(item => ({ ...item, key: item.id, label: item.name }));
 
   const keyExtractor = (item: PlanItem) => `draggable-item-${item.id}`;
@@ -28,7 +29,9 @@ export const TaskTable: FC<Props> = ({ navigation, planItemList, handlePlanListO
           return (
             <View style={styles.tableContainer}>
               <TableRow
+                plan={plan}
                 planItem={item}
+                planItemList={planItemList}
                 border={index !== planItemList.length - 1}
                 key={index}
                 rowNumber={index ? index + 1 : 0}

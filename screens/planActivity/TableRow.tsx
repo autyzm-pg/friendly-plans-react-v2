@@ -1,5 +1,5 @@
 import {CheckboxInput, Icon, IconButton} from '../../components';
-import {PlanItem, PlanItemType} from '../../models';
+import {Plan, PlanItem, PlanItemType} from '../../models';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {palette, typography} from '../../styles';
@@ -12,13 +12,14 @@ interface Props {
   rowNumber: number;
   border?: boolean;
   planItem: PlanItem;
-  drag: () => void;
   navigation: NavigationProp<any>;
+  plan: Plan;
+  planItemList: PlanItem[];
+  drag: () => void;
 }
 
-export const TableRow: React.FC<Props> = ({ navigation, planItem, border, drag }) => {
+export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, planItemList, drag}) => {
   const [subtaskCount, setSubtaskCount] = useState(0);
-
 
   useEffect(() => {
     if (planItem.type === PlanItemType.ComplexTask) {
@@ -38,17 +39,20 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, drag }
 
   const navigateToPlanItemUpdate = () => {
     navigation.navigate(Route.PlanItemTask, {
+      plan,
       planItem,
+      planItemList
     });
   };
 
   const onDelete = () => {
-    // planItem.delete();
+    PlanItem.deletePlanItem(planItem)
   };
 
   const handleCheckboxChange = () => {
     // planItem.setComplete(!planItem.completed);
     planItem.completed = !planItem.completed;
+    PlanItem.updatePlanItem(planItem)
   };
 
   const hours = Math.floor(planItem.time / 3600);
