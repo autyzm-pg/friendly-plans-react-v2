@@ -80,7 +80,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
       voicePath: data.voicePath,
     }
     
-    PlanItem.updatePlanItem(planItem).then(() => {
+    PlanItem.updatePlanItem(planItem, data.subItems).then(() => {
       navigation.goBack()
     });
   };

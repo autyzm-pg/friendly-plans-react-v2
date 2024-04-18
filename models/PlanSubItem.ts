@@ -1,4 +1,3 @@
-import { RNFirebase } from '@react-native-firebase/app';
 import ImagePicker from 'react-native-image-crop-picker';
 import { OperationalError } from '../infrastructure/Errors';
 import { i18n } from '../locale';
@@ -194,5 +193,33 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
     await executeQuery('COMMIT;');
     console.log(resultsArray)
     return resultsArray.sort((a, b) => Number(a.id) - Number(b.id));
+  }
+
+  static updatePlanSubItem = async (
+    planItem: PlanSubItem,
+  ): Promise<void> => {
+    try {
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET name = (?), type = (?), completed = (?), time = (?), lector = (?), nameForChild = (?), image = (?), voicePath = (?), itemOrder = (?)
+        WHERE id = (?);
+      `;
+
+      await executeQuery(updatePlanElementTable, [
+        planItem.name,
+        planItem.type,
+        planItem.completed ? 1 : 0,
+        planItem.time,
+        planItem.lector ? 1 : 0,
+        planItem.nameForChild,
+        planItem.image,
+        planItem.voicePath,
+        planItem.itemOrder,
+        planItem.planElementId
+      ]);
+
+    } catch (error) {
+        console.error("Error updating plan:", error);
+    }
   }
 }

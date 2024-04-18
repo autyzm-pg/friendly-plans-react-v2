@@ -151,7 +151,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     const planItemListRightOrder = data.map((item, index) => ({ ...item, itemOrder: index + 1 }));
     setPlanItemList(planItemListRightOrder as PlanItem[]);
     for (const planItem of planItemListRightOrder) {
-      PlanItem.updatePlanItem(planItem)
+      PlanItem.updatePlanItem(planItem, [])
     }
   };
 

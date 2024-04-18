@@ -293,7 +293,8 @@ export class PlanItem implements PlanElement {
   }
 
   static updatePlanItem = async (
-    planItem: PlanItem
+    planItem: PlanItem,
+    planSubItems: PlanSubItem[]
   ): Promise<void> => {
     try {
       const updatePlanElementTable = `
@@ -314,6 +315,15 @@ export class PlanItem implements PlanElement {
         planItem.itemOrder,
         planItem.planElementId
       ]);
+
+      if (planSubItems) {
+        for (const subItem of planSubItems) {
+          if (subItem.id != null)
+            await PlanSubItem.updatePlanSubItem(subItem)
+          else 
+            await PlanSubItem.createPlanSubItem(planItem, PlanItemType.SubElement, subItem, planItem.itemOrder)
+        }
+      }
 
       executeQuery(`SELECT * FROM PlanElement;`, []);
     
