@@ -61,9 +61,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const updatePlanItem = async (data: PlanItemFormData) => {
-    console.log('update')
     const plan = route.params?.plan;
-    console.log(state.planItem)
 
     //@ts-ignore
     const planItem: PlanItem = {

@@ -146,6 +146,8 @@ const translations = {
     addComplexTask: 'ADD COMPLEX TASK',
     planItemNamePlaceholder: 'Enter schedule item name...',
     saveTask: 'SAVE',
+    saveSchedule: 'SAVE SCHEDULE',
+    noScheduleNameError: 'Please provide a name for the schedule',
   },
   studentSettings: {
     studentName: "Student's name",

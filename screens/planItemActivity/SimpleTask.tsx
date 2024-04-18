@@ -36,10 +36,10 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style}
     };
   
   useEffect(() => {
-  setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
-  return () => {
-    componentWillUnmount();
-  }
+    setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
+    return () => {
+      componentWillUnmount();
+    }
   }, []);
 
   const timeInfo = () => {

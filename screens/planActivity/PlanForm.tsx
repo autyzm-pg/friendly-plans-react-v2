@@ -1,5 +1,5 @@
 import { ErrorMessage, Formik, FormikProps, FormikHelpers } from 'formik';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
@@ -43,8 +43,9 @@ export const PlanForm: FC<Props> = ({
   student,
   navigation
 }) => {
+  
   const initialValues: PlanFormData = {
-    planInput: plan ? plan.name : `${i18n.t('planActivity:newPlan')}${numberPlan}`,
+    planInput: plan ? plan.name : '',
     emoji: plan ? DEFAULT_EMOJI : DEFAULT_EMOJI,
   };
 
@@ -67,9 +68,10 @@ export const PlanForm: FC<Props> = ({
           <TextInput
             style={styles.textInput}
             placeholder={i18n.t('planActivity:planNamePlaceholder')}
-            value={values.planInput}
+            value={plan?.name ?? values.planInput}
             onChangeText={handleChange('planInput')}
             onBlur={handleSubmit}
+            autoFocus={!plan?.name}
           />
           <Text style={styles.errorMessage}>{errors.planInput}</Text>
         </View>

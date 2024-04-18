@@ -146,6 +146,8 @@ const translations = {
     addComplexTask: 'DODAJ ZŁOŻONE ZADANIE',
     planItemNamePlaceholder: 'Wpisz nazwę zadania...',
     saveTask: 'ZAPISZ',
+    saveSchedule: 'ZAPISZ PLAN',
+    noScheduleNameError: 'Nazwa planu nie może być pusta',
   },
   studentSettings: {
     studentName: 'Imię ucznia',
