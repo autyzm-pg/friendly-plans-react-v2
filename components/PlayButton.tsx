@@ -5,6 +5,7 @@ import { Plan, Student, StudentDisplayOption } from '../models';
 import { Route } from '../navigation';
 import { palette } from '../styles';
 import { IconButton } from './IconButton';
+import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 
 interface Props {
   plan?: Plan;
@@ -15,12 +16,14 @@ interface Props {
 }
 
 export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, student }) => {
+  const {currentStudent} = useCurrentStudentContext();
+
   const navigateToRunPlan = () => {
-    if (!plan || !student) {
+    if (!plan || !currentStudent) {
       return;
     }
 
-    switch (student.displaySettings) {
+    switch (currentStudent.displaySettings) {
       case StudentDisplayOption.LargeImageSlide:
       case StudentDisplayOption.ImageWithTextSlide:
       case StudentDisplayOption.TextSlide:
@@ -29,7 +32,8 @@ export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, studen
           student,
         });
         break;
-      default:
+        case StudentDisplayOption.ImageWithTextList:
+          case StudentDisplayOption.TextList:
         navigation.navigate(Route.RunPlanList, {
           itemParent: plan,
           student,
