@@ -149,7 +149,7 @@ export class PlanElementListItem extends React.PureComponent<Props> {
             style={[this.container(), (this.props.currentTaskIndex === this.props.index) && {backgroundColor: palette.playButton}]}>
             <View style={{flex: 1}}>
               {(this.props.item.lector || this.props.item.voicePath) ?
-                <IconButton disabled={this.props.item.completed} size={64} onPress={this.speak}
+                <IconButton disabled={Boolean(this.props.item.completed)} size={64} onPress={this.speak}
                       name="volume-high"
                       type="material-community"/> : null}
             </View>
