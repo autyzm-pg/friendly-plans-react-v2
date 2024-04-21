@@ -7,6 +7,7 @@ import { NarrowScreenTemplate, StyledText } from '../../components';
 import { PasswordEnter } from './PasswordEnter'
 import { PasswordDelete } from './PasswordDelete'
 import { PasswordCreation } from './PasswordCreation';
+import { typography } from '../../styles';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -38,7 +39,7 @@ export const ModeSwitchScreen: FC<Props> = ({navigation}) => {
 
   return (
     <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
-        {loading && <StyledText>{'Loading...'}</StyledText>}
+        {loading && <StyledText style={{...typography.headline4}}>{'Loading...'}</StyledText>}
         {!loading && password && !forgotPassword && <PasswordEnter navigation={navigation} password={password} setForgotPassword={setForgotPassword}/>}
         {!loading && password && forgotPassword && <PasswordDelete navigation={navigation} setForgotPassword={setForgotPassword} setNewPassword={setPassword}/>}
         {!loading && !password && <PasswordCreation navigation={navigation} setNewPassword={setPassword}/>}
