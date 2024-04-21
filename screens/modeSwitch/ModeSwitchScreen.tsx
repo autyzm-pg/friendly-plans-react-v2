@@ -7,7 +7,8 @@ import { NarrowScreenTemplate, StyledText } from '../../components';
 import { PasswordEnter } from './PasswordEnter'
 import { PasswordDelete } from './PasswordDelete'
 import { PasswordCreation } from './PasswordCreation';
-import { typography } from '../../styles';
+import { palette, typography } from '../../styles';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -39,10 +40,22 @@ export const ModeSwitchScreen: FC<Props> = ({navigation}) => {
 
   return (
     <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
-        {loading && <StyledText style={{...typography.headline4}}>{'Loading...'}</StyledText>}
+        {loading &&
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size='large' color='#262a40' />
+          </View>
+        }
         {!loading && password && !forgotPassword && <PasswordEnter navigation={navigation} password={password} setForgotPassword={setForgotPassword}/>}
         {!loading && password && forgotPassword && <PasswordDelete navigation={navigation} setForgotPassword={setForgotPassword} setNewPassword={setPassword}/>}
         {!loading && !password && <PasswordCreation navigation={navigation} setNewPassword={setPassword}/>}
     </NarrowScreenTemplate>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
