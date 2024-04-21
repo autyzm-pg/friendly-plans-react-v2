@@ -20,6 +20,7 @@ interface Props {
 
 export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, planItemList, drag}) => {
   const [subtaskCount, setSubtaskCount] = useState(0);
+  const [checkbox, setCheckbox] = useState(planItem.completed);
 
   useEffect(() => {
     if (planItem.type === PlanItemType.ComplexTask) {
@@ -53,6 +54,7 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
     // planItem.setComplete(!planItem.completed);
     planItem.completed = !planItem.completed;
     PlanItem.updatePlanItem(planItem)
+    setCheckbox(!checkbox);
   };
 
   const hours = Math.floor(planItem.time / 3600);
@@ -64,7 +66,7 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
   return (
     <TouchableOpacity style={[styles.row, border && styles.rowBorder]} onLongPress={drag} onPress={navigateToPlanItemUpdate}>
       <View style={styles.checkbox}>
-        <CheckboxInput checked={planItem.completed} onPress={handleCheckboxChange} />
+        <CheckboxInput checked={checkbox} onPress={handleCheckboxChange} />
       </View>
       <View style={styles.planIcon}>
         <Icon name={getIconName(planItem.type)} type="material" />

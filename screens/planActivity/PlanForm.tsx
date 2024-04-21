@@ -46,7 +46,7 @@ export const PlanForm: FC<Props> = ({
   
   const initialValues: PlanFormData = {
     planInput: plan ? plan.name : '',
-    emoji: plan ? DEFAULT_EMOJI : DEFAULT_EMOJI,
+    emoji: plan ? plan.emoji : DEFAULT_EMOJI,
   };
 
   const renderFormControls = ({ values, handleChange, handleSubmit, errors }: any) => {
