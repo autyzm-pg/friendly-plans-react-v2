@@ -3,7 +3,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DragEndParams } from 'react-native-draggable-flatlist';
 
-import { FullScreenTemplate } from '../../components';
+import { Button, FullScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
 import { Plan, PlanItem, PlanItemType } from '../../models';
 import { Route } from '../../navigation';
@@ -20,18 +20,11 @@ interface Props {
 }
 
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
-  // const [state, setState] = useState<{ plan: Plan | undefined; planItemList: PlanItem[] }>({
-  //   plan: route.params?.plan ?? undefined,
-  //   planItemList: []
-  // });
-
-  const [plan, setPlan] = useState<Plan | undefined>(
+  const [plan, setPlan] = useState<Plan>(
     route.params?.plan ?? undefined,
   );
 
   const [planItemList, setPlanItemList] = useState<PlanItem[]>([]);
-  
-  // const {plan, planItemList} = state;
 
   const {currentStudent} = useCurrentStudentContext();
 
@@ -62,16 +55,13 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
-    if (planInput === '') {
+    if (planInput === '' && plan) {
       errors.planInput = i18n.t('validation:planNameRequired');
+
       throw errors;
     }
 
-    // const { id } = student;
-
-    // const { id: planId } = state.plan;
-
-    const planExists: boolean = false; // await Plan.isPlanExist(id, planInput, planId);
+    const planExists: boolean = false;
 
     if (planExists) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
@@ -80,8 +70,12 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const createPlan = async (name: string) => {
+    if (name === '') {
+      name = `${i18n.t('planActivity:newPlan')}${route.params?.numberPlan}`
+    }
     if (currentStudent) {
-      await Plan.createPlan(currentStudent?.id, name)
+      const plan = await Plan.createPlan(currentStudent?.id, name);
+      setPlan(plan);
     }
   };
 
@@ -92,11 +86,10 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
         name: name,
         emoji: emoji
       };
-      await Plan.updatePlan(updatedPlan, currentStudent?.id)
+      await Plan.updatePlan(updatedPlan, currentStudent?.id);
       setPlan(updatedPlan);
     }
   };
-
 
   const onSubmit = ({ planInput, emoji }: PlanFormData) =>
     plan ? updatePlan(planInput, emoji) : createPlan(planInput);
@@ -128,7 +121,6 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const shuffleDisabled = (): boolean => {
-    // const { planItemList } = state;
 
     return !planItemList || planItemList.length < 2;
   };
@@ -140,16 +132,18 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     return every(planItemList, 'completed');
   };
 
-  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
-    const planItemListRightOrder = data.map((item, index) => ({ ...item, itemOrder: index + 1 }));
+  const updatePlanItemsOrder = async (items: PlanItem[]) => {
+    const planItemListRightOrder = items.map((item, index) => ({ ...item, itemOrder: index + 1 }));
     setPlanItemList(planItemListRightOrder as PlanItem[]);
     for (const planItem of planItemListRightOrder) {
-      //console.log(planItem)
-      PlanItem.updatePlanItem(planItem)
+      await PlanItem.updatePlanItem(planItem)
     }
-    //if (plan)
-    //PlanItem.getPlanItems(plan).then(result => console.log(result))
-    //console.log(planItemList)
+
+    setPlanItemList(planItemListRightOrder);
+  }
+
+  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
+    updatePlanItemsOrder(data)
   };
 
   const shuffle = (array: PlanItem[]) => {
@@ -171,8 +165,11 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const shuffleTasks = () => {
     let array = planItemList;
     array = shuffle(array);
+    updatePlanItemsOrder(array)
+  };
 
-    setPlanItemList(array);
+  const saveAndClose = () => {
+    navigation.goBack()
   };
 
   return (
@@ -198,6 +195,20 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
           navigation={navigation}
         />
       </FullScreenTemplate>
+      <View style={styles.saveButtonContainer}>
+        <Button
+          buttonStyle={styles.saveButton}
+          title={i18n.t('updatePlan:saveSchedule')}
+          icon={{
+            name: 'check',
+            type: 'material',
+            color: palette.textWhite,
+            size: 22,
+          }}
+          isUppercase
+          onPress={saveAndClose}
+        />
+      </View>
       <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />
     </>
   );
@@ -211,5 +222,17 @@ const styles = StyleSheet.create({
   fullScreen: {
     backgroundColor: palette.backgroundSurface,
     width: '100%'
+  },
+  saveButtonContainer: {
+    width: '100%',
+    padding: 12,
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveButton: {
+    paddingVertical: 16,
+    paddingRight: 36,
+    paddingLeft: 32
   },
 });

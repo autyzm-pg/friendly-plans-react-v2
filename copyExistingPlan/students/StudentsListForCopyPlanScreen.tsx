@@ -7,7 +7,6 @@ import { Route } from '../../navigation';
 import { dimensions, palette } from '../../styles';
 import { StudentsListForCopyPlan } from './StudentsListForCopyPlan';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { defaults } from '../../mocks/defaults';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -15,11 +14,13 @@ interface Props {
 }
 
 export const StudentsListForCopyPlanScreen: FC<Props> = ({ navigation, route }) => {
-  const [students, setStudents] = useState<Student[]>(defaults.studentsList);
+  const [students, setStudents] = useState<Student[] | undefined>();
   const [collections, setCollections] = useState<number[]>([]);
 
   useEffect(() => {
-    setStudents(defaults.studentsList)
+    Student.getStudents().then(response => {
+      setStudents(response);
+    });
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
@@ -81,7 +82,7 @@ export const StudentsListForCopyPlanScreen: FC<Props> = ({ navigation, route }) 
       navigation={navigation}
       buttons={renderHeaderButtons()}
     >
-    <StudentsListForCopyPlan students={students} navigation={navigation} />
+    {students && <StudentsListForCopyPlan students={students} navigation={navigation} />}
     </NarrowScreenTemplate>
   );
 }

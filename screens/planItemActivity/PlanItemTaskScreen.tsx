@@ -61,9 +61,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const updatePlanItem = async (data: PlanItemFormData) => {
-    console.log('update')
     const plan = route.params?.plan;
-    console.log(state.planItem)
 
     //@ts-ignore
     const planItem: PlanItem = {
@@ -82,7 +80,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
       voicePath: data.voicePath,
     }
     
-    PlanItem.updatePlanItem(planItem).then(() => {
+    PlanItem.updatePlanItem(planItem, data.subItems).then(() => {
       navigation.goBack()
     });
   };

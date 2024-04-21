@@ -144,6 +144,7 @@ export const insertTestData = async () => {
   Params can be passed as the second argument and replaced by (?) in the query string
 */
 export const executeQuery = async (query: string, params: (string | number | Date)[] = []): Promise<ResultSet> => {
+  console.log('QUERYYYYYY:', query)
   return new Promise((resolve, reject) => {
     const db = DatabaseService.getDatabase()
     if (!db) {

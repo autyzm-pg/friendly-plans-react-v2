@@ -1,7 +1,7 @@
 import {Separator, StyledText} from '../../components';
 import {sortBy} from 'lodash';
 import {Student} from '../../models';
-import React, {FC, ReactElement, useEffect} from 'react';
+import React, {FC, ReactElement, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {dimensions, palette, typography} from '../../styles';
 import {StudentListElementForCopyPlan} from './StudentListElementForCopyPlan';
@@ -14,17 +14,29 @@ interface Props {
 }
 
 export const StudentsListForCopyPlan: FC<Props> = ({navigation, students}) => {
+const [sortedStudents, setSortedStudents] = useState<Student[]>([])
+
   const renderLetterGroupLabel = (letter: string) => (
     <StyledText key={letter} style={styles.label}>
       {letter}
     </StyledText>
   );
 
+  useEffect(() => {
+    getFilteredStudents()
+  }, students)
 
-  const filteredStudents = students.filter(student => student.collectionCount > 0);
+  const getFilteredStudents = async () => {
+    const filteredList = [] as Student[]
+    for (const student of students) {
+      const planCount = await Student.getPlansCount(student.id);
+      if (planCount > 0) {
+        filteredList.push(student)
+      }
+    }
+    setSortedStudents(filteredList.sort((studentA: Student, studentB: Student) => studentA.name > studentB.name ? 1 : -1))
+  }
 
-  const sortedStudents = sortBy(filteredStudents, (student: Student) => student.name);
-  
   const studentsLetterGrouped = sortedStudents.reduce((grouped: { [key: string]: Element[] }, student: Student) => {
     const firstLetter = student.name.charAt(0).toLowerCase();
     const shouldRenderSeparator = !grouped[firstLetter] && !!Object.keys(grouped).length;

@@ -102,17 +102,32 @@ export class PlanItem implements PlanElement {
 
   isTask = (): boolean => this.type === PlanItemType.SimpleTask || this.type === PlanItemType.ComplexTask;
   isSimpleTask = (): boolean => this.type === PlanItemType.SimpleTask;
-  complete = () => {
-    this.update({ completed: true });
+
+  complete = async (): Promise<void> => {
+    console.log('completing!!!')
+    try {
+      this.completed = true;
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET completed = (?)
+        WHERE id = (?);
+      `;
+
+      await executeQuery(updatePlanElementTable, [1, this.planElementId]);
+
+    } catch (error) {
+        console.error("Error updating plan element:", error);
+    }
   };
 
-  update = (item: Partial<PlanItem>) => {
+  update = (item: Partial<PlanItem>): Promise<void> => {
 
   }
 
   setOrder = (itemOrder: number) => {
     this.update({ itemOrder });
   };
+  
   setComplete = (completed: boolean) => {
     this.update({ completed });
   };
@@ -233,7 +248,7 @@ export class PlanItem implements PlanElement {
 
     if (element.type === PlanItemType.ComplexTask && data.subItems) {
       for (const subItem of data.subItems) {
-        await PlanSubItem.createPlanSubItem(item, type, subItem, lastItemOrder)
+        await PlanSubItem.createPlanSubItem(item, PlanItemType.SubElement, subItem, lastItemOrder)
       }
     }
 
@@ -293,7 +308,8 @@ export class PlanItem implements PlanElement {
   }
 
   static updatePlanItem = async (
-    planItem: PlanItem
+    planItem: PlanItem,
+    planSubItems?: PlanSubItem[]
   ): Promise<void> => {
     try {
       const updatePlanElementTable = `
@@ -315,6 +331,15 @@ export class PlanItem implements PlanElement {
         planItem.planElementId
       ]);
 
+      if (planSubItems) {
+        for (const subItem of planSubItems) {
+          if (subItem.id != null)
+            await PlanSubItem.updatePlanSubItem(subItem)
+          else 
+            await PlanSubItem.createPlanSubItem(planItem, PlanItemType.SubElement, subItem, planItem.itemOrder)
+        }
+      }
+
       executeQuery(`SELECT * FROM PlanElement;`, []);
     
     } catch (error) {
@@ -326,5 +351,94 @@ export class PlanItem implements PlanElement {
     const deleteStudentData = `DELETE FROM PlanItem WHERE id = (?);`;
     await executeQuery(deleteStudentData, [planItem.id]);
     return 
+  }
+
+  static copyPlanItem = async (
+    plan: Plan,
+    type: PlanItemType,
+    planItem: PlanItem
+  ): Promise<PlanItem> => {
+    const planItemData = {
+      name: planItem.name,
+      studentId: plan.studentId,
+      planId: plan.id,
+      type,
+      completed: false,
+      lector: planItem.lector,
+      nameForChild: planItem.nameForChild,
+      itemOrder: planItem.itemOrder,
+      time: planItem.time,
+      image: planItem.image,
+      voicePath: planItem.voicePath,
+    }
+    
+    const insertIntoPlanItemTable = `
+      INSERT INTO PlanItem (planId, planElementId)
+      VALUES ((?), (?));
+    `;
+    
+    const insertIntoPlanElementTable = `INSERT INTO PlanElement (name, type, completed, time, lector, nameForChild, image, voicePath, itemOrder) VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?));`;
+    await executeQuery('BEGIN TRANSACTION;');
+
+    await executeQuery(insertIntoPlanElementTable, [
+      planItem.name,
+      type,
+      0,
+      planItem.time,
+      planItem.lector ? 1 : 0,
+      planItem.nameForChild,
+      planItem.image,
+      planItem.voicePath,
+      planItem.itemOrder
+    ]);
+    
+    const resultSet = await executeQuery(`SELECT * FROM PlanElement WHERE name = (?) ORDER BY id DESC LIMIT 1`, [planItem.name])
+    
+    if (!(resultSet.rows.length)) {
+      await executeQuery('ROLLBACK;');
+      throw new Error('Could not create new plan element')
+    }
+
+    await executeQuery(insertIntoPlanItemTable, [
+      plan.id, 
+      (resultSet.rows.item(0) as PlanElement).id
+    ]);
+
+    const itemResultSet = await executeQuery(`SELECT * FROM PlanItem ORDER BY id DESC LIMIT 1;`);
+    
+    if (!(itemResultSet.rows.length)) {
+      await executeQuery('ROLLBACK;');
+      throw new Error('Could not create new plan item');
+    } else {
+      await executeQuery('COMMIT;');
+    }
+
+    const item = itemResultSet.rows.item(0) as PlanItem;
+    const element = resultSet.rows.item(0) as PlanElement;
+
+    // Add subItems if it is a complex task
+
+    if (element.type === PlanItemType.ComplexTask) {
+      const planSubItems = await PlanSubItem.getPlanSubItems(planItem);
+      for (const subItem of planSubItems) {
+        await PlanSubItem.createPlanSubItem(item, PlanItemType.SubElement, subItem, planItem.itemOrder -1)
+      }
+    }
+
+    return Object.assign(new PlanItem(), {
+      id: item.id,
+      name: element.name,
+      studentId: plan.studentId,
+      planId: item.planId,
+      type: element.type,
+      completed: element.completed,
+      lector: element.lector,
+      nameForChild: element.nameForChild,
+      itemOrder: planItem.itemOrder,
+      time: element.time,
+      image: element.image,
+      voicePath: element.voicePath,
+      planElementId: element.id
+    });
   }
 }
