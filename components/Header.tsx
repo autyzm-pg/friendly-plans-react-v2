@@ -50,7 +50,7 @@ export const Header: React.FC<Props> = ({...props}) => {
   const renderButtons = () => {
     return isDashboard() ? (
       <>
-        {!loading && currentStudent && editionMode && (
+        {currentStudent && editionMode && (
           <IconButton
             name="settings"
             type="material"
@@ -60,7 +60,7 @@ export const Header: React.FC<Props> = ({...props}) => {
             onPress={navigateToStudentSettings}
           />
         )}
-        {!loading && editionMode && <IconButton
+        {editionMode && <IconButton
           name="people"
           type="material"
           size={24}
@@ -68,7 +68,7 @@ export const Header: React.FC<Props> = ({...props}) => {
           containerStyle={styles.iconContainer}
           onPress={navigateToStudentsList}
         />}
-          {!loading && <ModeSwitchHeader navigation={navigation}/>}
+          <ModeSwitchHeader navigation={navigation}/>
       </>
     ) : null;
   }
@@ -86,7 +86,7 @@ export const Header: React.FC<Props> = ({...props}) => {
         />
       }
       {!loading && <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>}
-      {renderButtons()}
+      {!loading && renderButtons()}
     </View>
   );
 }
