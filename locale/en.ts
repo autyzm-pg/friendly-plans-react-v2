@@ -8,6 +8,18 @@ const translations = {
     activeStudent: 'Active student',
     noStudentCreated: 'Click on the people icon on the right to create a student.'
   },
+  modeSetting: {
+    title: 'Unlock edition options',
+    createPassword: 'Create new password',
+    regainAccess: 'Regain access',
+    enterPassword: 'Enter password',
+    savePassword: 'Save',
+    confirmPassword: 'Confirm',
+    forgotPassword: 'Forgot password?',
+    retryPassword: 'Try re-entering password',
+    wrongPassword: 'Wrong password',
+    factoryPassword: 'Enter factory password',
+  },
   common: {
     cancel: 'CANCEL',
     confirm: 'CONFIRM',

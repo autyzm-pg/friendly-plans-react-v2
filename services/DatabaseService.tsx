@@ -36,6 +36,11 @@ export default class DatabaseService {
 }
 
 export const createTables = async () => {
+  // await executeQuery('DROP TABLE Plan');
+  // await executeQuery('DROP TABLE PlanItem');
+  // await executeQuery('DROP TABLE PlanElement');
+  // await executeQuery('DROP TABLE PlanSubItem');
+  // await executeQuery('DROP TABLE StudentData');
 
   const createPlanTable = `CREATE TABLE IF NOT EXISTS Plan (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,studentId INTEGER,emoji TEXT)`;
 
@@ -71,12 +76,15 @@ export const createTables = async () => {
     CHECK (displaySettings IN ('largeImageSlide', 'imageWithTextSlide', 'textSlide', 'imageWithTextList', 'textList')),
     CHECK (textSize IN ('s', 'm', 'l', 'xl'))
   )`;
+
+  const createPasswordTable = `CREATE TABLE IF NOT EXISTS Password (id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT)`;
   
   await executeQuery(createPlanTable);
   await executeQuery(createPlanItemTable);
   await executeQuery(createPlanElementTable);
   await executeQuery(createPlanSubItemTable);
   await executeQuery(createStudentDataTable);
+  await executeQuery(createPasswordTable);
 }
 
 export const insertTestData = async () => {

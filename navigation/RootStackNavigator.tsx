@@ -27,6 +27,7 @@ import { RootNavigatorContext } from '../contexts/RootNavigatorContext';
 import { CurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Student } from '../models';
 import { ImageLibraryScreen } from '../screens/planItemActivity/imagePicker/ImageLibraryScreen';
+import { ModeSwitchScreen } from '../screens/modeSwitch/ModeSwitchScreen';
 
 const Stack = createStackNavigator();
 
@@ -131,6 +132,11 @@ export function RootStackNavigation() {
           name={Route.RecordingLibrary}
           component={RecordingLibraryScreen}
           options={{}}
+        />
+        <Stack.Screen
+          name={Route.ModeSwitch}
+          component={ModeSwitchScreen}
+          options={{ headerShown: false }}
         />
         {/* TODO: uncomment working screen */}
         {/* 

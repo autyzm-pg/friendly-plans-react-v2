@@ -6,7 +6,7 @@ import { Route } from '../navigation';
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
-import { ModeSetting } from '../components'
+import { ModeSwitchHeader } from '../components'
 import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
 import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { i18n } from '../locale';
@@ -68,7 +68,7 @@ export const Header: React.FC<Props> = ({...props}) => {
           containerStyle={styles.iconContainer}
           onPress={navigateToStudentsList}
         />}
-          <ModeSetting/>
+          <ModeSwitchHeader navigation={navigation}/>
       </>
     ) : null;
   }

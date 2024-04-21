@@ -34,4 +34,6 @@ export enum Route {
   // MainDrawerNavigator
   Home = 'Home',
   Logout = 'Logout',
+  // ModeSwitching
+  ModeSwitch = 'ModeSwitch',
 }

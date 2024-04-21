@@ -8,6 +8,18 @@ const translations = {
     activeStudent: 'Aktywny uczeń',
     noStudentCreated: 'Kliknij ikonę ludzi po prawej stronie, aby utworzyć studenta.'
   },
+  modeSetting: {
+    title: 'Odblokuj opcję edycji',
+    createPassword: 'Utwórz nowe hasło',
+    regainAccess: 'Odzyskaj dostęp',
+    enterPassword: 'Wpisz hasło',
+    savePassword: 'Zapisz',
+    confirmPassword: 'Zatwierdź',
+    forgotPassword: 'Zapomniałeś hasła?',
+    retryPassword: 'Spróbuj wprowadzić hasło ponownie',
+    wrongPassword: 'Hasło niepoprawne',
+    factoryPassword: 'Wpisz hasło fabryczne',
+  },
   common: {
     cancel: 'ANULUJ',
     confirm: 'POTWIERDŹ',
