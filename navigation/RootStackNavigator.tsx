@@ -34,9 +34,12 @@ const Stack = createStackNavigator();
 export function RootStackNavigation() {
   const [editionMode, setEditionMode] = useState<boolean>(true);
   const [student, setStudent] = useState<Student | undefined>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   return (
-    <RootNavigatorContext.Provider value={{editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode)}}>
+    <RootNavigatorContext.Provider value={{
+      editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode),
+      loading: loading, setLoading: () => setLoading(false)}}>
       <CurrentStudentContext.Provider value={{currentStudent: student, setCurrentStudent: setStudent}}>
       <Stack.Navigator
         initialRouteName={Route.Home}
@@ -58,11 +61,11 @@ export function RootStackNavigation() {
               navigation={navigation}
             />
           )})}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name={Route.Home}
           component={WelcomeScreen}
           options={{}}
-        />
+        /> */}
         <Stack.Screen
           name={Route.Dashboard}
           component={DashboardScreen}

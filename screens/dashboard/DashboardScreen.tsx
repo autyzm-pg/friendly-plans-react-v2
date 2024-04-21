@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 //import { NavigationInjectedProps, withNavigationFocus } from '@react-navigation/native';
 
-import { i18n } from '../../locale';
-import { Student, StudentDisplayOption, StudentTextSizeOption } from '../../models';
-import { Route } from '../../navigation';
+import { Student } from '../../models';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 import DatabaseService from '../../services/DatabaseService';
+import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -19,6 +18,7 @@ interface Props {
 export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   
+  const { loading, setLoading } = useRootNavigatorContext();
   const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
 
@@ -33,6 +33,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
       Student.getStudents().then(studentsList => {
         if (studentsList.length)
           setCurrentStudent(studentsList[0])
+        setLoading();
       })
     });
 
@@ -50,9 +51,16 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   }, [isFocused, nextRoute]);
 
   return (
-    <View style={styles.container}>
-      {currentStudent && <StudentPlanList navigation={navigation}/>}
-    </View>
+    <>
+      {loading && 
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color='#262a40' />
+      </View>}
+      {!loading && currentStudent && 
+      <View style={styles.container}>
+        <StudentPlanList navigation={navigation}/>
+      </View>}
+    </>
   );
 };
 
@@ -60,6 +68,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flex: 1,
+    backgroundColor: palette.backgroundSurface,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: palette.backgroundSurface,
   },
 });

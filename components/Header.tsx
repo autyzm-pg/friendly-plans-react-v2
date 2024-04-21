@@ -16,7 +16,7 @@ interface Props extends StackHeaderProps {}
 const DASHBOARD = 'Dashboard';
 
 export const Header: React.FC<Props> = ({...props}) => {
-  const { editionMode } = useRootNavigatorContext();
+  const { editionMode, loading } = useRootNavigatorContext();
   const { currentStudent, setCurrentStudent } = useCurrentStudentContext();
   
   const navigation = props.navigation
@@ -50,7 +50,7 @@ export const Header: React.FC<Props> = ({...props}) => {
   const renderButtons = () => {
     return isDashboard() ? (
       <>
-        {currentStudent && editionMode && (
+        {!loading && currentStudent && editionMode && (
           <IconButton
             name="settings"
             type="material"
@@ -60,7 +60,7 @@ export const Header: React.FC<Props> = ({...props}) => {
             onPress={navigateToStudentSettings}
           />
         )}
-        {editionMode && <IconButton
+        {!loading && editionMode && <IconButton
           name="people"
           type="material"
           size={24}
@@ -68,7 +68,7 @@ export const Header: React.FC<Props> = ({...props}) => {
           containerStyle={styles.iconContainer}
           onPress={navigateToStudentsList}
         />}
-          <ModeSwitchHeader navigation={navigation}/>
+          {!loading && <ModeSwitchHeader navigation={navigation}/>}
       </>
     ) : null;
   }
@@ -85,7 +85,7 @@ export const Header: React.FC<Props> = ({...props}) => {
           containerStyle={styles.iconContainer}
         />
       }
-      <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
+      {!loading && <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>}
       {renderButtons()}
     </View>
   );
