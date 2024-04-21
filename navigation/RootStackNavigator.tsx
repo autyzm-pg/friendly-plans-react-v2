@@ -27,6 +27,8 @@ import { CurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Student } from '../models';
 import { ImageLibraryScreen } from '../screens/planItemActivity/ImageLibraryScreen';
 import { RunSubPlanSlideScreen } from '../screens/runPlan/SlideMode/RunSubPlanSlideScreen';
+import { RunPlanListScreen } from '../screens/runPlan/ListMode/RunPlanListScreen';
+import { RunSubPlanListScreen } from '../screens/runPlan/ListMode/RunSubPlanListScreen';
 
 const Stack = createStackNavigator();
 
@@ -132,8 +134,6 @@ export function RootStackNavigation() {
           component={RunSubPlanSlideScreen}
           options={{}}
         />
-        {/* TODO: uncomment working screen */}
-        {/* 
         <Stack.Screen
           name={Route.RunPlanList}
           component={RunPlanListScreen}
@@ -144,6 +144,8 @@ export function RootStackNavigation() {
           component={RunSubPlanListScreen}
           options={{}}
         />
+        {/* TODO: uncomment working screen */}
+        {/* 
         <Stack.Screen
           name={Route.Dialog}
           component={DialogScreen}

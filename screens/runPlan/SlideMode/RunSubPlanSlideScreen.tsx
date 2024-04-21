@@ -25,8 +25,6 @@ interface Props {
   route: RouteProp<any>;
 }
 
-// TODO
-
 export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   const navigationOptions = {
     header: null,

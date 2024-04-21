@@ -12,6 +12,6 @@ export interface PlanElement {
   image?: string;
   voicePath?: string;
 
-  complete: () => void;
-  update: (changes: any) => void;
+  complete: () => Promise<void>;
+  update: (changes: any) => Promise<void>;
 }

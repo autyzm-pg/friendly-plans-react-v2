@@ -102,17 +102,32 @@ export class PlanItem implements PlanElement {
 
   isTask = (): boolean => this.type === PlanItemType.SimpleTask || this.type === PlanItemType.ComplexTask;
   isSimpleTask = (): boolean => this.type === PlanItemType.SimpleTask;
-  complete = () => {
-    this.update({ completed: true });
+
+  complete = async (): Promise<void> => {
+    console.log('completing!!!')
+    try {
+      this.completed = true;
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET completed = (?)
+        WHERE id = (?);
+      `;
+
+      await executeQuery(updatePlanElementTable, [1, this.planElementId]);
+
+    } catch (error) {
+        console.error("Error updating plan element:", error);
+    }
   };
 
-  update = (item: Partial<PlanItem>) => {
+  update = (item: Partial<PlanItem>): Promise<void> => {
 
   }
 
   setOrder = (itemOrder: number) => {
     this.update({ itemOrder });
   };
+  
   setComplete = (completed: boolean) => {
     this.update({ completed });
   };
@@ -233,7 +248,7 @@ export class PlanItem implements PlanElement {
 
     if (element.type === PlanItemType.ComplexTask && data.subItems) {
       for (const subItem of data.subItems) {
-        await PlanSubItem.createPlanSubItem(item, type, subItem, lastItemOrder)
+        await PlanSubItem.createPlanSubItem(item, PlanItemType.SubElement, subItem, lastItemOrder)
       }
     }
 
@@ -294,7 +309,7 @@ export class PlanItem implements PlanElement {
 
   static updatePlanItem = async (
     planItem: PlanItem,
-    planSubItems: PlanSubItem[]
+    planSubItems?: PlanSubItem[]
   ): Promise<void> => {
     try {
       const updatePlanElementTable = `

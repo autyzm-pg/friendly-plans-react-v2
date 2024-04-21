@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import { ModelSubscriber, Plan, PlanElement, PlanItem, Student } from '../../models';
+import { ModelSubscriber, Plan, PlanElement, PlanItem, PlanSubItem, Student } from '../../../models';
 import { PlanElementListItem } from './PlanElementListItem';
+import { NavigationProp } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../../../contexts/CurrentStudentContext';
 
 interface Props {
   itemParent: Plan | PlanItem;
-  student: Student;
   onGoBack: any;
+  navigation: NavigationProp<any>;
+  isSubItemsList?: boolean;
 }
 
 interface State {
@@ -15,69 +18,78 @@ interface State {
   student: Student;
 }
 
-export class PlanElementList extends React.PureComponent<Props, State> {
-  studentSubscriber: ModelSubscriber<Student> = new ModelSubscriber();
-  planElementsSubscriber: ModelSubscriber<PlanElement> = new ModelSubscriber();
-  state: Readonly<State> = {
-    items: [],
-    student: this.props.student,
-  };
+export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBack, isSubItemsList}) => {
+  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
+  const [items, setItems] = useState<PlanItem[] | PlanSubItem[]>([]);
 
-  componentDidMount() {
-    this.studentSubscriber.subscribeElementUpdates(this.props.student, student => this.setState({ student }));
-    this.planElementsSubscriber.subscribeCollectionUpdates(this.props.itemParent, elements =>
-      this.setState({ items: elements }),
-    );
-  }
-
-  componentWillUnmount() {
-    this.studentSubscriber.unsubscribeElementUpdates();
-    this.planElementsSubscriber.unsubscribeCollectionUpdates();
-  }
-
-  componentDidUpdate() {
-    if (this.isEveryPlanItemCompleted()) {
-      this.props.onGoBack();
-      this.updateAllItemsAsUncompleted();
+  useEffect(() => {
+    if (isSubItemsList) {
+      PlanSubItem.getPlanSubItems(itemParent as PlanItem).then(planItems => {
+        setItems(planItems);
+      })
+    } else {
+      PlanItem.getPlanItems(itemParent as Plan).then(planItems => {
+        setItems(planItems);
+      })
     }
-  }
+  }, [])
 
-  updateAllItemsAsUncompleted = () => {
-    this.state.items.map((item: PlanElement) => {
-      item.update({ completed: false });
+  useEffect(() => {
+    if (isEveryPlanItemCompleted()) {
+      onGoBack();
+      updateAllItemsAsUncompleted();
+    }
+  }, [items])
+
+  const updateAllItemsAsUncompleted = () => {
+    items.map((item: PlanItem | PlanSubItem) => {
+      item.completed = false
+      isSubItemsList 
+        ? PlanSubItem.updatePlanSubItem(item as PlanSubItem)
+        : PlanItem.updatePlanItem(item as PlanItem);
     });
   };
 
-  isEveryPlanItemCompleted() {
-    return this.state.items.length && this.completedPlanItemCounter() >= this.state.items.length;
+  const isEveryPlanItemCompleted = () => {
+    return items.length && completedPlanItemCounter() >= items.length;
   }
 
-  completedPlanItemCounter() {
-    return this.state.items.reduce(
+  const completedPlanItemCounter = () => {
+    const index = items.reduce(
       (planItemsCompleted, planItem) => (planItem.completed ? ++planItemsCompleted : planItemsCompleted),
       0,
     );
+    console.log(index)
+    return index;
   }
 
-  renderItem = ({ item, index }: { item: PlanElement; index: number }) => {
+  const onItemCompleted = (completedItem: PlanItem | PlanSubItem) => {
+    const itemToComplete = items.find(item => item.id === completedItem.id)!;
+    itemToComplete.completed = true;
+    setItems([]);
+    setItems(items);
+  }
+
+  const renderItem = ({ item, index }: { item: PlanElement; index: number }) => {
     // if (item.completed) {
     //   return null;
     // }
 
     return (
       <PlanElementListItem
-        student={this.state.student}
-        itemParent={this.props.itemParent}
+        itemParent={itemParent}
         item={item}
         index={index}
-        currentTaskIndex={this.completedPlanItemCounter()}
+        currentTaskIndex={completedPlanItemCounter()}
+        student={currentStudent!}
+        navigation={navigation}
+        onItemCompleted={onItemCompleted}
+        isSubItem={isSubItemsList}
       />
     );
   };
 
-  extractKey = (planElement: PlanElement) => planElement.id;
+  const extractKey = (planElement: PlanElement) => planElement.id;
 
-  render() {
-    return <FlatList data={this.state.items} renderItem={this.renderItem} keyExtractor={this.extractKey} />;
-  }
+  return <FlatList data={items} renderItem={renderItem} keyExtractor={extractKey} />;
 }

@@ -8,24 +8,7 @@ import { ParameterlessConstructor, SubscribableModel } from './SubscribableModel
 import { PlanItemFormData } from '../screens/planItemActivity/PlanItemForm';
 import { executeQuery } from '../services/DatabaseService';
 
-export class PlanSubItem implements SubscribableModel, PlanElement {
-  static create = (planItem: PlanItem): Promise<RNFirebase.firestore.DocumentReference> => {
-    if (planItem.type !== PlanItemType.ComplexTask) {
-      throw new OperationalError('Sub item can be created only for ComplexTask');
-    }
-    return getPlanSubItemsRef(planItem.studentId, planItem.planId, planItem.id).add({
-      name: i18n.t('updatePlan:planItemNamePlaceholder'),
-      itemOrder: 0,
-      time: 0,
-      planItemId: planItem.id,
-      planId: planItem.planId,
-      studentId: planItem.studentId,
-      completed: false,
-      lector: false,
-      image: '',
-      voicePath: '',
-    });
-  };
+export class PlanSubItem implements PlanElement {
 
   name!: string;
   id!: string;
@@ -43,8 +26,21 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
   planElementId!: string;
   pressed?: boolean;
 
-  complete = () => {
-    this.update({ completed: true });
+  complete = async (): Promise<void> => {
+    console.log('completing subitem!!!')
+    try {
+      this.completed = true;
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET completed = (?)
+        WHERE id = (?);
+      `;
+
+      await executeQuery(updatePlanElementTable, [1, this.planElementId]);
+
+    } catch (error) {
+        console.error("Error updating plan element:", error);
+    }
   };
 
   setOrder = (value: number) => this.itemOrder = value;
@@ -65,15 +61,6 @@ export class PlanSubItem implements SubscribableModel, PlanElement {
 
     await getPlanSubItemRef(this.studentId, this.planId, this.planItemId, this.id).delete();
   }
-
-  getChildCollectionRef: () => RNFirebase.firestore.CollectionReference = () => {
-    throw new OperationalError('PlanSubItem does not have child collection');
-  };
-  getChildType: () => ParameterlessConstructor<SubscribableModel> = () => {
-    throw new OperationalError('PlanSubItem does not have child type');
-  };
-  getRef: () => RNFirebase.firestore.DocumentReference = () =>
-    getPlanSubItemRef(this.studentId, this.planId, this.planItemId, this.id);
 
   static createPlanSubItem = async (
     planItem: PlanItem,
