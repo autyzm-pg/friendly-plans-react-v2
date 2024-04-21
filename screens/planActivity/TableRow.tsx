@@ -2,7 +2,7 @@ import {CheckboxInput, Icon, IconButton} from '../../components';
 import {PlanItem, PlanItemType} from '../../models';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {palette, typography} from '../../styles';
+import {palette, typography, dimensions} from '../../styles';
 
 import { getIconName } from '../../mocks/defaults';
 import { NavigationProp } from '@react-navigation/native';
@@ -58,7 +58,7 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, drag }
   const itemTimeText = hours + ':' + minutes + ':' + seconds;
 
   return (
-    <TouchableOpacity style={[styles.row, border && styles.rowBorder]} onLongPress={drag}>
+    <TouchableOpacity style={[styles.row, border && styles.rowBorder]} onLongPress={drag} onPress={navigateToPlanItemUpdate}>
       <View style={styles.checkbox}>
         <CheckboxInput checked={planItem.completed} onPress={handleCheckboxChange} />
       </View>
@@ -67,19 +67,18 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, drag }
       </View>
       <Text style={styles.textName}>{planItem.name}</Text>
       {(planItem.type === PlanItemType.ComplexTask)&&<Text onPress={refresh} style={styles.text}>{` (${subtaskCount})`}</Text>}
-      {!!planItem.time && (
-        <View style={styles.timeContainer}>
-          <Icon name="timer" size={24} />
-          <View style={styles.timeLabelContainer}>
-            <Text style={styles.textName}>{itemTimeText}</Text>
+      <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+        {!!planItem.time && (
+          <View style={styles.timeContainer}>
+            <Icon name="timer" size={24} />
+            <View style={styles.timeLabelContainer}>
+              <Text style={styles.textName}>{itemTimeText}</Text>
+            </View>
           </View>
+        )}
+        <View style={styles.deleteIcon}>
+          <IconButton name="delete" size={24} color={palette.primary} onPress={onDelete} />
         </View>
-      )}
-      <View style={styles.deleteIcon}>
-        <IconButton name="delete" size={24} color={palette.primary} onPress={onDelete} />
-      </View>
-      <View style={styles.pencilIcon}>
-        <IconButton name="pencil" size={24} onPress={navigateToPlanItemUpdate} />
       </View>
     </TouchableOpacity>
   );
@@ -110,12 +109,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   deleteIcon: {
-    position: 'absolute',
-    right: 38,
+    marginLeft: 10,
+    marginRight: 10
   },
   pencilIcon: {
-    position: 'absolute',
-    right: 80,
+    marginLeft: 10,
+    marginRight: 10
   },
   planIcon: {
     marginRight: 10,
@@ -124,8 +123,8 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   timeContainer: {
-    position: 'absolute',
-    right: 138,
+    marginLeft: 10,
+    marginRight: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
