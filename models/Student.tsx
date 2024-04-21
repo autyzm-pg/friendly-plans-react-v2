@@ -51,6 +51,12 @@ export class Student implements StudentData {
     this.isSwipeBlocked = false;
   }
 
+  static getPlansCount = async (studentId: string): Promise<number> => {
+    const selectAllFromPlanTable = `SELECT COUNT(*) FROM Plan WHERE studentId = (?);`;
+    const resultSet = await executeQuery(selectAllFromPlanTable, [studentId]);
+    return resultSet.rows.length;
+  }
+
   static createStudent = async (student: StudentData): Promise<Student> => {
 
     const insertIntoStudentDataTable = `

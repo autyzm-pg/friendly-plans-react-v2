@@ -7,7 +7,6 @@ import { Route } from '../../navigation';
 import { dimensions, palette } from '../../styles';
 import { PlansListForCopy } from './PlansListForCopy';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { defaults } from '../../mocks/defaults';
 import { Plan } from '../../models';
 
 interface Props {
@@ -16,20 +15,23 @@ interface Props {
 }
 
 export const PlansListForCopyScreen: FC<Props> = ({ navigation, route }) => {
-  const [plans, setPlans] = useState<Plan[]>(defaults.plansList);
+  const [plans, setPlans] = useState<Plan[]>([]);
 
   const [collections, setCollections] = useState<number[]>([]);
 
   useEffect(() => {
-    const student = route.params?.student;
-    // ...
-    setPlans(defaults.plansList);
+    getPlans();
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
     return () => {
       handleBackButtonPressAndroid();
       BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
     }
   }, []);
+
+  const getPlans = async () => {
+    const plans = await Plan.getPlans(route.params?.student.id);
+    setPlans(plans)
+  }
 
   const canNavigateBack = (): boolean => {
     return route.params?.canNavigateBack !== false;

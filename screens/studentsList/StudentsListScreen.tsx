@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, StyleSheet, Text } from 'react-native';
-//import { NavigationInjectedProps } from '@react-navigation/native';
-
 import { IconButton, NarrowScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
-import { AuthUser, ModelSubscriber, Student } from '../../models';
+import { Student } from '../../models';
 import { Route } from '../../navigation';
 import { dimensions, palette } from '../../styles';
 import { StudentsList } from './StudentsList';
