@@ -79,7 +79,7 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style}
     <SafeAreaView style={style}>
       <Card style={[styles.container]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-          <VoicePicker planItem={planItem} formikProps={formikProps}
+          <VoicePicker navigation={navigation} planItem={planItem} formikProps={formikProps}
                   isComplexTask={false} selected={{key: -2, voicePath: '', lector: false}}/>
 
           <ModalTrigger

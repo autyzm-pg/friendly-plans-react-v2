@@ -78,7 +78,7 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
       <SafeAreaView style={style}>
         <Card style={[styles.container]}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-            <VoicePicker planItem={planItem} formikProps={formikProps}
+            <VoicePicker planItem={planItem} formikProps={formikProps} navigation={navigation}
                           isComplexTask={false} selected={{key: -2, voicePath: '', lector: false}}/>
 
             <ModalTrigger

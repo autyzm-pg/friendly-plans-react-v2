@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import RNFS from 'react-native-fs';
-import { FullScreenTemplate } from '../../components';
+import { FullScreenTemplate } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { Route } from '../../navigation/routes';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -23,12 +22,12 @@ export const ImageLibraryScreen: React.FC<Props> = ({navigation, route}) => {
     const fetchImages = async () => {
       try {
         const result = await RNFS.readDir(imagesDir);
-        console.log('Loaded images...');
+        // console.log('Loaded images...');
         const imgPaths = result.map(res => 'file://' + res.path);
         //const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();
         setImages(imgPaths);
       } catch (err: any) {
-        console.log('Cannot load images...');
+        // console.log('Cannot load images...');
       }
     };
     fetchImages();

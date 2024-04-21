@@ -26,6 +26,7 @@ export enum Route {
   RunSubPlanSlide = 'RunSubPlanSlide',
   PlanItemTask = 'PlanItemTask',
   ImageLibrary = 'ImageLibrary',
+  RecordingLibrary = 'RecordingLibrary',
   // UnauthenticatedStackNavigator
   SignIn = 'SignIn',
   SignUp = 'SignUp',
@@ -33,4 +34,6 @@ export enum Route {
   // MainDrawerNavigator
   Home = 'Home',
   Logout = 'Logout',
+  // ModeSwitching
+  ModeSwitch = 'ModeSwitch',
 }
