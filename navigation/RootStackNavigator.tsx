@@ -10,6 +10,7 @@ import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import { 
   PlanSearchForCopyScreen, 
   PlansListForCopyScreen, 
+  RecordingLibraryScreen, 
   StudentCreateScreen, 
   StudentSettingsScreen, 
   StudentsListForCopyPlanScreen, 
@@ -25,19 +26,23 @@ import { RunPlanSlideScreen } from '../screens/runPlan/SlideMode/RunPlanSlideScr
 import { RootNavigatorContext } from '../contexts/RootNavigatorContext';
 import { CurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Student } from '../models';
-import { ImageLibraryScreen } from '../screens/planItemActivity/ImageLibraryScreen';
 import { RunSubPlanSlideScreen } from '../screens/runPlan/SlideMode/RunSubPlanSlideScreen';
 import { RunPlanListScreen } from '../screens/runPlan/ListMode/RunPlanListScreen';
 import { RunSubPlanListScreen } from '../screens/runPlan/ListMode/RunSubPlanListScreen';
+import { ImageLibraryScreen } from '../screens/planItemActivity/imagePicker/ImageLibraryScreen';
+import { ModeSwitchScreen } from '../screens/modeSwitch/ModeSwitchScreen';
 
 const Stack = createStackNavigator();
 
 export function RootStackNavigation() {
   const [editionMode, setEditionMode] = useState<boolean>(true);
   const [student, setStudent] = useState<Student | undefined>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   return (
-    <RootNavigatorContext.Provider value={{editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode)}}>
+    <RootNavigatorContext.Provider value={{
+      editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode),
+      loading: loading, setLoading: () => setLoading(false)}}>
       <CurrentStudentContext.Provider value={{currentStudent: student, setCurrentStudent: setStudent}}>
       <Stack.Navigator
         initialRouteName={Route.Home}
@@ -59,11 +64,11 @@ export function RootStackNavigation() {
               navigation={navigation}
             />
           )})}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name={Route.Home}
           component={WelcomeScreen}
           options={{}}
-        />
+        /> */}
         <Stack.Screen
           name={Route.Dashboard}
           component={DashboardScreen}
@@ -133,6 +138,16 @@ export function RootStackNavigation() {
           name={Route.RunSubPlanSlide}
           component={RunSubPlanSlideScreen}
           options={{}}
+        />
+        <Stack.Screen
+          name={Route.RecordingLibrary}
+          component={RecordingLibraryScreen}
+          options={{}}
+        />
+        <Stack.Screen
+          name={Route.ModeSwitch}
+          component={ModeSwitchScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name={Route.RunPlanList}

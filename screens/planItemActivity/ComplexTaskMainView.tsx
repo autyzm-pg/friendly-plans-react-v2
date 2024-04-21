@@ -143,12 +143,12 @@ export const ComplexTaskMainView: FC<Props> = ({
 
             <Card style={[styles.container]}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                    <VoicePicker planItem={planItem} formikProps={formikProps}
+                    <VoicePicker planItem={planItem} formikProps={formikProps} navigation={navigation}
                                  updateComplexTaskVoice={voice => voiceChange(voice)}
                                  isComplexTask selected={{
                         key: itemInfo.key,
                         voicePath: itemInfo.voicePath,
-                        lector: itemInfo.lector
+                        lector: itemInfo.lector,
                     }}/>
 
                     {(itemInfo.key !== -1) ? <ModalTrigger

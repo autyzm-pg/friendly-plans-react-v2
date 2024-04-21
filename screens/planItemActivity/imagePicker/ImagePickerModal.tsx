@@ -43,14 +43,14 @@ export const ImagePickerModal: FC<Props> = ({
             if (exists) { return; }
             RNFS.mkdir(imagesDir)
                 .then(() => {
-                    console.log('Created: ' + imagesDir)
+                    // console.log('Created: ' + imagesDir)
                 })
                 .catch((error) => {
-                    console.error('Error creating: ' + imagesDir, error);
+                    // console.error('Error creating: ' + imagesDir, error);
                 });
         })
         .catch((error) => {
-            console.error('Cannot check if directory exists: ' + imagesDir, error);
+            // console.error('Cannot check if directory exists: ' + imagesDir, error);
         });
     }, [])
 
@@ -62,7 +62,7 @@ export const ImagePickerModal: FC<Props> = ({
             const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             await RNFS.moveFile(image.path, fileTargetPath)
             .then(() => {
-                console.log('Image moved to: ' + fileTargetPath);
+                // console.log('Image moved to: ' + fileTargetPath);
                 imageUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -80,7 +80,7 @@ export const ImagePickerModal: FC<Props> = ({
             const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             await RNFS.copyFile(image.path, fileTargetPath)
             .then(() => {
-                console.log('Image copied to: ' + fileTargetPath);
+                // console.log('Image copied to: ' + fileTargetPath);
                 imageUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -101,7 +101,7 @@ export const ImagePickerModal: FC<Props> = ({
             const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             await RNFS.moveFile(image.path, fileTargetPath)
             .then(() => {
-                console.log('Image moved to: ' + fileTargetPath);
+                // console.log('Image moved to: ' + fileTargetPath);
                 imageUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -144,22 +144,22 @@ export const ImagePickerModal: FC<Props> = ({
         <View style={styles.imageActionContainer}>
             {currentImageUri ?
             <>
-                <ImageAction title={i18n.t('planItemActivity:imageActionDeletePhoto')}>
+                <ImageAction title={i18n.t('planItemActivity:imageActionDeletePhoto')} onPress={deleteImage}>
                     <IconButton name="delete" type="material" size={24} onPress={deleteImage}/>
                 </ImageAction>
-                <ImageAction title={i18n.t('planItemActivity:imageActionCropPhoto')}>
+                <ImageAction title={i18n.t('planItemActivity:imageActionEditPhoto')} onPress={openCropper}>
                     <IconButton name="crop" type="material" size={24} onPress={openCropper}/>
                 </ImageAction>
             </>
             :
             <></>}
-            <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')}>
+            <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
                 <IconButton name="photo-library" type="material" size={24} onPress={openLibrary}/>
             </ImageAction>
-            <ImageAction title={i18n.t('planItemActivity:imageActionTakePhoto')}>
+            <ImageAction title={i18n.t('planItemActivity:imageActionTakePhoto')} onPress={openCamera}>
                 <IconButton name="photo-camera" type="material" size={24} onPress={openCamera}/>
             </ImageAction>
-            <ImageAction title={i18n.t('planItemActivity:imageActionBrowse')}>
+            <ImageAction title={i18n.t('planItemActivity:imageActionBrowse')} onPress={openGallery}>
                 <IconButton name="file-download" type="material" size={24} onPress={openGallery}/>
             </ImageAction>
         </View>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
 
@@ -6,34 +6,26 @@ import { Route } from '../navigation';
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
-import { DrawerActions, NavigationProp, useNavigation } from '@react-navigation/native';
-import { Student } from '../models';
-import { ModeSetting } from '../components'
+import { ModeSwitchHeader } from '../components'
 import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
 import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
+import { i18n } from '../locale';
 
 interface Props extends StackHeaderProps {}
 
 const DASHBOARD = 'Dashboard';
 
 export const Header: React.FC<Props> = ({...props}) => {
-  const { editionMode } = useRootNavigatorContext();
-  const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
+  const { editionMode, loading } = useRootNavigatorContext();
+  const { currentStudent, setCurrentStudent } = useCurrentStudentContext();
   
   const navigation = props.navigation
+
   const getTitle = () => {
-    const { route, options } = props;
-
-    const headerTitle = (title: string) => {
-      const studentPrefix = currentStudent ? `${currentStudent.name} / ` : '';
-      return `${studentPrefix}${title}`;
-    };
-
-    if (options.headerTitle && options.headerTitle !== 'function') {
-      return options.headerTitle;
+    if (currentStudent) {
+      return i18n.t('header:activeStudent') + ': ' + currentStudent.name;
     }
-
-    return headerTitle(options.title || route.name);
+    return i18n.t('header:noStudentCreated')
   }
 
   const goBack = () => navigation.goBack();
@@ -76,7 +68,7 @@ export const Header: React.FC<Props> = ({...props}) => {
           containerStyle={styles.iconContainer}
           onPress={navigateToStudentsList}
         />}
-          <ModeSetting/>
+          <ModeSwitchHeader navigation={navigation}/>
       </>
     ) : null;
   }
@@ -93,8 +85,8 @@ export const Header: React.FC<Props> = ({...props}) => {
           containerStyle={styles.iconContainer}
         />
       }
-      <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
-      {renderButtons()}
+      {!loading && <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>}
+      {!loading && renderButtons()}
     </View>
   );
 }

@@ -3,11 +3,15 @@ import { createContext, useContext } from "react";
 interface Props {
   editionMode: boolean;
   setEditionMode: () => void;
+  loading: boolean,
+  setLoading: () => void;
 }
 
 export const RootNavigatorContext = createContext<Props | undefined>({
   editionMode: false,
-  setEditionMode: () => {}
+  setEditionMode: () => {},
+  loading: true,
+  setLoading: () => {}
 });
 
 export function useRootNavigatorContext() {
