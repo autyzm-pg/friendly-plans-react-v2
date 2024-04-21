@@ -60,14 +60,18 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
     setState(prevState => ({ ...prevState, isSwipeBlocked }));
   }
 
-  useEffect(() => {
-    if (state && currentStudent && !Student.equals(state, currentStudent))
-      handleStudentUpdate();
-  }, [state]);
+  // useEffect(() => {
+  //   if (state && currentStudent && !Student.equals(state, currentStudent))
+  //     handleStudentUpdate();
+  // }, [state]);
 
   const handleStudentCreate = () => onStudentCreate && onStudentCreate(state);
 
-  const handleStudentUpdate = () => onStudentUpdate && onStudentUpdate(state);
+  const handleStudentUpdate = () => {
+    if(onStudentUpdate && (state && currentStudent && !Student.equals(state, currentStudent))) {
+      onStudentUpdate(state);
+    }
+  }
 
   return (
     <>
@@ -104,8 +108,22 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
             onPress={handleStudentCreate}
           />
         </View>
-
       )}
+      {
+        !!onStudentUpdate && (
+          <View style={styles.iconButtonContainer}>
+            <StudentSettingsButton
+              name="check"
+              type="antdesign"
+              label={i18n.t('studentSettings:editStudent')}
+              containerStyle={{backgroundColor: palette.primaryVariant}}
+              size={24}
+              disabled={false}
+              onPress={handleStudentUpdate}
+            />
+          </View>
+        )
+      }
       {!!onStudentRemove && (
         <View style={styles.iconButtonContainer}>
           <StudentSettingsButton
@@ -140,5 +158,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 10,
   },
 });

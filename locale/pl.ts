@@ -192,6 +192,7 @@ const translations = {
     studentNamePlaceholder: 'Wpisz imię ucznia',
     removeStudent: 'USUŃ UCZNIA',
     createStudent: 'DODAJ UCZNIA',
+    editStudent: 'EDYTUJ UCZNIA',
     deleteStudent: 'Usuń ucznia',
     deleteMessage: 'Usunięcie ucznia jest nieodwracalne. Oznacza też usunięcie wszystkich przypisanych do niego planów i zadań.',
     delete: 'USUŃ',

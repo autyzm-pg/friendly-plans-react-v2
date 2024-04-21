@@ -62,6 +62,7 @@ export const StudentSettingsScreen: FC<Props> = ({navigation}) => {
         ...currentStudent,
         ...updated
       })
+      navigation.goBack();
     }
   }
 

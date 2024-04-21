@@ -192,6 +192,7 @@ const translations = {
     studentNamePlaceholder: 'Enter student name',
     removeStudent: 'REMOVE THE STUDENT',
     createStudent: 'CREATE A STUDENT',
+    editStudent: 'EDIT STUDENT',
     deleteStudent: 'Delete student',
     deleteMessage: 'Deleting a student is irreversible. It also means deleting all schedules and tasks assigned to her/him.',
     delete: 'DELETE',
