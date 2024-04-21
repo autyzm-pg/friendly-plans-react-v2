@@ -138,23 +138,23 @@ export const VoicePickerModal: FC<Props> = ({
             {(currentVoiceUri || lector)
             ?
             <>
-                <ImageAction title={i18n.t('planItemActivity:voiceActionDeleteVoice')}>
+                <ImageAction title={i18n.t('planItemActivity:voiceActionDeleteVoice')} onPress={callDeleteVoice}>
                     <IconButton name="trash" type="entypo" size={24} onPress={callDeleteVoice}/>
                 </ImageAction>
-                <ImageAction title={i18n.t('planItemActivity:voiceActionPlayAudio')}>
+                <ImageAction title={i18n.t('planItemActivity:voiceActionPlayAudio')} onPress={playAudio}>
                     <IconButton name="speaker" type="material" size={24} onPress={playAudio}/>
                 </ImageAction>
             </>
             :
             <></>
             }
-            <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')}>
+            <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
                 <IconButton name="library-music" type="material" size={24} onPress={openLibrary}/>
             </ImageAction>
-            {!lector && <ImageAction title={i18n.t('planItemActivity:voiceActionSetLector')}>
+            {!lector && <ImageAction title={i18n.t('planItemActivity:voiceActionSetLector')} onPress={callSetLector}>
                 <IconButton name="megaphone" type="entypo" size={24} onPress={callSetLector}/>
             </ImageAction>}
-            <ImageAction title={i18n.t('planItemActivity:voiceActionAddRecord')}>
+            <ImageAction title={i18n.t('planItemActivity:voiceActionAddRecord')} onPress={openGallery}>
                 <IconButton name="file-download" type="material" size={24} onPress={openGallery}/>
             </ImageAction>
         </View>
