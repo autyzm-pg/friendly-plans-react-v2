@@ -43,14 +43,14 @@ export const ImagePickerModal: FC<Props> = ({
             if (exists) { return; }
             RNFS.mkdir(imagesDir)
                 .then(() => {
-                    console.log('Created: ' + imagesDir)
+                    // console.log('Created: ' + imagesDir)
                 })
                 .catch((error) => {
-                    console.error('Error creating: ' + imagesDir, error);
+                    // console.error('Error creating: ' + imagesDir, error);
                 });
         })
         .catch((error) => {
-            console.error('Cannot check if directory exists: ' + imagesDir, error);
+            // console.error('Cannot check if directory exists: ' + imagesDir, error);
         });
     }, [])
 
@@ -62,7 +62,7 @@ export const ImagePickerModal: FC<Props> = ({
             const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             await RNFS.moveFile(image.path, fileTargetPath)
             .then(() => {
-                console.log('Image moved to: ' + fileTargetPath);
+                // console.log('Image moved to: ' + fileTargetPath);
                 imageUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -80,7 +80,7 @@ export const ImagePickerModal: FC<Props> = ({
             const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             await RNFS.copyFile(image.path, fileTargetPath)
             .then(() => {
-                console.log('Image copied to: ' + fileTargetPath);
+                // console.log('Image copied to: ' + fileTargetPath);
                 imageUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -101,7 +101,7 @@ export const ImagePickerModal: FC<Props> = ({
             const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             await RNFS.moveFile(image.path, fileTargetPath)
             .then(() => {
-                console.log('Image moved to: ' + fileTargetPath);
+                // console.log('Image moved to: ' + fileTargetPath);
                 imageUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {

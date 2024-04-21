@@ -19,12 +19,12 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     const fetchRecordings = async () => {
         try {
             const result = await RNFS.readDir(recordingsDir);
-            console.log('Loaded recordings...');
+            // console.log('Loaded recordings...');
             const recPaths = result.map(res => 'file://' + res.path);
             //const repeatedRec = Array.from(Array(20).keys()).map(() => recPaths).flat();
             setRecordings(recPaths);
         } catch (err: any) {
-            console.log('Cannot load recordings...');
+            // console.log('Cannot load recordings...');
         }
         };
         fetchRecordings();
@@ -37,12 +37,12 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         const soundTrack = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
             (error) => {
                 if(error) {
-                    console.log('Cannot load soundtrack:', error);
+                    // console.log('Cannot load soundtrack:', error);
                 }
                 else {
                     soundTrack.play((success) => {
                         if(!success) {
-                            console.log('Cannot play soundtrack.');
+                            // console.log('Cannot play soundtrack.');
                         }
                         soundTrack.release();
                     });

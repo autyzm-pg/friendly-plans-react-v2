@@ -49,10 +49,10 @@ export const VoicePickerModal: FC<Props> = ({
             if (exists) { return; }
             RNFS.mkdir(recordingsDir)
                 .then(() => {
-                    console.log('Created: ' + recordingsDir)
+                    // console.log('Created: ' + recordingsDir)
                 })
                 .catch((error) => {
-                    console.error('Error creating: ' + recordingsDir, error);
+                    // console.error('Error creating: ' + recordingsDir, error);
                 });
         })
         .catch((error) => {
@@ -71,7 +71,7 @@ export const VoicePickerModal: FC<Props> = ({
         const fileTargetPath = recordingsDir + response[0].name;
             await RNFS.copyFile(response[0].uri, fileTargetPath)
             .then(() => {
-                console.log('Recording copied to: ' + fileTargetPath);
+                // console.log('Recording copied to: ' + fileTargetPath);
                 voiceUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -91,7 +91,7 @@ export const VoicePickerModal: FC<Props> = ({
 
     const callDeleteVoice = async () => {
         closeModal();
-        console.log(currentVoiceUri);
+        // console.log(currentVoiceUri);
         if (currentVoiceUri && !isComplexTask) {
             await ImagePicker.cleanSingle(currentVoiceUri).catch(() => {});
         } else if (selected!.voicePath && isComplexTask) {
@@ -119,12 +119,12 @@ export const VoicePickerModal: FC<Props> = ({
             const soundTrack = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
                 (error) => {
                     if(error) {
-                        console.log('Cannot load soundtrack:', error);
+                        // console.log('Cannot load soundtrack:', error);
                     }
                     else {
                         soundTrack.play((success) => {
                             if(!success) {
-                                console.log('Cannot play soundtrack.');
+                                // console.log('Cannot play soundtrack.');
                             }
                             soundTrack.release();
                         });
