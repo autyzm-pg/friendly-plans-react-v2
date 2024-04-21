@@ -25,12 +25,6 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   );
 
   const [planItemList, setPlanItemList] = useState<PlanItem[]>([]);
-  
-  
-  // const {plan, planItemList} = state;
-
-
-  // const {plan, planItemList} = state;
 
   const {currentStudent} = useCurrentStudentContext();
 
@@ -51,11 +45,6 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     setScreenTitle(i18n.t('planList:viewTitle'))
-    // if (!plan) {
-    //   const newPlan = new Plan();
-    //   newPlan.name = '';
-    //   setPlan(newPlan)
-    // }
   }, []);
 
   
@@ -72,11 +61,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
       throw errors;
     }
 
-    // const { id } = student;
-
-    // const { id: planId } = state.plan;
-
-    const planExists: boolean = false; // await Plan.isPlanExist(id, planInput, planId);
+    const planExists: boolean = false;
 
     if (planExists) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
@@ -147,12 +132,18 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     return every(planItemList, 'completed');
   };
 
-  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
-    const planItemListRightOrder = data.map((item, index) => ({ ...item, itemOrder: index + 1 }));
+  const updatePlanItemsOrder = async (items: PlanItem[]) => {
+    const planItemListRightOrder = items.map((item, index) => ({ ...item, itemOrder: index + 1 }));
     setPlanItemList(planItemListRightOrder as PlanItem[]);
     for (const planItem of planItemListRightOrder) {
-      PlanItem.updatePlanItem(planItem, [])
+      await PlanItem.updatePlanItem(planItem)
     }
+
+    setPlanItemList(planItemListRightOrder);
+  }
+
+  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
+    updatePlanItemsOrder(data)
   };
 
   const shuffle = (array: PlanItem[]) => {
@@ -174,8 +165,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const shuffleTasks = () => {
     let array = planItemList;
     array = shuffle(array);
-
-    setPlanItemList(array);
+    updatePlanItemsOrder(array)
   };
 
   const saveAndClose = () => {
