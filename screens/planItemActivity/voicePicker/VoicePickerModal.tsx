@@ -2,9 +2,9 @@ import {IconButton} from '../../../components';
 import {i18n} from '../../../locale';
 import {noop} from 'lodash';
 import {PlanItem} from '../../../models';
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState, useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
-import DocumentPicker, {pickDirectory, types} from 'react-native-document-picker';
+import DocumentPicker, {types} from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
@@ -13,6 +13,7 @@ import Sound from 'react-native-sound';
 import RNFS from 'react-native-fs';
 import { NavigationProp } from '@react-navigation/native';
 import {Route} from '../../../navigation';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 interface Props {
     closeModal?: () => void;
@@ -40,8 +41,11 @@ export const VoicePickerModal: FC<Props> = ({
                                                 planItem,
                                                 navigation
                                             }) => {
-
     const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
+
+    const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
+    const [isRecording, setIsRecording] = useState(false);
+    let recordingPath = useRef('');
     
     useEffect(() => {
         RNFS.exists(recordingsDir)
@@ -71,7 +75,7 @@ export const VoicePickerModal: FC<Props> = ({
         const fileTargetPath = recordingsDir + response[0].name;
             await RNFS.copyFile(response[0].uri, fileTargetPath)
             .then(() => {
-                // console.log('Recording copied to: ' + fileTargetPath);
+                //console.log('Recording copied to: ' + fileTargetPath);
                 voiceUriUpdate('file://' + fileTargetPath);
             })
             .catch((error) => {
@@ -133,6 +137,35 @@ export const VoicePickerModal: FC<Props> = ({
         }
     }
 
+    const startRecording = async () => {
+        try {
+          // const path = await audioRecorderPlayer.current.startRecorder();
+          // recordingPath.current = path;
+          // console.log('Recording started at: ', path);
+          setIsRecording(true);
+        } catch (error) {
+          // console.error('Failed to start recording', error);
+        }
+      };
+
+      /* TODO: 
+        - Copying from cache to dedicated directory. 
+        - Changing sound to created recording.
+        - Name changing in library.
+      */
+    
+      const stopRecording = async () => {
+        try {
+          // await audioRecorderPlayer.current.stopRecorder();
+          // console.log('Recording stopped, audio file saved at: ', result);
+          setIsRecording(false);
+          // console.log(recordingPath.current);
+        } catch (error) {
+          // console.error('Failed to stop recording', error);
+        }
+      };
+    
+
     return (
         <View style={styles.imageActionContainer}>
             {(currentVoiceUri || lector)
@@ -148,6 +181,16 @@ export const VoicePickerModal: FC<Props> = ({
             :
             <></>
             }
+            {/* {!isRecording &&
+                <ImageAction title={i18n.t('planItemActivity:startRecording')} onPress={startRecording}>
+                    <IconButton name="fiber-manual-record" type="material" size={24} onPress={startRecording}/>
+                </ImageAction>
+            }
+            {isRecording &&
+                <ImageAction title={i18n.t('planItemActivity:stopRecording')} onPress={stopRecording}>
+                    <IconButton name="stop" type="material" size={24} onPress={stopRecording}/>
+                </ImageAction>
+            } */}
             <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
                 <IconButton name="library-music" type="material" size={24} onPress={openLibrary}/>
             </ImageAction>

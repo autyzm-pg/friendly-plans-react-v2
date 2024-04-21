@@ -145,6 +145,8 @@ const translations = {
     voiceActionSetLector: 'USTAW LEKTORA',
     voiceActionDeleteVoice: 'USUŃ CZYTANIE TREŚCI',
     voiceActionPlayAudio: 'PUŚĆ NAGRANIE',
+    startRecording: 'ROZPOCZNIJ NAGRYWANIE',
+    stopRecording: 'ZATRZYMAJ NAGRYWANIE',
     timerHour: 'godziny',
     timerMinutes: 'minuty',
     timerSeconds: 'sekundy',
