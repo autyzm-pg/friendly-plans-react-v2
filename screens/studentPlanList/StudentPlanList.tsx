@@ -19,7 +19,7 @@ interface Props {
 
 export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
-  const {editionMode} = useRootNavigatorContext();
+  const {editionMode, loading, setLoading} = useRootNavigatorContext();
   const {currentStudent} = useCurrentStudentContext();
 
   const plansSubscriber: ModelSubscriber<Plan> = new ModelSubscriber();
@@ -30,6 +30,7 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
     if (currentStudent) {
       const plans = await Plan.getPlans(currentStudent.id);
       setPlans(plans)
+      setLoading(false);
     }
   }
   
@@ -69,12 +70,13 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  if (!plans.length) {
+  if (!loading && !plans.length) {
     return <EmptyStudentPlans navigation={navigation}/>;
   }
 
   return (
     <>
+    {!loading &&
       <FullScreenTemplate padded darkBackground>
         <FlatList
           data={plans}
@@ -84,8 +86,8 @@ export const StudentPlanList: React.FC<Props> = ({ navigation }) => {
           columnWrapperStyle={styles.columnWrapper}
           style={styles.contentContainer}
         />
-      </FullScreenTemplate>
-      {editionMode && <FixedCreatePlanButton onPress={navigateTo} />}
+      </FullScreenTemplate>}
+      {!loading && editionMode && <FixedCreatePlanButton onPress={navigateTo} />}
     </>
   );
 };

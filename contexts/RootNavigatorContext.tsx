@@ -4,7 +4,7 @@ interface Props {
   editionMode: boolean;
   setEditionMode: () => void;
   loading: boolean,
-  setLoading: () => void;
+  setLoading: (loaded: boolean) => void;
 }
 
 export const RootNavigatorContext = createContext<Props | undefined>({
