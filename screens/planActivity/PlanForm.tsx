@@ -2,7 +2,7 @@ import { ErrorMessage, Formik, FormikProps, FormikHelpers } from 'formik';
 import React, { FC, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
+import { PlayButton, Emoji, Icon, ModalTrigger, TextInput, IconButton } from '../../components';
 import { i18n } from '../../locale';
 import { Plan, Student } from '../../models';
 import { dimensions, palette } from '../../styles';
@@ -30,6 +30,8 @@ interface Props {
   onShuffle?: () => void;
   student: Student;
   navigation: NavigationProp<any>;
+  deleteMultiple: () => void;
+  toBeDeleted: [];
 }
 
 export const PlanForm: FC<Props> = ({
@@ -41,7 +43,9 @@ export const PlanForm: FC<Props> = ({
   playDisabled = false,
   onShuffle,
   student,
-  navigation
+  navigation,
+  deleteMultiple,
+  toBeDeleted
 }) => {
   
   const initialValues: PlanFormData = {
@@ -76,6 +80,7 @@ export const PlanForm: FC<Props> = ({
           <Text style={styles.errorMessage}>{errors.planInput}</Text>
         </View>
         <View style={styles.buttonContainer}>
+          {toBeDeleted.length > 0 && <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} />}
           <ShuffleButton disabled={shuffleDisabled} onPress={onShuffle} />
           <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={student}/>
         </View>

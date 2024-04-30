@@ -18,10 +18,13 @@ interface Props {
   planItemList: PlanItem[];
   drag: () => void;
   setRefreshFlag: any;
+  setToBeDeleted: any;
+  toBeDeleted: any;
 }
 
-export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, planItemList, drag, setRefreshFlag}) => {
+export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, planItemList, drag, setRefreshFlag, setToBeDeleted, toBeDeleted}) => {
   const [subtaskCount, setSubtaskCount] = useState(0);
+  const [checkbox, setCheckbox] = useState(false);
   const [planState, setPlanState] = useState(planItem.completed);
 
   useEffect(() => {
@@ -60,6 +63,15 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
     setPlanState(!planState);
   };
 
+  const handleCheckBox = (check: boolean) => {
+    if (check) {
+      setToBeDeleted([...toBeDeleted, planItem]);
+    } else {
+      const updatedList = toBeDeleted.filter((item: any) => item.id !== planItem.id);
+      setToBeDeleted(updatedList);
+    }
+  }
+
   const hours = Math.floor(planItem.time / 3600);
   const minutes = Math.floor((planItem.time - hours*3600) / 60);
   const seconds = planItem.time - minutes*60 - hours*3600;
@@ -69,7 +81,11 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
   return (
     <TouchableOpacity style={[styles.row, border && styles.rowBorder]} onLongPress={drag} onPress={navigateToPlanItemUpdate}>
       <View style={styles.checkbox}>
-        <CheckboxInput checked={true} onPress={() => {}} />
+        <CheckboxInput checked={checkbox} onPress={() => {
+          const check = !checkbox;
+          setCheckbox(check);
+          handleCheckBox(check);
+          }} />
       </View>
       <View style={styles.planIcon}>
         <Icon name={getIconName(planItem.type)} type="material" />
