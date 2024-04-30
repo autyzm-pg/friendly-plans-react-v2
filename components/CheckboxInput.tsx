@@ -31,6 +31,7 @@ export const CheckboxInput: FC<Props> = ({checked, onPress, title, children, err
           name={checked ? icons.checked : icons.unchecked}
           containerStyle={styles.iconContainer}
           color={palette.primary}
+          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
         />
         {title && (
           <View style={styles.contentContainer}>

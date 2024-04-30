@@ -20,6 +20,7 @@ export const IconButton: FC<Props> = ({
   label, 
   disabled, 
   iconButtonStyle, 
+  hitSlop,
   ...props 
 }) => {
   return (
@@ -29,6 +30,7 @@ export const IconButton: FC<Props> = ({
       onLongPress={onLongPress} 
       onPress={onPress}
       style={[styles.container, containerStyle, iconButtonStyle]}
+      hitSlop={hitSlop}
     >
     <Icon {...props} disabledStyle={styles.iconDisabled} />
     {!!label && <StyledText style={styles.label}>{label}</StyledText>}
