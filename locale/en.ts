@@ -109,7 +109,7 @@ const translations = {
     createPlan: 'ADD NEW SCHEDULE',
     copyPlan: 'COPY EXISTING SCHEDULE',
     copyPlanScreenTitle: 'Select schedule to copy',
-    conjunction: 'lub',
+    conjunction: 'or',
     planNamePlaceholder: 'Singing',
     deletePlan: 'DELETE SCHEDULE',
     deletePlanDescription: 'Deleting a schedule is irreversible. It also means deleting all of its elements.',
