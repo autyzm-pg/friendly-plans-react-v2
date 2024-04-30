@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {i18n} from '../../locale';
 import {dimensions, palette, typography} from '../../styles';
@@ -10,6 +10,7 @@ import { StudentSettingsButton } from '../../components/StudentSettingsButton';
 import { FlatButton } from '../../components/FlatButton';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { Route } from '../../navigation';
+import { IconButton } from '../../components';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -20,16 +21,28 @@ interface Props {
 
 export const PasswordEnter: FC<Props> = ({navigation, password, setForgotPassword}) => {
   const {editionMode, setEditionMode} = useRootNavigatorContext();
+  const [passVis, setPassVis] = useState(false);
   const [field, setField] = useState('');
 
   const enterPassword = () => {
     return (<>
-      <TextInput
-        style={styles.textInput}
-        placeholder={i18n.t('modeSetting:enterPassword')}
-        value={field}
-        onChangeText={(input: string) => { setField(input); }}
-      />
+     <View style={styles.container}>
+        <TextInput
+          style={styles.textInput}
+          placeholder={i18n.t('modeSetting:enterPassword')}
+          value={field}
+          onChangeText={(input: string) => { setField(input); }}
+          secureTextEntry={!passVis}
+        />
+        <IconButton
+          name={passVis ? 'eye' : 'eye-slash'}
+          type='font-awesome'
+          color={palette.primary}
+          size={24}
+          onPress={() => {setPassVis(!passVis)}}
+          style={{marginBottom: dimensions.spacingSmall, marginLeft: dimensions.spacingTiny}}
+        />
+      </View>
       <StudentSettingsButton
             onPress={() => {
               if(field == password) {
@@ -38,6 +51,7 @@ export const PasswordEnter: FC<Props> = ({navigation, password, setForgotPasswor
               }
               else {
                 setField(i18n.t('modeSetting:wrongPassword'));
+                setPassVis(true);
               }
             }}             
             name="check"
@@ -64,6 +78,10 @@ export const PasswordEnter: FC<Props> = ({navigation, password, setForgotPasswor
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   label: {
     ...typography.headline4,
     color: palette.textSettings,
@@ -74,6 +92,7 @@ const styles = StyleSheet.create({
   textInput: {
     marginTop: dimensions.spacingSmall,
     marginBottom: dimensions.spacingBig,
+    flex: 1,
   },
   iconButtonContainer: {
     flex: 1,
@@ -91,5 +110,8 @@ const styles = StyleSheet.create({
   resetPasswordContainer: {
     margin: dimensions.spacingTiny,
     alignSelf: 'center',
+  },
+  iconContainer: {
+    margin: dimensions.spacingSmall,
   },
 });
