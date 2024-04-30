@@ -2,7 +2,9 @@ const translations = {
   planActivity: {
     planNamePlaceholder: 'Wpisz nazwę planu',
     newPlan: 'Nowy Plan #',
-    shuffleTasks: 'Rotuj zadania',
+    shuffleTasks: 'Rotuj wszystkie zadania',
+    activeStatus: 'UKOŃCZONO',
+    notActiveStatus: 'NIE UKOŃCZONO'
   },
   header: {
     activeStudent: 'Aktywny uczeń',

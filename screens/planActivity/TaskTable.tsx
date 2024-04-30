@@ -13,9 +13,10 @@ interface Props {
   planItemList: PlanItem[];
   navigation: NavigationProp<any>;
   handlePlanListOrderChanged: (planItemList: DragEndParams<PlanItem>) => void;
+  setRefreshFlag: any;
 }
 
-export const TaskTable: FC<Props> = ({ navigation, planItemList, plan, handlePlanListOrderChanged }) => {
+export const TaskTable: FC<Props> = ({ navigation, planItemList, plan, handlePlanListOrderChanged, setRefreshFlag }) => {
   const data = planItemList.map(item => ({ ...item, key: item.id, label: item.name }));
 
   const keyExtractor = (item: PlanItem) => `draggable-item-${item.id}`;
@@ -37,6 +38,7 @@ export const TaskTable: FC<Props> = ({ navigation, planItemList, plan, handlePla
                 rowNumber={index ? index + 1 : 0}
                 drag={drag}
                 navigation={navigation}
+                setRefreshFlag={setRefreshFlag}
               />
             </View>
           );

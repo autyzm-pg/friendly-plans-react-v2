@@ -20,6 +20,8 @@ interface Props {
 }
 
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
+  const [refreshFlag, setRefreshFlag] = useState(false);
+
   const [plan, setPlan] = useState<Plan>(
     route.params?.plan ?? undefined,
   );
@@ -42,16 +44,11 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
       setPlanItemList(planItems)
     }
   }
-
-  useEffect(() => {
-    setScreenTitle(i18n.t('planList:viewTitle'))
-  }, []);
-
   
   useEffect(() => {
     if (isFocused)
       getPlanItems()
-  }, [isFocused]);
+  }, [isFocused, refreshFlag]);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
@@ -193,6 +190,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
           planItemList={planItemList} 
           handlePlanListOrderChanged={handlePlanListOrderChanged} 
           navigation={navigation}
+          setRefreshFlag={() => {setRefreshFlag(!refreshFlag)}}
         />
       </FullScreenTemplate>
       <View style={styles.saveButtonContainer}>
