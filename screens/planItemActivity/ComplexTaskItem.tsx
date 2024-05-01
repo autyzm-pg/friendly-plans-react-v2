@@ -15,12 +15,11 @@ interface Props {
     onSelectChange: () => void;
 }
 
-
 export const ComplexTaskItem: FC<Props> = ({
-                                                              name, image, initialTime,
-                                                              selected,
-                                                              onDelete, onSelectChange
-                                                          }) => {
+    name, image, initialTime,
+    selected,
+    onDelete, onSelectChange
+}) => {
 
     const hours = Math.floor(initialTime / 3600);
     const minutes = Math.floor((initialTime - hours * 3600) / 60);

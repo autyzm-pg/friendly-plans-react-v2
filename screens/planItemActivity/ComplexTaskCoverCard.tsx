@@ -16,7 +16,7 @@ interface Props {
 
 
 export const ComplexTaskCoverCard: FC<Props> = ({ name, image,
-                                                            selected = false, onSelectChange}) => {
+  selected = false, onSelectChange}) => {
 
   const showInfo = () => {
     return (
