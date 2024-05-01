@@ -21,6 +21,7 @@ interface Props {
   isSubItemsList?: boolean;
   isSubItem?: boolean;
   onItemCompleted: (completedItem: PlanItem | PlanSubItem) => void;
+  onItemUncompleted: (uncompletedItem: PlanItem | PlanSubItem) => void;
 }
 
 export class PlanElementListItem extends React.PureComponent<Props> {
@@ -78,6 +79,21 @@ export class PlanElementListItem extends React.PureComponent<Props> {
     console.log(this.props.item)
   };
 
+  markItemPlanAsUncompleted = () => {
+    if (this.props.index < this.props.currentTaskIndex) {
+      this.props.item.completed = false;
+      if (this.props.isSubItem) {
+        (this.props.item as PlanSubItem).uncomplete().then(() => {
+          this.props.onItemUncompleted(this.props.item as PlanSubItem)
+        });
+      } else {
+        (this.props.item as PlanItem).uncomplete().then(() => {
+          this.props.onItemUncompleted(this.props.item as PlanItem)
+        });
+      }
+    }
+  };
+
   navigateToRunPlanSubItemsList = () => {
     this.props.navigation.navigate(Route.RunSubPlanList, {
       itemParent: this.props.item,
@@ -100,8 +116,11 @@ export class PlanElementListItem extends React.PureComponent<Props> {
   };
 
   handleLongPress = () => {
-    if ((this.props.index === this.props.currentTaskIndex - 1) && this.props.item.completed) {
-      this.props.item.update({completed: false});
+    console.log(this.props.index, this.props.currentTaskIndex, this.props.item.completed)
+    // Before - can only go back one task
+    //if ((this.props.index === this.props.currentTaskIndex - 1) && this.props.item.completed) {
+    if ((this.props.index < this.props.currentTaskIndex) && this.props.item.completed) {
+      this.markItemPlanAsUncompleted();
     }
   };
 

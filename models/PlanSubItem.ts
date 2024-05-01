@@ -27,7 +27,6 @@ export class PlanSubItem implements PlanElement {
   pressed?: boolean;
 
   complete = async (): Promise<void> => {
-    console.log('completing subitem!!!')
     try {
       this.completed = true;
       const updatePlanElementTable = `
@@ -37,6 +36,22 @@ export class PlanSubItem implements PlanElement {
       `;
 
       await executeQuery(updatePlanElementTable, [1, this.planElementId]);
+
+    } catch (error) {
+        console.error("Error updating plan element:", error);
+    }
+  };
+  
+  uncomplete = async (): Promise<void> => {
+    try {
+      this.completed = true;
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET completed = (?)
+        WHERE id = (?);
+      `;
+
+      await executeQuery(updatePlanElementTable, [0, this.planElementId]);
 
     } catch (error) {
         console.error("Error updating plan element:", error);
