@@ -83,7 +83,7 @@ export class PlanElementListItem extends React.PureComponent<Props> {
       itemParent: this.props.item,
       student: this.props.student,
       onGoBack: () => {
-        this.props.item.complete();
+        this.markItemPlanAsCompleted();
         this.props.navigation.goBack();
       },
     });
