@@ -70,7 +70,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
         state.formik.values.subItems = subItems;
         setState(prevState => ({
             ...prevState,
-            subItems: subItems
+            subItems: subItems,
+            selected: planSubItem.itemOrder
           }));
     };
 

@@ -33,18 +33,17 @@ interface Props {
 }
 
 export const ComplexTaskMainView: FC<Props> = ({
-                                                itemInfo,
-                                                style,
-                                                onChange,
-                                                onTimeChange,
-                                                planItem,
-                                                formikProps,
-                                                updateImage,
-                                                voiceChange,
-                                                navigation
-                                            }) => {
+    itemInfo,
+    style,
+    onChange,
+    onTimeChange,
+    planItem,
+    formikProps,
+    updateImage,
+    voiceChange,
+    navigation
+}) => {
     const [time, setTime] = useState(itemInfo.time);
-
 
     const handleConfirmTimer = (newTime: number) => {
         setTime(newTime);

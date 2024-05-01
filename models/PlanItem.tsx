@@ -120,6 +120,29 @@ export class PlanItem implements PlanElement {
     }
   };
 
+  uncomplete = async (): Promise<void> => {
+    try {
+      this.completed = true;
+      const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET completed = (?)
+        WHERE id = (?);
+      `;
+
+      await executeQuery(updatePlanElementTable, [0, this.planElementId]);
+
+      if (this.type === PlanItemType.ComplexTask) {
+        const subItems = await PlanSubItem.getPlanSubItems(this)
+        for (const subItem of subItems) {
+          subItem.uncomplete()
+        }
+      }
+
+    } catch (error) {
+        console.error("Error updating plan element:", error);
+    }
+  };
+
   update = (item: Partial<PlanItem>): Promise<void> => {
 
   }
