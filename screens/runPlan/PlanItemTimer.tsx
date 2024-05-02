@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { FC, useRef, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { Icon, StyledText } from '../../components';
 
 import Sound from 'react-native-sound';
@@ -8,133 +7,83 @@ import sounds from '../../assets/sounds/sounds';
 
 interface Props {
   itemTime: number;
-  timerPause?: boolean;
 }
 
-interface State {
-  itemTime: number;
-  isPlaying: boolean;
-  currentLoop: number;
-  pause: boolean;
-}
+export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
+  const timerID = useRef<any>(null);
+  const soundTrack = useRef<any>(null);
 
-export class PlanItemTimer extends React.PureComponent<Props, State> {
-  timerID: any;
-  soundTrack: any;
-  maxLoop: number = 50;
+  const [time, setTime] = useState<number>(itemTime);
+  
+  const pause = useRef<boolean>(false);
+  const timer = useRef<number>(itemTime);
 
-  state: Readonly<State> = {
-    itemTime: this.props.itemTime,
-    isPlaying: false,
-    currentLoop: 0,
-    pause: false,
-  };
+  const hours = () => Math.floor(time / 3600);
+  const minutes = () => Math.floor((time - hours()*3600) / 60);
+  const seconds = () => time - minutes()*60 - hours()*3600;
+  const currentTime = () => hours() + ':' + minutes() + ':' + seconds();
 
-  // seconds = () => (this.state.itemTime % 60 < 10 ? '0' : '') + (this.state.itemTime % 60);
-  // minutes = () => Math.floor(this.state.itemTime / 60);
-  // hours = () => Math.floor(this.state.itemTime / 3600);
-
-  hours = () => Math.floor(this.state.itemTime / 3600);
-  minutes = () => Math.floor((this.state.itemTime - this.hours()*3600) / 60);
-  seconds = () => this.state.itemTime - this.minutes()*60 - this.hours()*3600;
-
-
-
-  itemTimeText = () => this.hours() + ':' + this.minutes() + ':' + this.seconds();
-
-  componentWillReceiveProps(nextProps: Props) {
-    this.setState({ itemTime: nextProps.itemTime });
+  const resetTimer = () => {
+    clearInterval(timerID.current);
+    timerID.current = null;
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
-    if (this.props.timerPause && this.state.isPlaying) {
-      this.soundTrack.stop();
-      this.timerID = setInterval(() => this.tick(), 1000);
-      this.setState({isPlaying: false});
-    }
-  }
+  useEffect(() => {
+    setTime(itemTime);
+    timer.current = itemTime;
+    pause.current = false;
+    resetTimer();
+  }, [itemTime])
 
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-    this.initializeAlarm();
-  }
+  useEffect(() => {
+    soundTrack.current = new Sound(sounds.timerEndOfTime, Sound.MAIN_BUNDLE);
+    return () => {
+      resetTimer();
+      soundTrack.current.stop();
+      soundTrack.current.release();
+    };
+  }, []);
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-    this.soundTrack.stop();
-    this.soundTrack.release();
-  }
-
-  initializeAlarm = () => {
-    this.soundTrack = new Sound(sounds.timerEndOfTime, Sound.MAIN_BUNDLE, error => {
-      if (error) {
-        this.setState({ isPlaying: false });
+  const playAlarmInLoop = () => {
+    soundTrack.current.play((success: boolean) => {
+      if (success) {
+        playAlarmInLoop();
       }
     });
   };
 
-  playInLoop = () => {
-    const { currentLoop } = this.state;
-    if (currentLoop < this.maxLoop) {
-      // this.setState({ currentLoop: currentLoop + 1 });
-      this.soundTrack.play((success: boolean) => {
-        if (success) {
-          this.playInLoop();
-        }
+  const tick = () => {
+    if (pause.current) { return; }
+    else if (timer.current > 0) { 
+      setTime((prevTime) => {
+        timer.current = prevTime - 1;
+        return prevTime - 1;
       });
-    } else {
-      this.soundTrack.stop();
     }
-  };
-
-  HandleTimesUp = async () => {
-    this.setState({ isPlaying: true });
-    this.playInLoop();
-    clearInterval(this.timerID);
-  };
-
-  decreaseTime = async () => {
-
-    if (!this.props.timerPause) {
-      this.setState(state => ({itemTime: state.itemTime - 1}));
+    else {
+      playAlarmInLoop();
+      resetTimer();
     }
-
   }
 
-  tick = () => {
-    if (!this.state.pause) {
-      this.state.itemTime <= 0 ? this.HandleTimesUp() : this.decreaseTime();
-    }
-  };
-
-  stopAlarm = () => {
-    if(this.state.isPlaying) {
-      this.soundTrack.stop();
-      this.setState({ isPlaying: false, pause: false });
+  const onAlarmPress = () => {
+    if (time == itemTime) {
+      timerID.current = setInterval(() => tick(), 1000);
+    } else if (0 < time) {
+      pause.current = !pause.current;
     } else {
-      this.soundTrack.stop();
-      this.setState({pause: !this.state.pause});
+      soundTrack.current.stop();
+      setTime(itemTime);
+      timer.current = itemTime;
     }
-
-  };
-
-  resetTimer = () => {
-    if (this.state.isPlaying || this.state.itemTime <= 0) {
-      this.timerID = setInterval(() => this.tick(), 1000);
-      this.setState({ isPlaying: false, pause: false});
-    }
-    this.setState({itemTime: this.props.itemTime, pause: false});
-    this.soundTrack.stop();
-  };
-
-  render() {
-    return (
-      <View style={styles.timeContainer}>
-        <Icon onPress={this.stopAlarm} onLongPress={this.resetTimer} delayLongPress={2000} name="timer" size={64} />
-        <StyledText style={styles.timeText}>{this.itemTimeText()}</StyledText>
-      </View>
-    );
   }
+
+  return (
+    <View style={styles.timeContainer}>
+      <Icon onPress={onAlarmPress} name="timer" size={64} />
+      <StyledText style={styles.timeText}>{currentTime()}</StyledText>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -91,7 +91,7 @@ export class PlanSlideItem extends React.PureComponent<Props> {
             {(this.props.planItem.lector || this.props.planItem.voicePath.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
           </View>
           <View style={{justifyContent: 'flex-end'}}>
-            {!!this.props.planItem.time ? <PlanItemTimer itemTime={this.props.planItem.time} timerPause={this.props.timerStop} /> : null}
+            {!!this.props.planItem.time ? <PlanItemTimer itemTime={this.props.planItem.time} /> : null}
           </View>
         </View>
 
