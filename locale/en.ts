@@ -133,7 +133,7 @@ const translations = {
     addImage: 'ADD/DELETE IMAGE',
     imageActionTakePhoto: 'TAKE A PHOTO',
     imageActionDeletePhoto: 'DELETE PHOTO',
-    imageActionLibrary: 'ADD FROM LIBRARY',
+    imageActionLibrary: 'ADD FROM APP LIBRARY',
     imageActionEditPhoto: 'EDIT PHOTO',
     imageActionBrowse: 'ADD FROM DEVICE',
     imageLibraryTitle: 'Image Library',

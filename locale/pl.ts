@@ -133,7 +133,7 @@ const translations = {
     addImage: 'DODAJ/USUŃ OBRAZEK',
     imageActionTakePhoto: 'ZRÓB ZDJĘCIE',
     imageActionDeletePhoto: 'USUŃ OBRAZEK',
-    imageActionLibrary: 'WYBIERZ Z BIBLIOTEKI',
+    imageActionLibrary: 'WYBIERZ Z BIBLIOTEKI APLIKACJI',
     imageActionEditPhoto: 'EDYTUJ OBRAZEK',
     imageActionBrowse: 'DODAJ Z URZĄDZENIA',
     imageLibraryTitle: 'Biblioteka zdjęć',
