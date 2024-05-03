@@ -119,6 +119,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     paddingHorizontal: 12,
-    paddingVertical: 12,
+    paddingVertical: 10,
   }
 });

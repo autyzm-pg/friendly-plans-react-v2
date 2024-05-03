@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
   iconContainer: {
     margin: dimensions.spacingTiny,
     paddingHorizontal: 12,
-    paddingVertical: 12,
+    paddingVertical: 10,
   },
 });

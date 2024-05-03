@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#e69'
   },
   iconDisabled: {
     backgroundColor: 'transparent',
