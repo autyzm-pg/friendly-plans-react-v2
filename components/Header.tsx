@@ -101,7 +101,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    margin: dimensions.spacingSmall,
+    margin: dimensions.spacingTiny,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   headerText: {
     marginStart: 8,

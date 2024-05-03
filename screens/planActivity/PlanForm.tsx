@@ -10,6 +10,7 @@ import { DEFAULT_EMOJI } from '../../assets/emojis';
 import { IconSelectModal } from './IconSelectModal';
 import { ShuffleButton } from './ShuffleButton';
 import { NavigationProp } from '@react-navigation/native';
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 
 export interface PlanFormData {
   planInput: string;
@@ -44,6 +45,8 @@ export const PlanForm: FC<Props> = ({
   navigation
 }) => {
   
+  const {currentStudent} = useCurrentStudentContext();
+  
   const initialValues: PlanFormData = {
     planInput: plan ? plan.name : '',
     emoji: plan ? plan.emoji : DEFAULT_EMOJI,
@@ -77,7 +80,7 @@ export const PlanForm: FC<Props> = ({
         </View>
         <View style={styles.buttonContainer}>
           <ShuffleButton disabled={shuffleDisabled} onPress={onShuffle} />
-          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={student}/>
+          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={currentStudent}/>
         </View>
       </View>
     );

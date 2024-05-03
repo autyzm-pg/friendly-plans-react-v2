@@ -68,6 +68,7 @@ export const NarrowScreenTemplate: React.FC<Props> = ({ children, title, buttons
               size={24}
               color={isSecondaryView ? palette.textBody : palette.textWhite}
               onPress={goBack}
+              containerStyle={styles.iconContainer}
             />
           )}
           {renderTitle()}
@@ -116,4 +117,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
   },
+  iconContainer: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  }
 });

@@ -46,7 +46,14 @@ export const PlanSearchForCopyScreen: FC<Props> = ({ navigation, route }) => {
     }
 
     return (
-      <IconButton type="material" name="close" size={24} color={palette.textBody} onPress={onSearchInputClear} />
+      <IconButton 
+        type="material" 
+        name="close" 
+        size={24} 
+        color={palette.textBody} 
+        onPress={onSearchInputClear} 
+        containerStyle={styles.iconContainer}
+      />
     );
   };
 
@@ -67,4 +74,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: dimensions.spacingTiny,
   },
+  iconContainer: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  }
 });

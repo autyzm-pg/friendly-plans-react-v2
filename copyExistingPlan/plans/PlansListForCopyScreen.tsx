@@ -95,6 +95,8 @@ export const PlansListForCopyScreen: FC<Props> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   iconContainer: {
-    paddingHorizontal: dimensions.spacingSmall,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginHorizontal: dimensions.spacingTiny
   },
 });
