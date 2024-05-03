@@ -9,12 +9,15 @@ import { CopyPlanButton } from './CopyPlanButton';
 import { CreatePlanButton } from './CreatePlanButton';
 import { DashboardBackground } from './DashboardBackground';
 import { NavigationProp } from '@react-navigation/native';
+import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 
 interface Props {
   navigation: NavigationProp<any>;
 }
 
 export const EmptyStudentPlans: React.FC<Props> = ({ navigation }) => {
+
+  const  { editionMode } = useRootNavigatorContext();
 
   const navigateToPlanActivity = () => {
     navigation.navigate(Route.PlanActivity, {
@@ -29,9 +32,11 @@ export const EmptyStudentPlans: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <DashboardBackground />
-      <CreatePlanButton onPress={navigateToPlanActivity} />
-      <StyledText style={styles.text}>{i18n.t('planList:conjunction')}</StyledText>
-      <CopyPlanButton onPress={navigateToCopyExistingPlan}/>
+      {editionMode && <>
+        <CreatePlanButton onPress={navigateToPlanActivity} />
+        <StyledText style={styles.text}>{i18n.t('planList:conjunction')}</StyledText>
+        <CopyPlanButton onPress={navigateToCopyExistingPlan}/>
+      </>}
     </View>
   );
 };
