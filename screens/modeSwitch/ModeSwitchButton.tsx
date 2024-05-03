@@ -13,7 +13,7 @@ interface Props {
   navigation: NavigationProp<any>;
 }
 
-export const ModeSwitchHeader: FC<Props> = ({navigation}) => {
+export const ModeSwitchButton: FC<Props> = ({navigation}) => {
   const {editionMode, setEditionMode} = useRootNavigatorContext();
 
   return (

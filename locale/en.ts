@@ -2,7 +2,9 @@ const translations = {
   planActivity: {
     planNamePlaceholder: 'Type schedule name',
     newPlan: 'New schedule #',
-    shuffleTasks: 'Rotate tasks',
+    shuffleTasks: 'Rotate all tasks',
+    activeStatus: 'COMPLETED',
+    notActiveStatus: 'UNFINISHED'
   },
   header: {
     activeStudent: 'Active student',
@@ -19,6 +21,11 @@ const translations = {
     retryPassword: 'Try re-entering password',
     wrongPassword: 'Wrong password',
     factoryPassword: 'Enter factory password',
+  },
+  imageGallery: {
+    information: 'Press and hold to select an image for the task, and tap once to choose for permanent deletion. Number of currently selected images:',
+    warningHeader: 'DELETE SELECTED IMAGES',
+    warningInformation: 'Deleting selected images is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.'
   },
   common: {
     cancel: 'CANCEL',
@@ -109,7 +116,7 @@ const translations = {
     createPlan: 'ADD NEW SCHEDULE',
     copyPlan: 'COPY EXISTING SCHEDULE',
     copyPlanScreenTitle: 'Select schedule to copy',
-    conjunction: 'lub',
+    conjunction: 'or',
     planNamePlaceholder: 'Singing',
     deletePlan: 'DELETE SCHEDULE',
     deletePlanDescription: 'Deleting a schedule is irreversible. It also means deleting all of its elements.',

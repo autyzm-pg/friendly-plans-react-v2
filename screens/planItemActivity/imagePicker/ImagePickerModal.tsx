@@ -8,7 +8,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
 import RNFS from 'react-native-fs';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation/routes';
 
 interface Props {
@@ -110,30 +110,14 @@ export const ImagePickerModal: FC<Props> = ({
         });
     };
 
-    const openLibrary = async () => { // Need a directory!
+    const openLibrary = async () => {
         closeModal();
-        // await RNFS.readDir(imagesDir)
-        // .then((result: RNFS.ReadDirItem[]) => {
-        //     console.log('!!!')
-        //     result.forEach(res => {
-        //         //RNFS.unlink('file://' + res.path).catch(error => console.log(error));
-        //         console.log(res.path);
-        //     })
-        // })
-        // .catch((err) => {
-        //     console.log(err.message, err.code)
-        // })
-        // await RNFS.exists(imagesDir + 'image-5182a1c4-6b32-47a8-b3d4-91dbdaa8100a771324797467554794.jpg')
-        // .then((exists) => {console.log(exists)})
         navigation.navigate(Route.ImageLibrary, {updateImage: imageUriUpdate});
     }
 
     const deleteImage = async () => {
         closeModal();
-        if (currentImageUri && !isComplexTask) {
-            await ImagePicker.cleanSingle(currentImageUri).catch(() => {});
-        } else if (selected!.image && isComplexTask) {
-            await ImagePicker.cleanSingle(selected!.image).catch(() => {});
+        if (selected!.image && isComplexTask) {
             selected!.image = '';
         }
         deleteImageUri();

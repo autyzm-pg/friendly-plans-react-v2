@@ -17,6 +17,7 @@ interface Props {
     planItem: PlanItem;
     formikProps: FormikProps<PlanItemFormData>;
     navigation: NavigationProp<any>;
+    setSubtaskCount: (nr: number) => {}
 }
 
 interface State {
@@ -27,7 +28,7 @@ interface State {
     deletedItems: PlanSubItem[];
 }
 
-export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
+export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSubtaskCount}) => {
     const [state, setState] = useState<State>({
         planItem: planItem,
         subItems: [],
@@ -44,6 +45,9 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation}) => {
     useEffect(() => {
         componentDidMount();
         return () => {
+            PlanSubItem.getPlanSubItems(state.planItem).then(subItems => {
+                setSubtaskCount(subItems.length);
+            })
             componentWillUnmount();
         }
       }, []);

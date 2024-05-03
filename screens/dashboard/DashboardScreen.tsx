@@ -18,7 +18,7 @@ interface Props {
 export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   
-  const { loading, setLoading } = useRootNavigatorContext();
+  const {loading, setLoading} = useRootNavigatorContext();
   const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
 
@@ -33,7 +33,6 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
       Student.getStudents().then(studentsList => {
         if (studentsList.length)
           setCurrentStudent(studentsList[0])
-        setLoading();
       })
     });
 
@@ -56,8 +55,8 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
       <View style={styles.loadingContainer}>
         <ActivityIndicator size='large' color='#262a40' />
       </View>}
-      {!loading && currentStudent && 
-      <View style={styles.container}>
+      {currentStudent && 
+      <View style={!loading && styles.container}>
         <StudentPlanList navigation={navigation}/>
       </View>}
     </>

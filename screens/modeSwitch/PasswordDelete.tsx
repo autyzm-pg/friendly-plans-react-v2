@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {i18n} from '../../locale';
 import {dimensions, palette, typography} from '../../styles';
@@ -10,6 +10,7 @@ import {NavigationProp} from '@react-navigation/native';
 import { StudentSettingsButton } from '../../components/StudentSettingsButton';
 import { FlatButton } from '../../components/FlatButton';
 import { executeQuery } from '../../services/DatabaseService';
+import { IconButton } from '../../components';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -20,6 +21,7 @@ interface Props {
 
 export const PasswordDelete: FC<Props> = ({navigation, setForgotPassword, setNewPassword}) => {
   const factoryPassword = 'Haslo'
+  const [passVis, setPassVis] = useState(false);
   const [password, setPassword] = useState('');
 
   const deletePassword = async () => {
@@ -31,12 +33,23 @@ export const PasswordDelete: FC<Props> = ({navigation, setForgotPassword, setNew
   const enterFactoryPassword = () => {
     return (<>
       <StyledText style={styles.label}>{i18n.t('modeSetting:regainAccess')}</StyledText>
-      <TextInput
-        style={styles.textInput}
-        placeholder={i18n.t('modeSetting:factoryPassword')}
-        value={password}
-        onChangeText={(input: string) => { setPassword(input); }}
-      />
+      <View style={styles.container}>
+        <TextInput
+          style={styles.textInput}
+          placeholder={i18n.t('modeSetting:factoryPassword')}
+          value={password}
+          onChangeText={(input: string) => { setPassword(input); }}
+          secureTextEntry={!passVis}
+        />
+        <IconButton
+          name={passVis ? 'eye' : 'eye-slash'}
+          type='font-awesome'
+          color={palette.primary}
+          size={24}
+          onPress={() => {setPassVis(!passVis)}}
+          style={{marginBottom: dimensions.spacingSmall, marginLeft: dimensions.spacingTiny}}
+        />
+      </View>
       <StudentSettingsButton             
             name="check"
             type="antdesign"
@@ -49,6 +62,7 @@ export const PasswordDelete: FC<Props> = ({navigation, setForgotPassword, setNew
               }
               else {
                 setPassword(i18n.t('modeSetting:wrongPassword'));
+                setPassVis(true);
               }
             }}
             />
@@ -68,6 +82,10 @@ export const PasswordDelete: FC<Props> = ({navigation, setForgotPassword, setNew
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   label: {
     ...typography.headline4,
     color: palette.textSettings,
@@ -78,6 +96,7 @@ const styles = StyleSheet.create({
   textInput: {
     marginTop: dimensions.spacingSmall,
     marginBottom: dimensions.spacingBig,
+    flex: 1,
   },
   iconButtonContainer: {
     flex: 1,

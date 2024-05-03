@@ -20,6 +20,17 @@ interface Props {
 }
 
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
+  const [refreshFlag, setRefreshFlag] = useState(false);
+  const [toBeDeleted, setToBeDeleted] = useState([]);
+
+  const deleteMultiple = () => {
+    toBeDeleted.forEach((item: any) => {
+      PlanItem.deletePlanItem(item);
+    })
+    setToBeDeleted([]);
+    setRefreshFlag(!refreshFlag);
+  }
+
   const [plan, setPlan] = useState<Plan>(
     route.params?.plan ?? undefined,
   );
@@ -42,16 +53,11 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
       setPlanItemList(planItems)
     }
   }
-
-  useEffect(() => {
-    setScreenTitle(i18n.t('planList:viewTitle'))
-  }, []);
-
   
   useEffect(() => {
     if (isFocused)
       getPlanItems()
-  }, [isFocused]);
+  }, [isFocused, refreshFlag]);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
@@ -186,6 +192,8 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             onShuffle={shuffleTasks}
             student={route.params?.student ?? {}}
             navigation={navigation}
+            deleteMultiple={deleteMultiple}
+            toBeDeleted={toBeDeleted}
           />
         </View>
         <TaskTable 
@@ -193,6 +201,9 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
           planItemList={planItemList} 
           handlePlanListOrderChanged={handlePlanListOrderChanged} 
           navigation={navigation}
+          setRefreshFlag={() => {setRefreshFlag(!refreshFlag)}}
+          setToBeDeleted={setToBeDeleted}
+          toBeDeleted={toBeDeleted}
         />
       </FullScreenTemplate>
       <View style={styles.saveButtonContainer}>

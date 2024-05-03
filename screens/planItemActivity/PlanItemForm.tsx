@@ -10,7 +10,7 @@ import {Break} from './Break';
 import {ComplexTask} from './ComplexTask';
 import {Interaction} from './Interaction';
 import {SimpleTask} from './SimpleTask';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
 
 export interface PlanItemFormData {
   name: string;
@@ -30,13 +30,14 @@ interface Props {
   taskNumber: number;
   itemType: PlanItemType;
   navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 }
 
 interface State {
   taskType: PlanItemType;
 }
 
-export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNumber, itemType}) => {
+export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNumber, itemType, route}) => {
   const [state, setState] = useState<State>({
     taskType: planItem ? planItem.type : itemType
   })
@@ -79,7 +80,7 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
           </View>
         </View>
         {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
-        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} />}
+        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} />}
         {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
         {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
 

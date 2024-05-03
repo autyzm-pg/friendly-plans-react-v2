@@ -54,7 +54,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     // }
     
     PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder()).then(() => {
-        navigation.goBack()
+        navigation.goBack();
     });
 
     //setState({planItem: item});
@@ -81,7 +81,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     }
     
     PlanItem.updatePlanItem(planItem, data.subItems).then(() => {
-      navigation.goBack()
+      navigation.goBack();
     });
   };
 
@@ -94,5 +94,6 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     onSubmit={onSubmit} 
     taskNumber={route.params?.planItemList ? route.params?.planItemList.length + 1 : 0}
     navigation={navigation}
+    route={route}
   />;
 }

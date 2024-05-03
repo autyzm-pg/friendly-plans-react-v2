@@ -2,7 +2,9 @@ const translations = {
   planActivity: {
     planNamePlaceholder: 'Wpisz nazwę planu',
     newPlan: 'Nowy Plan #',
-    shuffleTasks: 'Rotuj zadania',
+    shuffleTasks: 'Rotuj wszystkie zadania',
+    activeStatus: 'UKOŃCZONO',
+    notActiveStatus: 'NIE UKOŃCZONO'
   },
   header: {
     activeStudent: 'Aktywny uczeń',
@@ -19,6 +21,11 @@ const translations = {
     retryPassword: 'Spróbuj wprowadzić hasło ponownie',
     wrongPassword: 'Hasło niepoprawne',
     factoryPassword: 'Wpisz hasło fabryczne',
+  },
+  imageGallery: {
+    information: 'Przytrzymaj, aby wybrać obraz do zadania. Jedno kliknięcie oznaczy go do usunięcia. Aktualnie wybrane obrazy:',
+    warningHeader: 'USUŃ WYBRANE OBRAZY',
+    warningInformation: 'Usuwanie wybranych obrazów jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.'
   },
   common: {
     cancel: 'ANULUJ',
