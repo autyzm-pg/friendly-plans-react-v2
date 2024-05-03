@@ -131,7 +131,7 @@ export class Plan {
         plan.name,
         studentId,
         plan.emoji,
-        studentId
+        plan.id
       ];
 
       await executeQuery(updateQuery, params);
