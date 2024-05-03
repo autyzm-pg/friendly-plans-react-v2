@@ -13,5 +13,6 @@ export interface PlanElement {
   voicePath?: string;
 
   complete: () => Promise<void>;
+  uncomplete: () => Promise<void>;
   update: (changes: any) => Promise<void>;
 }
