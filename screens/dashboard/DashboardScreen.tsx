@@ -31,8 +31,11 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
     
     connectToDatabase().then(() => {
       Student.getStudents().then(studentsList => {
-        if (studentsList.length)
+        if (studentsList.length) {
           setCurrentStudent(studentsList[0])
+        } else {
+          setLoading(false);
+        }
       })
     });
 
