@@ -89,6 +89,8 @@ export const StudentsListForCopyPlanScreen: FC<Props> = ({ navigation, route }) 
 
 const styles = StyleSheet.create({
   iconContainer: {
-    paddingHorizontal: dimensions.spacingSmall,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginHorizontal: dimensions.spacingTiny
   },
 });
