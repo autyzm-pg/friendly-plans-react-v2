@@ -22,6 +22,11 @@ const translations = {
     wrongPassword: 'Wrong password',
     factoryPassword: 'Enter factory password',
   },
+  imageGallery: {
+    information: 'Press and hold to select an image for the task, and tap once to choose for permanent deletion. Number of currently selected images:',
+    warningHeader: 'DELETE SELECTED IMAGES',
+    warningInformation: 'Deleting selected images is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.'
+  },
   common: {
     cancel: 'CANCEL',
     confirm: 'CONFIRM',

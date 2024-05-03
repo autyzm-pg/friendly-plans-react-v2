@@ -307,6 +307,31 @@ export class PlanItem implements PlanElement {
     return resultsArray.sort((a, b) => a.itemOrder - b.itemOrder);
   }
 
+  static removeNonExistingUris = async(images: string[]): Promise<void> => {
+    await executeQuery('BEGIN TRANSACTION;');
+    const placeholders = images.map(() => '?').join(', ');
+    const selectAllPlanElementsForUri = `SELECT * FROM PlanElement WHERE image IN (${placeholders});`;
+    const elemResultSet = await executeQuery(selectAllPlanElementsForUri, images);
+    for (let i = 0; i < elemResultSet.rows.length; i++) {
+      const element = elemResultSet.rows.item(i) as PlanItem;
+      try {
+        const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET image = (?)
+        WHERE id = (?);
+        `;
+        await executeQuery(updatePlanElementTable, [
+          '',
+          element.id
+        ]);
+      } catch (error) {
+        await executeQuery('ROLLBACK;');
+        throw new Error('Could not update plan element uri');
+      }
+    }
+    await executeQuery('COMMIT;');
+  };
+
   static updatePlanItem = async (
     planItem: PlanItem,
     planSubItems?: PlanSubItem[]

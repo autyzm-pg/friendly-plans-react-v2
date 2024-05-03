@@ -56,7 +56,6 @@ export const ImagePicker: FC<Props> = ({
         if (imageUri) {
             return <Image source={{uri: imageUri}} style={styles.image} resizeMode={'contain'}/>;
         }
-
         return (<View style={{height: 412, width: 412, justifyContent: 'center'}}>
             <Icon name="add-a-photo" type="material" size={250} color={palette.textInputPlaceholder}/>
         </View>);
