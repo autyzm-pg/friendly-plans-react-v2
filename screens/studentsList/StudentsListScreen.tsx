@@ -92,6 +92,8 @@ export const StudentsListScreen: React.FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   iconContainer: {
-    paddingHorizontal: dimensions.spacingSmall,
+    margin: dimensions.spacingTiny,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
   },
 });
