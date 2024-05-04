@@ -9,6 +9,7 @@ import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/nativ
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 import DatabaseService from '../../services/DatabaseService';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
+import { Route } from '../../navigation';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -35,6 +36,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
           setCurrentStudent(studentsList[0])
         } else {
           setLoading(false);
+          navigation.navigate(Route.StudentsList);
         }
       })
     });
