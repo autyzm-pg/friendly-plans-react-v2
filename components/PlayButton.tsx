@@ -26,8 +26,6 @@ export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, studen
     }
 
     const items = await PlanItem.getPlanItems(plan);
-    //console.log('items: ', items);
-    console.log('ITEMS count: ', items.length)
     if (items.length === 0) {
       Alert.alert(i18n.t('planList:noTasks'), i18n.t('planList:noTasksDescription', {name: plan.name}), [
         {

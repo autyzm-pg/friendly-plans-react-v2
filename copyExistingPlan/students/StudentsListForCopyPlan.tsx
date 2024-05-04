@@ -58,7 +58,7 @@ const [sortedStudents, setSortedStudents] = useState<Student[]>([])
     Alert.alert(
       'Empty Student List',
       'There are no students to display.',
-      [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+      [{ text: 'OK', onPress: () => {} }]
     );
   }
 

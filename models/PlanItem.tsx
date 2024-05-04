@@ -104,7 +104,6 @@ export class PlanItem implements PlanElement {
   isSimpleTask = (): boolean => this.type === PlanItemType.SimpleTask;
 
   complete = async (): Promise<void> => {
-    console.log('completing!!!')
     try {
       this.completed = true;
       const updatePlanElementTable = `
@@ -208,7 +207,6 @@ export class PlanItem implements PlanElement {
     data: PlanItemFormData,
     lastItemOrder: number
   ): Promise<PlanItem> => {
-    console.log(data)
     const planItemData = {
       name: data.name,
       studentId: plan.studentId,
@@ -326,7 +324,6 @@ export class PlanItem implements PlanElement {
       }))
     }
     await executeQuery('COMMIT;');
-    console.log(resultsArray)
     return resultsArray.sort((a, b) => a.itemOrder - b.itemOrder);
   }
 

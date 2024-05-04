@@ -21,7 +21,6 @@ export const PlanListElementForCopy: FC<Props> = ({plan, navigation}) => {
       const newPlan = await Plan.createPlan(currentStudent?.id, plan.name);
       const planItems = await PlanItem.getPlanItems(plan);
       for (const item of planItems) {
-        console.log('ITEM', item)
         await PlanItem.copyPlanItem(newPlan, item.type, item);
       }
     }

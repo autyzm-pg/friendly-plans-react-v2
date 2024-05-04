@@ -193,7 +193,6 @@ export class PlanSubItem implements PlanElement {
       )
     }
     await executeQuery('COMMIT;');
-    console.log(resultsArray)
     return resultsArray.sort((a, b) => Number(a.id) - Number(b.id));
   }
 

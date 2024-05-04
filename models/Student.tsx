@@ -1,7 +1,3 @@
-import {getPlansRef, getStudentRef, getStudentsRef} from './FirebaseRefProxy';
-import { Plan } from './Plan';
-import { ParameterlessConstructor, SubscribableModel } from './SubscribableModel';
-import { ResultSet } from 'react-native-sqlite-storage';
 import { executeQuery } from '../services/DatabaseService';
 
 export enum StudentDisplayOption {
@@ -27,13 +23,7 @@ export interface StudentData {
   isSwipeBlocked: boolean;
 }
 
-// TODO: change so that student does not implement SubscribableModel
 export class Student implements StudentData {
-
-  // TODO: save new student to database
-  static create = (data: StudentData): void => {
-    console.log("Adding new student", data)
-  }
 
   id!: string;
   name: string;
