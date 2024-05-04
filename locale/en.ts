@@ -122,6 +122,10 @@ const translations = {
     deletePlanDescription: 'Deleting a schedule is irreversible. It also means deleting all of its elements.',
     copyPlanAction: 'COPY EXISTING PLAN',
     addPlanAction: 'CREATE NEW PLAN',
+    noTasks: 'NO TASKS',
+    noTasksDescription: 'Plan \'{{name}}\' does not have any tasks',
+    allTasksCompleted: 'All tasks are completed',
+    allTasksCompletedDescription: 'All of the tasks in plan \'{{name}}\' are completed',
   },
   planItemActivity: {
     viewTitleTask: 'Task',

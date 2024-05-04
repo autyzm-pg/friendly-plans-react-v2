@@ -489,4 +489,10 @@ export class PlanItem implements PlanElement {
       planElementId: element.id
     });
   }
+
+  static getPlanItemsCount = async (planId: string): Promise<number> => {
+    const selectAllFromPlanItemsTable = `SELECT * FROM PlanItem WHERE planId = (?);`;
+    const resultSet = await executeQuery(selectAllFromPlanItemsTable, [planId]);
+    return resultSet.rows.length || 0;
+  }
 }

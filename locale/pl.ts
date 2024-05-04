@@ -122,6 +122,10 @@ const translations = {
     deletePlanDescription: 'Usunięcie planu jest nieodwracalne. Oznacza to również usunięcie wszystkich jego elementów.',
     copyPlanAction: 'SKOPIUJ ISTNIEJĄCY PLAN',
     addPlanAction: 'STWÓRZ NOWY PLAN',
+    noTasks: 'BRAK ZADAŃ',
+    noTasksDescription: 'Plan \'{{name}}\' nie posiada żadnych zadań',
+    allTasksCompleted: 'Zadania ukończone',
+    allTasksCompletedDescription: 'Wszystkie zadania z planu \'{{name}}\' zostały ukończone'
   },
   planItemActivity: {
     viewTitleTask: 'Zadanie',

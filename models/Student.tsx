@@ -52,9 +52,9 @@ export class Student implements StudentData {
   }
 
   static getPlansCount = async (studentId: string): Promise<number> => {
-    const selectAllFromPlanTable = `SELECT COUNT(*) FROM Plan WHERE studentId = (?);`;
+    const selectAllFromPlanTable = `SELECT * FROM Plan WHERE studentId = (?);`;
     const resultSet = await executeQuery(selectAllFromPlanTable, [studentId]);
-    return resultSet.rows.length;
+    return resultSet.rows.length || 0;
   }
 
   static createStudent = async (student: StudentData): Promise<Student> => {
