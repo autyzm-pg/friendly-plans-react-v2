@@ -77,7 +77,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   return (
     <>
     <View style={styles.trashIconContainer}>
-        <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}.`}</Text>
+        <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text>
         <View style={styles.iconButtonContainer}>
           <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0}/>
         </View>

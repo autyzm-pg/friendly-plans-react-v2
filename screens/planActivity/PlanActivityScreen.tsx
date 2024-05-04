@@ -1,6 +1,6 @@
 import every from 'lodash.every';
 import React, { FC, useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { DragEndParams } from 'react-native-draggable-flatlist';
 
 import { Button, FullScreenTemplate } from '../../components';
@@ -24,11 +24,19 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const [toBeDeleted, setToBeDeleted] = useState([]);
 
   const deleteMultiple = () => {
-    toBeDeleted.forEach((item: any) => {
-      PlanItem.deletePlanItem(item);
-    })
-    setToBeDeleted([]);
-    setRefreshFlag(!refreshFlag);
+    Alert.alert(i18n.t('planActivity:deleteTaskHeader'), i18n.t('planActivity:deleteTaskInfo'), [
+      { text: i18n.t('common:cancel') },
+      {
+        text: i18n.t('common:confirm'),
+        onPress: () => {
+          toBeDeleted.forEach((item: any) => {
+            PlanItem.deletePlanItem(item);
+          })
+          setToBeDeleted([]);
+          setRefreshFlag(!refreshFlag);
+        },
+      },
+    ]);
   }
 
   const [plan, setPlan] = useState<Plan>(
