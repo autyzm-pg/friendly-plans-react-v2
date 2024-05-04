@@ -18,6 +18,7 @@ interface Props {
     formikProps: FormikProps<PlanItemFormData>;
     navigation: NavigationProp<any>;
     setSubtaskCount: (nr: number) => {}
+    onTaskNameForChildChanged: (name: string) => void;
 }
 
 interface State {
@@ -28,7 +29,7 @@ interface State {
     deletedItems: PlanSubItem[];
 }
 
-export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSubtaskCount}) => {
+export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSubtaskCount, onTaskNameForChildChanged}) => {
     const [state, setState] = useState<State>({
         planItem: planItem,
         subItems: [],
@@ -120,6 +121,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
     const updateTaskName = (name: string) => {
         state.formik.values.nameForChild = name;
         forceUpdate();
+        onTaskNameForChildChanged(name)
     };
 
     const updateSubItemName = (text: string, indexToUpdate: number) => {
@@ -244,6 +246,11 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
 
     const saveNewTask = async () => {
         formikProps.submitForm()
+    }
+
+    const taskNameForChildChanged = (name: string) => {
+      formikProps.setFieldValue('nameForChild', name);
+      onTaskNameForChildChanged(name)
     }
 
     return (

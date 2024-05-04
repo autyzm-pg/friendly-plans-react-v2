@@ -34,9 +34,11 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     PlanItem.getPlanItems(route.params?.plan).then(planItems => {
+      const pageNumber = Math.max(planItems.findIndex(item => !item.completed), 0)
       setState(prevState => ({
         ...prevState,
-        planItems: planItems
+        planItems: planItems,
+        pageNumber: pageNumber
       }));
     })
   }, [])
@@ -59,7 +61,24 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     }
   }, [route, state, navigation]);
 
+  const markItemPlanAsCompleted = () => {
+    const planItemToUpdate = state.planItems[state.pageNumber];
+    planItemToUpdate.completed = true;
+    planItemToUpdate.complete();
+  };
+
+  const markItemPlanAsUncompleted = () => {
+    const planItemToUpdate = state.planItems[state.pageNumber];
+    planItemToUpdate.completed = false;
+    planItemToUpdate.uncomplete();
+  }
+
+  const setCurrentPageNumber = () => {
+    
+  }
+
   const nextPage = () => {
+    markItemPlanAsCompleted();
     if(state.planItems[state.pageNumber].type !== PlanItemType.ComplexTask) {
       if (state.pageNumber + 1 < state.planItems.length) {
         setState(prevState => ({ 
@@ -82,35 +101,34 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
       //   setState(state => ({ pageNumber: state.pageNumber + 1 }));
       // }
     }
-
   };
 
   const goBack = async () => {
+    markItemPlanAsUncompleted();
     if (state.pageNumber - 1 >= 0) {
-      if (state.planItems[state.pageNumber-1].type !== PlanItemType.ComplexTask) {
-        setState(prevState => ({ 
-          ...prevState,
-          pageNumber: prevState.pageNumber - 1 
-        }));
-      } else {
-        const collection = await state.planItems[state.pageNumber-1].getChildCollectionRef().get();
-        navigation.navigate(Route.RunSubPlanSlide, {
-          pageNumber: state.pageNumber - 1,
-          planItem: state.planItems[state.pageNumber-1],
-          planItemsAmount: state.planItems.length,
-          student: route.params?.student,
-          startPage: collection.size - 1,
-        });
-        setState(prevState => ({ 
-          ...prevState,
-          timerStop: true
-        }));
-      }
+      setState(prevState => ({ 
+        ...prevState,
+        pageNumber: prevState.pageNumber - 1 
+      }));
+      // if (state.planItems[state.pageNumber-1].type !== PlanItemType.ComplexTask) {
+
+      // } else {
+        
+      //   navigation.navigate(Route.RunSubPlanSlide, {
+      //     pageNumber: state.pageNumber-1,
+      //     planItem: state.planItems[state.pageNumber],
+      //     planItemsAmount: state.planItems.length,
+      //     student: route.params?.student,
+      //   });
+      //   setState(prevState => ({ 
+      //     ...prevState,
+      //     timerStop: true
+      //   }));
+      // }
     } else {
       navigation.navigate(Route.Dashboard);
     }
   };
-
 
   const renderPlan = () => {
     const { student } = state;

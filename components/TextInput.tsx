@@ -36,7 +36,7 @@ export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, ...inputP
       ]}
     >
       <BaseTextInput
-        style={[styles.input, textStyle]}
+        style={[styles.input, textStyle, !inputProps.editable && styles.inputDisabled]}
         placeholderTextColor={palette.textInputPlaceholder}
         autoCorrect={false}
         onFocus={handleFocus}
@@ -65,5 +65,8 @@ const styles = StyleSheet.create({
   },
   inputBackground: {
     backgroundColor: palette.backgroundAdditional,
+  },
+  inputDisabled: {
+    color: palette.textDisabled,
   },
 });

@@ -18,13 +18,14 @@ interface Props {
   formikProps: FormikProps<PlanItemFormData>;
   style?: StyleProp<ViewStyle>;
   navigation: NavigationProp<any>;
+  onTaskNameForChildChanged: (name: string) => void;
 }
 
 interface State {
   selectedTime: number;
 }
 
-export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style}) => {
+export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style, onTaskNameForChildChanged}) => {
   const [state, setState] = useState<State>({
     selectedTime: formikProps.initialValues.time
   });
@@ -75,6 +76,11 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style}
     formikProps.submitForm()
   }
 
+  const taskNameForChildChanged = (name: string) => {
+    formikProps.setFieldValue('nameForChild', name);
+    onTaskNameForChildChanged(name)
+  }
+
   return (
     <SafeAreaView style={style}>
       <Card style={[styles.container]}>
@@ -111,7 +117,7 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style}
               textStyle={styles.imageInputText}
               placeholder={i18n.t('planItemActivity:taskNameForChild')}
               value={formikProps.values.nameForChild}
-              onChangeText={formikProps.handleChange('nameForChild')}
+              onChangeText={taskNameForChildChanged}
             />
 
             <ModalTrigger

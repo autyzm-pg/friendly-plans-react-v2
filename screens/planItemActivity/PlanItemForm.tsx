@@ -1,8 +1,8 @@
-import {Button, StyledText, TextInput} from '../../components';
+import {CheckboxInput, StyledText, TextInput} from '../../components';
 import {Formik, FormikProps} from 'formik';
 import {i18n} from '../../locale';
 import {PlanItem, PlanItemType, PlanSubItem} from '../../models';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {dimensions, getElevation, palette, typography} from '../../styles';
 import * as Yup from 'yup';
@@ -42,10 +42,14 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
     taskType: planItem ? planItem.type : itemType
   })
 
+  const taskNameForChild = useRef('');
+
+  const [nameForChildAsTaskName, setNameForChildAsTaskName] = useState(true);
+
   const initialValues: PlanItemFormData = {
     name: planItem
       ? planItem.name
-      : `${i18n.t('planItemActivity:newTask')}${taskNumber}`,
+      : '',
     nameForChild: planItem ? planItem.nameForChild : '',
     time: planItem ? planItem.time : 0,
     subItems: [],
@@ -56,6 +60,13 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
     voicePath: planItem ? planItem.voicePath : '',
   };
 
+  useEffect(() => {
+    setNameForChildAsTaskName(!planItem || planItem.name === planItem.nameForChild)
+    if (planItem) {
+      taskNameForChild.current = planItem.nameForChild
+    }
+  }, [])
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Required!'),
     nameForChild: Yup.string(),
@@ -63,7 +74,14 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
   });
 
   const renderFormControls = (formikProps: FormikProps<PlanItemFormData>) => {
-    const { values, handleChange, errors, touched, handleSubmit } = formikProps;
+    const { values, handleChange, errors, touched, handleSubmit, setFieldValue } = formikProps;
+
+    const setTaskName = (name: string) => {
+      taskNameForChild.current = name;
+      if (nameForChildAsTaskName) {
+        setFieldValue('name', name);
+      }
+    }
 
     return (
       <>
@@ -75,14 +93,25 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
               placeholder={i18n.t('planItemActivity:taskNamePlaceholder')}
               defaultValue={values.name}
               onChangeText={handleChange('name')}
+              editable={!nameForChildAsTaskName}
             />
             {errors.name && touched.name && <StyledText style={styles.errorMessage}>{errors.name}</StyledText>}
           </View>
+          <CheckboxInput
+              title={i18n.t('planItemActivity:nameForChildAsTaskName')}
+              checked={nameForChildAsTaskName} 
+              onPress={(value) => {
+                setNameForChildAsTaskName(value)
+                if (value) {
+                  setFieldValue('name', taskNameForChild.current);
+                }
+              }}
+            />
         </View>
-        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
-        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} />}
-        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
-        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
+        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
+        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} onTaskNameForChildChanged={setTaskName} />}
+        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
+        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
 
       </>
     );
@@ -126,6 +155,7 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     width: 288,
+    marginRight: dimensions.spacingSmall
   },
   iconButtonContainer: {
     backgroundColor: palette.backgroundAdditional,

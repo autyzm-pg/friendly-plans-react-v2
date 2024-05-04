@@ -76,7 +76,6 @@ export class PlanElementListItem extends React.PureComponent<Props> {
         });
       }
     }
-    console.log(this.props.item)
   };
 
   markItemPlanAsUncompleted = () => {
@@ -116,7 +115,6 @@ export class PlanElementListItem extends React.PureComponent<Props> {
   };
 
   handleLongPress = () => {
-    console.log(this.props.index, this.props.currentTaskIndex, this.props.item.completed)
     // Before - can only go back one task
     //if ((this.props.index === this.props.currentTaskIndex - 1) && this.props.item.completed) {
     if ((this.props.index < this.props.currentTaskIndex) && this.props.item.completed) {

@@ -32,7 +32,8 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
   useEffect(() => {
     if (isEveryPlanItemCompleted()) {
       onGoBack();
-      updateAllItemsAsUncompleted();
+      // TODO: do we want to mark tasks as not completed automatically after finishing?
+      //updateAllItemsAsUncompleted();
     }
   }, [items])
 
