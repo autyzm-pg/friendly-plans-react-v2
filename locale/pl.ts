@@ -161,6 +161,7 @@ const translations = {
     saveComplexTaskButton: 'ZAPISZ ZŁOŻONE ZADANIE',
     saveInteractionButton: 'ZAPISZ INTERAKCJĘ',
     saveBreakButton: 'ZAPISZ PRZERWĘ',
+    nameForChildAsTaskName: 'Nazwa taka sama jak skrypt dla ucznia'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Aktualizuj plan',

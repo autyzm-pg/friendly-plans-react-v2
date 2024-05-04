@@ -161,6 +161,7 @@ const translations = {
     saveComplexTaskButton: 'SAVE COMPLEX TASK',
     saveInteractionButton: 'SAVE INTERACTION',
     saveBreakButton: 'SAVE BREAK',
+    nameForChildAsTaskName: 'Name identical as task content'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { palette, typography } from '../styles';
+import { dimensions, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
 
@@ -56,13 +56,14 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   label: {
     color: palette.textBlack,
   },
   iconContainer: {
     alignItems: 'flex-start',
+    marginRight: 2
   },
   errorContainer: {
     height: 20,
