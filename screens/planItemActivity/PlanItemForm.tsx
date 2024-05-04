@@ -62,6 +62,9 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
 
   useEffect(() => {
     setNameForChildAsTaskName(!planItem || planItem.name === planItem.nameForChild)
+    if (planItem) {
+      taskNameForChild.current = planItem.nameForChild
+    }
   }, [])
 
   const validationSchema = Yup.object().shape({
@@ -106,9 +109,9 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
             />
         </View>
         {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
-        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} />}
-        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
-        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps}/>}
+        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} onTaskNameForChildChanged={setTaskName} />}
+        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
+        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
 
       </>
     );
