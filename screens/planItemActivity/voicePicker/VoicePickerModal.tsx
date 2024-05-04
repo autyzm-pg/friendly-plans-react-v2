@@ -173,8 +173,8 @@ export const VoicePickerModal: FC<Props> = ({
       <>
         <ImageAction title={i18n.t('planItemActivity:voiceActionDeleteVoice')} onPress={callDeleteVoice}>
           <IconButton 
-            name="trash" 
-            type="entypo" 
+            name="delete" 
+            type="material" 
             size={24} 
             onPress={callDeleteVoice}
             containerStyle={styles.iconContainer}
