@@ -4,7 +4,9 @@ const translations = {
     newPlan: 'Nowy Plan #',
     shuffleTasks: 'Rotuj wszystkie zadania',
     activeStatus: 'UKOŃCZONO',
-    notActiveStatus: 'NIE UKOŃCZONO'
+    notActiveStatus: 'NIE UKOŃCZONO',
+    deleteTaskHeader: 'USUŃ ZADANIE/ZADANIA',
+    deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.'
   },
   header: {
     activeStudent: 'Aktywny uczeń',

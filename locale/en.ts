@@ -4,7 +4,9 @@ const translations = {
     newPlan: 'New schedule #',
     shuffleTasks: 'Rotate all tasks',
     activeStatus: 'COMPLETED',
-    notActiveStatus: 'UNFINISHED'
+    notActiveStatus: 'UNFINISHED',
+    deleteTaskHeader: 'DELETE TASK(S)',
+    deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.'
   },
   header: {
     activeStudent: 'Active student',

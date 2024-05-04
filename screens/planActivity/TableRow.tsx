@@ -1,7 +1,7 @@
 import {CheckboxInput, Icon, IconButton} from '../../components';
 import {Plan, PlanItem, PlanItemType, PlanSubItem} from '../../models';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {palette, typography, dimensions} from '../../styles';
 import { i18n } from '../../locale';
 
@@ -52,8 +52,16 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
   };
 
   const onDelete = () => {
-    PlanItem.deletePlanItem(planItem);
-    setRefreshFlag();
+    Alert.alert(i18n.t('planActivity:deleteTaskHeader'), i18n.t('planActivity:deleteTaskInfo'), [
+      { text: i18n.t('common:cancel') },
+      {
+        text: i18n.t('common:confirm'),
+        onPress: async() => {
+          await PlanItem.deletePlanItem(planItem);
+          setRefreshFlag();
+        },
+      },
+    ]);
   };
 
   const handlePlanStateChange = () => {
