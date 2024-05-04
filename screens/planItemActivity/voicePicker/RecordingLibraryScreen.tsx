@@ -51,7 +51,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     }
 
     const handleImagePress = (uri: string) => {
-        route.params?.updateRecording('file://' + uri);
+        route.params?.updateRecording(uri);
         navigation.goBack();
       };
 
