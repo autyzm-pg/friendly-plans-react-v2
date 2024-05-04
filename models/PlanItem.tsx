@@ -352,6 +352,31 @@ export class PlanItem implements PlanElement {
     await executeQuery('COMMIT;');
   };
 
+  static removeNonExistingRecs = async(recordings: string[]): Promise<void> => {
+    await executeQuery('BEGIN TRANSACTION;');
+    const placeholders = recordings.map(() => '?').join(', ');
+    const selectAllPlanElementsForUri = `SELECT * FROM PlanElement WHERE voicePath IN (${placeholders});`;
+    const elemResultSet = await executeQuery(selectAllPlanElementsForUri, recordings);
+    for (let i = 0; i < elemResultSet.rows.length; i++) {
+      const element = elemResultSet.rows.item(i) as PlanItem;
+      try {
+        const updatePlanElementTable = `
+        UPDATE PlanElement 
+        SET voicePath = (?)
+        WHERE id = (?);
+        `;
+        await executeQuery(updatePlanElementTable, [
+          '',
+          element.id
+        ]);
+      } catch (error) {
+        await executeQuery('ROLLBACK;');
+        throw new Error('Could not update plan element uri');
+      }
+    }
+    await executeQuery('COMMIT;');
+  };
+
   static updatePlanItem = async (
     planItem: PlanItem,
     planSubItems?: PlanSubItem[]

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Card, FullScreenTemplate, IconButton } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
-import { dimensions, palette } from '../../../styles';
+import { dimensions, palette, typography } from '../../../styles';
 import Sound from 'react-native-sound';
+import { i18n } from '../../../locale';
+import { PlanItem } from '../../../models';
+import ImagePicker from 'react-native-image-crop-picker';
+import { Route } from '../../../navigation';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -14,6 +18,8 @@ interface Props {
 export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const [recordings, setRecordings] = useState<string[]>([]);
     const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
+    const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
+    const playerRef = useRef<any>(null);
 
     useEffect(()=> {
     const fetchRecordings = async () => {
@@ -28,46 +34,84 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         }
         };
         fetchRecordings();
+        return () => {
+            if (playerRef.current) {
+              playerRef.current.stop();
+              playerRef.current.release();
+            }
+        };
     }, [])
 
     const playAudio = async (item: string) => {
         const fullVoicePath = item
         .replace('file:///', '/')
         .split('%20').join(' ');
-        const soundTrack = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
+        playerRef.current = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
             (error) => {
                 if(error) {
                     // console.log('Cannot load soundtrack:', error);
                 }
                 else {
-                    soundTrack.play((success) => {
+                    playerRef.current.play((success:any) => {
                         if(!success) {
                             // console.log('Cannot play soundtrack.');
                         }
-                        soundTrack.release();
+                        playerRef.current.release();
                     });
                 }
             });
     }
 
-    const handleImagePress = (uri: string) => {
+    const handleImageLongPress = (uri: string) => {
         route.params?.updateRecording(uri);
         navigation.goBack();
-      };
+    };
+    
+    const handleImageShortPress = (uri: string) => {
+        const isSelected = selectedRecordings.includes(uri);
+        if (isSelected) {
+          const filteredImages = selectedRecordings.filter((rec) => rec !== uri);
+          setSelectedRecordings(filteredImages);
+        } else {
+          setSelectedRecordings((prev) => [...prev, uri]);
+        }
+    };
 
-    const renderItem = ({ item }: { item: string}) => (
-        <TouchableOpacity onPress={() => handleImagePress(item)}>
-            <Card style={[styles.container]}>
-                <View style={styles.imageActionContainer}>
-                    <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
-                    <IconButton name="volume-high" type="material-community" size={40} onPress={() => playAudio(item)}/>
-                </View>
-            </Card>
-        </TouchableOpacity>
-    );
+    const renderItem = ({ item }: { item: string}) => {
+        const isSelected = selectedRecordings.includes(item);
+        return (
+            <TouchableOpacity onLongPress={() => handleImageLongPress(item)} onPress={() => handleImageShortPress(item)}>
+                <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }]}>
+                    <View style={styles.imageActionContainer}>
+                        <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
+                        <IconButton name="volume-high" type="material-community" size={40} onPress={() => playAudio(item)}/>
+                    </View>
+                </Card>
+            </TouchableOpacity>
+    )};
+
+    const deleteMultiple = async() => {
+        Alert.alert(i18n.t('recGallery:warningHeader'), i18n.t('recGallery:warningInformation'), [
+          { text: i18n.t('common:cancel') },
+          {
+            text: i18n.t('common:confirm'),
+            onPress: async() => {
+              await PlanItem.removeNonExistingRecs(selectedRecordings);
+              selectedRecordings.forEach(async(uri) => { await ImagePicker.cleanSingle(uri).catch(() => {});});
+              navigation.navigate(Route.Dashboard);
+            },
+          },
+        ]);
+      };
 
     return (
     <>
+        <View style={styles.trashIconContainer}>
+            <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
+            <View style={styles.iconButtonContainer}>
+                <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0}/>
+            </View>
+        </View>
         <FullScreenTemplate padded darkBackground>
         {recordings.length > 0
         ?
@@ -106,4 +150,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: dimensions.spacingLarge,
     },
+    trashIconContainer: {
+        backgroundColor: palette.textWhite,
+        height: 56,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        marginTop: 0,
+        paddingTop: 0
+      },
+      text: {
+        ...typography.body,
+        marginRight: 'auto',
+        marginLeft: dimensions.spacingLarge,
+        color: palette.textBody,
+      },
+      iconButtonContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        marginRight: dimensions.spacingLarge
+      },
 });

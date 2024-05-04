@@ -29,6 +29,11 @@ const translations = {
     warningHeader: 'DELETE SELECTED IMAGES',
     warningInformation: 'Deleting selected images is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.'
   },
+  recGallery: {
+    information: 'Number of selected recordings:',
+    warningHeader: 'DELETE SELECTED RECORDINGS',
+    warningInformation: 'Deleting selected recordings is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.'
+  },
   common: {
     cancel: 'CANCEL',
     confirm: 'CONFIRM',

@@ -29,6 +29,11 @@ const translations = {
     warningHeader: 'USUŃ WYBRANE OBRAZY',
     warningInformation: 'Usuwanie wybranych obrazów jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.'
   },
+  recGallery: {
+    information: 'Aktualnie wybrane nagrania:',
+    warningHeader: 'USUŃ WYBRANE NAGRANIA',
+    warningInformation: 'Usuwanie wybranych nagrań jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.'
+  },
   common: {
     cancel: 'ANULUJ',
     confirm: 'POTWIERDŹ',

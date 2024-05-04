@@ -13,7 +13,6 @@ import Sound from 'react-native-sound';
 import RNFS from 'react-native-fs';
 import { NavigationProp } from '@react-navigation/native';
 import {Route} from '../../../navigation';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 interface Props {
   closeModal?: () => void;
@@ -42,11 +41,8 @@ export const VoicePickerModal: FC<Props> = ({
                         navigation
                       }) => {
   const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
+  const playerRef = useRef<any>(null);
 
-  const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
-  const [isRecording, setIsRecording] = useState(false);
-  let recordingPath = useRef('');
-  
   useEffect(() => {
     RNFS.exists(recordingsDir)
     .then((exists) => {
@@ -62,6 +58,12 @@ export const VoicePickerModal: FC<Props> = ({
     .catch((error) => {
       console.error('Cannot check if directory exists: ' + recordingsDir, error);
     });
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.stop();
+        playerRef.current.release();
+      }
+    };
   }, [])
 
   const openGallery = async () => {
@@ -96,16 +98,16 @@ export const VoicePickerModal: FC<Props> = ({
   const callDeleteVoice = async () => {
     closeModal();
     // console.log(currentVoiceUri);
-    if (currentVoiceUri && !isComplexTask) {
-      await ImagePicker.cleanSingle(currentVoiceUri).catch(() => {});
-    } else if (selected!.voicePath && isComplexTask) {
-      await ImagePicker.cleanSingle(selected!.voicePath).catch(() => {});
-    }
+    // if (currentVoiceUri && !isComplexTask) {
+    //   await ImagePicker.cleanSingle(currentVoiceUri).catch(() => {});
+    // } else if (selected!.voicePath && isComplexTask) {
+    //   await ImagePicker.cleanSingle(selected!.voicePath).catch(() => {});
+    // }
     deleteVoice();
   };
 
   const playAudio = async () => {
-    closeModal();
+    // closeModal();
     if (lector && planItem.nameForChild) {
       await Tts.getInitStatus().then(() => {
         Tts.setDefaultLanguage(i18n.t('common:language'));
@@ -120,51 +122,22 @@ export const VoicePickerModal: FC<Props> = ({
       const fullVoicePath = currentVoiceUri
       .replace('file:///', '/')
       .split('%20').join(' ');
-      const soundTrack = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
+      playerRef.current = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
         (error) => {
           if(error) {
             // console.log('Cannot load soundtrack:', error);
           }
           else {
-            soundTrack.play((success) => {
+            playerRef.current.play((success:any) => {
               if(!success) {
                 // console.log('Cannot play soundtrack.');
               }
-              soundTrack.release();
+              playerRef.current.release();
             });
           }
         });
     }
-  }
-
-  const startRecording = async () => {
-    try {
-      // const path = await audioRecorderPlayer.current.startRecorder();
-      // recordingPath.current = path;
-      // console.log('Recording started at: ', path);
-      setIsRecording(true);
-    } catch (error) {
-      // console.error('Failed to start recording', error);
-    }
-    };
-
-    /* TODO: 
-    - Copying from cache to dedicated directory. 
-    - Changing sound to created recording.
-    - Name changing in library.
-    */
-  
-    const stopRecording = async () => {
-    try {
-      // await audioRecorderPlayer.current.stopRecorder();
-      // console.log('Recording stopped, audio file saved at: ', result);
-      setIsRecording(false);
-      // console.log(recordingPath.current);
-    } catch (error) {
-      // console.error('Failed to stop recording', error);
-    }
-    };
-  
+  }  
 
   return (
     <View style={styles.imageActionContainer}>
@@ -193,16 +166,6 @@ export const VoicePickerModal: FC<Props> = ({
       :
       <></>
       }
-      {/* {!isRecording &&
-        <ImageAction title={i18n.t('planItemActivity:startRecording')} onPress={startRecording}>
-          <IconButton name="fiber-manual-record" type="material" size={24} onPress={startRecording}/>
-        </ImageAction>
-      }
-      {isRecording &&
-        <ImageAction title={i18n.t('planItemActivity:stopRecording')} onPress={stopRecording}>
-          <IconButton name="stop" type="material" size={24} onPress={stopRecording}/>
-        </ImageAction>
-      } */}
       <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
         <IconButton 
           name="library-music" 
