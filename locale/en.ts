@@ -174,7 +174,11 @@ const translations = {
     saveComplexTaskButton: 'SAVE COMPLEX TASK',
     saveInteractionButton: 'SAVE INTERACTION',
     saveBreakButton: 'SAVE BREAK',
-    nameForChildAsTaskName: 'Name identical as task content'
+    nameForChildAsTaskName: 'Name identical as task content',
+    alertMessageSaveQuestion: 'Do you want to save the changes made to this task?',
+    alertMessageSaveQuestionTitle: 'Save changes?',
+    alertMessageSaveQuestionSave: 'Save',
+    alertMessageSaveQuestionDiscard: 'Discard'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',
@@ -213,7 +217,7 @@ const translations = {
     studentNamePlaceholder: 'Enter student name',
     removeStudent: 'REMOVE THE STUDENT',
     createStudent: 'CREATE A STUDENT',
-    editStudent: 'EDIT STUDENT',
+    editStudent: 'SAVE CHANGES',
     deleteStudent: 'Delete student',
     deleteMessage: 'Deleting a student is irreversible. It also means deleting all schedules and tasks assigned to her/him.',
     delete: 'DELETE',

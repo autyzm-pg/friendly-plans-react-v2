@@ -1,5 +1,5 @@
-import React, { FC, useState, useEffect } from 'react';
-import {Alert, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import React, { FC, useState, useEffect, useRef } from 'react';
+import {Alert, SafeAreaView, StyleProp, StyleSheet, ToastAndroid, View, ViewStyle} from 'react-native';
 
 import { Button, Card, IconButton, ModalTrigger, TextInput } from '../../components';
 import { FormikProps } from 'formik';
@@ -30,6 +30,8 @@ export const Break: FC<Props> = ({ navigation, planItem, formikProps, style, onT
     selectedTime: formikProps.initialValues.time
   })
 
+  const taskSaved = useRef(false);
+
   const setScreenTitle = (title: string) => {
     navigation.setOptions({
       title: title,
@@ -38,9 +40,6 @@ export const Break: FC<Props> = ({ navigation, planItem, formikProps, style, onT
 
   useEffect(() => {
     setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
-    return () => {
-      componentWillUnmount();
-    }
   }, []);
 
   const timeInfo = () => {
@@ -64,16 +63,11 @@ export const Break: FC<Props> = ({ navigation, planItem, formikProps, style, onT
         </View>
     );
   };
-
-  const componentWillUnmount = () => {
-    Alert.alert(
-        i18n.t('planItemActivity:alertTitle'),
-        planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
-    );
-  }
   
   const saveNewTask = async () => {
-    formikProps.submitForm()
+    taskSaved.current = true;
+    formikProps.submitForm();
+    ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
   }
 
   const taskNameForChildChanged = (name: string) => {

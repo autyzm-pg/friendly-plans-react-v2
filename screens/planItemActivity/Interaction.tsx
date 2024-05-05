@@ -1,5 +1,5 @@
-import React, { FC, useState, useEffect } from 'react';
-import {Alert, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import React, { FC, useState, useEffect, useRef } from 'react';
+import {Alert, SafeAreaView, StyleProp, StyleSheet, ToastAndroid, View, ViewStyle} from 'react-native';
 
 import { Button, Card, IconButton, ModalTrigger, TextInput } from '../../components';
 import { FormikProps } from 'formik';
@@ -29,6 +29,8 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
   const [state, setState] = useState<State>({
     selectedTime: formikProps.initialValues.time
   })
+
+  const taskSaved = useRef(false);
   
   const setScreenTitle = (title: string) => {
     navigation.setOptions({
@@ -38,9 +40,6 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
 
   useEffect(() => {
     setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
-    return () => {
-      componentWillUnmount();
-    }
   }, []);
 
   const timeInfo = () => {
@@ -64,21 +63,47 @@ export const Interaction: FC<Props> = ({navigation, planItem, formikProps, style
     );
   };
 
-  const componentWillUnmount = () => {
-    Alert.alert(
-        i18n.t('planItemActivity:alertTitle'),
-        planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
-    );
-  }
-
   const saveNewTask = async () => {
-    formikProps.submitForm()
+    taskSaved.current = true;
+    formikProps.submitForm();
+    ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
   }
 
   const taskNameForChildChanged = (name: string) => {
     formikProps.setFieldValue('nameForChild', name);
     onTaskNameForChildChanged(name)
   }
+
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        if (!taskSaved.current) {
+          // Prevent default behavior of leaving the screen
+          e.preventDefault();
+
+          // Prompt the user before leaving the screen
+          Alert.alert(
+            i18n.t('planItemActivity:alertMessageSaveQuestionTitle'),
+            i18n.t('planItemActivity:alertMessageSaveQuestion'),
+            [
+              { 
+                text: i18n.t('planItemActivity:alertMessageSaveQuestionDiscard'), 
+                style: 'destructive', 
+                onPress: () => navigation.dispatch(e.data.action) },
+              {
+                text: i18n.t('planItemActivity:alertMessageSaveQuestionSave'),
+                style: 'default',
+                onPress: saveNewTask
+              },
+            ],
+            {
+              cancelable: true,
+              onDismiss: () => {}
+            },
+          );
+        }
+      }),
+    [navigation])
 
   return (
       <SafeAreaView style={style}>
