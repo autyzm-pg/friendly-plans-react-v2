@@ -6,7 +6,8 @@ const translations = {
     activeStatus: 'COMPLETED',
     notActiveStatus: 'UNFINISHED',
     deleteTaskHeader: 'DELETE TASK(S)',
-    deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.'
+    deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.',
+    completed: 'Completed?',
   },
   header: {
     activeStudent: 'Active student',
@@ -39,6 +40,7 @@ const translations = {
     confirm: 'CONFIRM',
     ok: 'OK',
     yes: 'YES',
+    no: 'NO',
     email: 'Email address',
     name: 'Your Name',
     password: 'Password',

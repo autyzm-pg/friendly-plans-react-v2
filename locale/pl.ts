@@ -6,7 +6,8 @@ const translations = {
     activeStatus: 'UKOŃCZONO',
     notActiveStatus: 'NIE UKOŃCZONO',
     deleteTaskHeader: 'USUŃ ZADANIE/ZADANIA',
-    deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.'
+    deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.',
+    completed: 'Ukończono?',
   },
   header: {
     activeStudent: 'Aktywny uczeń',
@@ -39,6 +40,7 @@ const translations = {
     confirm: 'POTWIERDŹ',
     ok: 'OK',
     yes: 'TAK',
+    no: 'NIE',
     email: 'Adres email',
     name: 'Twoja nazwa',
     password: 'Hasło',
