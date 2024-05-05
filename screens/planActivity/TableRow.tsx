@@ -1,4 +1,4 @@
-import {CheckboxInput, Icon, IconButton} from '../../components';
+import {CheckboxInput, Icon, IconButton, IconButtonSwitch, IconToggleButton, SwitchItem} from '../../components';
 import {Plan, PlanItem, PlanItemType, PlanSubItem} from '../../models';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -65,7 +65,6 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
   };
 
   const handlePlanStateChange = () => {
-    // planItem.setComplete(!planItem.completed);
     planItem.completed = !planItem.completed;
     PlanItem.updatePlanItem(planItem)
     setPlanState(!planState);
@@ -100,10 +99,16 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
       </View>
       <Text style={styles.textName}>{planItem.name}{' '}</Text>
       {(planItem.type === PlanItemType.ComplexTask)&&<Text style={styles.text}>{`(${subtaskCount})`}{' '}</Text>}
-      <Text onPress={handlePlanStateChange} style={[styles.text, {color: planItem.completed ? palette.playButton : palette.deleteStudentButton}]}>
-        {planItem.completed ? i18n.t('planActivity:activeStatus') : i18n.t('planActivity:notActiveStatus')}
-      </Text>
-      <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+      <View style={{flex: 1, flexDirection: 'row-reverse', alignItems: 'center'}}>
+        <View style={styles.deleteIcon}>
+          <IconButton name='delete' size={24} color={palette.primary} onPress={onDelete} />
+        </View>
+        <IconButtonSwitch 
+          iconNames={['check', 'close']} 
+          titles={[i18n.t('common:yes'), i18n.t('common:no')]} 
+          title={i18n.t('planActivity:completed')} 
+          secondButtonOn={!planItem.completed} 
+          onPress={handlePlanStateChange}/>
         {!!planItem.time && (
           <View style={styles.timeContainer}>
             <Icon name='timer' size={24} />
@@ -112,10 +117,7 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
             </View>
           </View>
         )}
-        <View style={styles.deleteIcon}>
-          <IconButton name='delete' size={24} color={palette.primary} onPress={onDelete} />
         </View>
-      </View>
     </TouchableOpacity>
   );
 };

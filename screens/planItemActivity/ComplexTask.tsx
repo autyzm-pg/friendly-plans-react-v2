@@ -1,7 +1,7 @@
 import {FormikProps} from 'formik';
 import i18n from 'i18next';
-import React, {FC, useState, useEffect} from 'react';
-import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import React, {FC, useState, useEffect, useRef} from 'react';
+import {Alert, SafeAreaView, ScrollView, StyleSheet, ToastAndroid, View} from 'react-native';
 
 import {/*ModelSubscriber,*/ PlanItem, PlanSubItem} from '../../models';
 import {dimensions, palette} from '../../styles';
@@ -39,6 +39,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
     })
     const [forceUpdateFlag, setForceUpdateFlag] = useState(false);
 
+    const taskSaved = useRef(false);
+
     const forceUpdate = () => {
         setForceUpdateFlag(prevFlag => !prevFlag);
     };
@@ -49,7 +51,6 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
             PlanSubItem.getPlanSubItems(state.planItem).then(subItems => {
                 setSubtaskCount(subItems.length);
             })
-            componentWillUnmount();
         }
       }, []);
 
@@ -236,22 +237,48 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
                                     navigation={navigation}/>;
     };
 
-
-    const componentWillUnmount = () => {
-        Alert.alert(
-            i18n.t('planItemActivity:alertTitle'),
-            planItem ? i18n.t('planItemActivity:alertMessageUpdate') : i18n.t('planItemActivity:alertMessageCreate')
-        );
-    }
-
     const saveNewTask = async () => {
-        formikProps.submitForm()
+        taskSaved.current = true;
+        formikProps.submitForm();
+        ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
     }
 
     const taskNameForChildChanged = (name: string) => {
       formikProps.setFieldValue('nameForChild', name);
       onTaskNameForChildChanged(name)
     }
+    
+    useEffect(
+        () =>
+        navigation.addListener('beforeRemove', (e) => {
+            if (!taskSaved.current) {
+            // Prevent default behavior of leaving the screen
+            e.preventDefault();
+
+            // Prompt the user before leaving the screen
+            Alert.alert(
+                i18n.t('planItemActivity:alertMessageSaveQuestionTitle'),
+                i18n.t('planItemActivity:alertMessageSaveQuestion'),
+                [
+                { 
+                    text: i18n.t('planItemActivity:alertMessageSaveQuestionDiscard'), 
+                    style: 'destructive', 
+                    onPress: () => navigation.dispatch(e.data.action) },
+                {
+                    text: i18n.t('planItemActivity:alertMessageSaveQuestionSave'),
+                    style: 'default',
+                    onPress: saveNewTask
+                },
+                ],
+                {
+                cancelable: true,
+                onDismiss: () => {}
+                },
+            );
+            }
+        }),
+    [navigation])
+
 
     return (
         <SafeAreaView style={styles.safeAreaView}>

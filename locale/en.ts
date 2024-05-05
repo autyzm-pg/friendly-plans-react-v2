@@ -6,7 +6,8 @@ const translations = {
     activeStatus: 'COMPLETED',
     notActiveStatus: 'UNFINISHED',
     deleteTaskHeader: 'DELETE TASK(S)',
-    deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.'
+    deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.',
+    completed: 'Completed?',
   },
   header: {
     activeStudent: 'Active student',
@@ -39,6 +40,7 @@ const translations = {
     confirm: 'CONFIRM',
     ok: 'OK',
     yes: 'YES',
+    no: 'NO',
     email: 'Email address',
     name: 'Your Name',
     password: 'Password',
@@ -172,7 +174,11 @@ const translations = {
     saveComplexTaskButton: 'SAVE COMPLEX TASK',
     saveInteractionButton: 'SAVE INTERACTION',
     saveBreakButton: 'SAVE BREAK',
-    nameForChildAsTaskName: 'Name identical as task content'
+    nameForChildAsTaskName: 'Name identical as task content',
+    alertMessageSaveQuestion: 'Do you want to save the changes made to this task?',
+    alertMessageSaveQuestionTitle: 'Save changes?',
+    alertMessageSaveQuestionSave: 'Save',
+    alertMessageSaveQuestionDiscard: 'Discard'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',
@@ -211,7 +217,7 @@ const translations = {
     studentNamePlaceholder: 'Enter student name',
     removeStudent: 'REMOVE THE STUDENT',
     createStudent: 'CREATE A STUDENT',
-    editStudent: 'EDIT STUDENT',
+    editStudent: 'SAVE CHANGES',
     deleteStudent: 'Delete student',
     deleteMessage: 'Deleting a student is irreversible. It also means deleting all schedules and tasks assigned to her/him.',
     delete: 'DELETE',

@@ -36,4 +36,6 @@ export const palette = {
   sliderInactive: '#cbd5e1',
   shuffleTaskDisabled: '#C6CDF2',
   deleteStudentButton: '#D85676',
+  backgroundPositive: '#83d0ab',
+  backgroundNeutral: '#8d96c2',
 };

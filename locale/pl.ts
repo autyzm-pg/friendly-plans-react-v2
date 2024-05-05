@@ -6,7 +6,8 @@ const translations = {
     activeStatus: 'UKOŃCZONO',
     notActiveStatus: 'NIE UKOŃCZONO',
     deleteTaskHeader: 'USUŃ ZADANIE/ZADANIA',
-    deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.'
+    deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.',
+    completed: 'Ukończono?',
   },
   header: {
     activeStudent: 'Aktywny uczeń',
@@ -39,6 +40,7 @@ const translations = {
     confirm: 'POTWIERDŹ',
     ok: 'OK',
     yes: 'TAK',
+    no: 'NIE',
     email: 'Adres email',
     name: 'Twoja nazwa',
     password: 'Hasło',
@@ -172,7 +174,12 @@ const translations = {
     saveComplexTaskButton: 'ZAPISZ ZŁOŻONE ZADANIE',
     saveInteractionButton: 'ZAPISZ INTERAKCJĘ',
     saveBreakButton: 'ZAPISZ PRZERWĘ',
-    nameForChildAsTaskName: 'Nazwa taka sama jak skrypt dla ucznia'
+    nameForChildAsTaskName: 'Nazwa taka sama jak skrypt dla ucznia',
+    alertMessageSaveQuestion: 'Czy chcesz zapisać zmiany wprowadzone dla tego zadania?',
+    alertMessageSaveQuestionTitle: 'Zapisać zmiany?',
+    alertMessageSaveQuestionSave: 'Zapisz',
+    alertMessageSaveQuestionDiscard: 'Nie zapisuj',
+    savedMessage: 'Zapisano'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Aktualizuj plan',
@@ -211,7 +218,7 @@ const translations = {
     studentNamePlaceholder: 'Wpisz imię ucznia',
     removeStudent: 'USUŃ UCZNIA',
     createStudent: 'DODAJ UCZNIA',
-    editStudent: 'EDYTUJ UCZNIA',
+    editStudent: 'ZAPISZ ZMIANY',
     deleteStudent: 'Usuń ucznia',
     deleteMessage: 'Usunięcie ucznia jest nieodwracalne. Oznacza też usunięcie wszystkich przypisanych do niego planów i zadań.',
     delete: 'USUŃ',
