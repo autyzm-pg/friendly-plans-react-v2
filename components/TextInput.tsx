@@ -36,7 +36,7 @@ export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, ...inputP
       ]}
     >
       <BaseTextInput
-        style={[styles.input, textStyle, !inputProps.editable && styles.inputDisabled]}
+        style={[styles.input, textStyle, (inputProps.editable === false ) && styles.inputDisabled]}
         placeholderTextColor={palette.textInputPlaceholder}
         autoCorrect={false}
         onFocus={handleFocus}
