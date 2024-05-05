@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 
 import { dimensions, getElevation, headerHeight, palette, typography } from '../styles';
@@ -21,10 +21,10 @@ interface Props {
 }
 
 export const NarrowScreenTemplate: React.FC<Props> = ({ children, title, buttons, isSecondaryView, canNavigateBack=true, navigation }) => {
-  const backgroundAnimation = new Animated.Value(0);
+  const backgroundAnimation = useRef(new Animated.Value(0));
 
   useEffect(() => {
-    Animated.timing(backgroundAnimation, {
+    Animated.timing(backgroundAnimation.current, {
       toValue: 1,
       duration: 200,
       useNativeDriver: true,
@@ -32,7 +32,7 @@ export const NarrowScreenTemplate: React.FC<Props> = ({ children, title, buttons
   }, []);
 
   const goBack = () => {
-    Animated.timing(backgroundAnimation, {
+    Animated.timing(backgroundAnimation.current, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
@@ -52,7 +52,7 @@ export const NarrowScreenTemplate: React.FC<Props> = ({ children, title, buttons
     return title;
   };
 
-  const translateY = backgroundAnimation.interpolate({
+  const translateY = backgroundAnimation.current.interpolate({
     inputRange: [0, 1],
     outputRange: [WINDOW_HEIGHT, 0],
   });
