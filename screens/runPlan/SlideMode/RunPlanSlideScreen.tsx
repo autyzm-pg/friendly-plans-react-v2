@@ -80,8 +80,8 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
 
   const nextPage = () => {
     markItemPlanAsCompleted();
+    const newIdx = state.planItems.findIndex((planItem, index) => !planItem.completed && index > state.pageNumber);
     if(state.planItems[state.pageNumber].type !== PlanItemType.ComplexTask) {
-      const newIdx = state.planItems.findIndex((planItem, index) => !planItem.completed && index > state.pageNumber);
       if (newIdx !== -1) {
         setState(prevState => ({ 
           ...prevState,
@@ -94,6 +94,7 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
 
       navigation.navigate(Route.RunSubPlanSlide, {
         pageNumber: state.pageNumber,
+        nextPageNumber: newIdx !== -1 ? newIdx : state.planItems.length,
         planItem: state.planItems[state.pageNumber],
         planItemsAmount: state.planItems.length,
         student: route.params?.student,

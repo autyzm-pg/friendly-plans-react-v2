@@ -32,6 +32,7 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   const {currentStudent} = useCurrentStudentContext();
 
   const [state, setState] = useState({
+    nextPageNumber: route.params?.nextPageNumber,
     pageNumber: route.params?.pageNumber,
     planItem: route.params?.planItem,
     planItemsAmount: route.params?.planItemsAmount,
@@ -61,10 +62,10 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   const whereNavigate = () => {
-    if (state.pageNumber + 1 >= state.planItemsAmount){
+    if (state.nextPageNumber >= state.planItemsAmount){
       navigation.navigate(Route.Dashboard);
     } else {
-      navigation.navigate(Route.RunPlanSlide, {backPage: state.pageNumber + 1, timerStop: false});
+      navigation.navigate(Route.RunPlanSlide, {backPage: state.nextPageNumber, timerStop: false});
     }
   };
 
