@@ -3,7 +3,7 @@ import {i18n} from '../../../locale';
 import {ModelSubscriber, PlanItem, PlanItemType, Student} from '../../../models';
 import {Route} from '../../../navigation';
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, Text, TouchableHighlight, TouchableHighlightComponent, View} from 'react-native';
+import {BackHandler, StyleSheet, Text, TouchableHighlight, TouchableHighlightComponent, View} from 'react-native';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {palette, typography} from '../../../styles';
 import {PlanSlideItem} from './PlanSlideItem';
@@ -32,7 +32,13 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     student: route.params?.student,
   });
 
+  const handleBackButton = () => {
+    navigation.navigate(Route.Dashboard);
+    return true;
+  };
+
   useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     PlanItem.getPlanItems(route.params?.plan).then(planItems => {
       const pageNumber = planItems.findIndex(planItem => !planItem.completed);
       //const filteredPlanItems = planItems.filter(item => !item.completed);
@@ -42,7 +48,8 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
         pageNumber: pageNumber
       }));
     })
-  }, [])
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     if (route.params?.backPage) {

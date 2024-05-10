@@ -28,7 +28,14 @@ export const Header: React.FC<Props> = ({...props}) => {
     return i18n.t('header:noStudentCreated')
   }
 
-  const goBack = () => navigation.goBack();
+  const goBack = () => {
+    const { route } = props;
+    if (route.name === Route.RunPlanSlide || route.name === Route.RunPlanList) {
+      navigation.navigate(Route.Dashboard);
+    } else {
+      navigation.goBack();
+    }
+  }
 
   const navigateToStudentsList = () => {
     navigation.navigate(Route.StudentsList);

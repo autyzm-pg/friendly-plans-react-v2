@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
 //import { NavigationInjectedProps } from '@react-navigation/native';
 
 import {FullScreenTemplate} from '../../../components';
@@ -17,6 +17,16 @@ export const RunPlanListScreen: React.FC<Props> = ({navigation, route}) => {
   const navigationOptions = {
     header: null,
   };
+
+  const handleBackButton = () => {
+    navigation.navigate(Route.Dashboard);
+    return true;
+  };
+  
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    return () => backHandler.remove();
+  }, []);
 
   const handleGoBack = () => navigation.navigate(Route.Dashboard);
 
