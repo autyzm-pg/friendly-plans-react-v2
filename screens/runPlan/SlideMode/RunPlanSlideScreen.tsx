@@ -34,11 +34,12 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     PlanItem.getPlanItems(route.params?.plan).then(planItems => {
-      //const pageNumber = Math.max(planItems.findIndex(item => !item.completed), 0)
-      const filteredPlanItems = planItems.filter(item => !item.completed);
+      const pageNumber = planItems.findIndex(planItem => !planItem.completed);
+      //const filteredPlanItems = planItems.filter(item => !item.completed);
       setState(prevState => ({
         ...prevState,
-        planItems: filteredPlanItems,
+        planItems: planItems,
+        pageNumber: pageNumber
       }));
     })
   }, [])
@@ -80,10 +81,11 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   const nextPage = () => {
     markItemPlanAsCompleted();
     if(state.planItems[state.pageNumber].type !== PlanItemType.ComplexTask) {
-      if (state.pageNumber + 1 < state.planItems.length) {
+      const newIdx = state.planItems.findIndex((planItem, index) => !planItem.completed && index > state.pageNumber);
+      if (newIdx !== -1) {
         setState(prevState => ({ 
           ...prevState,
-          pageNumber: prevState.pageNumber + 1 
+          pageNumber: newIdx
         }));
       } else {
         navigation.navigate(Route.Dashboard);
