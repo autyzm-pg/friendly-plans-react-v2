@@ -2,7 +2,7 @@ import {Card, IconButton, PlanNameText} from '../../../components';
 import {Plan, PlanElement, PlanItem, PlanItemType, PlanSubItem, Student, StudentDisplayOption} from '../../../models';
 import {Route} from '../../../navigation';
 import React from 'react';
-import {Image, StyleSheet, TouchableHighlight, View, ViewStyle} from 'react-native';
+import {Image, StyleSheet, Text, TouchableHighlight, View, ViewStyle} from 'react-native';
 import {Icon} from 'react-native-elements';
 import Sound from 'react-native-sound';
 import Tts from 'react-native-tts';
@@ -87,7 +87,7 @@ export class PlanElementListItem extends React.PureComponent<Props> {
         });
       } else {
         (this.props.item as PlanItem).uncomplete().then(() => {
-          this.props.onItemUncompleted(this.props.item as PlanItem)
+          this.props.onItemUncompleted(this.props.item as PlanItem, this.props.currentTaskIndex)
         });
       }
     }

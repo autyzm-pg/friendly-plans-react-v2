@@ -67,7 +67,15 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
 
   const handlePlanStateChange = () => {
     planItem.completed = !planItem.completed;
-    PlanItem.updatePlanItem(planItem)
+    PlanItem.updatePlanItem(planItem);
+    if (planItem.type === PlanItemType.ComplexTask) {
+      PlanSubItem.getPlanSubItems(planItem).then(subItems => {
+        subItems.forEach((subItem) => {
+          subItem.completed = planItem.completed;
+          PlanSubItem.updatePlanSubItem(subItem);
+        });
+      });
+    }
     setPlanState(!planState);
   };
 

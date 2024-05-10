@@ -21,11 +21,11 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
     if (isSubItemsList) {
       PlanSubItem.getPlanSubItems(itemParent as PlanItem).then(planItems => {
         setItems(planItems);
-      })
+      });
     } else {
       PlanItem.getPlanItems(itemParent as Plan).then(planItems => {
         setItems(planItems);
-      })
+      });
     }
   }, [])
 
@@ -47,14 +47,11 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
   };
 
   const isEveryPlanItemCompleted = () => {
-    return items.length && completedPlanItemCounter() >= items.length;
+    return items.length && completedPlanItemCounter() == -1;
   }
 
   const completedPlanItemCounter = () => {
-    const index = items.reduce(
-      (planItemsCompleted, planItem) => (planItem.completed ? ++planItemsCompleted : planItemsCompleted),
-      0,
-    );
+    const index = items.findIndex(planItem => !planItem.completed);
     return index;
   }
 
@@ -65,7 +62,7 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
     setItems(items);
   }
 
-  const onItemUncompleted = (uncompletedItem: PlanItem | PlanSubItem) => {
+  const onItemUncompleted = (uncompletedItem: PlanItem | PlanSubItem, currentTaskId: number) => {
     const itemToUncomplete = items.find(item => item.id === uncompletedItem.id)!;
     itemToUncomplete.completed = false;
     for (const item of items) {
@@ -73,7 +70,8 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
         (item as PlanSubItem).uncomplete();
         item.completed = false;
       }
-      else if (item.itemOrder > itemToUncomplete.itemOrder) {
+      else if (currentTaskId + 1 > item.itemOrder && item.itemOrder > itemToUncomplete.itemOrder) {
+        console.log(item.itemOrder);
         item.uncomplete();
         item.completed = false;
       }

@@ -34,11 +34,11 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     PlanItem.getPlanItems(route.params?.plan).then(planItems => {
-      const pageNumber = Math.max(planItems.findIndex(item => !item.completed), 0)
+      //const pageNumber = Math.max(planItems.findIndex(item => !item.completed), 0)
+      const filteredPlanItems = planItems.filter(item => !item.completed);
       setState(prevState => ({
         ...prevState,
-        planItems: planItems,
-        pageNumber: pageNumber
+        planItems: filteredPlanItems,
       }));
     })
   }, [])
