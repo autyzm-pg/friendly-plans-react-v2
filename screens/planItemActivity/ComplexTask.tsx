@@ -74,6 +74,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
         planSubItem.itemOrder = state.subItems.length;
         const subItems = [...state.subItems, planSubItem];
         state.formik.values.subItems = subItems;
+        formikProps.values.subItems = subItems;
         setState(prevState => ({
             ...prevState,
             subItems: subItems,
@@ -93,6 +94,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
 
         state.formik.values.subItems = subItems;
         state.formik.values.deleteSubItems = deletedItems;
+        formikProps.values.subItems = subItems;
+        formikProps.values.deleteSubItems = deletedItems;
         setState(prevState => ({
             ...prevState,
             subItems: subItems,
@@ -107,6 +110,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
         subItems[indexToUpdate].time = time;
 
         state.formik.values.subItems = subItems;
+        formikProps.values.subItems = subItems;
         setState(prevState => ({...prevState, subItems: subItems}));
     };
 
@@ -121,6 +125,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
 
     const updateTaskName = (name: string) => {
         state.formik.values.nameForChild = name;
+        formikProps.values.nameForChild = name;
         forceUpdate();
         onTaskNameForChildChanged(name)
     };
@@ -130,6 +135,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
         subItems[indexToUpdate].name = text;
 
         state.formik.values.subItems = subItems;
+        formikProps.values.subItems = subItems;
         setState(prevState => ({...prevState, subItems: subItems}));
     };
 
@@ -145,6 +151,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
 
     const updateTaskImage = (image: string) => {
         state.formik.values.imageUri = image;
+        formikProps.values.imageUri = image;
         forceUpdate();
     };
 
@@ -153,6 +160,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
         subItems[indexToUpdate].image = image;
 
         state.formik.values.subItems = subItems;
+        formikProps.values.subItems = subItems;
         setState(prevState => ({...prevState, subItems: subItems}));
     };
 
@@ -174,6 +182,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
     const updateTaskVoice = (voice: { voicePath: string, lector: boolean }) => {
         state.formik.values.voicePath = voice.voicePath;
         state.formik.values.lector = voice.lector;
+        formikProps.values.voicePath = voice.voicePath;
+        formikProps.values.lector = voice.lector;
         forceUpdate();
     };
 
@@ -183,6 +193,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
         subItems[indexToUpdate].lector = voice.lector;
 
         state.formik.values.subItems = subItems;
+        formikProps.values.subItems = subItems;
         setState(prevState => ({...prevState, subItems: subItems}));
     };
 
@@ -239,13 +250,16 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
 
     const saveNewTask = async () => {
         taskSaved.current = true;
+        console.log('SPRAWDZENIE CZY JESZCZE PRZED SUBMIT JEST WSZYSTKO W FORMIK PROPS !!! - - - - - -  -');
+        console.log(formikProps.values);
+        console.log('SPRAWDZENIE CZY JESZCZE PRZED SUBMIT JEST WSZYSTKO W FORMIK PROPS !!! - - - - - -  -');
         formikProps.submitForm();
         ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
     }
 
     const taskNameForChildChanged = (name: string) => {
-      formikProps.setFieldValue('nameForChild', name);
-      onTaskNameForChildChanged(name)
+        state.formik.setFieldValue('nameForChild', name);
+        onTaskNameForChildChanged(name)
     }
     
     useEffect(

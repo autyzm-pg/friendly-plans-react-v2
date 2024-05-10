@@ -52,7 +52,7 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     //   image: data.imageUri,
     //   voicePath: data.voicePath,
     // }
-    
+
     PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder()).then(() => {
         navigation.goBack();
     });
@@ -85,8 +85,14 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     });
   };
 
-  const onSubmit = (formData: PlanItemFormData) =>
-    state.planItem ? updatePlanItem(formData) : createPlanItem(formData);
+  const onSubmit = (formData: PlanItemFormData) => {
+    if (state.planItem) {
+      updatePlanItem(formData);
+    } else {
+      createPlanItem(formData);
+    }
+    route.params?.setRefreshFlag();
+  }
 
   return <PlanItemForm 
     itemType={route.params?.planItemType} 

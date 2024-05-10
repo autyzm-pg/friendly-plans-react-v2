@@ -47,7 +47,8 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
       plan,
       planItem,
       planItemList,
-      setSubtaskCount
+      setSubtaskCount,
+      setRefreshFlag
     });
   };
 
