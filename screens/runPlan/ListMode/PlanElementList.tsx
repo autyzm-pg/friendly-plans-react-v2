@@ -71,7 +71,7 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
         item.completed = false;
       }
       else if (currentTaskId + 1 > item.itemOrder && item.itemOrder > itemToUncomplete.itemOrder) {
-        console.log(item.itemOrder);
+        // console.log(item.itemOrder);
         item.uncomplete();
         item.completed = false;
       }

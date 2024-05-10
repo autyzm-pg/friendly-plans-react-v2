@@ -250,9 +250,6 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, setSu
 
     const saveNewTask = async () => {
         taskSaved.current = true;
-        console.log('SPRAWDZENIE CZY JESZCZE PRZED SUBMIT JEST WSZYSTKO W FORMIK PROPS !!! - - - - - -  -');
-        console.log(formikProps.values);
-        console.log('SPRAWDZENIE CZY JESZCZE PRZED SUBMIT JEST WSZYSTKO W FORMIK PROPS !!! - - - - - -  -');
         formikProps.submitForm();
         ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
     }
