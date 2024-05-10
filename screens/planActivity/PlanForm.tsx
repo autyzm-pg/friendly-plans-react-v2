@@ -75,7 +75,7 @@ export const PlanForm: FC<Props> = ({
           <TextInput
             style={styles.textInput}
             placeholder={i18n.t('planActivity:planNamePlaceholder')}
-            value={plan?.name ?? values.planInput}
+            value={values.planInput}
             onChangeText={handleChange('planInput')}
             onBlur={handleSubmit}
             autoFocus={!plan?.name}
