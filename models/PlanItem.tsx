@@ -426,10 +426,27 @@ export class PlanItem implements PlanElement {
   }
 
   static deletePlanItem = async (planItem: PlanItem): Promise<void> => {
-    const deleteStudentData = `DELETE FROM PlanItem WHERE id = (?);`;
-    await executeQuery(deleteStudentData, [planItem.id]);
-    return 
-  }
+    const deletePlanItem = `DELETE FROM PlanItem WHERE id = (?);`;
+    const deletePlanElement = `DELETE FROM PlanElement WHERE id = (?);`
+
+    if (planItem.type == PlanItemType.ComplexTask) {
+      const subItems = await PlanSubItem.getPlanSubItems(planItem);
+      subItems.forEach(async(item) => (await PlanSubItem.removePlanSubItem(item)));
+    }
+
+    await executeQuery(deletePlanItem, [planItem.id]);
+    await executeQuery(deletePlanElement, [planItem.planElementId]);
+
+    // const result1 = await executeQuery(`SELECT * FROM PlanItem;`, []);
+    // const result2 = await executeQuery(`SELECT * FROM PlanElement;`, []);
+    // const result3 = await executeQuery(`SELECT * FROM PlanSubItem;`, []);
+
+    // console.log('PLAN ITEM: ' + result1.rows.length);
+    // console.log('PLAN ELEMENT: ' + result2.rows.length);
+    // console.log('PLAN SUB ITEM: ' + result3.rows.length);
+
+    return;
+  };
 
   static copyPlanItem = async (
     plan: Plan,
