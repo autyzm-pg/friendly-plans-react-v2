@@ -1,4 +1,5 @@
 import { executeQuery } from '../services/DatabaseService';
+import { Plan } from './Plan';
 
 export enum StudentDisplayOption {
   LargeImageSlide = 'largeImageSlide',
@@ -83,6 +84,7 @@ export class Student implements StudentData {
     for (let i = 0; i < resultSet.rows.length; i++) {
       resultsArray.push(resultSet.rows.item(i));
     }
+
     return resultsArray;
   }
 
@@ -111,8 +113,13 @@ export class Student implements StudentData {
 
   static deleteStudent = async (student: Student): Promise<void> => {
     const deleteStudentData = `DELETE FROM StudentData WHERE id = (?);`;
+
+    const plans = await Plan.getPlans(student.id);
+    plans.forEach(async(plan) => (await Plan.deletePlan(plan)));
+
     await executeQuery(deleteStudentData, [student.id]);
-    return 
+
+    return;
   }
 
   static getFirstStudent = async (): Promise<Student> => {
