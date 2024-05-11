@@ -74,8 +74,13 @@ export class Plan {
 
   static deletePlan = async (plan: Plan): Promise<void> => {
     const deleteStudentData = `DELETE FROM Plan WHERE id = (?);`;
+    
+    const planItems = await PlanItem.getPlanItems(plan);
+    planItems.forEach(async(item) => (await PlanItem.deletePlanItem(item)));
+
     await executeQuery(deleteStudentData, [plan.id]);
-    return 
+
+    return;
   }
 
   // TODO: deleting Plan items, elements and subitems
