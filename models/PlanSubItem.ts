@@ -65,6 +65,7 @@ export class PlanSubItem implements PlanElement {
 
   update = (changes: object) =>
     getPlanSubItemRef(this.studentId, this.planId, this.planItemId, this.id).update(changes);
+  
   delete = async () => {
     if(this.image) {
       await ImagePicker.cleanSingle(this.image.substring(0, this.image.lastIndexOf('/')));
@@ -223,4 +224,14 @@ export class PlanSubItem implements PlanElement {
         console.error("Error updating plan:", error);
     }
   }
+
+  static removePlanSubItem = async (planSubItem: PlanSubItem): Promise<void> => {
+    const removePlanSubItem = `DELETE FROM PlanSubItem WHERE planElementId = (?);`
+    const removePlanElement = `DELETE FROM PlanElement WHERE id = (?);`
+
+    await executeQuery(removePlanSubItem, [planSubItem.planElementId]);
+    await executeQuery(removePlanElement, [planSubItem.planElementId]);
+    
+    return;
+  };
 }

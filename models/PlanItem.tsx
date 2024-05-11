@@ -379,7 +379,8 @@ export class PlanItem implements PlanElement {
 
   static updatePlanItem = async (
     planItem: PlanItem,
-    planSubItems?: PlanSubItem[]
+    planSubItems?: PlanSubItem[],
+    deleteSubItems?: PlanSubItem[]
   ): Promise<void> => {
     try {
       const updatePlanElementTable = `
@@ -407,6 +408,13 @@ export class PlanItem implements PlanElement {
             await PlanSubItem.updatePlanSubItem(subItem)
           else 
             await PlanSubItem.createPlanSubItem(planItem, PlanItemType.SubElement, subItem, planItem.itemOrder)
+        }
+      }
+
+      if (deleteSubItems) {
+        for (const subItem of deleteSubItems) {
+          if (subItem.id == null) { continue; }
+          await PlanSubItem.removePlanSubItem(subItem);
         }
       }
 
