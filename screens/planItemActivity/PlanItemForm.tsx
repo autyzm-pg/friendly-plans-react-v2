@@ -42,7 +42,7 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
     taskType: planItem ? planItem.type : itemType
   })
 
-  const taskNameForChild = useRef('');
+  const taskNameForChild = useRef<string | null>(null);
 
   const [nameForChildAsTaskName, setNameForChildAsTaskName] = useState(true);
 
@@ -61,8 +61,8 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
   };
 
   useEffect(() => {
-    setNameForChildAsTaskName(!planItem || planItem.name === planItem.nameForChild)
-    if (planItem) {
+    setNameForChildAsTaskName(!planItem || planItem.name === planItem.nameForChild);
+    if (planItem && nameForChildAsTaskName) {
       taskNameForChild.current = planItem.nameForChild
     }
   }, [])
@@ -92,8 +92,12 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
               textStyle={styles.textInput}
               placeholder={i18n.t('planItemActivity:taskNamePlaceholder')}
               defaultValue={values.name}
-              onChangeText={handleChange('name')}
-              editable={!nameForChildAsTaskName}
+              onChangeText={(value) => {
+                nameForChildAsTaskName
+                  ? setTaskName(value)
+                  : setFieldValue('name', value);
+              }}
+              editable={true}
             />
             {errors.name && touched.name && <StyledText style={styles.errorMessage}>{errors.name}</StyledText>}
           </View>
@@ -108,10 +112,10 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
               }}
             />
         </View>
-        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
-        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} onTaskNameForChildChanged={setTaskName} />}
-        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
-        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} onTaskNameForChildChanged={setTaskName}/>}
+        {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} taskName={taskNameForChild.current} onTaskNameForChildChanged={setTaskName}/>}
+        {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} taskName={taskNameForChild.current} onTaskNameForChildChanged={setTaskName} />}
+        {(state.taskType === PlanItemType.Interaction) && <Interaction navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} taskName={taskNameForChild.current} onTaskNameForChildChanged={setTaskName}/>}
+        {(state.taskType === PlanItemType.Break) && <Break navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} taskName={taskNameForChild.current} onTaskNameForChildChanged={setTaskName}/>}
 
       </>
     );
