@@ -18,6 +18,7 @@ interface Props {
   formikProps: FormikProps<PlanItemFormData>;
   style?: StyleProp<ViewStyle>;
   navigation: NavigationProp<any>;
+  taskName: string | null;
   onTaskNameForChildChanged: (name: string) => void;
 }
 
@@ -25,7 +26,7 @@ interface State {
   selectedTime: number;
 }
 
-export const Break: FC<Props> = ({ navigation, planItem, formikProps, style, onTaskNameForChildChanged }) => {
+export const Break: FC<Props> = ({ navigation, planItem, formikProps, style, taskName, onTaskNameForChildChanged }) => {
   const [state, setState] = useState<State>({
     selectedTime: formikProps.initialValues.time
   })
@@ -41,6 +42,11 @@ export const Break: FC<Props> = ({ navigation, planItem, formikProps, style, onT
   useEffect(() => {
     setScreenTitle(i18n.t('planItemActivity:viewTitleTask'));
   }, []);
+
+  useEffect(() => {
+    if (taskName != null)
+      formikProps.setFieldValue('nameForChild', taskName);
+  }, [taskName])
 
   const timeInfo = () => {
     const hours = Math.floor(state.selectedTime / 3600);
