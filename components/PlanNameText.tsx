@@ -9,6 +9,7 @@ interface Props {
   textSize: string;
   isUpperCase?: boolean;
   isSettingsPreview?: boolean;
+  alignTextCenter?: boolean;
 }
 
 const planNameTypography: Record<string, any> = {
@@ -43,12 +44,24 @@ export const PlanNameText: FC<Props> = ({
 
   const getPlanDisplayName = () => (isUpperCase ? planName.toUpperCase() : planName);
 
-  return <StyledText style={[styles.planNameText, getTypography()]}>{getPlanDisplayName()}</StyledText>;
+  return <StyledText style={[
+    styles.planNameText, 
+    props.alignTextCenter ? styles.textAlignCenter : styles.textAlignLeft, 
+    getTypography()
+  ]}>
+    {getPlanDisplayName()}
+  </StyledText>;
 };
 
 const styles = StyleSheet.create({
   planNameText: {
     color: palette.textBody,
+    textAlign: 'left',
+  },
+  textAlignLeft: {
+    textAlign: 'left',
+  },
+  textAlignCenter: {
     textAlign: 'center',
   },
 });
