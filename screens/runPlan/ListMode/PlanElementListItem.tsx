@@ -164,7 +164,7 @@ export class PlanElementListItem extends React.PureComponent<Props> {
           style={[styles.container, (this.props.currentTaskIndex === this.props.index) && {backgroundColor: palette.playButton}]}>
           <View
             style={[this.container(), (this.props.currentTaskIndex === this.props.index) && {backgroundColor: palette.playButton}]}>
-            <View style={{flex: 1}}>
+            <View style={{width: 84}}>
               {(this.props.item.lector || this.props.item.voicePath) ?
                 <IconButton disabled={Boolean(this.props.item.completed)} size={64} onPress={this.speak}
                       name="volume-high"
@@ -172,14 +172,14 @@ export class PlanElementListItem extends React.PureComponent<Props> {
             </View>
 
 
-            <View style={{flex: 1}}>
+            {this.props.student.displaySettings !== StudentDisplayOption.TextList && <View style={{width: 120}}>
               {(this.showImage && this.props.item.image) ? (
                 <Image
                   resizeMode={'contain'}
                   style={styles.image}
                   source={{uri: this.props.item.image!}}
                 />) : null}
-            </View>
+            </View>}
 
 
             <View style={{flex: 1}}>
@@ -190,7 +190,7 @@ export class PlanElementListItem extends React.PureComponent<Props> {
               />
             </View>
 
-            <View style={{flex: 1}}>
+            <View style={{flex: 0}}>
               {this.isTimerAvailableForElement() ?
                 <PlanItemTimer itemTime={this.props.item.time}/> : null}
             </View>
