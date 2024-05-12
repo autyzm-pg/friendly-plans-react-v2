@@ -30,7 +30,7 @@ export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
         value: key,
     })));
     
-    const initialTimerIndex = items.current.findIndex(item => item.value === sound);
+    const initialTimerIndex = items.current.findIndex(item => item.key === sound);
     const [timerIndex, setTimerIndex] = useState(initialTimerIndex !== -1 ? initialTimerIndex : 0);
 
     const getLabel = () => {
