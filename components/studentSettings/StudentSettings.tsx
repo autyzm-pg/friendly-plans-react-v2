@@ -32,6 +32,7 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
     textSize: student.textSize,
     isUpperCase: student.isUpperCase,
     isSwipeBlocked: student.isSwipeBlocked,
+    timer: student.timer
   });
   
   const {currentStudent} = useCurrentStudentContext();
@@ -40,8 +41,12 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
     return !!state.name;
   }
 
+  const handleTimerChange = (timer: string) => {
+    setState(prevState => ({ ...prevState, timer: timer }));
+  }
+
   const handleNameChange = (name: string) => {
-    setState(prevState => ({ ...prevState, name }));
+    setState(prevState => ({ ...prevState, name: name }));
   }
 
   const onDisplaySettingsChange = (displaySettings: StudentDisplayOption) => {
@@ -93,7 +98,7 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
       <Separator extraWide/>
       <StyledText
         style={[styles.label, styles.taskViewLabel]}>{i18n.t('studentSettings:soundSettings')}</StyledText>
-      <AlarmSoundSetting available={false} value="Beep"/>
+      <AlarmSoundSetting sound={state.timer} onValueChange={handleTimerChange}/>
       <Separator extraWide/>
 
       {!!onStudentCreate && (

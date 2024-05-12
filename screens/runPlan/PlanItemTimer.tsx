@@ -5,11 +5,15 @@ import { Icon, StyledText } from '../../components';
 import Sound from 'react-native-sound';
 import sounds from '../../assets/sounds/sounds';
 
+import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
+
 interface Props {
   itemTime: number;
 }
 
 export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
+  const { currentStudent } = useCurrentStudentContext();
+
   const timerID = useRef<any>(null);
   const soundTrack = useRef<any>(null);
 
@@ -36,7 +40,7 @@ export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
   }, [itemTime])
 
   useEffect(() => {
-    soundTrack.current = new Sound(sounds.timerEndOfTime, Sound.MAIN_BUNDLE);
+    soundTrack.current = new Sound(currentStudent ? currentStudent.timer : sounds.default, Sound.MAIN_BUNDLE);
     return () => {
       resetTimer();
       soundTrack.current.stop();

@@ -41,7 +41,7 @@ export const createTables = async () => {
   // await executeQuery('DROP TABLE PlanElement');
   // await executeQuery('DROP TABLE PlanSubItem');
   // await executeQuery('DROP TABLE StudentData');
-  // await executeQuery('DROP TABLE Password')
+  // await executeQuery('DROP TABLE Password');
 
   const createPlanTable = `CREATE TABLE IF NOT EXISTS Plan (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,studentId INTEGER,emoji TEXT)`;
 
@@ -78,6 +78,7 @@ export const createTables = async () => {
     textSize TEXT,
     isUpperCase INTEGER DEFAULT 0,
     isSwipeBlocked INTEGER DEFAULT 0,
+    timer TEXT,
     CHECK (displaySettings IN ('largeImageSlide', 'imageWithTextSlide', 'textSlide', 'imageWithTextList', 'textList')),
     CHECK (textSize IN ('s', 'm', 'l', 'xl'))
   )`;

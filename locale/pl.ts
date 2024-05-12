@@ -13,6 +13,13 @@ const translations = {
     activeStudent: 'Aktywny uczeń',
     noStudentCreated: 'Kliknij ikonę ludzi po prawej stronie, aby utworzyć studenta.'
   },
+  timerSounds: {
+    default: 'domyślny',
+    beep: 'bip',
+    digital: 'cyfrowy',
+    electronic: 'elektroniczny',
+    vibrate: 'wibracje'
+  },
   modeSetting: {
     title: 'Odblokuj opcję edycji',
     createPassword: 'Utwórz nowe hasło',

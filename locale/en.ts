@@ -13,6 +13,13 @@ const translations = {
     activeStudent: 'Active student',
     noStudentCreated: 'Click on the people icon on the right to create a student.'
   },
+  timerSounds: {
+    default: 'default',
+    beep: 'beep',
+    digital: 'digital',
+    electronic: 'electronic',
+    vibrate: 'vibrate'
+  },
   modeSetting: {
     title: 'Unlock edition options',
     createPassword: 'Create new password',

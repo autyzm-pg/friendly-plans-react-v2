@@ -1,3 +1,4 @@
+import sounds from '../assets/sounds/sounds';
 import { executeQuery } from '../services/DatabaseService';
 import { Plan } from './Plan';
 
@@ -22,6 +23,7 @@ export interface StudentData {
   textSize: StudentTextSizeOption;
   isUpperCase: boolean;
   isSwipeBlocked: boolean;
+  timer: string;
 }
 
 export class Student implements StudentData {
@@ -33,6 +35,7 @@ export class Student implements StudentData {
   isUpperCase: boolean;
   isSwipeBlocked: boolean;
   collectionCount: number = 0;
+  timer: string;
 
   constructor() {
     this.name = '';
@@ -40,6 +43,7 @@ export class Student implements StudentData {
     this.textSize = StudentTextSizeOption.Large;
     this.isUpperCase = false;
     this.isSwipeBlocked = false;
+    this.timer = sounds.default;
   }
 
   static getPlansCount = async (studentId: string): Promise<number> => {
@@ -51,8 +55,8 @@ export class Student implements StudentData {
   static createStudent = async (student: StudentData): Promise<Student> => {
 
     const insertIntoStudentDataTable = `
-      INSERT INTO StudentData (name, displaySettings, textSize, isUpperCase, isSwipeBlocked)
-      VALUES ((?), (?), (?), (?), (?));
+      INSERT INTO StudentData (name, displaySettings, textSize, isUpperCase, isSwipeBlocked, timer)
+      VALUES ((?), (?), (?), (?), (?), (?));
     `;
     await executeQuery('BEGIN TRANSACTION;');
 
@@ -61,7 +65,8 @@ export class Student implements StudentData {
       student.displaySettings, 
       student.textSize, 
       student.isUpperCase ? 1 : 0, 
-      student.isSwipeBlocked ? 1 : 0
+      student.isSwipeBlocked ? 1 : 0,
+      student.timer
     ]);
     
     const resultSet = await executeQuery(`SELECT * FROM StudentData WHERE name = (?) ORDER BY id DESC LIMIT 1`, [student.name])
@@ -92,7 +97,7 @@ export class Student implements StudentData {
     try {
       const updateQuery = `
           UPDATE StudentData
-          SET name = (?), displaySettings = (?), textSize = (?), isUpperCase = (?), isSwipeBlocked = (?)
+          SET name = (?), displaySettings = (?), textSize = (?), isUpperCase = (?), isSwipeBlocked = (?), timer = (?)
           WHERE id = (?);
       `;
 
@@ -102,6 +107,7 @@ export class Student implements StudentData {
         student.textSize,
         student.isUpperCase ? 1 : 0,
         student.isSwipeBlocked ? 1 : 0,
+        student.timer,
         studentId
       ];
 
@@ -139,6 +145,7 @@ export class Student implements StudentData {
       && o1.isSwipeBlocked === o2.isSwipeBlocked
       && o1.isUpperCase === o2.isUpperCase
       && o1.textSize === o2.textSize
+      && o1.timer === o2.timer
     )
   }
 
