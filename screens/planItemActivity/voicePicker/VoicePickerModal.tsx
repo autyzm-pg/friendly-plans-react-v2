@@ -13,6 +13,7 @@ import Sound from 'react-native-sound';
 import RNFS from 'react-native-fs';
 import { NavigationProp } from '@react-navigation/native';
 import {Route} from '../../../navigation';
+import uuid from 'react-native-uuid';
 
 interface Props {
   closeModal?: () => void;
@@ -64,7 +65,7 @@ export const VoicePickerModal: FC<Props> = ({
         playerRef.current.release();
       }
     };
-  }, [])
+  }, []);
 
   const openGallery = async () => {
     closeModal();
@@ -74,15 +75,20 @@ export const VoicePickerModal: FC<Props> = ({
       allowMultiSelection: false,
     });
     if (!response[0]) { return; }
-    const fileTargetPath = recordingsDir + response[0].name;
-      await RNFS.copyFile(response[0].uri, fileTargetPath)
-      .then(() => {
-        //console.log('Recording copied to: ' + fileTargetPath);
-        voiceUriUpdate('file://' + fileTargetPath);
-      })
-      .catch((error) => {
-        console.error('Error copying recording: ', error);
-      });
+    let fileTargetPath = recordingsDir + response[0].name;
+    const doesFileExist = await RNFS.exists(fileTargetPath);
+    if (doesFileExist) { 
+      const unique = uuid.v4() as string;
+      fileTargetPath = recordingsDir + unique.substring(0, 8) + '_' + response[0].name;
+    }
+    await RNFS.copyFile(response[0].uri, fileTargetPath)
+    .then(() => {
+      //console.log('Recording copied to: ' + fileTargetPath);
+      voiceUriUpdate('file://' + fileTargetPath);
+    })
+    .catch((error) => {
+      console.error('Error copying recording: ', error);
+    });
   };
 
   const callSetLector = () => {

@@ -10,6 +10,7 @@ import {ImageAction} from '../ImageAction';
 import RNFS from 'react-native-fs';
 import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation/routes';
+import uuid from 'react-native-uuid';
 
 interface Props {
     closeModal?: () => void;
@@ -52,7 +53,7 @@ export const ImagePickerModal: FC<Props> = ({
         .catch((error) => {
             // console.error('Cannot check if directory exists: ' + imagesDir, error);
         });
-    }, [])
+    }, []);
 
     const openCamera = async () => {
         closeModal();
@@ -77,7 +78,12 @@ export const ImagePickerModal: FC<Props> = ({
             mediaType: 'photo'
         }).then(async (image) => {
             if(!image.path) { return; }
-            const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
+            let fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
+            const doesFileExist = await RNFS.exists(fileTargetPath);
+            if (doesFileExist) { 
+                const unique = uuid.v4() as string;
+                fileTargetPath = imagesDir + unique.substring(0, 8) + '_' + image.path.substring(image.path.lastIndexOf('/') + 1);
+            }
             await RNFS.copyFile(image.path, fileTargetPath)
             .then(() => {
                 // console.log('Image copied to: ' + fileTargetPath);
