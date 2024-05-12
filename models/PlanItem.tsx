@@ -542,4 +542,28 @@ export class PlanItem implements PlanElement {
     const resultSet = await executeQuery(selectAllFromPlanItemsTable, [planId]);
     return resultSet.rows.length || 0;
   }
+
+  static getImgUriUsed = async (): Promise<string[]> => {
+    const selectQuery = `SELECT DISTINCT image FROM PlanElement;`;
+    const result = await executeQuery(selectQuery);
+
+    const usedImageUris: string[] = [];
+    for (let i = 0; i < result.rows.length; i++) {
+        usedImageUris.push(result.rows.item(i).image);
+    }
+
+    return usedImageUris;
+  };
+
+  static getVoiceUriUsed = async (): Promise<string[]> => {
+    const selectQuery = `SELECT DISTINCT voicePath FROM PlanElement;`;
+    const result = await executeQuery(selectQuery);
+
+    const usedVoiceUris: string[] = [];
+    for (let i = 0; i < result.rows.length; i++) {
+        usedVoiceUris.push(result.rows.item(i).voicePath);
+    }
+
+    return usedVoiceUris;
+  };
 }

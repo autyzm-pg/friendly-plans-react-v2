@@ -17,6 +17,7 @@ interface Props {
 
 export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const [recordings, setRecordings] = useState<string[]>([]);
+    const [usedVoices, setVoices] = useState<string[]>([]);
     const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
     const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
     const playerRef = useRef<any>(null);
@@ -24,6 +25,8 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     useEffect(()=> {
     const fetchRecordings = async () => {
         try {
+            const voices = await PlanItem.getVoiceUriUsed();
+            setVoices(voices);
             const result = await RNFS.readDir(recordingsDir);
             // console.log('Loaded recordings...');
             const recPaths = result.map(res => 'file://' + res.path);
@@ -79,9 +82,10 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
 
     const renderItem = ({ item }: { item: string}) => {
         const isSelected = selectedRecordings.includes(item);
+        const isUsed = usedVoices.includes(item);
         return (
             <TouchableOpacity onLongPress={() => handleImageLongPress(item)} onPress={() => handleImageShortPress(item)}>
-                <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }]}>
+                <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.8 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
                         <IconButton name="volume-high" type="material-community" size={40} onPress={() => playAudio(item)}/>

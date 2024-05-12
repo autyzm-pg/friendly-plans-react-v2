@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import RNFS from 'react-native-fs';
-import { FullScreenTemplate, IconButton } from '../../../components';
+import { FullScreenTemplate, Icon, IconButton } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { dimensions, palette, typography } from '../../../styles';
 import { PlanItem } from '../../../models';
@@ -16,12 +16,15 @@ interface Props {
 
 export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   const [images, setImages] = useState<string[]>([]);
+  const [usedImages, setUsedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
+        const images = await PlanItem.getImgUriUsed();
+        setUsedImages(images);
         const result = await RNFS.readDir(imagesDir);
         const imgPaths = result.map(res => 'file://' + res.path);
         // const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();
@@ -35,11 +38,16 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const renderImageItem = ({ item }: { item: string }) => {
     const isSelected = selectedImages.includes(item);
+    const isUsed = usedImages.includes(item);
     return (
       <TouchableOpacity onLongPress={() => handleImageLongPress(item)} onPress={() => handleImageShortPress(item)}>
         <Image
           source={{ uri: item }}
-          style={[styles.image, { width: 150, height: 150 }, isSelected && { borderWidth: 5, borderColor: palette.primary }]}
+          style={[styles.image, 
+            { width: 150, height: 150 }, 
+            isSelected && { borderWidth: 5, borderColor: palette.primary },
+            isUsed && { opacity: 0.5 }
+          ]}
         />
       </TouchableOpacity>
     );
