@@ -77,9 +77,9 @@ export const VoicePickerModal: FC<Props> = ({
     if (!response[0]) { return; }
     let fileTargetPath = recordingsDir + response[0].name;
     const doesFileExist = await RNFS.exists(fileTargetPath);
-    if (doesFileExist) { 
-      const unique = uuid.v4() as string;
-      fileTargetPath = recordingsDir + unique.substring(0, 8) + '_' + response[0].name;
+    if (doesFileExist && response[0].name) { 
+      const [name, extension] = response[0].name.split('.');
+      fileTargetPath = recordingsDir + name + '_' + uuid.v4() + '.' + extension;
     }
     await RNFS.copyFile(response[0].uri, fileTargetPath)
     .then(() => {
@@ -99,7 +99,7 @@ export const VoicePickerModal: FC<Props> = ({
   const openLibrary = async () => {
     closeModal();
     navigation.navigate(Route.RecordingLibrary, {updateRecording: voiceUriUpdate});
-  }
+  };
 
   const callDeleteVoice = async () => {
     closeModal();
@@ -143,7 +143,7 @@ export const VoicePickerModal: FC<Props> = ({
           }
         });
     }
-  }  
+  };
 
   return (
     <View style={styles.imageActionContainer}>

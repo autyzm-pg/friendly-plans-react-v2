@@ -70,7 +70,7 @@ export const ImagePickerModal: FC<Props> = ({
                 console.error('Error moving image: ', error);
             });
         });
-      };
+    };
 
     const openGallery = async () => {
         closeModal();
@@ -81,8 +81,8 @@ export const ImagePickerModal: FC<Props> = ({
             let fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             const doesFileExist = await RNFS.exists(fileTargetPath);
             if (doesFileExist) { 
-                const unique = uuid.v4() as string;
-                fileTargetPath = imagesDir + unique.substring(0, 8) + '_' + image.path.substring(image.path.lastIndexOf('/') + 1);
+                const [name, extension] = image.path.substring(image.path.lastIndexOf('/') + 1).split('.');
+                fileTargetPath = imagesDir + name + '_' + uuid.v4() + '.' + extension;
             }
             await RNFS.copyFile(image.path, fileTargetPath)
             .then(() => {
