@@ -72,6 +72,16 @@ export const ImagePickerModal: FC<Props> = ({
         });
     };
 
+    const splitToNameExtension = (fileName: string) => {
+        const idx = fileName.lastIndexOf('.');
+        if (idx !== -1) {
+          const name = fileName.substring(0, idx);
+          const extension = fileName.substring(idx + 1);
+          return [name, extension];
+        }
+        return fileName;
+    };
+
     const openGallery = async () => {
         closeModal();
         await ImagePicker.openPicker({
@@ -81,7 +91,7 @@ export const ImagePickerModal: FC<Props> = ({
             let fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
             const doesFileExist = await RNFS.exists(fileTargetPath);
             if (doesFileExist) { 
-                const [name, extension] = image.path.substring(image.path.lastIndexOf('/') + 1).split('.');
+                const [name, extension] = splitToNameExtension(image.path.substring(image.path.lastIndexOf('/') + 1));
                 fileTargetPath = imagesDir + name + '_' + uuid.v4() + '.' + extension;
             }
             await RNFS.copyFile(image.path, fileTargetPath)

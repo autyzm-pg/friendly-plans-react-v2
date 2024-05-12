@@ -67,6 +67,16 @@ export const VoicePickerModal: FC<Props> = ({
     };
   }, []);
 
+  const splitToNameExtension = (fileName: string) => {
+    const idx = fileName.lastIndexOf('.');
+    if (idx !== -1) {
+      const name = fileName.substring(0, idx);
+      const extension = fileName.substring(idx + 1);
+      return [name, extension];
+    }
+    return fileName;
+  };
+
   const openGallery = async () => {
     closeModal();
     const response = await DocumentPicker.pick({
@@ -78,7 +88,7 @@ export const VoicePickerModal: FC<Props> = ({
     let fileTargetPath = recordingsDir + response[0].name;
     const doesFileExist = await RNFS.exists(fileTargetPath);
     if (doesFileExist && response[0].name) { 
-      const [name, extension] = response[0].name.split('.');
+      const [name, extension] = splitToNameExtension(response[0].name);
       fileTargetPath = recordingsDir + name + '_' + uuid.v4() + '.' + extension;
     }
     await RNFS.copyFile(response[0].uri, fileTargetPath)
