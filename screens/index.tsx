@@ -11,6 +11,7 @@ export { PlanActivityScreen } from './planActivity/PlanActivityScreen';
 export { PlanItemTaskScreen } from './planItemActivity/PlanItemTaskScreen';
 export { ImageLibraryScreen } from './planItemActivity/imagePicker/ImageLibraryScreen';
 export { RecordingLibraryScreen } from './planItemActivity/voicePicker/RecordingLibraryScreen'
+export { RecordingNameEditor } from './planItemActivity/voicePicker/RecordingNameEditorScreen'
 export { StudentCreateScreen } from './studentCreate/StudentCreateScreen';
 export { StudentsListForCopyPlanScreen } from '../copyExistingPlan/students/StudentsListForCopyPlanScreen';
 export { StudentsListSearchForCopyPlanScreen } from '../copyExistingPlan/students/StudentsListSearchForCopyPlanScreen';

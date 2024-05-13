@@ -18,10 +18,12 @@ interface Props {
 export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const [recordings, setRecordings] = useState<string[]>([]);
     const [usedVoices, setVoices] = useState<string[]>([]);
+
     const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
+    const selectMode = useRef<boolean>(route.params?.updateRecording ? true : false);
+    
     const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
     const playerRef = useRef<any>(null);
-    const selectMode = useRef<boolean>(route.params?.updateRecording ? true : false);
 
     const fetchRecordings = async () => {
         try {
@@ -87,15 +89,16 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         }
     };
 
+
     const renderItem = ({ item }: { item: string}) => {
         const isSelected = selectedRecordings.includes(item);
         const isUsed = usedVoices.includes(item);
         return (
-            <TouchableOpacity onPress={() => handlePress(item)}>
+            <TouchableOpacity onPress={() => handlePress(item)} onLongPress={() =>  { navigation.navigate(Route.RecordingNameEditor, { uri: item }) }}>
                 <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.6 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
-                        <IconButton name='volume-high' type='material-community' size={40} onPress={() => playAudio(item)}/>
+                        <IconButton name='volume-high' type='material-community' size={40} onPress={() => playAudio(item)} style={{marginLeft: dimensions.spacingSmall}}/>
                     </View>
                 </Card>
             </TouchableOpacity>
@@ -132,7 +135,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                     <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0}/>
                 </View>
                 <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-                    <IconButton name={'information-circle'} type={'ionicon'} size={40} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
+                    <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
                 </ModalTrigger>
             </View>
         }

@@ -107,7 +107,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
             <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0}/>
           </View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-              <IconButton name={'information-circle'} type={'ionicon'} size={40} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
+              <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
           </ModalTrigger>
         </View>
     }

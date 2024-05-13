@@ -11,6 +11,7 @@ import {
   PlanSearchForCopyScreen, 
   PlansListForCopyScreen, 
   RecordingLibraryScreen, 
+  RecordingNameEditor, 
   StudentCreateScreen, 
   StudentSettingsScreen, 
   StudentsListForCopyPlanScreen, 
@@ -132,7 +133,6 @@ export function RootStackNavigation() {
         <Stack.Screen
           name={Route.ImageLibrary}
           component={ImageLibraryScreen}
-          initialParams={{selectMode: false}}
           options={{}}
         />
         <Stack.Screen
@@ -144,6 +144,11 @@ export function RootStackNavigation() {
           name={Route.RecordingLibrary}
           component={RecordingLibraryScreen}
           options={{}}
+        />
+        <Stack.Screen
+          name={Route.RecordingNameEditor}
+          component={RecordingNameEditor}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name={Route.ModeSwitch}

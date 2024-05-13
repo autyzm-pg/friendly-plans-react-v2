@@ -27,6 +27,7 @@ export enum Route {
   PlanItemTask = 'PlanItemTask',
   ImageLibrary = 'ImageLibrary',
   RecordingLibrary = 'RecordingLibrary',
+  RecordingNameEditor = 'RecordingNameEditor',
   // UnauthenticatedStackNavigator
   SignIn = 'SignIn',
   SignUp = 'SignUp',
