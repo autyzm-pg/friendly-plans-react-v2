@@ -117,12 +117,14 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
 
     return (
     <>
-        <View style={styles.trashIconContainer}>
-            <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
-            <View style={styles.iconButtonContainer}>
-                <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0 || selectMode.current}/>
+        {!selectMode.current && 
+            <View style={styles.trashIconContainer}>
+                <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
+                <View style={styles.iconButtonContainer}>
+                    <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0}/>
+                </View>
             </View>
-        </View>
+        }
         <FullScreenTemplate padded darkBackground>
         {recordings.length > 0
         ?
