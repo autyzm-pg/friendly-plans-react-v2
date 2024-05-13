@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Card, FullScreenTemplate, IconButton } from '../../../components';
+import { Card, FullScreenTemplate, IconButton, ModalTrigger } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { dimensions, palette, typography } from '../../../styles';
@@ -115,6 +115,14 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         ]);
       };
 
+    const showInfo = () => {
+        return (
+            <View style={styles.imageActionContainer}>
+            <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('recGallery:usage')}</Text>
+            </View>
+        );
+    };
+
     return (
     <>
         {!selectMode.current && 
@@ -123,6 +131,9 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                 <View style={styles.iconButtonContainer}>
                     <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0}/>
                 </View>
+                <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
+                    <IconButton name={'information-circle'} type={'ionicon'} size={40} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
+                </ModalTrigger>
             </View>
         }
         <FullScreenTemplate padded darkBackground>

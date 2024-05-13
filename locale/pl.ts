@@ -35,12 +35,14 @@ const translations = {
   imageGallery: {
     information: 'Aktualnie wybrane obrazy:',
     warningHeader: 'USUŃ WYBRANE OBRAZY',
-    warningInformation: 'Usuwanie wybranych obrazów jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.'
+    warningInformation: 'Usuwanie wybranych obrazów jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.',
+    usage: 'Wszystkie obrazy użyte co najmniej raz w dowolnym zadaniu (z urządzenia, aparatu lub narzędzia do edycji) są przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte.',
   },
   recGallery: {
     information: 'Aktualnie wybrane nagrania:',
     warningHeader: 'USUŃ WYBRANE NAGRANIA',
-    warningInformation: 'Usuwanie wybranych nagrań jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.'
+    warningInformation: 'Usuwanie wybranych nagrań jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.',
+    usage: 'Wszystkie dźwięki użyte co najmniej raz w dowolnym zadaniu (z urządzenia lub nagrane) są przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte. Przytrzymaj, aby zmienić nazwę.',
   },
   common: {
     cancel: 'ANULUJ',
