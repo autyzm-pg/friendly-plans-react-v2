@@ -12,27 +12,29 @@ import { i18n } from '../../../locale';
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
+};
 
 export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   const [images, setImages] = useState<string[]>([]);
   const [usedImages, setUsedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
+  const selectMode = useRef<boolean>(route.params?.updateImage ? true : false);
+
+  const fetchImages = async () => {
+    try {
+      const images = await PlanItem.getImgUriUsed();
+      setUsedImages(images);
+      const result = await RNFS.readDir(imagesDir);
+      const imgPaths = result.map(res => 'file://' + res.path);
+      // const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();
+      setImages(imgPaths);
+    } catch (err: any) {
+      console.error('Cannot load images:', err);
+    }
+  };
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const images = await PlanItem.getImgUriUsed();
-        setUsedImages(images);
-        const result = await RNFS.readDir(imagesDir);
-        const imgPaths = result.map(res => 'file://' + res.path);
-        // const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();
-        setImages(imgPaths);
-      } catch (err: any) {
-        console.error('Cannot load images:', err);
-      }
-    };
     fetchImages();
   }, []);
 
@@ -40,7 +42,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const isSelected = selectedImages.includes(item);
     const isUsed = usedImages.includes(item);
     return (
-      <TouchableOpacity onLongPress={() => handleImageLongPress(item)} onPress={() => handleImageShortPress(item)}>
+      <TouchableOpacity onPress={() => handlePress(item)}>
         <Image
           source={{ uri: item }}
           style={[styles.image, 
@@ -53,12 +55,16 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     );
   };
 
-  const handleImageLongPress = (uri: string) => {
+  const handlePress = (uri: string) => {
+    selectMode.current ? chooseImageForTask(uri) : chooseImageForDeleting(uri);
+  };
+
+  const chooseImageForTask = (uri: string) => {
     route.params?.updateImage(uri);
     navigation.goBack();
   };
 
-  const handleImageShortPress = (uri: string) => {
+  const chooseImageForDeleting = (uri: string) => {
     const isSelected = selectedImages.includes(uri);
     if (isSelected) {
       const filteredImages = selectedImages.filter((image) => image !== uri);
@@ -87,7 +93,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     <View style={styles.trashIconContainer}>
         <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text>
         <View style={styles.iconButtonContainer}>
-          <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0}/>
+          <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0 || selectMode.current}/>
         </View>
       </View>
     <FullScreenTemplate darkBackground>

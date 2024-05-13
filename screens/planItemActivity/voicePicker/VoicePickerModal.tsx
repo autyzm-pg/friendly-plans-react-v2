@@ -108,7 +108,7 @@ export const VoicePickerModal: FC<Props> = ({
 
   const openLibrary = async () => {
     closeModal();
-    navigation.navigate(Route.RecordingLibrary, {updateRecording: voiceUriUpdate});
+    navigation.navigate(Route.RecordingLibrary, { updateRecording: voiceUriUpdate });
   };
 
   const callDeleteVoice = async () => {

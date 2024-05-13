@@ -132,6 +132,7 @@ export function RootStackNavigation() {
         <Stack.Screen
           name={Route.ImageLibrary}
           component={ImageLibraryScreen}
+          initialParams={{selectMode: false}}
           options={{}}
         />
         <Stack.Screen
@@ -147,7 +148,6 @@ export function RootStackNavigation() {
         <Stack.Screen
           name={Route.ModeSwitch}
           component={ModeSwitchScreen}
-          options={{ headerShown: false }}
         />
         <Stack.Screen
           name={Route.RunPlanList}

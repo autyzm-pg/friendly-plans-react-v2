@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
 
@@ -17,86 +17,105 @@ const DASHBOARD = 'Dashboard';
 
 export const Header: React.FC<Props> = ({...props}) => {
   const { editionMode, loading } = useRootNavigatorContext();
-  const { currentStudent, setCurrentStudent } = useCurrentStudentContext();
-  
-  const navigation = props.navigation
+  const { currentStudent } = useCurrentStudentContext();
+  const navigation = useRef(props.navigation);
 
   const getTitle = () => {
     if (currentStudent) {
       return i18n.t('header:activeStudent') + ': ' + currentStudent.name;
     }
-    return i18n.t('header:noStudentCreated')
-  }
+    return i18n.t('header:noStudentCreated');
+  };
 
   const goBack = () => {
     const { route } = props;
     if (route.name === Route.RunPlanSlide || route.name === Route.RunPlanList) {
-      navigation.navigate(Route.Dashboard);
+      navigation.current.navigate(Route.Dashboard);
     } else {
-      navigation.goBack();
+      navigation.current.goBack();
     }
-  }
+  };
 
   const navigateToStudentsList = () => {
-    navigation.navigate(Route.StudentsList);
+    navigation.current.navigate(Route.StudentsList);
   };
 
   const navigateToStudentSettings = () => {
-    navigation.navigate(Route.StudentSettings, {
+    navigation.current.navigate(Route.StudentSettings, {
       student: currentStudent,
     });
   };
 
   const isDashboard = () => {
     const { route } = props;
-    const routeName = route.name
-
+    const routeName = route.name;
     return routeName === DASHBOARD;
-  }
+  };
 
   const renderButtons = () => {
-    return isDashboard() ? (
-      <>
-        {currentStudent && editionMode && (
+    if (isDashboard() && editionMode) {
+      return (
+        <>
           <IconButton
-            name="settings"
-            type="material"
-            color={palette.textWhite}
+            name='photo-library'
+            type='material'
             size={24}
+            color={palette.textWhite}
             containerStyle={styles.iconContainer}
-            onPress={navigateToStudentSettings}
+            onPress={() => {navigation.current.navigate(Route.ImageLibrary)}}/>
+          <IconButton
+            name='library-music'
+            type='material'
+            size={24}
+            color={palette.textWhite}
+            containerStyle={styles.iconContainer}
+            onPress={() => {navigation.current.navigate(Route.RecordingLibrary)}}/>
+          <IconButton
+            name='people'
+            type='material'
+            size={24}
+            color={palette.textWhite}
+            containerStyle={styles.iconContainer}
+            onPress={navigateToStudentsList}
           />
-        )}
-        {editionMode && <IconButton
-          name="people"
-          type="material"
-          size={24}
-          color={palette.textWhite}
-          containerStyle={styles.iconContainer}
-          onPress={navigateToStudentsList}
-        />}
-          <ModeSwitchButton navigation={navigation}/>
-      </>
-    ) : null;
-  }
+          {currentStudent && (
+            <IconButton
+              name='settings'
+              type='material'
+              color={palette.textWhite}
+              size={24}
+              containerStyle={styles.iconContainer}
+              onPress={navigateToStudentSettings}
+            />
+          )}
+        </>
+      );
+    }
+    return null;
+  };
 
   return (
     <View style={styles.container}>
       {!isDashboard() &&
           <IconButton
           name={'arrow-back'}
-          type="material"
+          type='material'
           onPress={goBack}
           size={24}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
         />
       }
-      {!loading && <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>}
-      {!loading && renderButtons()}
+      {!loading && (
+      <>
+        <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
+        {renderButtons()}
+        {isDashboard() && <ModeSwitchButton navigation={navigation.current}/>}
+      </>
+      )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

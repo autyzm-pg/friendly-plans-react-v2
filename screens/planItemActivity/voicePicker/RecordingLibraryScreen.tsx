@@ -13,7 +13,7 @@ import { Route } from '../../../navigation';
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
+};
 
 export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const [recordings, setRecordings] = useState<string[]>([]);
@@ -21,21 +21,22 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
     const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
     const playerRef = useRef<any>(null);
+    const selectMode = useRef<boolean>(route.params?.updateRecording ? true : false);
 
-    useEffect(()=> {
     const fetchRecordings = async () => {
         try {
             const voices = await PlanItem.getVoiceUriUsed();
             setVoices(voices);
             const result = await RNFS.readDir(recordingsDir);
-            // console.log('Loaded recordings...');
             const recPaths = result.map(res => 'file://' + res.path);
             //const repeatedRec = Array.from(Array(20).keys()).map(() => recPaths).flat();
             setRecordings(recPaths);
         } catch (err: any) {
-            // console.log('Cannot load recordings...');
+            console.log('Cannot load recordings...');
         }
-        };
+    };
+
+    useEffect(()=> {
         fetchRecordings();
         return () => {
             if (playerRef.current) {
@@ -43,7 +44,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
               playerRef.current.release();
             }
         };
-    }, [])
+    }, []);
 
     const playAudio = async (item: string) => {
         const fullVoicePath = item
@@ -52,12 +53,12 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         playerRef.current = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
             (error) => {
                 if(error) {
-                    // console.log('Cannot load soundtrack:', error);
+                    console.log('Cannot load soundtrack:', error);
                 }
                 else {
                     playerRef.current.play((success:any) => {
                         if(!success) {
-                            // console.log('Cannot play soundtrack.');
+                            console.log('Cannot play soundtrack.');
                         }
                         playerRef.current.release();
                     });
@@ -65,12 +66,16 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
             });
     }
 
-    const handleImageLongPress = (uri: string) => {
+    const handlePress = (uri: string) => {
+        selectMode.current ? chooseRecordingForTask(uri) : chooseRecForDeleting(uri);
+    };
+
+    const chooseRecordingForTask = (uri: string) => {
         route.params?.updateRecording(uri);
         navigation.goBack();
     };
     
-    const handleImageShortPress = (uri: string) => {
+    const chooseRecForDeleting = (uri: string) => {
         const isSelected = selectedRecordings.includes(uri);
         if (isSelected) {
           const filteredImages = selectedRecordings.filter((rec) => rec !== uri);
@@ -84,11 +89,11 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         const isSelected = selectedRecordings.includes(item);
         const isUsed = usedVoices.includes(item);
         return (
-            <TouchableOpacity onLongPress={() => handleImageLongPress(item)} onPress={() => handleImageShortPress(item)}>
+            <TouchableOpacity onPress={() => handlePress(item)}>
                 <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.8 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
-                        <IconButton name="volume-high" type="material-community" size={40} onPress={() => playAudio(item)}/>
+                        <IconButton name='volume-high' type='material-community' size={40} onPress={() => playAudio(item)}/>
                     </View>
                 </Card>
             </TouchableOpacity>
@@ -113,7 +118,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         <View style={styles.trashIconContainer}>
             <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
             <View style={styles.iconButtonContainer}>
-                <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0}/>
+                <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0 || selectMode.current}/>
             </View>
         </View>
         <FullScreenTemplate padded darkBackground>
