@@ -23,8 +23,10 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const fetchImages = async () => {
     try {
-      const images = await PlanItem.getImgUriUsed();
-      setUsedImages(images);
+      if (!(route.params?.updateImage ? true : false)) {
+        const images = await PlanItem.getImgUriUsed();
+        setUsedImages(images);
+      }
       const result = await RNFS.readDir(imagesDir);
       const imgPaths = result.map(res => 'file://' + res.path);
       // const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();

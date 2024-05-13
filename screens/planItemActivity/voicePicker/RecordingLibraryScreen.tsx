@@ -25,8 +25,10 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
 
     const fetchRecordings = async () => {
         try {
-            const voices = await PlanItem.getVoiceUriUsed();
-            setVoices(voices);
+            if (!(route.params?.updateRecording ? true : false)) {
+                const voices = await PlanItem.getVoiceUriUsed();
+                setVoices(voices);
+            }
             const result = await RNFS.readDir(recordingsDir);
             const recPaths = result.map(res => 'file://' + res.path);
             //const repeatedRec = Array.from(Array(20).keys()).map(() => recPaths).flat();
@@ -90,7 +92,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         const isUsed = usedVoices.includes(item);
         return (
             <TouchableOpacity onPress={() => handlePress(item)}>
-                <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.8 }]}>
+                <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.6 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
                         <IconButton name='volume-high' type='material-community' size={40} onPress={() => playAudio(item)}/>
