@@ -1,9 +1,11 @@
 import React, { FC, useRef, useEffect, useState } from 'react';
-import { View, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, Text } from 'react-native';
 import { StyledText, IconButton, TextInput } from '../../../components'
 import { palette, typography, dimensions, getElevation } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
+import RNFS from 'react-native-fs';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -21,6 +23,7 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
 
   const [text, setText] = useState('');
   const [placeHolder, setPlaceHolder] = useState('');
+  const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
 
   const onOpen = () => {
     Animated.timing(backgroundAnimation.current, {
@@ -43,9 +46,40 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
     onOpen();
     let uri = route.params?.uri;
     uri = uri.substring(uri.lastIndexOf('/') + 1);
-    if (uri.length >= 35) { uri = uri.slice(0, 35) + '...'; }
+    if (uri.length >= 45) { uri = uri.slice(0, 45) + '...'; }
     setPlaceHolder(uri.substring(uri.lastIndexOf('/') + 1));
   }, []);
+
+  const splitToNameExtension = (fileName: string) => {
+    const idx = fileName.lastIndexOf('.');
+    if (idx !== -1) {
+      const name = fileName.substring(0, idx);
+      const extension = fileName.substring(idx + 1);
+      return [name, extension];
+    }
+    return fileName;
+  };
+
+  const renameFile = async() => {
+    const orgUri = route.params?.uri;
+    const [_, extension] = splitToNameExtension(orgUri.substring(orgUri.lastIndexOf('/') + 1));
+    const targetUri = recordingsDir + text + extension;
+    const isValidText = /^[a-zA-Z0-9]+$/.test(text);
+    if (!isValidText) {
+      setText(i18n.t('recGallery:wrongName'));
+      return; 
+    }
+    return;
+    await RNFS.copyFile(orgUri, targetUri)
+    .then((/*success: boolean*/) => {
+      RNFS.unlink(orgUri).then();
+      // TODO: Change name in tasks.
+      goBack();
+    })
+    .catch((error) => {
+      console.error('Error copying recording: ', error);
+    });
+  };
 
   return (
       <Animated.View style={[styles.overlay]}>
@@ -59,17 +93,30 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
               onPress={goBack}
               iconButtonStyle={styles.closeModalIcon}
             />
-            <TextInput
-              style={{marginTop: 20, marginBottom: 35, width: 300,}}
-              textStyle={{...typography.subtitle, textAlign: 'left',}}
-              placeholder={placeHolder}
-              value={text}
-              onChangeText={setText}
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={{ marginTop: 20, marginBottom: 20, width: 380 }}
+                textStyle={{...typography.subtitle, textAlign: 'left'}}
+                placeholder={placeHolder}
+                value={text}
+                onChangeText={setText}
+              />
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => renameFile()}>
+                <Text style={styles.modalTitle}>{i18n.t('recGallery:save')}</Text>
+                <IconButton
+                  name='check-circle'
+                  type='font-awesome'
+                  color={palette.primary}
+                  size={24}
+                  onPress={() => renameFile()}
+                  style={{ marginLeft: dimensions.spacingSmall }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </Animated.View>
       </Animated.View>
-      )
+      );
 };
 
 const styles = StyleSheet.create({
@@ -100,5 +147,9 @@ const styles = StyleSheet.create({
   modalTitle: {
     ...typography.subtitle,
     color: palette.textBody,
+  },
+  inputContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 });

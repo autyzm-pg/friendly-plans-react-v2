@@ -68,7 +68,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                     });
                 }
             });
-    }
+    };
 
     const handlePress = (uri: string) => {
         selectMode.current ? chooseRecordingForTask(uri) : chooseRecForDeleting(uri);
@@ -89,12 +89,16 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         }
     };
 
+    const handleLongPress = (uri: string) => {
+        if (!selectMode.current) { navigation.navigate(Route.RecordingNameEditor, { uri: uri }); }
+    };
+
 
     const renderItem = ({ item }: { item: string}) => {
         const isSelected = selectedRecordings.includes(item);
         const isUsed = usedVoices.includes(item);
         return (
-            <TouchableOpacity onPress={() => handlePress(item)} onLongPress={() =>  { navigation.navigate(Route.RecordingNameEditor, { uri: item }) }}>
+            <TouchableOpacity onPress={() => handlePress(item)} onLongPress={() =>  { handleLongPress(item) }}>
                 <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.6 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>

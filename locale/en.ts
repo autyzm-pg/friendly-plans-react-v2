@@ -43,7 +43,9 @@ const translations = {
     warningHeader: 'DELETE SELECTED RECORDINGS',
     warningInformation: 'Deleting selected recordings is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.',
     usage: 'All sounds used at least once in any task (from device or recorded) are stored in the inner app gallery and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted. Hold down to change name.',
-    changeName: 'Change recording name:'
+    changeName: 'Change recording name:',
+    save: 'Save changes',
+    wrongName: 'The name should not contain special characters...'
   },
   common: {
     cancel: 'CANCEL',
