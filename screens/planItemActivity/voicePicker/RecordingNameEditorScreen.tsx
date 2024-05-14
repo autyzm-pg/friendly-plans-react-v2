@@ -6,6 +6,8 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
 import RNFS from 'react-native-fs';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { PlanItem } from '../../../models';
+import { Route } from '../../../navigation';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -63,18 +65,21 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
   const renameFile = async() => {
     const orgUri = route.params?.uri;
     const [_, extension] = splitToNameExtension(orgUri.substring(orgUri.lastIndexOf('/') + 1));
-    const targetUri = recordingsDir + text + extension;
+    const targetUri = 'file://' + recordingsDir + text + '.' + extension;
     const isValidText = /^[a-zA-Z0-9]+$/.test(text);
     if (!isValidText) {
       setText(i18n.t('recGallery:wrongName'));
       return; 
     }
-    return;
+    console.log(orgUri);
+    console.log(targetUri);
     await RNFS.copyFile(orgUri, targetUri)
-    .then((/*success: boolean*/) => {
-      RNFS.unlink(orgUri).then();
-      // TODO: Change name in tasks.
-      goBack();
+    .then(async() => {
+      await RNFS.unlink(orgUri).then(async() => {
+        await PlanItem.updateVoiceUri(orgUri, targetUri).then(() => {
+          navigation.navigate(Route.Dashboard);
+        });
+      });
     })
     .catch((error) => {
       console.error('Error copying recording: ', error);
