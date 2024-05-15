@@ -36,7 +36,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
           setCurrentStudent(studentsList[0])
         } else {
           setLoading(false);
-          navigation.navigate(Route.StudentsList);
+          navigation.navigate(Route.StudentCreate);
         }
       })
     });

@@ -17,13 +17,20 @@ export enum StudentTextSizeOption {
   ExtraLarge = 'xl',
 }
 
+export enum TimerSound {
+  default = 'default_alarm.mp3',
+  digital = 'digital_alarm.wav',
+  electronic = 'electronic_alarm.wav',
+  beep = 'beep_alarm.wav',
+  vibrate = 'vibrate_alarm.wav',
+}
 export interface StudentData {
   name: string;
   displaySettings: StudentDisplayOption;
   textSize: StudentTextSizeOption;
   isUpperCase: boolean;
   isSwipeBlocked: boolean;
-  timer: string;
+  timer: TimerSound;
 }
 
 export class Student implements StudentData {
@@ -35,7 +42,7 @@ export class Student implements StudentData {
   isUpperCase: boolean;
   isSwipeBlocked: boolean;
   collectionCount: number = 0;
-  timer: string;
+  timer: TimerSound;
 
   constructor() {
     this.name = '';
@@ -43,7 +50,7 @@ export class Student implements StudentData {
     this.textSize = StudentTextSizeOption.Large;
     this.isUpperCase = false;
     this.isSwipeBlocked = false;
-    this.timer = sounds.default;
+    this.timer = TimerSound.default;
   }
 
   static getPlansCount = async (studentId: string): Promise<number> => {
@@ -66,11 +73,10 @@ export class Student implements StudentData {
       student.textSize, 
       student.isUpperCase ? 1 : 0, 
       student.isSwipeBlocked ? 1 : 0,
-      student.timer
+      student.timer ?? TimerSound.default
     ]);
     
     const resultSet = await executeQuery(`SELECT * FROM StudentData WHERE name = (?) ORDER BY id DESC LIMIT 1`, [student.name])
-    
     if (!(resultSet.rows.length)) {
       await executeQuery('ROLLBACK;');
       throw new Error('Could not create new student')
@@ -107,7 +113,7 @@ export class Student implements StudentData {
         student.textSize,
         student.isUpperCase ? 1 : 0,
         student.isSwipeBlocked ? 1 : 0,
-        student.timer,
+        student.timer ?? TimerSound.default,
         studentId
       ];
 
