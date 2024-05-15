@@ -68,7 +68,7 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNum
   }, [])
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Required!'),
+    name: Yup.string().required(i18n.t('common:required')),
     nameForChild: Yup.string(),
     time: Yup.number(),
   });

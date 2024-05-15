@@ -61,6 +61,7 @@ const translations = {
     unknownError: 'Pojawił się nieznany błąd',
     addImage: 'DODAJ LOGO',
     language: 'pl-PL',
+    required: 'Pole wymagane!'
   },
   validation: {
     email: 'Adres email musi być poprawny',

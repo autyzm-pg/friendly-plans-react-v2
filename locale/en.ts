@@ -61,6 +61,7 @@ const translations = {
     unknownError: 'Unknown error occured',
     addImage: 'ADD IMAGE',
     language: 'en-GB',
+    required: 'Field required!'
   },
   validation: {
     email: 'Must be a valid email',
