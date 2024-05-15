@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   modalInsideView: {
     ...getElevation(4),
     backgroundColor: palette.background,
-    width: 438,
+    width: 500,
     borderRadius: 16,
     paddingVertical: dimensions.spacingBig,
     paddingHorizontal: dimensions.spacingLarge,

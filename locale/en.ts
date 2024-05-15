@@ -178,8 +178,7 @@ const translations = {
     voiceActionSetLector: 'SET LECTOR',
     voiceActionDeleteVoice: 'DELETE CONTENT READING',
     voiceActionPlayAudio: 'PLAY AUDIO',
-    startRecording: 'START RECORDING',
-    stopRecording: 'STOP RECORDING',
+    useMicrophone: 'USE MICROPHONE',
     timerHours: 'hours',
     timerMinutes: 'minutes',
     timerSeconds: 'seconds',
@@ -194,6 +193,12 @@ const translations = {
     alertMessageSaveQuestionDiscard: 'Discard',
     alertMessageTitleNoSubTasks: 'No subtasks',
     alertMessageNoSubTasks: 'You need to add at least one subtask.'
+  },
+  voiceRecorder: {
+    title: 'Sound/voice recording',
+    save: 'Save recording',
+    fileName: 'newRecording',
+    incorrectName: 'The name should not contain special characters...'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',

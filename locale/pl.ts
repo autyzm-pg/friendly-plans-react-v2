@@ -178,8 +178,7 @@ const translations = {
     voiceActionSetLector: 'USTAW LEKTORA',
     voiceActionDeleteVoice: 'USUŃ CZYTANIE TREŚCI',
     voiceActionPlayAudio: 'PUŚĆ NAGRANIE',
-    startRecording: 'ROZPOCZNIJ NAGRYWANIE',
-    stopRecording: 'ZATRZYMAJ NAGRYWANIE',
+    useMicrophone: 'UŻYJ MIKROFONU',
     timerHour: 'godziny',
     timerMinutes: 'minuty',
     timerSeconds: 'sekundy',
@@ -195,6 +194,12 @@ const translations = {
     savedMessage: 'Zapisano',
     alertMessageTitleNoSubTasks: 'Brak podzadań',
     alertMessageNoSubTasks: 'Musisz dodać co najmniej jedno podzadanie.'
+  },
+  voiceRecorder: {
+    title: 'Nagrywanie dźwięku / głosu',
+    save: 'Zapisz nagranie',
+    fileName: 'noweNagranie',
+    incorrectName: 'Nazwa nie powinna zawierać znaków specjalnych...'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Aktualizuj plan',

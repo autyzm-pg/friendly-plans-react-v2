@@ -28,6 +28,7 @@ export enum Route {
   ImageLibrary = 'ImageLibrary',
   RecordingLibrary = 'RecordingLibrary',
   RecordingNameEditor = 'RecordingNameEditor',
+  VoiceRecorder = 'VoiceRecorder',
   // UnauthenticatedStackNavigator
   SignIn = 'SignIn',
   SignUp = 'SignUp',
