@@ -29,7 +29,10 @@ export const Header: React.FC<Props> = ({...props}) => {
 
   const goBack = () => {
     const { route } = props;
-    if (route.name === Route.RunPlanSlide || route.name === Route.RunPlanList) {
+    if (route.name === Route.RunPlanSlide 
+      || route.name === Route.RunPlanList
+      || route.name === Route.RunSubPlanSlide
+    ) {
       navigation.current.navigate(Route.Dashboard);
     } else {
       navigation.current.goBack();
