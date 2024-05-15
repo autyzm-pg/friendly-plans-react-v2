@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Card, FullScreenTemplate, IconButton, ModalTrigger } from '../../../components';
+import { Card, FullScreenTemplate, IconButton, ModalTrigger, TextInput } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { dimensions, palette, typography } from '../../../styles';
@@ -25,6 +25,9 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
     const playerRef = useRef<any>(null);
 
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [filRecordings, setFilRecordings] = useState<string[]>([]);
+
     const fetchRecordings = async () => {
         try {
             if (!(route.params?.updateRecording ? true : false)) {
@@ -35,6 +38,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
             const recPaths = result.map(res => 'file://' + res.path);
             //const repeatedRec = Array.from(Array(20).keys()).map(() => recPaths).flat();
             setRecordings(recPaths);
+            setFilRecordings(recPaths);
         } catch (err: any) {
             console.log('Cannot load recordings...');
         }
@@ -130,9 +134,57 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         );
     };
 
+    const showList = () => {
+        if (!selectMode.current && recordings.length > 0) {
+            return (<FlatList
+                data={recordings}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                style={styles.contentContainer}
+            />);
+        }
+        else if (selectMode.current && recordings.length > 0) {
+            return (<FlatList
+                data={filRecordings}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                style={styles.contentContainer}
+            />);
+        }
+        else {
+            return (<></>);
+        }
+    };
+
+    const splitToNameExtension = (fileName: string) => {
+        const idx = fileName.lastIndexOf('.');
+        if (idx !== -1) {
+          const name = fileName.substring(0, idx);
+          const extension = fileName.substring(idx + 1);
+          return [name, extension];
+        }
+        return fileName;
+      };
+    
+
+    const onSearch = (text: string) => {
+        setSearchTerm(text);
+        if (text.length > 0) {
+            const filteredRecordings = recordings.filter(item => {
+                const [name, _] = splitToNameExtension(item.substring(item.lastIndexOf('/') + 1));
+                return name.includes(text);
+            });
+            setFilRecordings(filteredRecordings);
+        }
+        else {
+            setFilRecordings(recordings);
+        }
+    }
+
     return (
     <>
-        {!selectMode.current && 
+        {!selectMode.current 
+            ? 
             <View style={styles.trashIconContainer}>
                 <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
                 <View style={styles.iconButtonContainer}>
@@ -142,25 +194,33 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                     <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
                 </ModalTrigger>
             </View>
+            :
+            <View style={styles.inputContainer}>
+                <TextInput
+                style={{ width: '40%' }}
+                value={searchTerm}
+                onChangeText={onSearch}
+                placeholder="Wyszukaj nazwę nagrania..."
+                />
+            </View>
         }
         <FullScreenTemplate padded darkBackground>
-        {recordings.length > 0
-        ?
-        <FlatList
-            data={recordings}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            style={styles.contentContainer}
-        />
-        :
-        <></>
-        }
+        {showList()}
         </FullScreenTemplate>
     </>
     );
 };
 
 const styles = StyleSheet.create({
+    inputContainer: {
+        backgroundColor: palette.textWhite,
+        height: 56,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        marginTop: 0,
+        paddingTop: 0
+    },
     contentContainer: {
         paddingTop: 12,
         width: '100%',
