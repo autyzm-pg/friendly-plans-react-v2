@@ -71,8 +71,8 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
       setText(i18n.t('recGallery:wrongName'));
       return; 
     }
-    console.log(orgUri);
-    console.log(targetUri);
+    // console.log(orgUri);
+    // console.log(targetUri);
     await RNFS.copyFile(orgUri, targetUri)
     .then(async() => {
       await RNFS.unlink(orgUri).then(async() => {

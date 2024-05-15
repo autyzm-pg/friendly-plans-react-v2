@@ -257,6 +257,17 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     };
 
     const saveNewTask = async () => {
+        if (state.subItems.length == 0) {
+            Alert.alert(
+                i18n.t('planItemActivity:alertMessageTitleNoSubTasks'),
+                i18n.t('planItemActivity:alertMessageNoSubTasks'),
+                [
+                  { text: i18n.t('common:ok'), onPress: () => {} }
+                ],
+                { cancelable: false }
+              );
+            return;
+        }
         taskSaved.current = true;
         formikProps.submitForm();
         ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);

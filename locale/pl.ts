@@ -192,7 +192,9 @@ const translations = {
     alertMessageSaveQuestionTitle: 'Zapisać zmiany?',
     alertMessageSaveQuestionSave: 'Zapisz',
     alertMessageSaveQuestionDiscard: 'Nie zapisuj',
-    savedMessage: 'Zapisano'
+    savedMessage: 'Zapisano',
+    alertMessageTitleNoSubTasks: 'Brak podzadań',
+    alertMessageNoSubTasks: 'Musisz dodać co najmniej jedno podzadanie.'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Aktualizuj plan',

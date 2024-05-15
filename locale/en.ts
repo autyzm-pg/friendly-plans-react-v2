@@ -191,7 +191,9 @@ const translations = {
     alertMessageSaveQuestion: 'Do you want to save the changes made to this task?',
     alertMessageSaveQuestionTitle: 'Save changes?',
     alertMessageSaveQuestionSave: 'Save',
-    alertMessageSaveQuestionDiscard: 'Discard'
+    alertMessageSaveQuestionDiscard: 'Discard',
+    alertMessageTitleNoSubTasks: 'No subtasks',
+    alertMessageNoSubTasks: 'You need to add at least one subtask.'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',
