@@ -148,6 +148,7 @@ export const ComplexTaskMainView: FC<Props> = ({
                         key: itemInfo.key,
                         voicePath: itemInfo.voicePath,
                         lector: itemInfo.lector,
+                        name: itemInfo.name,
                     }}/>
 
                     {(itemInfo.key !== -1) ? <ModalTrigger

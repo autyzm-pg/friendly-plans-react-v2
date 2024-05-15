@@ -19,6 +19,7 @@ interface Props {
         key: number;
         voicePath: string;
         lector: boolean;
+        name: string;
     };
     navigation: NavigationProp<any>;
 }

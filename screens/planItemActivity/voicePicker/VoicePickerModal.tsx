@@ -26,6 +26,7 @@ interface Props {
     key: number;
     voicePath: string;
     lector: boolean;
+    name: string;
   };
   lector: boolean,
   navigation: NavigationProp<any>;
@@ -123,10 +124,10 @@ export const VoicePickerModal: FC<Props> = ({
 
   const playAudio = async () => {
     // closeModal();
-    if (lector && planItem.nameForChild) {
+    if ((!isComplexTask && lector && planItem.nameForChild) || (isComplexTask && selected?.lector && selected?.name)) {
       await Tts.getInitStatus().then(() => {
         Tts.setDefaultLanguage(i18n.t('common:language'));
-        Tts.speak(planItem.nameForChild);
+        Tts.speak((isComplexTask && selected) ? selected?.name : planItem.nameForChild);
       }, (err) => {
         if (err.code === 'no_engine') {
           Tts.requestInstallEngine();
