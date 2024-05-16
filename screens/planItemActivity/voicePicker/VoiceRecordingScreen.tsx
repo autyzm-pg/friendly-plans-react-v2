@@ -1,5 +1,5 @@
 import React, { FC, useRef, useEffect, useState, } from 'react';
-import { View, StyleSheet, Animated, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, TouchableOpacity, Text, PermissionsAndroid } from 'react-native';
 import { StyledText, IconButton, TextInput } from '../../../components'
 import { palette, typography, dimensions, getElevation } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
@@ -39,6 +39,14 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
     setTimeout(() => navigation.goBack(), 200);
   };
 
+  const checkForPermissions = async() => {
+    const recordingPermition = PermissionsAndroid.PERMISSIONS.RECORD_AUDIO;
+    const permission = await PermissionsAndroid.check(recordingPermition);
+    if (permission) { return; }
+    const grant = await PermissionsAndroid.request(recordingPermition);
+    if (grant !== PermissionsAndroid.RESULTS.GRANTED) { goBack(); }
+  };
+
   const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
   const filePath = useRef<string>('');
   const [time, setTime] = useState<string>('00:00:00');
@@ -52,6 +60,7 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     onOpen();
+    checkForPermissions();
     return () => {
         if (recording.current) { stopRecording(); }
         else if (playing.current) { stopPlaying(); }
