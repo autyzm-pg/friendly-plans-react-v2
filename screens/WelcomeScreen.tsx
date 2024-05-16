@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, FC } from 'react';
 // import firebase from '@react-native-firebase/app';
-// import SplashScreen from 'react-native-splash-screen';
 
 import {FullScreenTemplate} from '../components/FullScreenTemplate';
 import { Route } from '../navigation/routes';
