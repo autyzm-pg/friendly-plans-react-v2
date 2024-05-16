@@ -16,7 +16,8 @@ import {
   StudentSettingsScreen, 
   StudentsListForCopyPlanScreen, 
   StudentsListSearchForCopyPlanScreen, 
-  StudentsListSearchScreen 
+  StudentsListSearchScreen, 
+  VoiceRecorder
 } from '../screens';
 import { PlanActivityScreen } from '../screens/planActivity/PlanActivityScreen';
 import { defaults } from '../mocks/defaults'
@@ -148,6 +149,11 @@ export function RootStackNavigation() {
         <Stack.Screen
           name={Route.RecordingNameEditor}
           component={RecordingNameEditor}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={Route.VoiceRecorder}
+          component={VoiceRecorder}
           options={{ headerShown: false }}
         />
         <Stack.Screen

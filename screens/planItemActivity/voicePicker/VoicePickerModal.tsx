@@ -155,6 +155,11 @@ export const VoicePickerModal: FC<Props> = ({
     }
   };
 
+  const recordVoice = () => {
+    closeModal();
+    navigation.navigate(Route.VoiceRecorder, { updateRecording: voiceUriUpdate });
+  };
+
   return (
     <View style={styles.imageActionContainer}>
       {(currentVoiceUri || lector)
@@ -162,51 +167,54 @@ export const VoicePickerModal: FC<Props> = ({
       <>
         <ImageAction title={i18n.t('planItemActivity:voiceActionDeleteVoice')} onPress={callDeleteVoice}>
           <IconButton 
-            name="delete" 
-            type="material" 
+            name='delete' 
+            type='material' 
             size={24} 
             onPress={callDeleteVoice}
-            containerStyle={styles.iconContainer}
           />
         </ImageAction>
         <ImageAction title={i18n.t('planItemActivity:voiceActionPlayAudio')} onPress={playAudio}>
           <IconButton 
-            name="speaker" 
-            type="material" 
+            name='speaker' 
+            type='material' 
             size={24} 
             onPress={playAudio}
-            containerStyle={styles.iconContainer}
           />
         </ImageAction>
       </>
       :
       <></>
       }
+      <ImageAction title={i18n.t('planItemActivity:useMicrophone')} onPress={() => { recordVoice() }}>
+        <IconButton 
+          name='microphone' 
+          type='font-awesome' 
+          size={24} 
+          onPress={() => { recordVoice() }}
+        />
+      </ImageAction>
       <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
         <IconButton 
-          name="library-music" 
-          type="material" 
+          name='library-music' 
+          type='material' 
           size={24} 
           onPress={openLibrary}
-          containerStyle={styles.iconContainer}
         />
       </ImageAction>
       {!lector && <ImageAction title={i18n.t('planItemActivity:voiceActionSetLector')} onPress={callSetLector}>
         <IconButton 
-          name="megaphone" 
-          type="entypo" 
+          name='megaphone' 
+          type='entypo' 
           size={24} 
           onPress={callSetLector}
-          containerStyle={styles.iconContainer}
         />
       </ImageAction>}
       <ImageAction title={i18n.t('planItemActivity:voiceActionAddRecord')} onPress={openGallery}>
         <IconButton 
-          name="file-download" 
-          type="material" 
+          name='file-download' 
+          type='material' 
           size={24} 
           onPress={openGallery}
-          containerStyle={styles.iconContainer}
         />
       </ImageAction>
     </View>
@@ -220,8 +228,4 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginTop: dimensions.spacingLarge,
   },
-  iconContainer: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  }
 });

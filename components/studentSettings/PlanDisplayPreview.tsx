@@ -29,6 +29,7 @@ export const PlanDisplayPreview: FC<Props> = ({ displaySettings, textSize, isUpp
           textSize={textSize}
           isUpperCase={isUpperCase}
           isSettingsPreview
+          alignTextCenter
         />
       );
     }

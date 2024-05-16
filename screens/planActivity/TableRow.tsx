@@ -1,8 +1,8 @@
-import {CheckboxInput, Icon, IconButton, IconButtonSwitch, IconToggleButton, SwitchItem} from '../../components';
-import {Plan, PlanItem, PlanItemType, PlanSubItem} from '../../models';
-import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {palette, typography, dimensions} from '../../styles';
+import { CheckboxInput, Icon, IconButton, IconButtonSwitch } from '../../components';
+import { Plan, PlanItem, PlanItemType, PlanSubItem } from '../../models';
+import React, {useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View, Platform, Button } from 'react-native';
+import { dimensions, palette, typography } from '../../styles';
 import { i18n } from '../../locale';
 
 import { getIconName } from '../../mocks/defaults';
@@ -34,13 +34,6 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
         })
     }
   }, [subtaskCount]);
-
-  // const refresh = () => {
-    // planItem
-    //     .getChildCollectionRef()
-    //     .get()
-    //     .then(snap => setSubtaskCount(snap.size));
-  // };
 
   const navigateToPlanItemUpdate = () => {
     navigation.navigate(Route.PlanItemTask, {
@@ -79,6 +72,31 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
     setPlanState(!planState);
   };
 
+  const renderPlanStateChangeButton = () => {
+    const version = Platform.Version;
+    if (version === 22) {
+      return (
+        <>
+        <TouchableOpacity onPress={handlePlanStateChange} 
+          style={{backgroundColor: (planItem.completed ? palette.playButton : palette.primary), 
+          alignItems: 'center', justifyContent: 'center', width: 80, height: 30}}>
+          <Text style={{...typography.button, color: palette.textWhite}}>
+              {planItem.completed ? i18n.t('common:yes') : i18n.t('common:no')}
+          </Text>
+        </TouchableOpacity>
+          <Text style={{ marginRight: dimensions.spacingSmall }}>{i18n.t('planActivity:completed')}</Text>
+        </>);
+    }
+    return (
+      <IconButtonSwitch 
+          iconNames={['check', 'close']} 
+          titles={[i18n.t('common:yes'), i18n.t('common:no')]} 
+          title={i18n.t('planActivity:completed')} 
+          secondButtonOn={!planItem.completed} 
+          onPress={handlePlanStateChange}/>
+    );
+  };
+
   const handleCheckBox = (check: boolean) => {
     if (check) {
       setToBeDeleted([...toBeDeleted, planItem]);
@@ -112,12 +130,7 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
         <View style={styles.deleteIcon}>
           <IconButton name='delete' size={24} color={palette.primary} onPress={onDelete} />
         </View>
-        <IconButtonSwitch 
-          iconNames={['check', 'close']} 
-          titles={[i18n.t('common:yes'), i18n.t('common:no')]} 
-          title={i18n.t('planActivity:completed')} 
-          secondButtonOn={!planItem.completed} 
-          onPress={handlePlanStateChange}/>
+        {renderPlanStateChangeButton()}
         {!!planItem.time && (
           <View style={styles.timeContainer}>
             <Icon name='timer' size={24} />
