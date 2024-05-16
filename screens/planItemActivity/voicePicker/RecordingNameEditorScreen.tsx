@@ -62,15 +62,24 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
     return fileName;
   };
 
+  const validate = () => {
+    const isValidText = /^[a-zA-Z0-9]+$/.test(text);
+    if (text.length == 0) {
+      setText(i18n.t('common:required'));
+      return false;
+    }
+    else if (!isValidText) {
+      setText(i18n.t('common:incorrectFileName'));
+      return false;
+    }
+    return true;
+  };
+
   const renameFile = async() => {
     const orgUri = route.params?.uri;
     const [_, extension] = splitToNameExtension(orgUri.substring(orgUri.lastIndexOf('/') + 1));
     const targetUri = 'file://' + recordingsDir + text + '.' + extension;
-    const isValidText = /^[a-zA-Z0-9]+$/.test(text);
-    if (!isValidText) {
-      setText(i18n.t('recGallery:wrongName'));
-      return; 
-    }
+    if(!validate()) { return; }
     // console.log(orgUri);
     // console.log(targetUri);
     await RNFS.copyFile(orgUri, targetUri)

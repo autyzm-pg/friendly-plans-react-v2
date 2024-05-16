@@ -45,7 +45,6 @@ const translations = {
     usage: 'All sounds used at least once in any task (from device or recorded) are stored in the inner app gallery and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted. Hold down to change name.',
     changeName: 'Change recording name:',
     save: 'Save changes',
-    wrongName: 'The name should not contain special characters...'
   },
   common: {
     cancel: 'CANCEL',
@@ -61,7 +60,8 @@ const translations = {
     unknownError: 'Unknown error occured',
     addImage: 'ADD IMAGE',
     language: 'en-GB',
-    required: 'Field required!'
+    required: 'Field required!',
+    incorrectFileName: 'Name should not contain special characters!'
   },
   validation: {
     email: 'Must be a valid email',
@@ -178,8 +178,7 @@ const translations = {
     voiceActionSetLector: 'SET LECTOR',
     voiceActionDeleteVoice: 'DELETE CONTENT READING',
     voiceActionPlayAudio: 'PLAY AUDIO',
-    startRecording: 'START RECORDING',
-    stopRecording: 'STOP RECORDING',
+    useMicrophone: 'USE MICROPHONE',
     timerHours: 'hours',
     timerMinutes: 'minutes',
     timerSeconds: 'seconds',
@@ -194,6 +193,11 @@ const translations = {
     alertMessageSaveQuestionDiscard: 'Discard',
     alertMessageTitleNoSubTasks: 'No subtasks',
     alertMessageNoSubTasks: 'You need to add at least one subtask.'
+  },
+  voiceRecorder: {
+    title: 'Sound/voice recording',
+    save: 'Save recording',
+    fileName: 'newRecording',
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',
