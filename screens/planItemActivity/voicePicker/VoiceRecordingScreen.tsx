@@ -160,8 +160,21 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
     );
   };
 
+  const validate = () => {
+    const isValidText = /^[a-zA-Z0-9]+$/.test(text);
+    if (text.length == 0) {
+      setText(i18n.t('common:required'));
+      return false;
+    }
+    else if (!isValidText) {
+      setText(i18n.t('common:incorrectFileName'));
+      return false;
+    }
+    return true;
+  };
+
   const saveRecording = async() => {
-    if(!text) { return; }
+    if(!validate()) { return; }
     const imagesDir = RNFS.DocumentDirectoryPath + '/Recordings/';
     let fileTargetPath = 'file://' + imagesDir + text + '.mp4';
     const doesFileExist = await RNFS.exists(fileTargetPath);

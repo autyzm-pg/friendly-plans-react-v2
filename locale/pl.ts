@@ -45,7 +45,6 @@ const translations = {
     usage: 'Wszystkie dźwięki użyte co najmniej raz w dowolnym zadaniu (z urządzenia lub nagrane) są przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte. Przytrzymaj, aby zmienić nazwę.',
     changeName: 'Zmień nazwę nagrania:',
     save: 'Zapisz zmiany',
-    wrongName: 'Nazwa nie powinna zawierać znaków specjalnych...'
   },
   common: {
     cancel: 'ANULUJ',
@@ -61,7 +60,8 @@ const translations = {
     unknownError: 'Pojawił się nieznany błąd',
     addImage: 'DODAJ LOGO',
     language: 'pl-PL',
-    required: 'Pole wymagane!'
+    required: 'Pole wymagane!',
+    incorrectFileName: 'Nazwa nie powinna zawierać znaków specjalnych!'
   },
   validation: {
     email: 'Adres email musi być poprawny',
@@ -199,7 +199,6 @@ const translations = {
     title: 'Nagrywanie dźwięku / głosu',
     save: 'Zapisz nagranie',
     fileName: 'noweNagranie',
-    incorrectName: 'Nazwa nie powinna zawierać znaków specjalnych...'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Aktualizuj plan',
