@@ -1,10 +1,10 @@
 import {FormikProps} from 'formik';
 import i18n from 'i18next';
 import React, {FC, useState, useEffect, useRef} from 'react';
-import {Alert, SafeAreaView, ScrollView, StyleSheet, ToastAndroid, View} from 'react-native';
+import {Alert, Platform, SafeAreaView, ScrollView, StyleSheet, ToastAndroid, View, TouchableOpacity, Text} from 'react-native';
 
 import {/*ModelSubscriber,*/ PlanItem, PlanSubItem} from '../../models';
-import {dimensions, palette} from '../../styles';
+import {dimensions, palette, typography} from '../../styles';
 import {Button} from '../../components';
 import {ComplexTaskCoverCard} from './ComplexTaskCoverCard';
 import {ComplexTaskItem} from './ComplexTaskItem';
@@ -309,6 +309,22 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         }),
     [navigation])
 
+    const renderAddTaskButton = () => {
+        const version = Platform.Version;
+        if (version === 22) {
+            return (<TouchableOpacity onPress={addSubItem} 
+                        style={{borderRadius: 12, paddingBottom: 24, paddingTop: 24, 
+                        backgroundColor: palette.primary, alignItems: 'center'}}>
+                        <Text style={{...typography.button, color: palette.textWhite}}>
+                            {i18n.t('planItemActivity:complexTaskAddSubTaskButton')}
+                        </Text>
+                    </TouchableOpacity>);
+        }
+        return (
+            <Button buttonStyle={{borderRadius: 12, paddingBottom: 24, paddingTop: 24}} onPress={addSubItem}
+                    title={i18n.t('planItemActivity:complexTaskAddSubTaskButton')}/>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
@@ -321,8 +337,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                         onSelectChange={() => changeSelected(-1)}/>
                     <ScrollView>
                         {renderSubItems()}
-                        <Button buttonStyle={{borderRadius: 12, paddingBottom: 24, paddingTop: 24}} onPress={addSubItem}
-                        title={i18n.t('planItemActivity:complexTaskAddSubTaskButton')}/>
+                        {renderAddTaskButton()}
                     </ScrollView>
                 </View>
                 {renderMainView()}   
