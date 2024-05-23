@@ -179,7 +179,7 @@ const translations = {
     voiceActionDeleteVoice: 'USUŃ CZYTANIE TREŚCI',
     voiceActionPlayAudio: 'PUŚĆ NAGRANIE',
     useMicrophone: 'UŻYJ MIKROFONU',
-    timerHour: 'godziny',
+    timerHours: 'godziny',
     timerMinutes: 'minuty',
     timerSeconds: 'sekundy',
     saveSimpleTaskButton: 'ZAPISZ ZADANIE',
