@@ -165,58 +165,42 @@ export const VoicePickerModal: FC<Props> = ({
       {(currentVoiceUri || lector)
       ?
       <>
-        <ImageAction title={i18n.t('planItemActivity:voiceActionDeleteVoice')} onPress={callDeleteVoice}>
-          <IconButton 
-            name='delete' 
-            type='material' 
-            size={24} 
-            onPress={callDeleteVoice}
-          />
-        </ImageAction>
-        <ImageAction title={i18n.t('planItemActivity:voiceActionPlayAudio')} onPress={playAudio}>
-          <IconButton 
-            name='speaker' 
-            type='material' 
-            size={24} 
-            onPress={playAudio}
-          />
-        </ImageAction>
+        <ImageAction title={i18n.t('planItemActivity:voiceActionDeleteVoice')} 
+                     onPress={callDeleteVoice}
+                     buttonName='delete'
+                     buttonType='material'
+                     />
+        <ImageAction title={i18n.t('planItemActivity:voiceActionPlayAudio')} 
+                     onPress={playAudio}
+                     buttonName='speaker'
+                     buttonType='material'
+                     />
       </>
       :
       <></>
       }
-      <ImageAction title={i18n.t('planItemActivity:useMicrophone')} onPress={() => { recordVoice() }}>
-        <IconButton 
-          name='microphone' 
-          type='font-awesome' 
-          size={24} 
-          onPress={() => { recordVoice() }}
-        />
-      </ImageAction>
-      <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
-        <IconButton 
-          name='library-music' 
-          type='material' 
-          size={24} 
-          onPress={openLibrary}
-        />
-      </ImageAction>
-      {!lector && <ImageAction title={i18n.t('planItemActivity:voiceActionSetLector')} onPress={callSetLector}>
-        <IconButton 
-          name='megaphone' 
-          type='entypo' 
-          size={24} 
-          onPress={callSetLector}
-        />
-      </ImageAction>}
-      <ImageAction title={i18n.t('planItemActivity:voiceActionAddRecord')} onPress={openGallery}>
-        <IconButton 
-          name='file-download' 
-          type='material' 
-          size={24} 
-          onPress={openGallery}
-        />
-      </ImageAction>
+      <ImageAction title={i18n.t('planItemActivity:useMicrophone')} 
+                   onPress={recordVoice}
+                   buttonName='microphone'
+                   buttonType='font-awesome'
+                   />
+      <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} 
+                   onPress={openLibrary}
+                   buttonName='library-music'
+                   buttonType='material'
+                   />
+      {!lector && 
+      <ImageAction title={i18n.t('planItemActivity:voiceActionSetLector')}
+                   onPress={callSetLector}
+                   buttonName='megaphone'
+                   buttonType='entypo'
+                   />
+      }
+      <ImageAction title={i18n.t('planItemActivity:voiceActionAddRecord')} 
+                   onPress={openGallery}
+                   buttonName='file-download'
+                   buttonType='material'
+                   />
     </View>
   );
 };

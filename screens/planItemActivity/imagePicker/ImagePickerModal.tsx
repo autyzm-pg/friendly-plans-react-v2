@@ -144,24 +144,35 @@ export const ImagePickerModal: FC<Props> = ({
         <View style={styles.imageActionContainer}>
             {currentImageUri ?
             <>
-                <ImageAction title={i18n.t('planItemActivity:imageActionDeletePhoto')} onPress={deleteImage}>
-                    <IconButton name="delete" type="material" size={24} onPress={deleteImage}/>
-                </ImageAction>
-                <ImageAction title={i18n.t('planItemActivity:imageActionEditPhoto')} onPress={openCropper}>
-                    <IconButton name="crop" type="material" size={24} onPress={openCropper}/>
-                </ImageAction>
+                <ImageAction title={i18n.t('planItemActivity:imageActionDeletePhoto')} 
+                             onPress={deleteImage}
+                             buttonName='delete'
+                             buttonType='material'
+                             />
+                <ImageAction title={i18n.t('planItemActivity:imageActionEditPhoto')} 
+                             onPress={openCropper}
+                             buttonName='crop'
+                             buttonType='material'
+                             />
             </>
             :
-            <></>}
-            <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} onPress={openLibrary}>
-                <IconButton name="photo-library" type="material" size={24} onPress={openLibrary}/>
-            </ImageAction>
-            <ImageAction title={i18n.t('planItemActivity:imageActionTakePhoto')} onPress={openCamera}>
-                <IconButton name="photo-camera" type="material" size={24} onPress={openCamera}/>
-            </ImageAction>
-            <ImageAction title={i18n.t('planItemActivity:imageActionBrowse')} onPress={openGallery}>
-                <IconButton name="file-download" type="material" size={24} onPress={openGallery}/>
-            </ImageAction>
+            <></>
+            }
+            <ImageAction title={i18n.t('planItemActivity:imageActionLibrary')} 
+                         onPress={openLibrary}
+                         buttonName='photo-library'
+                         buttonType='material'
+                         />
+            <ImageAction title={i18n.t('planItemActivity:imageActionTakePhoto')} 
+                         onPress={openCamera}
+                         buttonName='photo-camera'
+                         buttonType='material'
+                         />
+            <ImageAction title={i18n.t('planItemActivity:imageActionBrowse')} 
+                         onPress={openGallery}
+                         buttonName='file-download'
+                         buttonType='material'
+                         />
         </View>
     );
 };

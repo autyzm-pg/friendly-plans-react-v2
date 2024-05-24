@@ -3,17 +3,28 @@ import React, { FC } from 'react';
 import { StyledText } from '../../components';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { palette, typography } from '../../styles';
+import { Icon } from 'react-native-elements';
 
 interface Props {
-  children: JSX.Element;
+  buttonName: string;
+  buttonType: string;
   title: string;
   onPress: any
 }
 
-export const ImageAction: FC<Props> = ({ children, title, onPress }) => (
-    <View style={styles.container}>
-      <View style={styles.icon}>{children}</View>
-      <TouchableOpacity onPress={onPress}>
+export const ImageAction: FC<Props> = ({ buttonName, buttonType, title, onPress }) => (
+    <View style={[styles.container, { flex: 1 }]}>
+      <TouchableOpacity onPress={onPress} 
+                        style={styles.container}
+                        hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}>
+        <View style={styles.icon}>
+          <Icon
+            name={buttonName} 
+            type={buttonType} 
+            size={24}
+            color={palette.primary}
+          />
+        </View>
         <StyledText style={styles.title}>{title}</StyledText>
       </TouchableOpacity>
     </View>
@@ -21,7 +32,6 @@ export const ImageAction: FC<Props> = ({ children, title, onPress }) => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',

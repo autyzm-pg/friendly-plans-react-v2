@@ -178,7 +178,7 @@ const translations = {
     voiceActionSetLector: 'SET LECTOR',
     voiceActionDeleteVoice: 'DELETE CONTENT READING',
     voiceActionPlayAudio: 'PLAY AUDIO',
-    useMicrophone: 'USE MICROPHONE',
+    useMicrophone: 'USE\nMIKE',
     timerHours: 'hours',
     timerMinutes: 'minutes',
     timerSeconds: 'seconds',
