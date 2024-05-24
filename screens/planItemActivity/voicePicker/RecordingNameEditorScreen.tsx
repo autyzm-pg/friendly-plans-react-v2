@@ -8,6 +8,7 @@ import RNFS from 'react-native-fs';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PlanItem } from '../../../models';
 import { Route } from '../../../navigation';
+import { Icon } from 'react-native-elements';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -115,14 +116,13 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
                 value={text}
                 onChangeText={setText}
               />
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => renameFile()}>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={renameFile}>
                 <Text style={styles.modalTitle}>{i18n.t('recGallery:save')}</Text>
-                <IconButton
+                <Icon
                   name='check-circle'
                   type='font-awesome'
                   color={palette.primary}
                   size={24}
-                  onPress={() => renameFile()}
                   style={{ marginLeft: dimensions.spacingSmall }}
                 />
               </TouchableOpacity>
