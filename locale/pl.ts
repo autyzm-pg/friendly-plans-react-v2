@@ -199,6 +199,10 @@ const translations = {
     title: 'Nagrywanie dźwięku / głosu',
     save: 'Zapisz nagranie',
     fileName: 'noweNagranie',
+    startRecording: 'Rozpocznij nagrywanie',
+    stopRecording: 'Zatrzymaj nagrywanie',
+    startPlaying: 'Odsłuchaj nagranie',
+    stopPlaying: 'Zatrzymaj odtwarzanie'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Aktualizuj plan',

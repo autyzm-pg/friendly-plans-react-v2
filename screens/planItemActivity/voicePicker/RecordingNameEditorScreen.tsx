@@ -5,10 +5,9 @@ import { palette, typography, dimensions, getElevation } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
 import RNFS from 'react-native-fs';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PlanItem } from '../../../models';
 import { Route } from '../../../navigation';
-import { Icon } from 'react-native-elements';
+import { TextAction } from '../TextAction';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -116,16 +115,11 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
                 value={text}
                 onChangeText={setText}
               />
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={renameFile}>
-                <Text style={styles.modalTitle}>{i18n.t('recGallery:save')}</Text>
-                <Icon
-                  name='check-circle'
-                  type='font-awesome'
-                  color={palette.primary}
-                  size={24}
-                  style={{ marginLeft: dimensions.spacingSmall }}
-                />
-              </TouchableOpacity>
+              <TextAction onPress={renameFile} 
+                          title={i18n.t('recGallery:save')}
+                          buttonName='check-circle'
+                          buttonType='font-awesome'
+                          />
             </View>
           </View>
         </Animated.View>

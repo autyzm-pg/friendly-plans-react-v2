@@ -198,6 +198,10 @@ const translations = {
     title: 'Sound/voice recording',
     save: 'Save recording',
     fileName: 'newRecording',
+    startRecording: 'Start recording',
+    stopRecording: 'Stop recording',
+    startPlaying: 'Listen to recording',
+    stopPlaying: 'Stop recording'
   },
   updatePlan: {
     screenTitle: '{{studentName}} - Update a schedule',

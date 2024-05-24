@@ -7,6 +7,7 @@ import { i18n } from '../../../locale';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFS from 'react-native-fs';
 import uuid from 'react-native-uuid';
+import { TextAction } from '../TextAction';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -111,25 +112,21 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
   const recordingRender = () => {
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: dimensions.spacingBig }}>
-            <StyledText style={{...typography.headline3}}>{time}</StyledText>
+            <StyledText style={styles.time}>{time}</StyledText>
             {!isRecording && 
-                <IconButton
-                    name='circle'
-                    type='material'
-                    color={palette.textBody}
-                    onPress={startRecording}
-                    size={24}
-                    style={{ marginLeft: dimensions.spacingSmall}}
-                />}
+                <TextAction onPress={startRecording}
+                            title={i18n.t('voiceRecorder:startRecording')}
+                            buttonName='circle'
+                            buttonType='material'
+                            />
+            }
             {isRecording &&
-                <IconButton
-                    name='pause'
-                    type='material'
-                    color={palette.textBody}
-                    onPress={stopRecording}
-                    size={24}
-                    style={{ marginLeft: dimensions.spacingSmall}}
-                />}
+                <TextAction onPress={stopRecording}
+                            title={i18n.t('voiceRecorder:stopRecording')}
+                            buttonName='pause'
+                            buttonType='material'
+                            />
+            }
         </View>
     );
   };
@@ -137,25 +134,21 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
   const playingRender = () => {
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: dimensions.spacingBig }}>
-            <StyledText style={{...typography.headline3}}>{time + ' / ' + duration}</StyledText>
+            <StyledText style={styles.time}>{time + ' / ' + duration}</StyledText>
             {!isPlaying &&
-                <IconButton
-                name='play-arrow'
-                type='material'
-                color={palette.textBody}
-                onPress={startPlaying}
-                size={24}
-                style={{ marginLeft: dimensions.spacingSmall}}
-                />}
+                <TextAction onPress={startPlaying}
+                            title={i18n.t('voiceRecorder:startPlaying')}
+                            buttonName='play-arrow'
+                            buttonType='material'
+                            />
+            }
             {isPlaying &&
-                <IconButton
-                name='pause'
-                type='material'
-                color={palette.textBody}
-                onPress={stopPlaying}
-                size={24}
-                style={{ marginLeft: dimensions.spacingSmall}}
-                />}
+                <TextAction onPress={stopPlaying}
+                            title={i18n.t('voiceRecorder:stopPlaying')}
+                            buttonName='pause'
+                            buttonType='material'
+                            />
+            }
         </View>
     );
   };
@@ -202,17 +195,11 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
                 value={text}
                 onChangeText={setText}
               />
-            <TouchableOpacity style={{ flexDirection: 'row' }} onPress={saveRecording}>
-                <Text style={styles.modalTitle}>{i18n.t('voiceRecorder:save')}</Text>
-                <IconButton
-                  name='check-circle'
-                  type='font-awesome'
-                  color={palette.primary}
-                  size={24}
-                  onPress={saveRecording}
-                  style={{ marginLeft: dimensions.spacingSmall }}
-                />
-            </TouchableOpacity>
+            <TextAction onPress={saveRecording}
+                        title={i18n.t('voiceRecorder:save')}
+                        buttonName='check-circle'
+                        buttonType='font-awesome'
+                        />
         </>
     );
   };
@@ -279,4 +266,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  time: {
+    ...typography.headline3, 
+    marginRight: dimensions.spacingSmall,
+    paddingBottom: 5
+  }
 });
