@@ -1,15 +1,14 @@
 import React, { FC, useRef, useEffect, useState, } from 'react';
-import { View, StyleSheet, Animated, Dimensions, TouchableOpacity, Text, PermissionsAndroid } from 'react-native';
-import { StyledText, IconButton, TextInput } from '../../../components'
-import { palette, typography, dimensions, getElevation } from '../../../styles';
+import { View, StyleSheet, PermissionsAndroid } from 'react-native';
+import { StyledText, TextInput } from '../../../components'
+import { typography, dimensions } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFS from 'react-native-fs';
 import uuid from 'react-native-uuid';
 import { TextAction } from '../TextAction';
-
-const { height: windowHeight } = Dimensions.get('window');
+import { ModalTemplate } from '../../../components/ModalTemplate';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -17,35 +16,12 @@ interface Props {
 }
 
 export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
-  const backgroundAnimation = useRef(new Animated.Value(0));
-  const translateY = backgroundAnimation.current.interpolate({
-    inputRange: [0, 1],
-    outputRange: [windowHeight, 0],
-  });
-
-  const onOpen = () => {
-    Animated.timing(backgroundAnimation.current, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const goBack = () => {
-    Animated.timing(backgroundAnimation.current, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-    setTimeout(() => navigation.goBack(), 200);
-  };
-
   const checkForPermissions = async() => {
     const recordingPermition = PermissionsAndroid.PERMISSIONS.RECORD_AUDIO;
     const permission = await PermissionsAndroid.check(recordingPermition);
     if (permission) { return; }
     const grant = await PermissionsAndroid.request(recordingPermition);
-    if (grant !== PermissionsAndroid.RESULTS.GRANTED) { goBack(); }
+    if (grant !== PermissionsAndroid.RESULTS.GRANTED) { navigation.goBack(); }
   };
 
   const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
@@ -60,7 +36,6 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
   const [text, setText] = useState<string>('');
 
   useEffect(() => {
-    onOpen();
     checkForPermissions();
     return () => {
         if (recording.current) { stopRecording(); }
@@ -178,7 +153,7 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
     .then(() => {
         // console.log('Image copied to: ' + fileTargetPath);
         route.params?.updateRecording('file://' + fileTargetPath);
-        goBack();
+        navigation.goBack();
     })
     .catch((error) => {
         console.error('Error copying image: ', error);
@@ -204,68 +179,27 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
     );
   };
 
-  return (
-      <Animated.View style={[styles.overlay]}>
-        <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-          <View style={styles.modalInsideView}>
-            <StyledText style={styles.modalTitle}>{i18n.t('voiceRecorder:title')}</StyledText>
-            <IconButton
-              name='close'
-              type='material'
-              color={palette.textBody}
-              onPress={goBack}
-              iconButtonStyle={styles.closeModalIcon}
-            />
-            <View style={styles.inputContainer}>
-                {isRecorded 
-                ? (
-                    <>
-                    {playingRender()}
-                    {saveOrDiscardView()}
-                    </>
-                ) : (
-                    recordingRender()
-                )}
-            </View>
-          </View>
-        </Animated.View>
-      </Animated.View>
+  const render = () => {
+    return (
+      <>
+        {isRecorded 
+          ? (
+              <>
+              {playingRender()}
+              {saveOrDiscardView()}
+              </>
+          ) : (
+              recordingRender()
+          )
+        }
+      </>
     );
+  };
+
+  return (<ModalTemplate navigation={navigation} title={i18n.t('voiceRecorder:title')} children={render()}/>);
 };
 
 const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: palette.modalBackgroundOverlay,
-  },
-  container: {
-    ...getElevation(4),
-    width: 438,
-    height: '20%',
-  },
-  modalInsideView: {
-    ...getElevation(4),
-    backgroundColor: palette.background,
-    width: 438,
-    borderRadius: 16,
-    paddingVertical: dimensions.spacingBig,
-    paddingHorizontal: dimensions.spacingLarge,
-  },
-  closeModalIcon: {
-    position: 'absolute',
-    top: dimensions.spacingBig,
-    right: dimensions.spacingLarge,
-  },
-  modalTitle: {
-    ...typography.subtitle,
-    color: palette.textBody,
-  },
-  inputContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
   time: {
     ...typography.headline3, 
     marginRight: dimensions.spacingSmall,

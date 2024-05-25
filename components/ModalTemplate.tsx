@@ -1,88 +1,98 @@
-import React from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
-import { NavigationRoute, NavigationScreenProp } from '@react-navigation/native';
-
+import React, { FC, ReactElement, useRef, useEffect } from 'react';
+import { View, StyleSheet, Animated, Dimensions } from 'react-native';
+import { StyledText, IconButton } from '../components'
+import { palette, typography, dimensions, getElevation } from '../styles';
+import { NavigationProp } from '@react-navigation/native';
 import { i18n } from '../locale';
-import { palette } from '../styles';
-import { FlatButton } from './FlatButton';
+
+const { height: windowHeight } = Dimensions.get('window');
 
 interface Props {
-  children?: JSX.Element | JSX.Element[];
-  navigation: NavigationScreenProp<NavigationRoute<any>>;
-  onPress?: () => void;
-  buttonTitle?: string;
-}
+  navigation: NavigationProp<any>;
+  title: string;
+  children?: ReactElement;
+};
 
-interface State {
-  backgroundAnimation: Animated.Value;
-}
+export const ModalTemplate: FC<Props> = ({ navigation, title, children }) => {
+  const backgroundAnimation = useRef(new Animated.Value(0));
+  const translateY = backgroundAnimation.current.interpolate({
+    inputRange: [0, 1],
+    outputRange: [windowHeight, 0],
+  });
 
-export class ModalTemplate extends React.PureComponent<Props, State> {
-  state = {
-    backgroundAnimation: new Animated.Value(0),
-  };
-
-  componentDidMount() {
-    Animated.timing(this.state.backgroundAnimation, {
+  const animationOnOpen = () => {
+    Animated.timing(backgroundAnimation.current, {
       toValue: 1,
       duration: 200,
+      useNativeDriver: true,
     }).start();
-  }
-
-  onCancel = () => {
-    this.props.navigation.goBack();
   };
 
-  onPress = () => {
-    this.props.navigation.goBack();
-    this.props.onPress!();
+  const animationGoBack = () => {
+    Animated.timing(backgroundAnimation.current, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    setTimeout(() => navigation.goBack(), 200);
   };
 
-  render() {
-    const backgroundColor = this.state.backgroundAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.4)'],
-    });
-    const { children, buttonTitle } = this.props;
-    return (
-      <Animated.View style={[styles.container, { backgroundColor }]}>
-        <View style={styles.content}>
-          <View>{children}</View>
-          <View style={styles.footer}>
-            <FlatButton
-              title={!!buttonTitle ? i18n.t('common:cancel') : i18n.t('common:ok')}
-              containerStyle={styles.button}
-              onPress={this.onCancel}
+  useEffect(() => {
+    animationOnOpen();
+  }, []);
+
+  return (
+      <Animated.View style={[styles.overlay]}>
+        <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+          <View style={styles.modalInsideView}>
+            <StyledText style={styles.modalTitle}>{i18n.t(title)}</StyledText>
+            <IconButton
+              name='close'
+              type='material'
+              color={palette.textBody}
+              onPress={animationGoBack}
+              iconButtonStyle={styles.closeModalIcon}
             />
-            {!!buttonTitle && (
-              <FlatButton title={this.props.buttonTitle} onPress={this.onPress} containerStyle={styles.button} />
-            )}
+            <View style={styles.inputContainer}>
+                {children}
+            </View>
           </View>
-        </View>
+        </Animated.View>
       </Animated.View>
     );
-  }
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: palette.modalBackgroundOverlay,
   },
-  button: {
-    flex: 1,
+  container: {
+    ...getElevation(4),
+    width: 438,
+    height: '20%',
   },
-  content: {
-    maxWidth: '90%',
-    borderRadius: 12,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 8,
+  modalInsideView: {
+    ...getElevation(4),
     backgroundColor: palette.background,
+    width: 438,
+    borderRadius: 16,
+    paddingVertical: dimensions.spacingBig,
+    paddingHorizontal: dimensions.spacingLarge,
   },
-  footer: {
-    flexDirection: 'row',
-    marginTop: 12,
+  closeModalIcon: {
+    position: 'absolute',
+    top: dimensions.spacingBig,
+    right: dimensions.spacingLarge,
   },
+  modalTitle: {
+    ...typography.subtitle,
+    color: palette.textBody,
+  },
+  inputContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
 });
