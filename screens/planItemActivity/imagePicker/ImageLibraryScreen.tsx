@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
-import RNFS from 'react-native-fs';
-import { FullScreenTemplate, Icon, IconButton, ModalTrigger } from '../../../components';
+import { FullScreenTemplate, IconButton, ModalTrigger } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { dimensions, palette, typography } from '../../../styles';
-import { PlanItem } from '../../../models';
+import { PlanItem, InnerGallery } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 import { i18n } from '../../../locale';
@@ -18,22 +17,17 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   const [images, setImages] = useState<string[]>([]);
   const [usedImages, setUsedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
   const selectMode = useRef<boolean>(route.params?.updateImage ? true : false);
 
   const fetchImages = async () => {
-    try {
-      if (!(route.params?.updateImage ? true : false)) {
+      const isSelectMode = route.params?.updateImage ? true : false;
+      if (!isSelectMode) {
         const images = await PlanItem.getImgUriUsed();
         setUsedImages(images);
       }
-      const result = await RNFS.readDir(imagesDir);
-      const imgPaths = result.map(res => 'file://' + res.path);
+      const imgPaths = await InnerGallery.fetchFiles(InnerGallery.imagesDir);
       // const repeatedImages = Array.from(Array(20).keys()).map(() => imgPaths).flat();
       setImages(imgPaths);
-    } catch (err: any) {
-      console.error('Cannot load images:', err);
-    }
   };
 
   useEffect(() => {
@@ -107,7 +101,8 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
             <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0}/>
           </View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-              <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
+              <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
+                          style={{marginRight: dimensions.spacingLarge}}/>
           </ModalTrigger>
         </View>
     }

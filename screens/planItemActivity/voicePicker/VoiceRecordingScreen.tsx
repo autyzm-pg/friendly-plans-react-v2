@@ -5,10 +5,9 @@ import { typography, dimensions } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import RNFS from 'react-native-fs';
-import uuid from 'react-native-uuid';
 import { TextAction } from '../TextAction';
 import { ModalTemplate } from '../../../components/ModalTemplate';
+import { InnerGallery } from '../../../models';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -127,37 +126,12 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
         </View>
     );
   };
-
-  const validate = () => {
-    const isValidText = /^[a-zA-Z0-9]+$/.test(text);
-    if (text.length == 0) {
-      setText(i18n.t('common:required'));
-      return false;
-    }
-    else if (!isValidText) {
-      setText(i18n.t('common:incorrectFileName'));
-      return false;
-    }
-    return true;
-  };
-
+  
   const saveRecording = async() => {
-    if(!validate()) { return; }
-    const imagesDir = RNFS.DocumentDirectoryPath + '/Recordings/';
-    let fileTargetPath = 'file://' + imagesDir + text + '.mp4';
-    const doesFileExist = await RNFS.exists(fileTargetPath);
-    if (doesFileExist) {
-        fileTargetPath = 'file://' + imagesDir + text + '_' + uuid.v4() + '.mp4';
-    }
-    await RNFS.copyFile(filePath.current, fileTargetPath)
-    .then(() => {
-        // console.log('Image copied to: ' + fileTargetPath);
-        route.params?.updateRecording('file://' + fileTargetPath);
-        navigation.goBack();
-    })
-    .catch((error) => {
-        console.error('Error copying image: ', error);
-    });
+    if(!InnerGallery.validateFileName(text, setText)) { return; }
+    const fileTargetPath = await InnerGallery.createUniqueFilePath(InnerGallery.recordingsDir, text + '.mp4');
+    await InnerGallery.copyFile(filePath.current, fileTargetPath, route.params?.updateRecording)
+    .then(() => { navigation.goBack(); });
   };
 
   const saveOrDiscardView = () => {

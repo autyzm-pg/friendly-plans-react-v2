@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Card, FullScreenTemplate, IconButton, ModalTrigger, TextInput } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import RNFS from 'react-native-fs';
 import { dimensions, palette, typography } from '../../../styles';
 import Sound from 'react-native-sound';
 import { i18n } from '../../../locale';
-import { PlanItem } from '../../../models';
+import { InnerGallery, PlanItem } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 
@@ -19,7 +18,6 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     const [recordings, setRecordings] = useState<string[]>([]);
     const [usedVoices, setVoices] = useState<string[]>([]);
 
-    const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
     const selectMode = useRef<boolean>(route.params?.updateRecording ? true : false);
     
     const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
@@ -29,28 +27,23 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     const [filRecordings, setFilRecordings] = useState<string[]>([]);
 
     const fetchRecordings = async () => {
-        try {
-            if (!(route.params?.updateRecording ? true : false)) {
-                const voices = await PlanItem.getVoiceUriUsed();
-                setVoices(voices);
-            }
-            const result = await RNFS.readDir(recordingsDir);
-            const recPaths = result.map(res => 'file://' + res.path);
-            //const repeatedRec = Array.from(Array(20).keys()).map(() => recPaths).flat();
-            setRecordings(recPaths);
-            setFilRecordings(recPaths);
-        } catch (err: any) {
-            console.log('Cannot load recordings...');
+        const isSelectMode = route.params?.updateRecording ? true : false;
+        if (!isSelectMode) {
+            const voices = await PlanItem.getVoiceUriUsed();
+            setVoices(voices);
         }
+        const recPaths = await InnerGallery.fetchFiles(InnerGallery.recordingsDir);
+        //const repeatedRec = Array.from(Array(20).keys()).map(() => recPaths).flat();
+        setRecordings(recPaths);
+        setFilRecordings(recPaths);
     };
 
     useEffect(()=> {
         fetchRecordings();
         return () => {
-            if (playerRef.current) {
-              playerRef.current.stop();
-              playerRef.current.release();
-            }
+            if (!playerRef.current) { return; }
+            playerRef.current.stop();
+            playerRef.current.release();
         };
     }, []);
 
@@ -188,10 +181,12 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
             <View style={styles.trashIconContainer}>
                 <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
                 <View style={styles.iconButtonContainer}>
-                    <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedRecordings.length == 0}/>
+                    <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} 
+                                disabled={selectedRecordings.length == 0}/>
                 </View>
                 <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-                    <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} style={{marginRight: dimensions.spacingLarge}}/>
+                    <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
+                                style={{marginRight: dimensions.spacingLarge}}/>
                 </ModalTrigger>
             </View>
             :

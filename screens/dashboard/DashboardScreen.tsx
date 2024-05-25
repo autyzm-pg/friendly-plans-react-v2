@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 //import { NavigationInjectedProps, withNavigationFocus } from '@react-navigation/native';
 
-import { Student } from '../../models';
+import { InnerGallery, Student } from '../../models';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
@@ -28,8 +28,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
     await db.initializeDatabase();
   }
 
-  useEffect(() => {
-    
+  useEffect(() => {    
     connectToDatabase().then(() => {
       Student.getStudents().then(studentsList => {
         if (studentsList.length) {
@@ -41,9 +40,10 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
       })
     });
 
-    return () => {
-
-    };
+    InnerGallery.createDirectory(InnerGallery.imagesDir);
+    InnerGallery.createDirectory(InnerGallery.recordingsDir);
+    
+    return () => {};
   }, []);
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import {IconButton} from '../../../components';
 import {i18n} from '../../../locale';
 import {noop} from 'lodash';
 import {PlanItem} from '../../../models';
@@ -9,10 +8,9 @@ import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
 import Tts from 'react-native-tts';
 import Sound from 'react-native-sound';
-import RNFS from 'react-native-fs';
 import { NavigationProp } from '@react-navigation/native';
 import {Route} from '../../../navigation';
-import uuid from 'react-native-uuid';
+import { InnerGallery } from '../../../models/InnerGallery';
 
 interface Props {
   closeModal?: () => void;
@@ -41,41 +39,15 @@ export const VoicePickerModal: FC<Props> = ({
                         planItem,
                         navigation
                       }) => {
-  const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
   const playerRef = useRef<any>(null);
 
   useEffect(() => {
-    RNFS.exists(recordingsDir)
-    .then((exists) => {
-      if (exists) { return; }
-      RNFS.mkdir(recordingsDir)
-        .then(() => {
-          // console.log('Created: ' + recordingsDir)
-        })
-        .catch((error) => {
-          // console.error('Error creating: ' + recordingsDir, error);
-        });
-    })
-    .catch((error) => {
-      console.error('Cannot check if directory exists: ' + recordingsDir, error);
-    });
     return () => {
-      if (playerRef.current) {
-        playerRef.current.stop();
-        playerRef.current.release();
-      }
+      if (!playerRef.current) { return; }
+      playerRef.current.stop();
+      playerRef.current.release();
     };
   }, []);
-
-  const splitToNameExtension = (fileName: string) => {
-    const idx = fileName.lastIndexOf('.');
-    if (idx !== -1) {
-      const name = fileName.substring(0, idx);
-      const extension = fileName.substring(idx + 1);
-      return [name, extension];
-    }
-    return fileName;
-  };
 
   const openGallery = async () => {
     closeModal();
@@ -84,21 +56,9 @@ export const VoicePickerModal: FC<Props> = ({
       type: types.audio,
       allowMultiSelection: false,
     });
-    if (!response[0]) { return; }
-    let fileTargetPath = recordingsDir + response[0].name;
-    const doesFileExist = await RNFS.exists(fileTargetPath);
-    if (doesFileExist && response[0].name) { 
-      const [name, extension] = splitToNameExtension(response[0].name);
-      fileTargetPath = recordingsDir + name + '_' + uuid.v4() + '.' + extension;
-    }
-    await RNFS.copyFile(response[0].uri, fileTargetPath)
-    .then(() => {
-      //console.log('Recording copied to: ' + fileTargetPath);
-      voiceUriUpdate('file://' + fileTargetPath);
-    })
-    .catch((error) => {
-      console.error('Error copying recording: ', error);
-    });
+    if (!response[0] || !response[0].name) { return; }
+    const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.recordingsDir, response[0].name);
+    InnerGallery.copyFile(response[0].uri, fileTarPath, voiceUriUpdate);
   };
 
   const callSetLector = () => {
@@ -113,12 +73,6 @@ export const VoicePickerModal: FC<Props> = ({
 
   const callDeleteVoice = async () => {
     closeModal();
-    // console.log(currentVoiceUri);
-    // if (currentVoiceUri && !isComplexTask) {
-    //   await ImagePicker.cleanSingle(currentVoiceUri).catch(() => {});
-    // } else if (selected!.voicePath && isComplexTask) {
-    //   await ImagePicker.cleanSingle(selected!.voicePath).catch(() => {});
-    // }
     deleteVoice();
   };
 

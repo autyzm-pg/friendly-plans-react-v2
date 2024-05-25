@@ -9,7 +9,7 @@ import {PlanItem} from '../../../models';
 import {palette} from '../../../styles';
 import {ImagePickerModal} from './ImagePickerModal';
 import {PlanItemFormData} from '../PlanItemForm';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 
 interface Props {
     planItem: PlanItem;

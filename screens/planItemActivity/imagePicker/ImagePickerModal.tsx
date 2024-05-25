@@ -1,4 +1,3 @@
-import {IconButton} from '../../../components';
 import {i18n} from '../../../locale';
 import {noop} from 'lodash';
 import {PlanItem} from '../../../models';
@@ -7,10 +6,9 @@ import {StyleSheet, View} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
-import RNFS from 'react-native-fs';
 import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation/routes';
-import uuid from 'react-native-uuid';
+import {InnerGallery} from '../../../models/InnerGallery';
 
 interface Props {
     closeModal?: () => void;
@@ -36,23 +34,7 @@ export const ImagePickerModal: FC<Props> = ({
                                             navigation
                                         }) => {
 
-    const imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
-
     useEffect(() => {
-        RNFS.exists(imagesDir)
-        .then((exists) => {
-            if (exists) { return; }
-            RNFS.mkdir(imagesDir)
-                .then(() => {
-                    // console.log('Created: ' + imagesDir)
-                })
-                .catch((error) => {
-                    // console.error('Error creating: ' + imagesDir, error);
-                });
-        })
-        .catch((error) => {
-            // console.error('Cannot check if directory exists: ' + imagesDir, error);
-        });
     }, []);
 
     const openCamera = async () => {
@@ -60,26 +42,10 @@ export const ImagePickerModal: FC<Props> = ({
         await ImagePicker.openCamera({
         }).then(async (image) => {
             if(!image.path) { return; }
-            const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
-            await RNFS.moveFile(image.path, fileTargetPath)
-            .then(() => {
-                // console.log('Image moved to: ' + fileTargetPath);
-                imageUriUpdate('file://' + fileTargetPath);
-            })
-            .catch((error) => {
-                console.error('Error moving image: ', error);
-            });
+            const fileName = InnerGallery.getFileName(image.path);
+            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+            await InnerGallery.moveFile(image.path, fileTarPath, imageUriUpdate);
         });
-    };
-
-    const splitToNameExtension = (fileName: string) => {
-        const idx = fileName.lastIndexOf('.');
-        if (idx !== -1) {
-          const name = fileName.substring(0, idx);
-          const extension = fileName.substring(idx + 1);
-          return [name, extension];
-        }
-        return fileName;
     };
 
     const openGallery = async () => {
@@ -88,20 +54,9 @@ export const ImagePickerModal: FC<Props> = ({
             mediaType: 'photo'
         }).then(async (image) => {
             if(!image.path) { return; }
-            let fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
-            const doesFileExist = await RNFS.exists(fileTargetPath);
-            if (doesFileExist) { 
-                const [name, extension] = splitToNameExtension(image.path.substring(image.path.lastIndexOf('/') + 1));
-                fileTargetPath = imagesDir + name + '_' + uuid.v4() + '.' + extension;
-            }
-            await RNFS.copyFile(image.path, fileTargetPath)
-            .then(() => {
-                // console.log('Image copied to: ' + fileTargetPath);
-                imageUriUpdate('file://' + fileTargetPath);
-            })
-            .catch((error) => {
-                console.error('Error copying image: ', error);
-            });
+            const fileName = InnerGallery.getFileName(image.path);
+            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+            await InnerGallery.copyFile(image.path, fileTarPath, imageUriUpdate);
         });
     };
 
@@ -114,15 +69,9 @@ export const ImagePickerModal: FC<Props> = ({
             mediaType: 'photo'
         }).then(async (image) => {
             if(!image.path) { return; }
-            const fileTargetPath = imagesDir + image.path.substring(image.path.lastIndexOf('/') + 1);
-            await RNFS.moveFile(image.path, fileTargetPath)
-            .then(() => {
-                // console.log('Image moved to: ' + fileTargetPath);
-                imageUriUpdate('file://' + fileTargetPath);
-            })
-            .catch((error) => {
-                console.error('Error moving image: ', error);
-            });
+            const fileName = InnerGallery.getFileName(image.path);
+            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+            await InnerGallery.moveFile(image.path, fileTarPath, imageUriUpdate);
         });
     };
 

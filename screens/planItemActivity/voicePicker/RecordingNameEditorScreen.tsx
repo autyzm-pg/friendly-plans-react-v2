@@ -3,8 +3,7 @@ import { TextInput } from '../../../components'
 import { typography } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
-import RNFS from 'react-native-fs';
-import { PlanItem } from '../../../models';
+import { InnerGallery, PlanItem } from '../../../models';
 import { Route } from '../../../navigation';
 import { TextAction } from '../TextAction';
 import { ModalTemplate } from '../../../components/ModalTemplate';
@@ -17,7 +16,6 @@ interface Props {
 export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
   const [text, setText] = useState('');
   const [placeHolder, setPlaceHolder] = useState('');
-  const recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
 
   useEffect(() => {
     let uri = route.params?.uri;
@@ -26,45 +24,18 @@ export const RecordingNameEditor: FC<Props> = ({ navigation, route }) => {
     setPlaceHolder(uri.substring(uri.lastIndexOf('/') + 1));
   }, []);
 
-  const splitToNameExtension = (fileName: string) => {
-    const idx = fileName.lastIndexOf('.');
-    if (idx !== -1) {
-      const name = fileName.substring(0, idx);
-      const extension = fileName.substring(idx + 1);
-      return [name, extension];
-    }
-    return fileName;
-  };
-
-  const validate = () => {
-    const isValidText = /^[a-zA-Z0-9]+$/.test(text);
-    if (text.length == 0) {
-      setText(i18n.t('common:required'));
-      return false;
-    }
-    else if (!isValidText) {
-      setText(i18n.t('common:incorrectFileName'));
-      return false;
-    }
-    return true;
-  };
-
   const renameFile = async() => {
+    if (!InnerGallery.validateFileName(text, setText)) { return; }
     const orgUri = route.params?.uri;
-    const [_, extension] = splitToNameExtension(orgUri.substring(orgUri.lastIndexOf('/') + 1));
-    const targetUri = 'file://' + recordingsDir + text + '.' + extension;
-    if(!validate()) { return; }
-    await RNFS.copyFile(orgUri, targetUri)
-    .then(async() => {
-      await RNFS.unlink(orgUri).then(async() => {
-        await PlanItem.updateVoiceUri(orgUri, targetUri).then(() => {
-          navigation.navigate(Route.Dashboard);
-        });
+    const fileName = InnerGallery.getFileName(orgUri);
+    const [_, extension] = InnerGallery.splitToNameAndExtension(fileName);
+    const fileTargetPath = await InnerGallery.createUniqueFilePath(InnerGallery.recordingsDir, text + '.' + extension);
+    const updateUri = async(filePath: string) => {
+      await PlanItem.updateVoiceUri(orgUri, filePath).then(() => {
+        navigation.navigate(Route.Dashboard);
       });
-    })
-    .catch((error) => {
-      console.error('Error copying recording: ', error);
-    });
+    };
+    await InnerGallery.renameFile(orgUri, fileTargetPath, updateUri);
   };
 
   const render = () => {
