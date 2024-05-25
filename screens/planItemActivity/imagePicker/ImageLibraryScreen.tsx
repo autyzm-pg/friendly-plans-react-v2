@@ -84,6 +84,16 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     ]);
   };
 
+  const loadMultiple = async() => {
+    await ImagePicker.openPicker({
+      mediaType: 'photo',
+      multiple: true
+    }).then(async (images) => {
+      await InnerGallery.copyMultipleImages(images);
+      navigation.goBack();
+    });
+  };
+
   const showInfo = () => {
     return (
       <View style={styles.imageActionContainer}>
@@ -99,10 +109,11 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
           <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text>
           <View style={styles.iconButtonContainer}>
             <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0}/>
+            <IconButton name='file-download' type='material' size={24} color={palette.primary} style={{ marginLeft: dimensions.spacingBig }} onPress={loadMultiple}/>
           </View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
-                          style={{marginRight: dimensions.spacingLarge}}/>
+                          style={{marginRight: dimensions.spacingBig}}/>
           </ModalTrigger>
         </View>
     }
@@ -140,9 +151,10 @@ const styles = StyleSheet.create({
   },
   iconButtonContainer: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    marginRight: dimensions.spacingLarge
+    marginRight: dimensions.spacingBig
   },
   flatListContainer: {
     paddingVertical: 10,

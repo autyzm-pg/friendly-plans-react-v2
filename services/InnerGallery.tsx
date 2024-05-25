@@ -1,6 +1,8 @@
 import RNFS from 'react-native-fs';
 import { i18n } from '../locale';
 import uuid from 'react-native-uuid';
+import { Image } from 'react-native-image-crop-picker';
+import { DocumentPickerResponse } from 'react-native-document-picker';
 
 export class InnerGallery {
     static imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
@@ -63,20 +65,32 @@ export class InnerGallery {
     };
 
     static copyFile = async(fileOrgPath: string, fileTarPath: string, uriUpdate: (uri: string) => void) => {
-        console.log(fileOrgPath);
-        console.log(fileTarPath);
         await RNFS.copyFile(fileOrgPath, fileTarPath).then(() => { uriUpdate('file://' + fileTarPath); });
     };
 
+    static copyMultipleImages = async(images: Image[]) => {
+        if (images.length == 0) { return; }
+        images.forEach(async(img) => {
+            const fileName = InnerGallery.getFileName(img.path);
+            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+            await RNFS.copyFile(img.path, fileTarPath);
+          });
+    };
+
+    static copyMultipleRecs = async(recordings: DocumentPickerResponse[]) => {
+        if (recordings.length == 0 ) { return; }
+        recordings.forEach(async(rec) => {
+            if (!rec.name) { return; }
+            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.recordingsDir, rec.name);
+            await RNFS.copyFile(rec.uri, fileTarPath);
+        });
+    };
+
     static moveFile = async(fileOrgPath: string, fileTarPath: string, uriUpdate: (uri: string) => void) => {
-        console.log(fileOrgPath);
-        console.log(fileTarPath);
         await RNFS.moveFile(fileOrgPath, fileTarPath).then(() => { uriUpdate('file://' + fileTarPath); });
     };
 
     static renameFile = async(fileOrgPath: string, fileTarPath: string, uriUpdate: (uri: string) => Promise<void>) => {
-        console.log(fileOrgPath);
-        console.log(fileTarPath);
         await RNFS.copyFile(fileOrgPath, fileTarPath)
         .then(async() => {
             await RNFS.unlink(fileOrgPath).then(async() => {

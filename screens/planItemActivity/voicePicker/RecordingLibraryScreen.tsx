@@ -8,6 +8,7 @@ import { i18n } from '../../../locale';
 import { InnerGallery, PlanItem } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
+import DocumentPicker, {types} from 'react-native-document-picker';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -119,6 +120,16 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         ]);
       };
 
+    const loadMultiple = async() => {
+        const response = await DocumentPicker.pick({
+          presentationStyle: 'fullScreen',
+          type: types.audio,
+          allowMultiSelection: true
+        });
+        await InnerGallery.copyMultipleRecs(response);
+        navigation.goBack();
+    };
+
     const showInfo = () => {
         return (
             <View style={styles.imageActionContainer}>
@@ -171,10 +182,12 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                     <View style={styles.iconButtonContainer}>
                         <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} 
                                     disabled={selectedRecordings.length == 0}/>
+                        <IconButton name='file-download' type='material' size={24} color={palette.primary} 
+                                    style={{ marginLeft: dimensions.spacingBig }} onPress={loadMultiple}/>
                     </View>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
                         <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
-                                    style={{marginRight: dimensions.spacingLarge}}/>
+                                    style={{marginRight: dimensions.spacingBig}}/>
                     </ModalTrigger>
                 </>
             }
@@ -241,6 +254,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        marginRight: dimensions.spacingLarge
+        flexDirection: 'row',
+        marginRight: dimensions.spacingBig
       },
 });
