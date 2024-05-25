@@ -38,6 +38,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         selected: -1,
         deletedItems: [],
     })
+    const subItemsRef = useRef<PlanSubItem[]>([]);
+
     const [forceUpdateFlag, setForceUpdateFlag] = useState(false);
 
     const taskSaved = useRef(false);
@@ -62,6 +64,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                     ...prevState,
                     subItems: subItems
                   }));
+                  subItemsRef.current = subItems;
             })
         }
     }
@@ -76,6 +79,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         const subItems = [...state.subItems, planSubItem];
         state.formik.values.subItems = subItems;
         formikProps.values.subItems = subItems;
+        subItemsRef.current = subItems;
         setState(prevState => ({
             ...prevState,
             subItems: subItems,
@@ -97,6 +101,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         state.formik.values.deleteSubItems = deletedItems;
         formikProps.values.subItems = subItems;
         formikProps.values.deleteSubItems = deletedItems;
+        subItemsRef.current = subItems;
         setState(prevState => ({
             ...prevState,
             subItems: subItems,
@@ -256,18 +261,18 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                                     navigation={navigation}/>;
     };
 
+    const popUpNoSubTaskAlert = () => {
+        Alert.alert(
+            i18n.t('planItemActivity:alertMessageTitleNoSubTasks'),
+            i18n.t('planItemActivity:alertMessageNoSubTasks'),
+            [
+                { text: i18n.t('common:ok'), onPress: () => {} }
+            ],
+            { cancelable: false }
+        );
+    };
+
     const saveNewTask = async () => {
-        if (state.subItems.length == 0) {
-            Alert.alert(
-                i18n.t('planItemActivity:alertMessageTitleNoSubTasks'),
-                i18n.t('planItemActivity:alertMessageNoSubTasks'),
-                [
-                  { text: i18n.t('common:ok'), onPress: () => {} }
-                ],
-                { cancelable: false }
-              );
-            return;
-        }
         taskSaved.current = true;
         formikProps.submitForm();
         ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
@@ -297,7 +302,13 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                 {
                     text: i18n.t('planItemActivity:alertMessageSaveQuestionSave'),
                     style: 'default',
-                    onPress: saveNewTask
+                    onPress: () => {
+                        if (subItemsRef.current.length == 0) {
+                            popUpNoSubTaskAlert();
+                            return;
+                        }
+                        saveNewTask();
+                    }
                 },
                 ],
                 {
@@ -352,7 +363,13 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                         size: 22,
                     }}
                     isUppercase
-                    onPress={saveNewTask}
+                    onPress={() => {
+                        if (state.subItems.length == 0) {
+                            popUpNoSubTaskAlert();
+                            return;
+                        }
+                        saveNewTask();
+                    }}
                 />
             </View>
             </View>
