@@ -1,6 +1,6 @@
 import {i18n} from '../../locale';
-import {PlanItem, PlanItemType, PlanSubItem} from '../../models';
-import React, { FC, useEffect, useState } from 'react';
+import {PlanItem } from '../../models';
+import React, { FC, useState } from 'react';
 import {PlanItemForm, PlanItemFormData} from './PlanItemForm';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 
@@ -37,27 +37,9 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
 
   const createPlanItem = async (data: PlanItemFormData) => {
     const plan = route.params?.plan;
-
-    //@ts-ignore
-    // const planItem: PlanItem = {
-    //   name: data.name,
-    //   studentId: state.planItem.studentId,
-    //   planId: plan.id,
-    //   type: data.type,
-    //   completed: state.planItem.completed,
-    //   lector: data.lector,
-    //   nameForChild: i18n.t('planItemActivity:taskNameForChild'),
-    //   itemOrder: state.planItem.itemOrder,
-    //   time: data.time,
-    //   image: data.imageUri,
-    //   voicePath: data.voicePath,
-    // }
-
     PlanItem.createPlanItem(plan, data.type, data, getLastItemOrder()).then(() => {
         navigation.goBack();
     });
-
-    //setState({planItem: item});
   };
 
   const updatePlanItem = async (data: PlanItemFormData) => {

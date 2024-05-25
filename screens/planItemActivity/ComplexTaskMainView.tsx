@@ -83,63 +83,6 @@ export const ComplexTaskMainView: FC<Props> = ({
 
     return (
         <SafeAreaView style={style}>
-            {/*<Card style={[styles.container]}>*/}
-
-
-            {/*    <View style={{flexDirection: 'row'}}>*/}
-            {/*        <TextInput*/}
-            {/*            style={styles.imageInputTextContainer}*/}
-            {/*            textStyle={styles.imageInputText}*/}
-            {/*            placeholder={i18n.t('planItemActivity:taskNameForChild')}*/}
-            {/*            defaultValue={itemInfo.name}*/}
-            {/*            onChangeText={onChange}*/}
-            {/*        />*/}
-
-            {/*        <ModalTrigger*/}
-            {/*            title={i18n.t('planItemActivity:infoBox')}*/}
-            {/*            modalContent={*/}
-            {/*                showInfo()*/}
-            {/*            }*/}
-
-            {/*        >*/}
-            {/*            <IconButton containerStyle={{marginTop: 53}} name={'information-circle'} type={'ionicon'}*/}
-            {/*                        size={40}*/}
-            {/*                        disabled color={palette.informationIcon}/>*/}
-            {/*        </ModalTrigger>*/}
-            {/*    </View>*/}
-
-            {/*    <View style={styles.timerButton}>*/}
-            {/*        {(itemInfo.key !== -1) ? <ModalTrigger*/}
-            {/*            title={i18n.t('simpleTask:setTimer')}*/}
-            {/*            modalContent={*/}
-            {/*                <TimeSlider min={[0, 0, 0]} max={[2, 60, 60]} onConfirm={newTime => {*/}
-            {/*                    handleConfirmTimer(newTime);*/}
-            {/*                    onTimeChange(newTime);*/}
-            {/*                }} savedTime={time}/>*/}
-            {/*            }*/}
-            {/*        >*/}
-            {/*            <IconButton*/}
-            {/*                name={timeInfo() !== 'none' ? 'timer' : 'alarm-off'}*/}
-            {/*                type="material"*/}
-            {/*                label={timeInfo() === 'none' ? i18n.t('planItemActivity:timerButton') : timeInfo()}*/}
-            {/*                containerStyle={styles.iconButtonContainer}*/}
-            {/*                size={24}*/}
-            {/*                color={palette.primaryVariant}*/}
-            {/*                disabled*/}
-            {/*            />*/}
-            {/*        </ModalTrigger> : (<ModalTrigger*/}
-            {/*            title={i18n.t('planItemActivity:infoBox')}*/}
-            {/*            modalContent={*/}
-            {/*                showInfoCover()*/}
-            {/*            }*/}
-            {/*        >*/}
-            {/*            <StyledText*/}
-            {/*                style={styles.iconButtonContainer}>{i18n.t('planItemActivity:complexTaskCover')}</StyledText>*/}
-            {/*        </ModalTrigger>)}*/}
-            {/*    </View>*/}
-            {/*</Card>*/}
-
-
             <Card style={[styles.container]}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                     <VoicePicker planItem={planItem} formikProps={formikProps} navigation={navigation}

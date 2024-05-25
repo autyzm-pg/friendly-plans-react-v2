@@ -21,7 +21,7 @@ interface Props {
   isSubItemsList?: boolean;
   isSubItem?: boolean;
   onItemCompleted: (completedItem: PlanItem | PlanSubItem) => void;
-  onItemUncompleted: (uncompletedItem: PlanItem | PlanSubItem) => void;
+  onItemUncompleted: (uncompletedItem: PlanItem | PlanSubItem, currentTaskId: number | undefined) => void;
 }
 
 export class PlanElementListItem extends React.PureComponent<Props> {
@@ -83,11 +83,11 @@ export class PlanElementListItem extends React.PureComponent<Props> {
       this.props.item.completed = false;
       if (this.props.isSubItem) {
         (this.props.item as PlanSubItem).uncomplete().then(() => {
-          this.props.onItemUncompleted(this.props.item as PlanSubItem)
+          this.props.onItemUncompleted(this.props.item as PlanSubItem, undefined);
         });
       } else {
         (this.props.item as PlanItem).uncomplete().then(() => {
-          this.props.onItemUncompleted(this.props.item as PlanItem, this.props.currentTaskIndex)
+          this.props.onItemUncompleted(this.props.item as PlanItem, this.props.currentTaskIndex);
         });
       }
     }

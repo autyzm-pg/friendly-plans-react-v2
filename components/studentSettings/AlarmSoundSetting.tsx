@@ -5,10 +5,11 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {dimensions, palette, typography} from '../../styles';
 import sounds from '../../assets/sounds/sounds';
 import Sound from 'react-native-sound';
+import { TimerSound } from '../../models';
 
 interface Props {
     sound: string;
-    onValueChange: (timer: string) => void;
+    onValueChange: (timer: TimerSound) => void;
 }
 
 export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
@@ -46,13 +47,13 @@ export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
         if (direction === 'next') {
             setTimerIndex((prevIndex) => {
                 const newIdx = (prevIndex + 1) % items.current.length;
-                onValueChange(items.current[newIdx].key);
+                onValueChange(items.current[newIdx].key as TimerSound);
                 return newIdx;
             });
         } else {
             setTimerIndex((prevIndex) => {
                 const newIdx = (prevIndex - 1 + items.current.length) % items.current.length;
-                onValueChange(items.current[newIdx].key);
+                onValueChange(items.current[newIdx].key as TimerSound);
                 return newIdx;
             });
         }

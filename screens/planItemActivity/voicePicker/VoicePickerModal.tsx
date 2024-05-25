@@ -10,7 +10,7 @@ import Tts from 'react-native-tts';
 import Sound from 'react-native-sound';
 import { NavigationProp } from '@react-navigation/native';
 import {Route} from '../../../navigation';
-import { InnerGallery } from '../../../models/InnerGallery';
+import { InnerGallery } from '../../../services/InnerGallery';
 
 interface Props {
   closeModal?: () => void;
@@ -24,7 +24,7 @@ interface Props {
     key: number;
     voicePath: string;
     lector: boolean;
-    name: string;
+    name?: string;
   };
   lector: boolean,
   navigation: NavigationProp<any>;
@@ -81,7 +81,7 @@ export const VoicePickerModal: FC<Props> = ({
     if ((!isComplexTask && lector && planItem.nameForChild) || (isComplexTask && selected?.lector && selected?.name)) {
       await Tts.getInitStatus().then(() => {
         Tts.setDefaultLanguage(i18n.t('common:language'));
-        Tts.speak((isComplexTask && selected) ? selected?.name : planItem.nameForChild);
+        Tts.speak((isComplexTask && selected && selected.name) ? selected?.name : planItem.nameForChild);
       }, (err) => {
         if (err.code === 'no_engine') {
           Tts.requestInstallEngine();

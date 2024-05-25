@@ -1,12 +1,11 @@
 export { WelcomeScreen } from './WelcomeScreen';
-// export { DialogScreen } from './DialogScreen';
 export { default as DashboardScreen } from './dashboard/DashboardScreen';
 export { StudentSettingsScreen } from './studentSettings/StudentSettingsScreen';
 export { StudentsListScreen } from './studentsList/StudentsListScreen';
 export { StudentsListSearchScreen } from './studentsListSearch/StudentsListSearchScreen';
-// export { RunPlanListScreen } from './runPlan/ListMode/RunPlanListScreen';
-// export { RunSubPlanListScreen } from './runPlan/ListMode/RunSubPlanListScreen';
-// export { RunPlanSlideScreen } from './runPlan/SlideMode/RunPlanSlideScreen';
+export { RunPlanListScreen } from './runPlan/ListMode/RunPlanListScreen';
+export { RunSubPlanListScreen } from './runPlan/ListMode/RunSubPlanListScreen';
+export { RunPlanSlideScreen } from './runPlan/SlideMode/RunPlanSlideScreen';
 export { PlanActivityScreen } from './planActivity/PlanActivityScreen';
 export { PlanItemTaskScreen } from './planItemActivity/PlanItemTaskScreen';
 export { ImageLibraryScreen } from './planItemActivity/imagePicker/ImageLibraryScreen';
@@ -18,4 +17,5 @@ export { StudentsListForCopyPlanScreen } from '../copyExistingPlan/students/Stud
 export { StudentsListSearchForCopyPlanScreen } from '../copyExistingPlan/students/StudentsListSearchForCopyPlanScreen';
 export { PlansListForCopyScreen } from '../copyExistingPlan/plans/PlansListForCopyScreen';
 export { PlanSearchForCopyScreen } from '../copyExistingPlan/plans/PlanSearchForCopyScreen';
-// export { RunSubPlanSlideScreen } from './runPlan/SlideMode/RunSubPlanSlideScreen';
+export { RunSubPlanSlideScreen } from './runPlan/SlideMode/RunSubPlanSlideScreen';
+export { ModeSwitchScreen } from './modeSwitch/ModeSwitchScreen';

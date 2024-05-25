@@ -25,7 +25,7 @@ export interface PlanItemFormData {
 }
 
 interface Props {
-  onSubmit: (formData: PlanItemFormData) => Promise<void>;
+  onSubmit: (formData: PlanItemFormData) => void;
   planItem: PlanItem;
   taskNumber: number;
   itemType: PlanItemType;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler, StyleSheet, Text } from 'react-native';
+import { BackHandler, StyleSheet } from 'react-native';
 import { IconButton, NarrowScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
 import { Student } from '../../models';

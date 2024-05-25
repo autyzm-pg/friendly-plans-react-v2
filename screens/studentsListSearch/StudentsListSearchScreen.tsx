@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 
 import { IconButton, NarrowScreenTemplate, TextInput } from '../../components';
 import { i18n } from '../../locale';
-import { Student } from '../../models';
 import { dimensions, palette } from '../../styles';
 import { FilterableStudentsList } from './FilterableStudentsList';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
@@ -12,11 +11,7 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
-
-interface State {
-  searchQuery: string;
-}
+};
 
 export const StudentsListSearchScreen: React.FC<Props> = ({navigation, route}) => {
 

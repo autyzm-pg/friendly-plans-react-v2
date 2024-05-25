@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {i18n} from '../../locale';
-import {Student, StudentData, StudentDisplayOption, StudentTextSizeOption} from '../../models';
+import {Student, StudentData, StudentDisplayOption, StudentTextSizeOption, TimerSound} from '../../models';
 import {dimensions, palette, typography} from '../../styles';
 
 import {Separator} from '../Separator';
@@ -41,7 +41,7 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
     return !!state.name;
   }
 
-  const handleTimerChange = (timer: string) => {
+  const handleTimerChange = (timer: TimerSound) => {
     setState(prevState => ({ ...prevState, timer: timer }));
   }
 
