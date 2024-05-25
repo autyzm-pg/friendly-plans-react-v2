@@ -1,14 +1,12 @@
 import React from 'react';
-import { Image, NativeModules, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
-import Voice from '@react-native-voice/voice';
 import {IconButton, PlanNameText} from '../../../components';
 import { PlanItem, StudentDisplayOption } from '../../../models';
 import Sound from 'react-native-sound';
-import Tts from 'react-native-tts';
 import { palette } from '../../../styles';
-import sounds from '../../../assets/sounds/sounds';
 import { PlanItemTimer } from '../PlanItemTimer';
+import { SoundService } from '../../../services/SoundService';
 
 interface Props {
   planItem: PlanItem;
@@ -61,25 +59,11 @@ export class PlanSlideItem extends React.PureComponent<Props> {
 
 
   speak = async () => {
-    if (this.props.planItem.lector) {
-      if (this.props.planItem.nameForChild) {
-        await Tts.getInitStatus().then(() => {
-          Tts.setDefaultLanguage('pl');
-          Tts.speak(this.props.planItem.nameForChild);
-        }, (err) => {
-          if (err.code === 'no_engine') {
-            Tts.requestInstallEngine();
-          }
-        });
-      }
-
-      return;
-    }
-
-    if (this.soundTrack != null) {
+    if (this.props.planItem.lector && this.props.planItem.nameForChild) {
+      await SoundService.lectorSpeak(this.props.planItem.nameForChild);
+    } else if (this.soundTrack != null) {
       this.soundTrack.play();
     }
-
   };
 
   render() {

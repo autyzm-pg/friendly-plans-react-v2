@@ -5,11 +5,10 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View, ViewStyle} from 'react-native';
 import {Icon} from 'react-native-elements';
 import Sound from 'react-native-sound';
-import Tts from 'react-native-tts';
-import {NavigationService} from '../../../services';
 import {palette} from '../../../styles';
 import {PlanItemTimer} from '../PlanItemTimer';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
+import {SoundService} from '../../../services/SoundService';
 
 interface Props {
   student: Student;
@@ -132,27 +131,13 @@ export class PlanElementListItem extends React.PureComponent<Props> {
   }
 
   speak = async () => {
-
     if (this.props.item.lector) {
       const text = (this.props.item.type === PlanItemType.SubElement) ? this.props.item.name : this.props.item.nameForChild!;
-      if (text) {
-        await Tts.getInitStatus().then(() => {
-          Tts.setDefaultLanguage('pl');
-          Tts.speak(text);
-        }, (err) => {
-          if (err.code === 'no_engine') {
-            Tts.requestInstallEngine();
-          }
-        });
-      }
-
-      return;
-    }
-
-    if (this.soundTrack != null) {
+      if (!text) { return; }
+      await SoundService.lectorSpeak(text);
+    } else if (this.soundTrack != null) {
       this.soundTrack.play();
     }
-
   };
 
 

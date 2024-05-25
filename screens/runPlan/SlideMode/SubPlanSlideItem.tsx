@@ -4,9 +4,9 @@ import { Image, StyleSheet, View } from 'react-native';
 import {IconButton, PlanNameText} from '../../../components';
 import {PlanItem, PlanSubItem, StudentDisplayOption} from '../../../models';
 import Sound from 'react-native-sound';
-import Tts from 'react-native-tts';
 import { palette } from '../../../styles';
 import { PlanItemTimer } from '../PlanItemTimer';
+import { SoundService } from '../../../services/SoundService';
 
 interface Props {
   planSubItem: PlanSubItem;
@@ -59,25 +59,11 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
 
 
   speak = async () => {
-    if (this.props.planSubItem.lector) {
-      if (this.props.planSubItem.name) {
-        await Tts.getInitStatus().then(() => {
-          Tts.setDefaultLanguage('pl');
-          Tts.speak(this.props.planSubItem.name);
-        }, (err) => {
-          if (err.code === 'no_engine') {
-            Tts.requestInstallEngine();
-          }
-        });
-
-        return;
-      }
-    }
-
-    if (this.soundTrack != null) {
+    if (this.props.planSubItem.lector && this.props.planSubItem.name) {
+      await SoundService.lectorSpeak(this.props.planSubItem.name);
+    } else if (this.soundTrack != null) {
       this.soundTrack.play();
     }
-
   };
 
   render() {

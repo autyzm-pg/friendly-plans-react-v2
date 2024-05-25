@@ -6,11 +6,11 @@ import {StyleSheet, View} from 'react-native';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
-import Tts from 'react-native-tts';
 import Sound from 'react-native-sound';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation';
-import { InnerGallery } from '../../../services/InnerGallery';
+import {InnerGallery} from '../../../services/InnerGallery';
+import {SoundService} from '../../../services/SoundService';
 
 interface Props {
   closeModal?: () => void;
@@ -79,14 +79,9 @@ export const VoicePickerModal: FC<Props> = ({
   const playAudio = async () => {
     // closeModal();
     if ((!isComplexTask && lector && planItem.nameForChild) || (isComplexTask && selected?.lector && selected?.name)) {
-      await Tts.getInitStatus().then(() => {
-        Tts.setDefaultLanguage(i18n.t('common:language'));
-        Tts.speak((isComplexTask && selected && selected.name) ? selected?.name : planItem.nameForChild);
-      }, (err) => {
-        if (err.code === 'no_engine') {
-          Tts.requestInstallEngine();
-        }
-      });
+      const text = (isComplexTask && selected && selected.name) ? selected?.name : planItem.nameForChild;
+      if (!text) { return; }
+      await SoundService.lectorSpeak(text);
     }
     else if (currentVoiceUri) {
       const fullVoicePath = currentVoiceUri
