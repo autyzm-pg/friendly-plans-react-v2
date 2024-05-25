@@ -30,7 +30,7 @@ export const Slider: FC<Props> = ({ title, min, max, handleSliding, initValue })
   return (
     <>
     <View style={styles.sliderContainer}>
-      <TouchableOpacity onPress={decrement} style={styles.button}>
+      <TouchableOpacity onPress={decrement} style={styles.button} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
           <Text>-</Text>
       </TouchableOpacity>
       <Text>{min}</Text>
@@ -43,7 +43,7 @@ export const Slider: FC<Props> = ({ title, min, max, handleSliding, initValue })
         value={initValue}
       />
       <Text>{max}</Text>
-      <TouchableOpacity onPress={increment} style={styles.button}>
+      <TouchableOpacity onPress={increment} style={styles.button} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
         <Text>+</Text>
       </TouchableOpacity>
     </View>
