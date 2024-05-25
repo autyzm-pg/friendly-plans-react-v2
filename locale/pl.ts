@@ -45,6 +45,7 @@ const translations = {
     usage: 'Wszystkie dźwięki użyte co najmniej raz w dowolnym zadaniu (z urządzenia lub nagrane) są przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte. Przytrzymaj, aby zmienić nazwę.',
     changeName: 'Zmień nazwę nagrania',
     save: 'Zapisz zmiany',
+    find: 'Wyszukaj po nazwie nagrania',
   },
   common: {
     cancel: 'ANULUJ',

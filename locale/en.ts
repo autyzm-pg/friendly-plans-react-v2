@@ -45,6 +45,7 @@ const translations = {
     usage: 'All sounds used at least once in any task (from device or recorded) are stored in the inner app gallery and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted. Hold down to change name.',
     changeName: 'Change recording name',
     save: 'Save changes',
+    find: 'Search by recording name',
   },
   common: {
     cancel: 'CANCEL',

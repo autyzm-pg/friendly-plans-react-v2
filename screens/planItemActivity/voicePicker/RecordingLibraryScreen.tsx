@@ -127,28 +127,6 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         );
     };
 
-    const showList = () => {
-        if (!selectMode.current && recordings.length > 0) {
-            return (<FlatList
-                data={recordings}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                style={styles.contentContainer}
-            />);
-        }
-        else if (selectMode.current && recordings.length > 0) {
-            return (<FlatList
-                data={filRecordings}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                style={styles.contentContainer}
-            />);
-        }
-        else {
-            return (<></>);
-        }
-    };
-
     const splitToNameExtension = (fileName: string) => {
         const idx = fileName.lastIndexOf('.');
         if (idx !== -1) {
@@ -176,31 +154,42 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
 
     return (
     <>
-        {!selectMode.current 
-            ? 
-            <View style={styles.trashIconContainer}>
+        <View style={styles.trashIconContainer}>
+            {!selectMode.current && 
                 <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
-                <View style={styles.iconButtonContainer}>
-                    <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} 
-                                disabled={selectedRecordings.length == 0}/>
-                </View>
-                <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-                    <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
-                                style={{marginRight: dimensions.spacingLarge}}/>
-                </ModalTrigger>
-            </View>
-            :
+            }
             <View style={styles.inputContainer}>
                 <TextInput
-                style={{ width: '40%' }}
-                value={searchTerm}
-                onChangeText={onSearch}
-                placeholder="Wyszukaj nazwę nagrania..."
+                    style={{ width: '40%' }}
+                    value={searchTerm}
+                    onChangeText={onSearch}
+                    placeholder={i18n.t('recGallery:find')}
                 />
             </View>
-        }
+            {!selectMode.current && 
+                <>
+                    <View style={styles.iconButtonContainer}>
+                        <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} 
+                                    disabled={selectedRecordings.length == 0}/>
+                    </View>
+                    <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
+                        <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
+                                    style={{marginRight: dimensions.spacingLarge}}/>
+                    </ModalTrigger>
+                </>
+            }
+        </View>
         <FullScreenTemplate padded darkBackground>
-        {showList()}
+        {recordings.length > 0 ?
+            <FlatList
+            data={filRecordings}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            style={styles.contentContainer}
+            />
+            :
+            <></>
+        }
         </FullScreenTemplate>
     </>
     );
@@ -208,13 +197,10 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
 
 const styles = StyleSheet.create({
     inputContainer: {
-        backgroundColor: palette.textWhite,
-        height: 56,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 10,
-        marginTop: 0,
-        paddingTop: 0
+        flex: 1,
+        minWidth: 800
     },
     contentContainer: {
         paddingTop: 12,
