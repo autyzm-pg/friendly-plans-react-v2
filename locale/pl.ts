@@ -165,11 +165,11 @@ const translations = {
     imageLibraryTitle: 'Biblioteka zdjęć',
     newTask: 'Nowe Zadanie #',
     infoBox: 'Informacja',
-    infoBoxNameForChild: 'W tym polu należy wpisać tekst, który będzie widoczny dla ucznia',
+    infoBoxNameForChild: 'W tym polu należy wpisać tekst, który będzie widoczny dla ucznia.',
     alertTitle: 'Powiadomienie',
     alertMessageCreate: 'Utworzono zadanie',
     alertMessageUpdate: 'Zaktualizowano zadanie',
-    complexTaskCoverInfo: 'To jest strona tytułowa zadania złożonego',
+    complexTaskCoverInfo: 'To jest strona tytułowa zadania złożonego.',
     complexTaskPhotoPlaceholder: 'Brak obrazka',
     complexTaskCover: 'OKŁADKA',
     complexTaskAddSubTaskButton: 'DODAJ PODZADANIE',
@@ -196,7 +196,7 @@ const translations = {
     alertMessageNoSubTasks: 'Musisz dodać co najmniej jedno podzadanie.'
   },
   voiceRecorder: {
-    title: 'Nagrywanie dźwięku / głosu',
+    title: 'Nagrywanie dźwięku/głosu',
     save: 'Zapisz nagranie',
     fileName: 'noweNagranie',
     startRecording: 'Rozpocznij nagrywanie',

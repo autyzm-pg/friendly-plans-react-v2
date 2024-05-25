@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Slider } from '../../components';
@@ -23,9 +23,9 @@ export const TimeSlider: FC<Props> = ({ min, max, closeModal, onConfirm,
   const [seconds, setSeconds] = useState(initSeconds);
   const [minutes, setMinutes] = useState(initMinutes);
   const [hours, setHours] = useState(initHours);
-  const handleSlidingSec = (time: number) => setSeconds(time);
-  const handleSlidingMin = (time: number) => setMinutes(time);
-  const handleSlidingHour = (time: number) => setHours(time);
+
+  useEffect(() => {}, [seconds, minutes, hours]);
+  
   const handleConfirmPressed = () => {
     if (onConfirm) {
       onConfirm(seconds + minutes*60 + hours*3600);
@@ -34,16 +34,17 @@ export const TimeSlider: FC<Props> = ({ min, max, closeModal, onConfirm,
       closeModal();
     }
   };
+
   return (
     <View style={{marginTop: 20}}>
-      <Slider min={min[0]} max={max[0]} handleSliding={handleSlidingHour} initValue={initHours} />
-      <Text style={styles.time}>{i18n.t('planItemActivity:timerHours')}: {hours}</Text>
+      <Slider title={i18n.t('planItemActivity:timerHours')} 
+              min={min[0]} max={max[0]} handleSliding={setHours} initValue={hours} />
 
-      <Slider min={min[1]} max={max[1]} handleSliding={handleSlidingMin} initValue={initMinutes} />
-      <Text style={styles.time}>{i18n.t('planItemActivity:timerMinutes')}: {minutes}</Text>
+      <Slider title={i18n.t('planItemActivity:timerMinutes')} 
+              min={min[1]} max={max[1]} handleSliding={setMinutes} initValue={minutes} />
 
-      <Slider min={min[2]} max={max[2]} handleSliding={handleSlidingSec} initValue={initSeconds} />
-      <Text style={styles.time}>{i18n.t('planItemActivity:timerSeconds')}: {seconds}</Text>
+      <Slider title={i18n.t('planItemActivity:timerSeconds')} 
+              min={min[2]} max={max[2]} handleSliding={setSeconds} initValue={seconds} />
       <View style={styles.timeSlider}>
         <TouchableOpacity onPress={closeModal}>
           <Text>{i18n.t('common:cancel')}</Text>
@@ -59,8 +60,4 @@ export const TimeSlider: FC<Props> = ({ min, max, closeModal, onConfirm,
 const styles = StyleSheet.create({
   timeSlider: { flexDirection: 'row', alignSelf: 'flex-end' },
   confirmButton: { color: palette.textBody, marginLeft: 8 },
-  time: {
-      alignSelf: 'center',
-      marginBottom: 20,
-  },
 });
