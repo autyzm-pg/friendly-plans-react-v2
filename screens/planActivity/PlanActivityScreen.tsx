@@ -195,13 +195,13 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             plan={plan}
             numberPlan={route.params?.numberPlan ?? {}}
             onValidate={validatePlan}
-            shuffleDisabled={shuffleDisabled()}
+            // shuffleDisabled={shuffleDisabled()}
             playDisabled={playDisabled()}
-            onShuffle={shuffleTasks}
+            // onShuffle={shuffleTasks}
             student={route.params?.student ?? {}}
             navigation={navigation}
             deleteMultiple={deleteMultiple}
-            toBeDeleted={toBeDeleted}
+            // toBeDeleted={toBeDeleted}
           />
         </View>
         <TaskTable 

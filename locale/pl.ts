@@ -2,7 +2,10 @@ const translations = {
   planActivity: {
     planNamePlaceholder: 'Wpisz nazwę planu',
     newPlan: 'Nowy Plan #',
-    shuffleTasks: 'Rotuj wszystkie zadania',
+    shuffleTasks: 'Rotuj',
+    deleteTasks: 'Usuń',
+    changeState: 'Zmień stan',
+    selectTasks: 'Zaznacz/Odznacz wszystko',
     activeStatus: 'UKOŃCZONO',
     notActiveStatus: 'NIE UKOŃCZONO',
     deleteTaskHeader: 'USUŃ ZADANIE/ZADANIA',

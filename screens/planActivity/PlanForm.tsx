@@ -1,52 +1,50 @@
-import { ErrorMessage, Formik, FormikProps, FormikHelpers } from 'formik';
-import React, { FC, useEffect, useRef } from 'react';
+import { Formik, FormikHelpers } from 'formik';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { PlayButton, Emoji, Icon, ModalTrigger, TextInput, IconButton } from '../../components';
+import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
 import { i18n } from '../../locale';
 import { Plan, Student } from '../../models';
 import { dimensions, palette } from '../../styles';
 import { DEFAULT_EMOJI } from '../../assets/emojis';
 import { IconSelectModal } from './IconSelectModal';
-import { ShuffleButton } from './ShuffleButton';
 import { NavigationProp } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
+import { MultiButton } from './MultiButton';
 
 export interface PlanFormData {
   planInput: string;
   emoji: string;
-}
+};
 
 export interface PlanFormError {
   planInput?: string;
-}
+};
 
 interface Props {
   onSubmit: (values: PlanFormData, actions: FormikHelpers<PlanFormData>) => void | Promise<any>;
   onValidate: (values: PlanFormData) => void | Promise<any>;
   plan?: Plan;
-  shuffleDisabled?: boolean;
   playDisabled?: boolean;
   numberPlan?: number;
-  onShuffle?: () => void;
   student: Student;
   navigation: NavigationProp<any>;
   deleteMultiple: () => void;
-  toBeDeleted: [];
-}
+  shuffleMultiple?: () => void;
+  changeStateOfMultiple?: () => void;
+  unSelectMultiple?: () => void;
+};
 
 export const PlanForm: FC<Props> = ({
   plan,
-  numberPlan,
   onSubmit,
   onValidate,
-  shuffleDisabled = false,
   playDisabled = false,
-  onShuffle,
-  student,
   navigation,
   deleteMultiple,
-  toBeDeleted
+  shuffleMultiple,
+  changeStateOfMultiple,
+  unSelectMultiple,
 }) => {
   
   const {currentStudent} = useCurrentStudentContext();
@@ -61,6 +59,21 @@ export const PlanForm: FC<Props> = ({
       handleChange('emoji')(emoji);
       handleSubmit();
     };
+
+  const renderMultiButtons = () => {
+    return ( // TODO
+      <View style={[styles.buttonContainer, {marginRight: dimensions.spacingSmall}]}>
+        <MultiButton onPress={deleteMultiple} title={i18n.t('planActivity:deleteTasks')} 
+                     buttonName='trash' buttonType='font-awesome' disabled={true}/>
+        <MultiButton onPress={shuffleMultiple} title={i18n.t('planActivity:shuffleTasks')}  
+                     buttonName='shuffle' buttonType='material-community-icons' disabled={true}/>
+        <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
+                     buttonName='swap-horiz' buttonType='material-community-icons' disabled={true}/>
+        <MultiButton onPress={unSelectMultiple} title={i18n.t('planActivity:selectTasks')}
+                     buttonName='check-square' buttonType='feather' disabled={false}/>
+      </View>
+    );
+  };
 
     return (
       <View style={styles.container}>
@@ -83,8 +96,7 @@ export const PlanForm: FC<Props> = ({
           <Text style={styles.errorMessage}>{errors.planInput}</Text>
         </View>
         <View style={styles.buttonContainer}>
-          {toBeDeleted.length > 0 && <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} />}
-          <ShuffleButton disabled={shuffleDisabled} onPress={onShuffle} />
+          {renderMultiButtons()}
           <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={currentStudent}/>
         </View>
       </View>

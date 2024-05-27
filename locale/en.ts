@@ -2,7 +2,10 @@ const translations = {
   planActivity: {
     planNamePlaceholder: 'Type schedule name',
     newPlan: 'New schedule #',
-    shuffleTasks: 'Rotate all tasks',
+    shuffleTasks: 'Shuffle',
+    deleteTasks: 'Delete',
+    changeState: 'Change state',
+    selectTasks: '(Un)Select all',
     activeStatus: 'COMPLETED',
     notActiveStatus: 'UNFINISHED',
     deleteTaskHeader: 'DELETE TASK(S)',
