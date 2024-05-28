@@ -1,8 +1,8 @@
 import { Formik, FormikHelpers } from 'formik';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
-import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
+import { PlayButton, Emoji, Icon, ModalTrigger, TextInput, CheckboxInput } from '../../components';
 import { i18n } from '../../locale';
 import { dimensions, palette } from '../../styles';
 import { DEFAULT_EMOJI } from '../../assets/emojis';
@@ -38,6 +38,7 @@ export const PlanForm: FC<Props> = ({
   
   const {currentStudent} = useCurrentStudentContext();
   const {plan, planItems, setPlanItems} = usePlanActivityContext();
+  const [shuffleNoBreaks, setShuffleNoBreaks] = useState<boolean>(true);
 
   const initialValues: PlanFormData = {
     planInput: plan ? plan.name : '',
@@ -65,19 +66,20 @@ export const PlanForm: FC<Props> = ({
   };
 
   const shuffle = () => {
-    const checkedItems = planItems.filter(item => item.checked);
+    let checkedItems = planItems.filter(item => item.checked);
+    if (shuffleNoBreaks) { checkedItems = checkedItems.filter(item => item.planItem.type !== PlanItemType.Break); }
     for (let i = checkedItems.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [checkedItems[i], checkedItems[j]] = [checkedItems[j], checkedItems[i]];
     }
     const newPlanItems = planItems.map(item => {
-      if (item.checked) {
-        const checkedItem = checkedItems.shift();
-        if (checkedItem) { return checkedItem; }
-      }
-      return item;
+      if (!item.checked || (shuffleNoBreaks && item.planItem.type === PlanItemType.Break)) { return item; }
+      const checkedItem = checkedItems.shift();
+      return checkedItem;
     });
+    //@ts-ignore
     setPlanItems(newPlanItems);
+    //@ts-ignore
     updatePlanItemsOrder(newPlanItems);
   };
 
@@ -114,17 +116,22 @@ export const PlanForm: FC<Props> = ({
     });
     setPlanItems(updated);
   };
-  
+
   const renderMultiButtons = () => {
     const checked = planItems.filter((item) => { return item.checked; }).length;
     return (
       <View style={[styles.buttonContainer, {marginRight: dimensions.spacingSmall}]}>
         <MultiButton onPress={deleteMultiple} title={i18n.t('planActivity:deleteTasks')} 
                     buttonName='trash' buttonType='font-awesome' disabled={!checked}/>
-        <MultiButton onPress={shuffle} title={i18n.t('planActivity:shuffleTasks')}  
-                    buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
         <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
                     buttonName='swap-horiz' buttonType='material-community-icons' disabled={!checked}/>
+        <MultiButton onPress={shuffle} title={i18n.t('planActivity:shuffleTasks')}  
+                    buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
+        <CheckboxInput title={i18n.t('planActivity:withoutBreaks')} 
+                       checked={shuffleNoBreaks} 
+                       onPress={setShuffleNoBreaks} 
+                       hitSlope={{ top: 0, bottom: 0, left: 0, right: 0 }}
+                       />
       </View>
     );
   };

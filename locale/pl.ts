@@ -3,6 +3,7 @@ const translations = {
     planNamePlaceholder: 'Wpisz nazwę planu',
     newPlan: 'Nowy Plan #',
     shuffleTasks: 'Rotuj',
+    withoutBreaks: 'bez przerw',
     deleteTasks: 'Usuń',
     changeState: 'Zmień stan',
     selectTasks: 'Zaznacz wszystko',

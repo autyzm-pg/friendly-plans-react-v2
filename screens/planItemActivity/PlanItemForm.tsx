@@ -98,16 +98,18 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, itemTyp
             />
             {errors.name && touched.name && <StyledText style={styles.errorMessage}>{errors.name}</StyledText>}
           </View>
-          <CheckboxInput
-              title={i18n.t('planItemActivity:nameForChildAsTaskName')}
-              checked={nameForChildAsTaskName} 
-              onPress={(value) => {
-                setNameForChildAsTaskName(value)
-                if (value) {
-                  setFieldValue('name', taskNameForChild.current);
-                }
-              }}
-            />
+          <View style={{flex: 1}}>
+            <CheckboxInput
+                title={i18n.t('planItemActivity:nameForChildAsTaskName')}
+                checked={nameForChildAsTaskName} 
+                onPress={(value) => {
+                  setNameForChildAsTaskName(value)
+                  if (value) {
+                    setFieldValue('name', taskNameForChild.current);
+                  }
+                }}
+              />
+          </View>
         </View>
         {(state.taskType === PlanItemType.SimpleTask) && <SimpleTask navigation={navigation} style={styles.simpleTaskContainer} planItem={planItem} formikProps={formikProps} taskName={taskNameForChild.current} onTaskNameForChildChanged={setTaskName}/>}
         {(state.taskType === PlanItemType.ComplexTask) && <ComplexTask navigation={navigation} planItem={planItem} formikProps={formikProps} setSubtaskCount={route.params?.setSubtaskCount} taskName={taskNameForChild.current} onTaskNameForChildChanged={setTaskName} />}

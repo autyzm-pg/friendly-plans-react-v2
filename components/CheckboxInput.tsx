@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { dimensions, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
 import { StyledText } from './StyledText';
+import { Icon } from 'react-native-elements';
 
 export const icons = {
   checked: 'checkbox-marked',
@@ -16,36 +17,38 @@ interface Props {
   title?: string;
   children?: JSX.Element;
   error?: string;
+  hitSlope?: any;
 }
 
-export const CheckboxInput: FC<Props> = ({checked, onPress, title, children, error}) => {
+export const CheckboxInput: FC<Props> = ({checked, onPress, title, children, error, hitSlope={ top: 25, bottom: 25, left: 25, right: 25 }}) => {
   const handleOnPress = () => {
     onPress(!checked);
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <IconButton
-          onPress={handleOnPress}
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.container}
+                        onPress={handleOnPress} 
+                        hitSlop={hitSlope}>
+        <Icon 
           name={checked ? icons.checked : icons.unchecked}
+          type = 'material-community'
           containerStyle={styles.iconContainer}
           color={palette.primary}
-          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
         />
         {title && (
-          <View style={styles.contentContainer}>
+          <View style={[styles.contentContainer]}>
             <StyledText style={styles.label}>{title}</StyledText>
             {children}
           </View>
         )}
-      </View>
+      </TouchableOpacity>
       {!!error && (
         <View style={styles.errorContainer}>
           <StyledText style={styles.error}>{error}</StyledText>
         </View>
       )}
-    </>
+    </View>
   );
 }
 
@@ -54,7 +57,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   contentContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },

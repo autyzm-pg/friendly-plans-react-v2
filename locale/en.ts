@@ -3,6 +3,7 @@ const translations = {
     planNamePlaceholder: 'Type schedule name',
     newPlan: 'New schedule #',
     shuffleTasks: 'Shuffle',
+    withoutBreaks: 'without breaks',
     deleteTasks: 'Delete',
     changeState: 'Change state',
     selectTasks: 'Select all',
