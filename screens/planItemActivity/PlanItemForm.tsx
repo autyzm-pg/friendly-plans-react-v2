@@ -27,20 +27,17 @@ export interface PlanItemFormData {
 interface Props {
   onSubmit: (formData: PlanItemFormData) => void;
   planItem: PlanItem;
-  taskNumber: number;
   itemType: PlanItemType;
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
+};
 
 interface State {
   taskType: PlanItemType;
-}
+};
 
-export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, taskNumber, itemType, route}) => {
-  const [state, setState] = useState<State>({
-    taskType: planItem ? planItem.type : itemType
-  })
+export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, itemType, route}) => {
+  const [state, setState] = useState<State>({taskType: planItem ? planItem.type : itemType});
 
   const taskNameForChild = useRef<string | null>(null);
 

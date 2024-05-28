@@ -1,7 +1,5 @@
-import every from 'lodash.every';
 import React, { FC, useState, useEffect } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import { DragEndParams } from 'react-native-draggable-flatlist';
+import { StyleSheet, View } from 'react-native';
 
 import { Button, FullScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
@@ -13,70 +11,40 @@ import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
+import { PlanActivityContext, PlanItemState } from '../../contexts/PlanActivityContext';
 
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
+};
 
 export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
-  const [refreshFlag, setRefreshFlag] = useState(false);
-  const [toBeDeleted, setToBeDeleted] = useState([]);
-
-  const deleteMultiple = () => {
-    Alert.alert(i18n.t('planActivity:deleteTaskHeader'), i18n.t('planActivity:deleteTaskInfo'), [
-      { text: i18n.t('common:cancel') },
-      {
-        text: i18n.t('common:confirm'),
-        onPress: () => {
-          toBeDeleted.forEach((item: any) => {
-            PlanItem.deletePlanItem(item);
-          })
-          setToBeDeleted([]);
-          setRefreshFlag(!refreshFlag);
-        },
-      },
-    ]);
-  }
-
-  const [plan, setPlan] = useState<Plan>(
-    route.params?.plan ?? undefined,
-  );
-
-  const [planItemList, setPlanItemList] = useState<PlanItem[]>([]);
-
   const {currentStudent} = useCurrentStudentContext();
-
   const isFocused = useIsFocused();
 
-  const setScreenTitle = (title: string) => {
-    navigation.setOptions({
-      title: title,
-    });
-  };
+  const [planItems, setPlanItems] = useState<PlanItemState[]>([]);
+  const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
+  const [plan, setPlan] = useState<Plan>(route.params?.plan ?? undefined);
 
   const getPlanItems = async () => {
-    if (plan) {
-      const planItems = await PlanItem.getPlanItems(plan)
-      setPlanItemList(planItems)
-    }
-  }
+    if (!plan) { return; }
+    const planItems = await PlanItem.getPlanItems(plan);
+    const planItemsState = planItems.map((item) => { return { planItem: item, checked: false }; });
+    setPlanItems(planItemsState);
+  };
   
   useEffect(() => {
-    if (isFocused)
-      getPlanItems()
+    if (!isFocused) { return; }
+    getPlanItems();
   }, [isFocused, refreshFlag]);
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
     if (planInput === '' && plan) {
       errors.planInput = i18n.t('validation:planNameRequired');
-
       throw errors;
     }
-
     const planExists: boolean = false;
-
     if (planExists) {
       errors.planInput = i18n.t('validation:duplicatedPlan');
       throw errors;
@@ -85,7 +53,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
 
   const createPlan = async (name: string) => {
     if (name === '') {
-      name = `${i18n.t('planActivity:newPlan')}${route.params?.numberPlan}`
+      name = `${i18n.t('planActivity:newPlan')}${route.params?.numberPlan}`;
     }
     if (currentStudent) {
       const plan = await Plan.createPlan(currentStudent?.id, name);
@@ -94,23 +62,22 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   };
 
   const updatePlan = async (name: string, emoji: string) => {
-    if (plan && currentStudent?.id) {
-      const updatedPlan: Plan = {
-        ...plan,
-        name: name,
-        emoji: emoji
-      };
-      await Plan.updatePlan(updatedPlan, currentStudent?.id);
-      setPlan(updatedPlan);
-    }
+    if (!(plan && currentStudent?.id)) { return; }
+    const updatedPlan: Plan = {
+      ...plan,
+      name: name,
+      emoji: emoji
+    };
+    await Plan.updatePlan(updatedPlan, currentStudent?.id);
+    setPlan(updatedPlan);
   };
 
-  const onSubmit = ({ planInput, emoji }: PlanFormData) =>
+  const onSubmit = ({ planInput, emoji }: PlanFormData) => {
     plan ? updatePlan(planInput, emoji) : createPlan(planInput);
+  };
 
   const navigateToCreatePlanItem = async (name: string) => {
     let planItemType = '';
-
     switch (name){
       case 'create-simple-task':
         planItemType = PlanItemType.SimpleTask;
@@ -125,93 +92,44 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
         planItemType = PlanItemType.Break;
         break;
     }
-
     navigation.navigate(Route.PlanItemTask, {
       plan,
-      planItemList,
+      planItems,
       planItemType,
     });
-
   };
 
-  const shuffleDisabled = (): boolean => {
-
-    return !planItemList || planItemList.length < 2;
-  };
-
-  const playDisabled = () => {
-    if (!planItemList) {
-      return true;
+  const updatePlanItemsOrder = async(items: PlanItemState[]) => {
+    const planItemsRightOrder = items.map((item, index) => ({
+      ...item.planItem,
+      itemOrder: index + 1
+    }));
+    for (const planItem of planItemsRightOrder) {
+      await PlanItem.updatePlanItem(planItem);
     }
-    return every(planItemList, 'completed');
-  };
-
-  const updatePlanItemsOrder = async (items: PlanItem[]) => {
-    const planItemListRightOrder = items.map((item, index) => ({ ...item, itemOrder: index + 1 }));
-    setPlanItemList(planItemListRightOrder as PlanItem[]);
-    for (const planItem of planItemListRightOrder) {
-      await PlanItem.updatePlanItem(planItem)
-    }
-
-    setPlanItemList(planItemListRightOrder);
-  }
-
-  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItem>) => {
-    updatePlanItemsOrder(data)
-  };
-
-  const shuffle = (array: PlanItem[]) => {
-    let currentIndex = array.length;
-    let temporaryValue;
-    let randomIndex;
-
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
-
-  const shuffleTasks = () => {
-    let array = planItemList;
-    array = shuffle(array);
-    updatePlanItemsOrder(array)
-  };
-
-  const saveAndClose = () => {
-    navigation.goBack()
   };
 
   return (
-    <>
+    <PlanActivityContext.Provider value={{ 
+      planItems: planItems, 
+      setPlanItems: setPlanItems,
+      refreshFlag: refreshFlag,
+      setRefreshFlag: setRefreshFlag,
+      plan: plan,
+      setPlan: setPlan
+      }}>
       <FullScreenTemplate extraStyles={styles.fullScreen}>
         <View style={styles.headerContainer}>
           <PlanForm
             onSubmit={onSubmit}
-            plan={plan}
-            numberPlan={route.params?.numberPlan ?? {}}
             onValidate={validatePlan}
-            // shuffleDisabled={shuffleDisabled()}
-            playDisabled={playDisabled()}
-            // onShuffle={shuffleTasks}
-            student={route.params?.student ?? {}}
             navigation={navigation}
-            deleteMultiple={deleteMultiple}
-            // toBeDeleted={toBeDeleted}
+            updatePlanItemsOrder={updatePlanItemsOrder}
           />
         </View>
         <TaskTable 
-          plan={plan!}
-          planItemList={planItemList} 
-          handlePlanListOrderChanged={handlePlanListOrderChanged} 
           navigation={navigation}
-          setRefreshFlag={() => {setRefreshFlag(!refreshFlag)}}
-          setToBeDeleted={setToBeDeleted}
-          toBeDeleted={toBeDeleted}
+          updatePlanItemsOrder={updatePlanItemsOrder}
         />
       </FullScreenTemplate>
       <View style={styles.saveButtonContainer}>
@@ -225,13 +143,13 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             size: 22,
           }}
           isUppercase
-          onPress={saveAndClose}
+          onPress={() => { navigation.goBack(); }}
         />
       </View>
       <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />
-    </>
+    </PlanActivityContext.Provider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   headerContainer: {

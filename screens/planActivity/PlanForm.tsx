@@ -1,16 +1,17 @@
 import { Formik, FormikHelpers } from 'formik';
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { PlayButton, Emoji, Icon, ModalTrigger, TextInput } from '../../components';
 import { i18n } from '../../locale';
-import { Plan, Student } from '../../models';
 import { dimensions, palette } from '../../styles';
 import { DEFAULT_EMOJI } from '../../assets/emojis';
 import { IconSelectModal } from './IconSelectModal';
 import { NavigationProp } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 import { MultiButton } from './MultiButton';
+import { usePlanActivityContext, PlanItemState } from '../../contexts/PlanActivityContext';
+import { PlanItem, PlanItemType, PlanSubItem } from '../../models';
 
 export interface PlanFormData {
   planInput: string;
@@ -24,34 +25,121 @@ export interface PlanFormError {
 interface Props {
   onSubmit: (values: PlanFormData, actions: FormikHelpers<PlanFormData>) => void | Promise<any>;
   onValidate: (values: PlanFormData) => void | Promise<any>;
-  plan?: Plan;
-  playDisabled?: boolean;
-  numberPlan?: number;
-  student: Student;
   navigation: NavigationProp<any>;
-  deleteMultiple: () => void;
-  shuffleMultiple?: () => void;
-  changeStateOfMultiple?: () => void;
-  unSelectMultiple?: () => void;
+  updatePlanItemsOrder: (items: PlanItemState[]) => Promise<void>;
 };
 
 export const PlanForm: FC<Props> = ({
-  plan,
   onSubmit,
   onValidate,
-  playDisabled = false,
   navigation,
-  deleteMultiple,
-  shuffleMultiple,
-  changeStateOfMultiple,
-  unSelectMultiple,
+  updatePlanItemsOrder
 }) => {
   
   const {currentStudent} = useCurrentStudentContext();
-  
+  const {plan, planItems, setPlanItems} = usePlanActivityContext();
+
   const initialValues: PlanFormData = {
     planInput: plan ? plan.name : '',
     emoji: plan ? plan.emoji : DEFAULT_EMOJI,
+  };
+
+  const deleteMultiple = async() => {
+    Alert.alert(i18n.t('planActivity:deleteTaskHeader'), i18n.t('planActivity:deleteTaskInfo'), [
+      { text: i18n.t('common:cancel') },
+      {
+        text: i18n.t('common:confirm'),
+        onPress: () => {
+          const items: PlanItemState[] = [];
+          planItems.forEach(async(state: PlanItemState) => {
+            if (!state.checked) { 
+              items.push(state);
+              return;
+            }
+            await PlanItem.deletePlanItem(state.planItem);
+          });
+          setPlanItems(items);
+        },
+      },
+    ]);
+  };
+
+  const shuffle = () => {
+    const checkedItems = planItems.filter(item => item.checked);
+    for (let i = checkedItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [checkedItems[i], checkedItems[j]] = [checkedItems[j], checkedItems[i]];
+    }
+    const newPlanItems = planItems.map(item => {
+      if (item.checked) {
+        const checkedItem = checkedItems.shift();
+        if (checkedItem) { return checkedItem; }
+      }
+      return item;
+    });
+    setPlanItems(newPlanItems);
+    updatePlanItemsOrder(newPlanItems);
+  };
+
+  const changeState = async(item: PlanItem) => {
+    await PlanItem.updatePlanItem(item);
+    if (item.type === PlanItemType.ComplexTask) {
+      await PlanSubItem.getPlanSubItems(item).then(subItems => {
+        subItems.forEach(async(subItem) => {
+          subItem.completed = item.completed;
+          await PlanSubItem.updatePlanSubItem(subItem);
+        });
+      });
+    };
+  };
+
+  const changeStateOfMultiple = async() => {
+    const checked = planItems.filter((state) => state.checked);
+    const completed = checked.filter((state) => state.planItem.completed).length;
+    let updated: PlanItemState[] = [];
+    if (completed == checked.length) {
+      updated = planItems.map((state) => {
+        if (!state.checked) { return state };
+        return { ...state, planItem: { ...state.planItem, completed: false } };
+      });
+    } else {
+      updated = planItems.map((state) => {
+        if (!state.checked) { return state };
+        return { ...state, planItem: { ...state.planItem, completed: true }};
+      });
+    }
+    updated.forEach(async(item) => { 
+      if (!item.checked) { return; }
+      await changeState(item.planItem); 
+    });
+    setPlanItems(updated);
+  };
+
+  const unSelectAll = () => {
+    const checked = planItems.filter((state) => state.checked).length;
+    if (checked == planItems.length) {
+      const updated = planItems.map((state) => { return {...state, checked: false}; });
+      setPlanItems(updated);
+    } else {
+      const updated = planItems.map((state) => { return {...state, checked: true}; });
+      setPlanItems(updated);
+    }
+  };
+
+  const renderMultiButtons = () => {
+    const checked = planItems.filter((item) => { return item.checked; }).length;
+    return (
+      <View style={[styles.buttonContainer, {marginRight: dimensions.spacingSmall}]}>
+        <MultiButton onPress={deleteMultiple} title={i18n.t('planActivity:deleteTasks')} 
+                    buttonName='trash' buttonType='font-awesome' disabled={!checked}/>
+        <MultiButton onPress={shuffle} title={i18n.t('planActivity:shuffleTasks')}  
+                    buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
+        <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
+                    buttonName='swap-horiz' buttonType='material-community-icons' disabled={!checked}/>
+        <MultiButton onPress={unSelectAll} title={i18n.t('planActivity:selectTasks')}
+                    buttonName='check-square' buttonType='feather' disabled={false}/>
+      </View>
+    );
   };
 
   const renderFormControls = ({ values, handleChange, handleSubmit, errors }: any) => {
@@ -60,26 +148,11 @@ export const PlanForm: FC<Props> = ({
       handleSubmit();
     };
 
-  const renderMultiButtons = () => {
-    return ( // TODO
-      <View style={[styles.buttonContainer, {marginRight: dimensions.spacingSmall}]}>
-        <MultiButton onPress={deleteMultiple} title={i18n.t('planActivity:deleteTasks')} 
-                     buttonName='trash' buttonType='font-awesome' disabled={true}/>
-        <MultiButton onPress={shuffleMultiple} title={i18n.t('planActivity:shuffleTasks')}  
-                     buttonName='shuffle' buttonType='material-community-icons' disabled={true}/>
-        <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
-                     buttonName='swap-horiz' buttonType='material-community-icons' disabled={true}/>
-        <MultiButton onPress={unSelectMultiple} title={i18n.t('planActivity:selectTasks')}
-                     buttonName='check-square' buttonType='feather' disabled={false}/>
-      </View>
-    );
-  };
-
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           {plan ? (
-            <ModalTrigger title={'Wybierz ikonę'} modalContent={<IconSelectModal onEmojiSelect={updateEmoji} />}>
+            <ModalTrigger title={'Wybierz ikonę'} modalContent={<IconSelectModal onEmojiSelect={updateEmoji}/>}>
               <Emoji symbol={values.emoji} />
             </ModalTrigger>
           ) : (
@@ -97,7 +170,7 @@ export const PlanForm: FC<Props> = ({
         </View>
         <View style={styles.buttonContainer}>
           {renderMultiButtons()}
-          <PlayButton plan={plan} disabled={!plan || playDisabled} size={36} navigation={navigation} student={currentStudent}/>
+          <PlayButton plan={plan} disabled={!plan || !planItems} size={36} navigation={navigation} student={currentStudent}/>
         </View>
       </View>
     );

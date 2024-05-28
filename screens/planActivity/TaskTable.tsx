@@ -3,46 +3,41 @@ import { StyleSheet, View } from 'react-native';
 import DraggableFlatList, { DragEndParams, RenderItemParams } from 'react-native-draggable-flatlist';
 
 import { FullScreenTemplate } from '../../components';
-import { Plan, PlanItem } from '../../models';
 import { dimensions, getElevation, palette } from '../../styles';
 import { TableRow } from './TableRow';
 import { NavigationProp } from '@react-navigation/native';
+import { PlanItemState, usePlanActivityContext } from '../../contexts/PlanActivityContext';
 
 interface Props {
-  plan: Plan;
-  planItemList: PlanItem[];
   navigation: NavigationProp<any>;
-  handlePlanListOrderChanged: (planItemList: DragEndParams<PlanItem>) => void;
-  setRefreshFlag: any;
-  setToBeDeleted: any;
-  toBeDeleted: any;
-}
+  updatePlanItemsOrder: (items: PlanItemState[]) => Promise<void>;
+};
 
-export const TaskTable: FC<Props> = ({ navigation, planItemList, plan, handlePlanListOrderChanged, setRefreshFlag, setToBeDeleted, toBeDeleted }) => {
-  const data = planItemList.map(item => ({ ...item, key: item.id, label: item.name }));
+export const TaskTable: FC<Props> = ({ navigation, updatePlanItemsOrder }) => {
+  const { planItems, setPlanItems } = usePlanActivityContext();
+  const data = planItems.map(item => ({ ...item, key: item.planItem.id, label: item.planItem.name }));
 
-  const keyExtractor = (item: PlanItem) => `draggable-item-${item.id}`;
+  const keyExtractor = (item: PlanItemState) => `draggable-item-${item.planItem.id}`;
+
+  const handlePlanListOrderChanged = ({ data }: DragEndParams<PlanItemState>) => {
+    setPlanItems(data);
+    updatePlanItemsOrder(data);
+  };
 
   return (
     <FullScreenTemplate darkBackground extraStyles={styles.fullScreen}>
       <DraggableFlatList
         data={data}
-        renderItem={({ item, getIndex, drag }: RenderItemParams<PlanItem>) => {
+        renderItem={({ item, getIndex, drag }: RenderItemParams<PlanItemState>) => {
           const index = getIndex();
           return (
             <View style={styles.tableContainer}>
               <TableRow
-                plan={plan}
-                planItem={item}
-                planItemList={planItemList}
-                border={index !== planItemList.length - 1}
+                item={item}
+                border={index !== planItems.length - 1}
                 key={index}
-                rowNumber={index ? index + 1 : 0}
                 drag={drag}
                 navigation={navigation}
-                setRefreshFlag={setRefreshFlag}
-                setToBeDeleted={setToBeDeleted}
-                toBeDeleted={toBeDeleted}
               />
             </View>
           );

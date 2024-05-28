@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { dimensions, fonts, getElevation, palette } from '../styles';
-import { IconButton } from './IconButton';
+import { palette } from '../styles';
 import { Button } from './Button';
-import { Text } from 'react-native-elements';
 import { StyledText } from './StyledText';
 
 interface Props {
@@ -12,78 +10,49 @@ interface Props {
   titles: string[];
   title: string;
   secondButtonOn?: boolean;
-  onPress: (value: boolean) => void;
-}
+  onPress: (completed: boolean) => Promise<void>;
+};
 
-interface State {
-  isFirstButtonOn: boolean;
-}
-
-export class IconButtonSwitch extends React.PureComponent<Props, State> {
-  state = {
-    isFirstButtonOn: !this.props.secondButtonOn,
-  };
-
-  handlePressFirst = () => {
-    this.setState({
-      isFirstButtonOn: true,
-    });
-    this.props.onPress(true);
-  };
-
-  handlePressSecond = () => {
-    this.setState({
-      isFirstButtonOn: false,
-    });
-    this.props.onPress(false);
-  };
-
-  render() {
-    const [firstIcon, secondIcon] = this.props.iconNames;
-    const [firstTitle, secondTitle] = this.props.titles;
-    const { isFirstButtonOn } = this.state;
-    const title = this.props.title;
-
-    return (
-      <View style={styles.viewContainer}>
-      <StyledText style={styles.label}>{title}</StyledText>
-      <View style={styles.toggleButtonContainer}>
-        <View>
-          <Button
-            title={firstTitle}
-            icon={{
-              name: firstIcon,
-              type: 'material',
-              color: isFirstButtonOn ? palette.textWhite : palette.primaryVariant,
-              size: 22,              
-            }}
-            isUppercase
-            buttonStyle={[styles.buttonStyle, isFirstButtonOn && styles.leftButtonOn]}
-            titleStyle={{color: isFirstButtonOn ? palette.textWhite : palette.primaryVariant}}
-            onPress={this.handlePressFirst}
-            hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
-          />
-        </View>
-        <View>
-          <Button
-            title={secondTitle}
-            icon={{
-              name: secondIcon,
-              type: 'material',
-              color: !isFirstButtonOn ? palette.textWhite : palette.primaryVariant,
-              size: 22,              
-            }}
-            isUppercase
-            buttonStyle={[styles.buttonStyle, !isFirstButtonOn && styles.rightButtonOn]}
-            titleStyle={{color: !isFirstButtonOn ? palette.textWhite : palette.primaryVariant}}
-            onPress={this.handlePressSecond}
-          />
-        </View>
+export const IconButtonSwitch: FC<Props> = ({ iconNames, titles, title, secondButtonOn, onPress }) => {
+  return (
+    <View style={styles.viewContainer}>
+    <StyledText>{title}</StyledText>
+    <View style={styles.toggleButtonContainer}>
+      <View>
+        <Button
+          title={titles[0]}
+          icon={{
+            name: iconNames[0],
+            type: 'material',
+            color: (!secondButtonOn) ? palette.textWhite : palette.primaryVariant,
+            size: 22,              
+          }}
+          isUppercase
+          buttonStyle={[styles.buttonStyle, (!secondButtonOn) && styles.leftButtonOn]}
+          titleStyle={{color: (!secondButtonOn) ? palette.textWhite : palette.primaryVariant}}
+          onPress={() => { onPress(true); }}
+          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
+        />
       </View>
+      <View>
+        <Button
+          title={titles[1]}
+          icon={{
+            name: iconNames[1],
+            type: 'material',
+            color: secondButtonOn ? palette.textWhite : palette.primaryVariant,
+            size: 22,              
+          }}
+          isUppercase
+          buttonStyle={[styles.buttonStyle, secondButtonOn && styles.rightButtonOn]}
+          titleStyle={{color: secondButtonOn ? palette.textWhite : palette.primaryVariant}}
+          onPress={() => { onPress(false); }}
+        />
       </View>
-    );
-  }
-}
+    </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   viewContainer: {
@@ -98,16 +67,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // width: 160,
-  },
-  buttonOff: {
-
-  },
-  buttonLeft: {
-    // left: -10,
-  },
-  buttonRight: {
-    // right: -10,
   },
   buttonTitleStyle: {
     color: palette.primaryVariant,
@@ -126,7 +85,4 @@ const styles = StyleSheet.create({
   rightButtonOn: {
     backgroundColor: palette.backgroundNeutral,
   },
-  label: {
-    
-  }
 });

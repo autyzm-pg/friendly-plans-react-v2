@@ -1,5 +1,5 @@
 import { CheckboxInput, Icon, IconButton, IconButtonSwitch } from '../../components';
-import { Plan, PlanItem, PlanItemType, PlanSubItem } from '../../models';
+import { PlanItem, PlanItemType, PlanSubItem } from '../../models';
 import React, {useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View, Platform, Button } from 'react-native';
 import { dimensions, palette, typography } from '../../styles';
@@ -8,68 +8,68 @@ import { i18n } from '../../locale';
 import { getIconName } from '../../mocks/defaults';
 import { NavigationProp } from '@react-navigation/native';
 import { Route } from '../../navigation';
+import { PlanItemState, usePlanActivityContext } from '../../contexts/PlanActivityContext';
 
 interface Props {
-  rowNumber: number;
   border?: boolean;
-  planItem: PlanItem;
   navigation: NavigationProp<any>;
-  plan: Plan;
-  planItemList: PlanItem[];
   drag: () => void;
-  setRefreshFlag: any;
-  setToBeDeleted: any;
-  toBeDeleted: any;
-}
+  item: PlanItemState;
+};
 
-export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, planItemList, drag, setRefreshFlag, setToBeDeleted, toBeDeleted}) => {
+export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) => {
+  const { plan, planItems, setPlanItems, setRefreshFlag } = usePlanActivityContext();
   const [subtaskCount, setSubtaskCount] = useState(0);
-  const [checkbox, setCheckbox] = useState(false);
-  const [planState, setPlanState] = useState(planItem.completed);
 
   useEffect(() => {
-    if (planItem.type === PlanItemType.ComplexTask) {
-        PlanSubItem.getPlanSubItems(planItem).then(subItems => {
-          setSubtaskCount(subItems.length);
-        })
-    }
+    if (item.planItem.type !== PlanItemType.ComplexTask) { return; }
+    PlanSubItem.getPlanSubItems(item.planItem).then(subItems => {
+      setSubtaskCount(subItems.length);
+    });
   }, [subtaskCount]);
 
   const navigateToPlanItemUpdate = () => {
+    const planItem = item.planItem;
     navigation.navigate(Route.PlanItemTask, {
       plan,
       planItem,
-      planItemList,
+      planItems,
       setSubtaskCount,
       setRefreshFlag
     });
   };
 
-  const onDelete = () => {
+  const onDelete = async() => {
     Alert.alert(i18n.t('planActivity:deleteTaskHeader'), i18n.t('planActivity:deleteTaskInfo'), [
       { text: i18n.t('common:cancel') },
       {
         text: i18n.t('common:confirm'),
         onPress: async() => {
-          await PlanItem.deletePlanItem(planItem);
-          setRefreshFlag();
+          await PlanItem.deletePlanItem(item.planItem);
+          const updatedItems = planItems.filter(state => state.planItem.id !== item.planItem.id);
+          setPlanItems(updatedItems);
         },
       },
     ]);
   };
 
-  const handlePlanStateChange = () => {
-    planItem.completed = !planItem.completed;
-    PlanItem.updatePlanItem(planItem);
-    if (planItem.type === PlanItemType.ComplexTask) {
-      PlanSubItem.getPlanSubItems(planItem).then(subItems => {
-        subItems.forEach((subItem) => {
-          subItem.completed = planItem.completed;
-          PlanSubItem.updatePlanSubItem(subItem);
+  const handlePlanStateChange = async(completed: boolean) => {
+    item.planItem.completed = completed;
+    await PlanItem.updatePlanItem(item.planItem);
+    if (item.planItem.type === PlanItemType.ComplexTask) {
+      await PlanSubItem.getPlanSubItems(item.planItem).then(subItems => {
+        subItems.forEach(async(subItem) => {
+          subItem.completed = completed;
+          await PlanSubItem.updatePlanSubItem(subItem);
         });
       });
-    }
-    setPlanState(!planState);
+    };
+    const updatedItems = planItems.map(state => 
+      state.planItem.id === item.planItem.id 
+      ? { ...state, planItem: { ...state.planItem, completed } } 
+      : state
+    );
+    setPlanItems(updatedItems);
   };
 
   const renderPlanStateChangeButton = () => {
@@ -77,61 +77,58 @@ export const TableRow: React.FC<Props> = ({ navigation, planItem, border, plan, 
     if (version === 22) {
       return (
         <>
-        <TouchableOpacity onPress={handlePlanStateChange} 
-          style={{backgroundColor: (planItem.completed ? palette.playButton : palette.primary), 
+        <TouchableOpacity onPress={() => { handlePlanStateChange(!item.planItem.completed); }} 
+          style={{backgroundColor: (item.planItem.completed ? palette.playButton : palette.primary), 
           alignItems: 'center', justifyContent: 'center', width: 80, height: 30}}>
           <Text style={{...typography.button, color: palette.textWhite}}>
-              {planItem.completed ? i18n.t('common:yes') : i18n.t('common:no')}
+              {item.planItem.completed ? i18n.t('common:yes') : i18n.t('common:no')}
           </Text>
         </TouchableOpacity>
           <Text style={{ marginRight: dimensions.spacingSmall }}>{i18n.t('planActivity:completed')}</Text>
-        </>);
+        </>
+      );
     }
     return (
       <IconButtonSwitch 
           iconNames={['check', 'close']} 
           titles={[i18n.t('common:yes'), i18n.t('common:no')]} 
           title={i18n.t('planActivity:completed')} 
-          secondButtonOn={!planItem.completed} 
+          secondButtonOn={!item.planItem.completed} 
           onPress={handlePlanStateChange}/>
     );
   };
 
-  const handleCheckBox = (check: boolean) => {
-    if (check) {
-      setToBeDeleted([...toBeDeleted, planItem]);
-    } else {
-      const updatedList = toBeDeleted.filter((item: any) => item.id !== planItem.id);
-      setToBeDeleted(updatedList);
-    }
-  }
+  const handleCheckBox = async() => {
+    const updatedItems = planItems.map(state => 
+      state.planItem.id === item.planItem.id 
+      ? { ...state, checked: !state.checked } 
+      : state
+    );
+    setPlanItems(updatedItems);
+  };
 
-  const hours = Math.floor(planItem.time / 3600);
-  const minutes = Math.floor((planItem.time - hours*3600) / 60);
-  const seconds = planItem.time - minutes*60 - hours*3600;
+  const hours = Math.floor(item.planItem.time / 3600);
+  const minutes = Math.floor((item.planItem.time - hours*3600) / 60);
+  const seconds = item.planItem.time - minutes*60 - hours*3600;
 
   const itemTimeText = hours + ':' + minutes + ':' + seconds;
 
   return (
     <TouchableOpacity style={[styles.row, border && styles.rowBorder]} onLongPress={drag} onPress={navigateToPlanItemUpdate}>
       <View style={styles.checkbox}>
-        <CheckboxInput checked={checkbox} onPress={() => {
-          const check = !checkbox;
-          setCheckbox(check);
-          handleCheckBox(check);
-          }} />
+        <CheckboxInput checked={item.checked} onPress={handleCheckBox}/>
       </View>
       <View style={styles.planIcon}>
-        <Icon name={getIconName(planItem.type)} type="material" />
+        <Icon name={getIconName(item.planItem.type)} type="material" />
       </View>
-      <Text style={styles.textName}>{planItem.name}{' '}</Text>
-      {(planItem.type === PlanItemType.ComplexTask)&&<Text style={styles.text}>{`(${subtaskCount})`}{' '}</Text>}
+      <Text style={styles.textName}>{item.planItem.name}{' '}</Text>
+      {(item.planItem.type === PlanItemType.ComplexTask)&&<Text style={styles.text}>{`(${subtaskCount})`}{' '}</Text>}
       <View style={{flex: 1, flexDirection: 'row-reverse', alignItems: 'center'}}>
         <View style={styles.deleteIcon}>
           <IconButton name='delete' size={24} color={palette.primary} onPress={onDelete} />
         </View>
         {renderPlanStateChangeButton()}
-        {!!planItem.time && (
+        {!!item.planItem.time && (
           <View style={styles.timeContainer}>
             <Icon name='timer' size={24} />
             <View style={styles.timeLabelContainer}>

@@ -2,7 +2,7 @@ import {i18n} from '../../locale';
 import {PlanItem } from '../../models';
 import React, { FC, useState } from 'react';
 import {PlanItemForm, PlanItemFormData} from './PlanItemForm';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
 
 interface State {
   planItem: PlanItem;
@@ -27,11 +27,9 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
   }, []);
 
   const getLastItemOrder = (): number => {
-    const planItemList = route.params?.planItemList;
-    if (!planItemList.length) {
-      return 0;
-    }
-    const { itemOrder } = planItemList[planItemList.length - 1];
+    const planItems = route.params?.planItems;
+    if (!planItems.length) { return 0; }
+    const { itemOrder } = planItems[planItems.length - 1].planItem;
     return itemOrder;
   };
 
@@ -73,14 +71,13 @@ export const PlanItemTaskScreen: FC<Props> = ({navigation, route}) => {
     } else {
       createPlanItem(formData);
     }
-    route.params?.setRefreshFlag();
-  }
+    route.params?.setRefreshFlag((flag: boolean) => !flag);
+  };
 
   return <PlanItemForm 
     itemType={route.params?.planItemType} 
     planItem={state.planItem} 
-    onSubmit={onSubmit} 
-    taskNumber={route.params?.planItemList ? route.params?.planItemList.length + 1 : 0}
+    onSubmit={onSubmit}
     navigation={navigation}
     route={route}
   />;
