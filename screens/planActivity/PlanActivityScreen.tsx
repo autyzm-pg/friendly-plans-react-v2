@@ -5,13 +5,14 @@ import { Button, FullScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
 import { Plan, PlanItem, PlanItemType } from '../../models';
 import { Route } from '../../navigation';
-import { getElevation, palette } from '../../styles';
+import { dimensions, getElevation, palette } from '../../styles';
 import { FixedCreatePlanItemButton } from './FixedCreatePlanItemButton';
 import { PlanForm, PlanFormData, PlanFormError } from './PlanForm';
 import { TaskTable } from './TaskTable';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 import { PlanActivityContext, PlanItemState } from '../../contexts/PlanActivityContext';
+import { MultiButton } from './MultiButton';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -109,6 +110,34 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const unSelectAll = () => {
+    const checked = planItems.filter((state) => state.checked).length;
+    if (checked == planItems.length) {
+      const updated = planItems.map((state) => { return {...state, checked: false}; });
+      setPlanItems(updated);
+    } else {
+      const updated = planItems.map((state) => { return {...state, checked: true}; });
+      setPlanItems(updated);
+    }
+  };
+
+  const renderSelectMultiple = () => {
+    const checked = planItems.filter((state) => state.checked).length;
+    if (!checked) { return <></>; }
+    const selectAll = checked !== planItems.length;
+    return (
+      <View style={{ alignItems: 'flex-start', 
+                     marginLeft: dimensions.spacingBig, 
+                     marginTop: dimensions.spacingSmall }}>
+        <MultiButton onPress={unSelectAll} 
+                     title={selectAll ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
+                     buttonName={selectAll ? 'check-square' : 'square'} 
+                     buttonType='feather' 
+                     disabled={false}/>
+      </View>
+    );
+  };
+
   return (
     <PlanActivityContext.Provider value={{ 
       planItems: planItems, 
@@ -127,6 +156,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             updatePlanItemsOrder={updatePlanItemsOrder}
           />
         </View>
+        {renderSelectMultiple()}
         <TaskTable 
           navigation={navigation}
           updatePlanItemsOrder={updatePlanItemsOrder}
@@ -158,7 +188,7 @@ const styles = StyleSheet.create({
   },
   fullScreen: {
     backgroundColor: palette.backgroundSurface,
-    width: '100%'
+    width: '100%',
   },
   saveButtonContainer: {
     width: '100%',

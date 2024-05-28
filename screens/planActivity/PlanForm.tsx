@@ -114,18 +114,7 @@ export const PlanForm: FC<Props> = ({
     });
     setPlanItems(updated);
   };
-
-  const unSelectAll = () => {
-    const checked = planItems.filter((state) => state.checked).length;
-    if (checked == planItems.length) {
-      const updated = planItems.map((state) => { return {...state, checked: false}; });
-      setPlanItems(updated);
-    } else {
-      const updated = planItems.map((state) => { return {...state, checked: true}; });
-      setPlanItems(updated);
-    }
-  };
-
+  
   const renderMultiButtons = () => {
     const checked = planItems.filter((item) => { return item.checked; }).length;
     return (
@@ -136,8 +125,6 @@ export const PlanForm: FC<Props> = ({
                     buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
         <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
                     buttonName='swap-horiz' buttonType='material-community-icons' disabled={!checked}/>
-        <MultiButton onPress={unSelectAll} title={i18n.t('planActivity:selectTasks')}
-                    buttonName='check-square' buttonType='feather' disabled={false}/>
       </View>
     );
   };
