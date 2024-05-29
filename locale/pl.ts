@@ -67,7 +67,9 @@ const translations = {
     addImage: 'DODAJ LOGO',
     language: 'pl-PL',
     required: 'Pole wymagane!',
-    incorrectFileName: 'Nazwa nie powinna zawierać znaków specjalnych!'
+    incorrectFileName: 'Nazwa nie powinna zawierać znaków specjalnych!',
+    addButton: 'Dodaj',
+    deleteButton: 'Usuń'
   },
   validation: {
     email: 'Adres email musi być poprawny',

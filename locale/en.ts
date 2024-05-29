@@ -67,7 +67,9 @@ const translations = {
     addImage: 'ADD IMAGE',
     language: 'en-GB',
     required: 'Field required!',
-    incorrectFileName: 'Name should not contain special characters!'
+    incorrectFileName: 'Name should not contain special characters!',
+    addButton: 'Add',
+    deleteButton: 'Remove'
   },
   validation: {
     email: 'Must be a valid email',

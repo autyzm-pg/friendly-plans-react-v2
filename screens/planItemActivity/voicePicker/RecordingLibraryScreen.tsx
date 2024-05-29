@@ -9,6 +9,7 @@ import { InnerGallery, PlanItem } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 import DocumentPicker, {types} from 'react-native-document-picker';
+import { MultiButton } from '../../../components/MultiButton';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -161,35 +162,42 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         else {
             setFilRecordings(recordings);
         }
-    }
+    };
+
+    const unSelectAll = () => {
+        if (selectedRecordings.length == filRecordings.length) {
+            setSelectedRecordings([]);
+        } else {
+            setSelectedRecordings(filRecordings);
+        }
+    };
 
     return (
     <>
         <View style={styles.trashIconContainer}>
+            <View style={{ marginLeft: dimensions.spacingBig }}/>
+            <TextInput
+                style={{ width: '40%' }}
+                value={searchTerm}
+                onChangeText={onSearch}
+                placeholder={i18n.t('recGallery:find')}
+            />
             {!selectMode.current && 
-                <Text style={styles.text}>{i18n.t('recGallery:information') + ` ${selectedRecordings.length ? selectedRecordings.length : 0}`}</Text>
-            }
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={{ width: '40%' }}
-                    value={searchTerm}
-                    onChangeText={onSearch}
-                    placeholder={i18n.t('recGallery:find')}
-                />
-            </View>
-            {!selectMode.current && 
-                <>
-                    <View style={styles.iconButtonContainer}>
-                        <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} 
-                                    disabled={selectedRecordings.length == 0}/>
-                        <IconButton name='file-download' type='material' size={24} color={palette.primary} 
-                                    style={{ marginLeft: dimensions.spacingBig }} onPress={loadMultiple}/>
-                    </View>
+                <View style={styles.iconButtonContainer}>
+                    <MultiButton onPress={deleteMultiple} buttonName='trash' buttonType='font-awesome'
+                                 title={i18n.t('common:deleteButton')} disabled={selectedRecordings.length == 0}/>
+                    <MultiButton onPress={loadMultiple} buttonName='file-download' buttonType='material'
+                                 title={i18n.t('common:addButton')} disabled={false}/>
+                    <MultiButton onPress={unSelectAll} 
+                     title={selectedRecordings.length != recordings.length ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
+                     buttonName={selectedRecordings.length != recordings.length ? 'check-square' : 'square'} 
+                     buttonType='feather' 
+                     disabled={false}/>
+                    <View style={{ marginLeft: dimensions.spacingSmall }}/>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-                        <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
-                                    style={{marginRight: dimensions.spacingBig}}/>
+                        <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon}/>
                     </ModalTrigger>
-                </>
+                </View>
             }
         </View>
         <FullScreenTemplate padded darkBackground>
@@ -251,10 +259,10 @@ const styles = StyleSheet.create({
         color: palette.textBody,
       },
       iconButtonContainer: {
-        flex: 1,
         justifyContent: 'flex-end',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         flexDirection: 'row',
-        marginRight: dimensions.spacingBig
+        marginRight: dimensions.spacingBig,
+        flex: 1
       },
 });

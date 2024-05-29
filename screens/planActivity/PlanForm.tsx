@@ -9,7 +9,7 @@ import { DEFAULT_EMOJI } from '../../assets/emojis';
 import { IconSelectModal } from './IconSelectModal';
 import { NavigationProp } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
-import { MultiButton } from './MultiButton';
+import { MultiButton } from '../../components/MultiButton';
 import { usePlanActivityContext, PlanItemState } from '../../contexts/PlanActivityContext';
 import { PlanItem, PlanItemType, PlanSubItem } from '../../models';
 

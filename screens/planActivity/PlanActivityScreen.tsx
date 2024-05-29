@@ -12,7 +12,7 @@ import { TaskTable } from './TaskTable';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 import { PlanActivityContext, PlanItemState } from '../../contexts/PlanActivityContext';
-import { MultiButton } from './MultiButton';
+import { MultiButton } from '../../components/MultiButton';
 
 interface Props {
   navigation: NavigationProp<any>;

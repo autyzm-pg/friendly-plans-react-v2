@@ -7,6 +7,7 @@ import { PlanItem, InnerGallery } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 import { i18n } from '../../../locale';
+import { MultiButton } from '../../../components/MultiButton';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -18,7 +19,6 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   const [usedImages, setUsedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const selectMode = useRef<boolean>(route.params?.updateImage ? true : false);
-
   const fetchImages = async () => {
       const isSelectMode = route.params?.updateImage ? true : false;
       if (!isSelectMode) {
@@ -102,15 +102,27 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     );
   };
 
+  const unSelectAll = () => {
+    if (selectedImages.length == images.length) {
+      setSelectedImages([]);
+    } else {
+      setSelectedImages(images);
+    }
+  };
+
   return (
     <>
     {!selectMode.current && 
       <View style={styles.trashIconContainer}>
-          <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text>
-          <View style={styles.iconButtonContainer}>
-            <IconButton name='trash' type='font-awesome' size={24} color={palette.primary} onPress={deleteMultiple} disabled={selectedImages.length == 0}/>
-            <IconButton name='file-download' type='material' size={24} color={palette.primary} style={{ marginLeft: dimensions.spacingBig }} onPress={loadMultiple}/>
-          </View>
+          {/* <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text> */}
+          <MultiButton onPress={deleteMultiple} title={i18n.t('common:deleteButton')} buttonName='trash' buttonType='font-awesome' disabled={selectedImages.length == 0}/>
+          <MultiButton onPress={loadMultiple} title={i18n.t('common:addButton')} buttonName='file-download' buttonType='material' disabled={false}/>
+          <MultiButton onPress={unSelectAll} 
+                     title={selectedImages.length != images.length ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
+                     buttonName={selectedImages.length != images.length ? 'check-square' : 'square'} 
+                     buttonType='feather' 
+                     disabled={false}/>
+          <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
                           style={{marginRight: dimensions.spacingBig}}/>
@@ -145,6 +157,7 @@ const styles = StyleSheet.create({
     height: 56,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     paddingHorizontal: 10,
     marginTop: 0,
     paddingTop: 0

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { dimensions, palette, typography } from '../../styles';
+import { dimensions, palette, typography } from '../styles';
 
 interface Props {
   onPress?: () => void;
