@@ -15,7 +15,7 @@ interface Props {
   size?: number;
   navigation: NavigationProp<any>;
   student?: Student;
-  onPlanRun: () => void;
+  onPlanRun?: () => void;
 }
 
 export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, student, onPlanRun }) => {
@@ -45,7 +45,7 @@ export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, studen
       return;
     }
 
-    onPlanRun();
+    onPlanRun && onPlanRun();
 
     switch (currentStudent.displaySettings) {
       case StudentDisplayOption.LargeImageSlide:
