@@ -71,23 +71,24 @@ export class PlanSlideItem extends React.PureComponent<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.timer}>
-          <View style={{justifyContent: 'flex-start'}}>
+          <View style={{justifyContent: 'flex-start', flex: 0}}>
             {(this.props.planItem.lector || this.props.planItem.voicePath.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
           </View>
-          <View style={{justifyContent: 'flex-end'}}>
+          
+          {this.showImage && (
+            <View style={styles.imageContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.image}
+                source={{ uri: planItem.image }}
+              />
+            </View>
+          )}
+          <View style={{justifyContent: 'flex-end', flex: 0}}>
             {!!this.props.planItem.time ? <PlanItemTimer itemTime={this.props.planItem.time} /> : null}
           </View>
         </View>
 
-        {this.showImage && (
-          <View style={styles.imageContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.image}
-              source={{ uri: planItem.image }}
-            />
-          </View>
-        )}
         {this.showText && (
           <PlanNameText
             planName={this.props.planItem.nameForChild}
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   timer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flex: 0.35,
+    flex: 1,
   },
   container: {
     flex: 1,
