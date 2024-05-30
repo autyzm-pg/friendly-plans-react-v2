@@ -1,5 +1,5 @@
-import React, { FC, useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { FC, useState, useEffect, useRef } from 'react';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 
 import { Button, FullScreenTemplate } from '../../components';
 import { i18n } from '../../locale';
@@ -27,6 +27,8 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
   const [plan, setPlan] = useState<Plan>(route.params?.plan ?? undefined);
 
+  const planRunning = useRef(false);
+
   const getPlanItems = async () => {
     if (!plan) { return; }
     const planItems = await PlanItem.getPlanItems(plan);
@@ -38,6 +40,13 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     if (!isFocused) { return; }
     getPlanItems();
   }, [isFocused, refreshFlag]);
+
+  useEffect(() => {
+    return () => {
+      if (!planRunning.current)
+        ToastAndroid.show(i18n.t('planActivity:savedMessage'), 2.5);
+    }
+  }, [])
 
   const validatePlan = async ({ planInput }: PlanFormData): Promise<void> => {
     const errors: PlanFormError = {};
@@ -121,6 +130,14 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const savePlan = () => {
+    navigation.goBack();
+  }
+
+  const onPlanRun = () => {
+    planRunning.current = true;
+  }
+
   const renderSelectMultiple = () => {
     const checked = planItems.filter((state) => state.checked).length;
     if (!checked) { return <></>; }
@@ -154,6 +171,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             onValidate={validatePlan}
             navigation={navigation}
             updatePlanItemsOrder={updatePlanItemsOrder}
+            onPlanRun={onPlanRun}
           />
         </View>
         {renderSelectMultiple()}
@@ -173,7 +191,7 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
             size: 22,
           }}
           isUppercase
-          onPress={() => { navigation.goBack(); }}
+          onPress={savePlan}
         />
       </View>
       <FixedCreatePlanItemButton onPress={navigateToCreatePlanItem} />

@@ -13,6 +13,7 @@ const translations = {
     deleteTaskHeader: 'USUŃ ZADANIE/ZADANIA',
     deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.',
     completed: 'Czy uczeń ukończył zadanie?',
+    savedMessage: 'Zapisano',
   },
   header: {
     activeStudent: 'Aktywny uczeń',

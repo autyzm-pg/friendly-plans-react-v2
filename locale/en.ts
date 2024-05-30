@@ -13,6 +13,7 @@ const translations = {
     deleteTaskHeader: 'DELETE TASK(S)',
     deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.',
     completed: 'Did the student complete the task?',
+    savedMessage: 'Saved',
   },
   header: {
     activeStudent: 'Active student',
