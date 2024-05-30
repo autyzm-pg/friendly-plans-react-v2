@@ -258,6 +258,7 @@ const translations = {
   runPlan: {
     next: 'Next',
     wait: 'Wait...',
+    oneSecondMore: 'One second more...'
   },
   taskTable: {
     number: '#',
