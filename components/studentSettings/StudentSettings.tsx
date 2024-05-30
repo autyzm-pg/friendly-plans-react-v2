@@ -73,7 +73,7 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
   const handleStudentCreate = () => onStudentCreate && onStudentCreate(state);
 
   const handleStudentUpdate = () => {
-    if(onStudentUpdate && (state && currentStudent && !Student.equals(state, currentStudent))) {
+    if (onStudentUpdate) {
       onStudentUpdate(state);
     }
   }
