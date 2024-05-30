@@ -14,8 +14,10 @@ interface Props extends IconProps {
 
 export const IconButton: FC<Props> = ({ 
   delayLongPress, 
-  onLongPress,                                 
-  onPress, 
+  onLongPress,
+  onPress,
+  onPressIn,
+  onPressOut,
   containerStyle,  
   label, 
   disabled, 
@@ -29,6 +31,8 @@ export const IconButton: FC<Props> = ({
       delayLongPress={delayLongPress}
       onLongPress={onLongPress} 
       onPress={onPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       style={[styles.container, containerStyle, iconButtonStyle]}
       hitSlop={hitSlop}
     >

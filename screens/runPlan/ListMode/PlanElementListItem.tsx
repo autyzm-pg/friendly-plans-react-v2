@@ -114,8 +114,6 @@ export class PlanElementListItem extends React.PureComponent<Props> {
   };
 
   handleLongPress = () => {
-    // Before - can only go back one task
-    //if ((this.props.index === this.props.currentTaskIndex - 1) && this.props.item.completed) {
     if ((this.props.index < this.props.currentTaskIndex) && this.props.item.completed) {
       this.markItemPlanAsUncompleted();
     }

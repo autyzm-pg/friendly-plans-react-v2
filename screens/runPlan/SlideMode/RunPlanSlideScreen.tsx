@@ -2,8 +2,8 @@ import {Card, FlatButton, IconButton, StyledText} from '../../../components';
 import {i18n} from '../../../locale';
 import {ModelSubscriber, PlanItem, PlanItemType, Student} from '../../../models';
 import {Route} from '../../../navigation';
-import React, { useEffect, useState } from 'react';
-import {BackHandler, StyleSheet, Text, TouchableHighlight, TouchableHighlightComponent, View} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {BackHandler, StyleSheet, Text, ToastAndroid, TouchableHighlight, TouchableHighlightComponent, View} from 'react-native';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {palette, typography} from '../../../styles';
 import {PlanSlideItem} from './PlanSlideItem';
@@ -140,6 +140,18 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const timeout = useRef<NodeJS.Timeout>();
+
+  const onPressIn = () => {
+    timeout.current = setTimeout(() => {
+      ToastAndroid.show(i18n.t('runPlan:oneSecondMore'), ToastAndroid.SHORT);
+    }, 700)
+  }
+
+  const onPressOut = () => {
+    clearTimeout(timeout.current)
+  }
+
   const renderPlan = () => {
     const { student } = state;
     return (
@@ -161,6 +173,8 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
                         type="material"
                         size={50}
                         color="#E7DCDA"
+                        onPressIn={onPressIn}
+                        onPressOut={onPressOut}
                         onLongPress={goBack}
                         delayLongPress={2000}
             />
