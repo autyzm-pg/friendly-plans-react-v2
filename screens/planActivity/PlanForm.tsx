@@ -27,13 +27,15 @@ interface Props {
   onValidate: (values: PlanFormData) => void | Promise<any>;
   navigation: NavigationProp<any>;
   updatePlanItemsOrder: (items: PlanItemState[]) => Promise<void>;
+  onPlanRun: () => void
 };
 
 export const PlanForm: FC<Props> = ({
   onSubmit,
   onValidate,
   navigation,
-  updatePlanItemsOrder
+  updatePlanItemsOrder,
+  onPlanRun
 }) => {
   
   const {currentStudent} = useCurrentStudentContext();
@@ -165,7 +167,7 @@ export const PlanForm: FC<Props> = ({
         </View>
         <View style={styles.buttonContainer}>
           {renderMultiButtons()}
-          <PlayButton plan={plan} disabled={!plan || !planItems} size={36} navigation={navigation} student={currentStudent}/>
+          <PlayButton plan={plan} disabled={!plan || !planItems} size={36} navigation={navigation} student={currentStudent} onPlanRun={onPlanRun}/>
         </View>
       </View>
     );
