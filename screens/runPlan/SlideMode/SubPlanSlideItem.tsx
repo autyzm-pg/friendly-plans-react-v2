@@ -74,19 +74,19 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
           <View style={{justifyContent: 'flex-start'}}>
             {(this.props.planSubItem.lector || this.props.planSubItem.voicePath?.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
           </View>
+          {this.showImage && (
+            <View style={styles.imageContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.image}
+                source={{ uri: planSubItem.image }}
+              />
+            </View>
+          )}
           <View style={{justifyContent: 'flex-end'}}>
             {!!this.props.planSubItem.time ? <PlanItemTimer itemTime={this.props.planSubItem.time} /> : null}
           </View>
         </View>
-        {this.showImage && (
-          <View style={styles.imageContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.image}
-              source={{ uri: planSubItem.image }}
-            />
-          </View>
-        )}
         {this.showText && (
           <PlanNameText
             planName={this.props.planSubItem.name}
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   timer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flex: 0.35,
+    flex: 1,
   },
   container: {
     flex: 1,
