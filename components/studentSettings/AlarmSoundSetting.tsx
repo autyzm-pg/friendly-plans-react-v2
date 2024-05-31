@@ -16,12 +16,16 @@ export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
     const soundTrack = useRef<any>(null);
     const isPlaying = useRef(false);
 
+    const clearTimer = () => {
+        if (!soundTrack.current) { return; }
+        soundTrack.current.stop();
+        soundTrack.current.release();
+        isPlaying.current = false;
+    };
+
     useEffect(() => {
         return () => {
-            if(soundTrack.current) {
-                soundTrack.current.stop();
-                soundTrack.current.release();
-            }
+            clearTimer();
         };
       }, []);
 
@@ -39,11 +43,7 @@ export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
     };
 
     const handleChangeTimer = (direction: 'next' | 'prev') => {
-        if (isPlaying && soundTrack.current) {
-            soundTrack.current.stop();
-            soundTrack.current.release();
-            isPlaying.current = false;
-        }
+        if (isPlaying.current) { clearTimer(); }
         if (direction === 'next') {
             setTimerIndex((prevIndex) => {
                 const newIdx = (prevIndex + 1) % items.current.length;
@@ -59,8 +59,13 @@ export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
         }
     };
 
+
+
     const playAlarm = () => {
-        if (isPlaying.current) { return; }
+        if (isPlaying.current) { 
+            clearTimer();
+            return;
+        }
         soundTrack.current = new Sound(items.current[timerIndex].key, Sound.MAIN_BUNDLE, (error) => {
             if (error) { /*console.log('Failed to load timer asset:', error);*/ return; }
             isPlaying.current = true;
@@ -83,8 +88,8 @@ export const AlarmSoundSetting: FC<Props> = ({sound, onValueChange}) => {
             <TouchableOpacity onPress={playAlarm} hitSlop={{ top: 25, bottom: 25, left: 25}}>
                 <StyledText style={styles.soundPicker}>{`${getLabel()}`}</StyledText>
             </TouchableOpacity>
-            {/* <IconButton name='chevron-left' type='material' size={36} color={palette.textDisabled} onPress={() => handleChangeTimer('prev')}/> */}
-            <IconButton name='chevron-right' type='material' size={36} color={palette.textDisabled} onPress={() => handleChangeTimer('next')} hitSlop={{ top: 25, bottom: 25, left: 25}}/>
+            <IconButton name='chevron-left' type='material' size={36} color={palette.textDisabled} onPress={() => handleChangeTimer('prev')} hitSlop={{ top: 25, bottom: 25, left: 10}}/>
+            <IconButton name='chevron-right' type='material' size={36} color={palette.textDisabled} onPress={() => handleChangeTimer('next')} hitSlop={{ top: 25, bottom: 25, right: 10}}/>
         </View>
     </View>
     );
