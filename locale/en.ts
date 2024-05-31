@@ -156,7 +156,8 @@ const translations = {
     noTasks: 'NO TASKS',
     noTasksDescription: 'Plan \'{{name}}\' does not have any tasks',
     allTasksCompleted: 'All tasks are completed',
-    allTasksCompletedDescription: 'All of the tasks in plan \'{{name}}\' are completed',
+    allTasksCompletedDescription: 'All of the tasks in the plan \'{{name}}\' are completed.',
+    stateChangeInfo: 'Change the state of all tasks to unfinished (in the plan editing view) to enable running the plan again.',
   },
   planItemActivity: {
     viewTitleTask: 'Task',

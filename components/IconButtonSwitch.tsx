@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { palette } from '../styles';
 import { Button } from './Button';
@@ -14,6 +14,7 @@ interface Props {
 };
 
 export const IconButtonSwitch: FC<Props> = ({ iconNames, titles, title, secondButtonOn, onPress }) => {
+  const isAndroid5 = 22 === Platform.Version;
   return (
     <View style={styles.viewContainer}>
     <StyledText>{title}</StyledText>
@@ -25,11 +26,12 @@ export const IconButtonSwitch: FC<Props> = ({ iconNames, titles, title, secondBu
             name: iconNames[0],
             type: 'material',
             color: (!secondButtonOn) ? palette.textWhite : palette.primaryVariant,
+            backgroundColor: (!secondButtonOn) ? palette.backgroundPositive: palette.backgroundAdditional,
             size: 22,              
           }}
           isUppercase
           buttonStyle={[styles.buttonStyle, (!secondButtonOn) && styles.leftButtonOn]}
-          titleStyle={{color: (!secondButtonOn) ? palette.textWhite : palette.primaryVariant}}
+          titleStyle={{color: (!secondButtonOn && !isAndroid5) ? palette.textWhite : palette.primaryVariant}}
           onPress={() => { onPress(true); }}
           hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
         />
@@ -40,12 +42,13 @@ export const IconButtonSwitch: FC<Props> = ({ iconNames, titles, title, secondBu
           icon={{
             name: iconNames[1],
             type: 'material',
-            color: secondButtonOn ? palette.textWhite : palette.primaryVariant,
+            color: (secondButtonOn) ? palette.textWhite : palette.primaryVariant,
+            backgroundColor: secondButtonOn ? palette.backgroundNeutral: palette.backgroundAdditional,
             size: 22,              
           }}
           isUppercase
           buttonStyle={[styles.buttonStyle, secondButtonOn && styles.rightButtonOn]}
-          titleStyle={{color: secondButtonOn ? palette.textWhite : palette.primaryVariant}}
+          titleStyle={{color: (secondButtonOn && !isAndroid5) ? palette.textWhite : palette.primaryVariant}}
           onPress={() => { onPress(false); }}
         />
       </View>
@@ -67,10 +70,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  buttonTitleStyle: {
-    color: palette.primaryVariant,
-    fontSize: 8,
   },
   buttonStyle: {
     paddingHorizontal: 0,

@@ -8,6 +8,7 @@ import { IconButton } from './IconButton';
 import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Alert } from 'react-native';
 import { i18n } from '../locale';
+import { useRootNavigatorContext } from '../contexts/RootNavigatorContext';
 
 interface Props {
   plan?: Plan;
@@ -20,6 +21,7 @@ interface Props {
 
 export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, student, onPlanRun }) => {
   const {currentStudent} = useCurrentStudentContext();
+  const {editionMode} = useRootNavigatorContext();
 
   const navigateToRunPlan = async () => {
     if (!plan || !currentStudent) {
@@ -36,7 +38,10 @@ export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, studen
       ]);
       return;
     } else if (!items.find(item => !item.completed)) {
-      Alert.alert(i18n.t('planList:allTasksCompleted'), i18n.t('planList:allTasksCompletedDescription', {name: plan.name}), [
+      Alert.alert(i18n.t('planList:allTasksCompleted'), 
+      i18n.t('planList:allTasksCompletedDescription', {name: plan.name})
+      + ' ' + (editionMode ? i18n.t('planList:stateChangeInfo') : '')
+      , [
         {
           text: i18n.t('common:ok'),
           onPress: () => {},

@@ -72,32 +72,6 @@ export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) =>
     setPlanItems(updatedItems);
   };
 
-  const renderPlanStateChangeButton = () => {
-    const version = Platform.Version;
-    if (version === 22) {
-      return (
-        <>
-        <TouchableOpacity onPress={() => { handlePlanStateChange(!item.planItem.completed); }} 
-          style={{backgroundColor: (item.planItem.completed ? palette.playButton : palette.primary), 
-          alignItems: 'center', justifyContent: 'center', width: 80, height: 30}}>
-          <Text style={{...typography.button, color: palette.textWhite}}>
-              {item.planItem.completed ? i18n.t('common:yes') : i18n.t('common:no')}
-          </Text>
-        </TouchableOpacity>
-          <Text style={{ marginRight: dimensions.spacingSmall }}>{i18n.t('planActivity:completed')}</Text>
-        </>
-      );
-    }
-    return (
-      <IconButtonSwitch 
-          iconNames={['check', 'close']} 
-          titles={[i18n.t('common:yes'), i18n.t('common:no')]} 
-          title={i18n.t('planActivity:completed')} 
-          secondButtonOn={!item.planItem.completed} 
-          onPress={handlePlanStateChange}/>
-    );
-  };
-
   const handleCheckBox = async() => {
     const updatedItems = planItems.map(state => 
       state.planItem.id === item.planItem.id 
@@ -127,7 +101,12 @@ export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) =>
         <View style={styles.deleteIcon}>
           <IconButton name='delete' size={24} color={palette.primary} onPress={onDelete} />
         </View>
-        {renderPlanStateChangeButton()}
+        <IconButtonSwitch 
+          iconNames={['check', 'close']} 
+          titles={[i18n.t('common:yes'), i18n.t('common:no')]} 
+          title={i18n.t('planActivity:completed')} 
+          secondButtonOn={!item.planItem.completed} 
+          onPress={handlePlanStateChange}/>
         {!!item.planItem.time && (
           <View style={styles.timeContainer}>
             <Icon name='timer' size={24} />
