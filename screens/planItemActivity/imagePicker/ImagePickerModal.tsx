@@ -64,8 +64,6 @@ export const ImagePickerModal: FC<Props> = ({
         closeModal();
         await ImagePicker.openCropper({
             path: currentImageUri,
-            width: styles.image.width,
-            height: styles.image.height,
             mediaType: 'photo'
         }).then(async (image) => {
             if(!image.path) { return; }
