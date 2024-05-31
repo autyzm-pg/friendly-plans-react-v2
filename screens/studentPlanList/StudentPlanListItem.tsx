@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, StyleSheet, TouchableHighlight, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { NavigationProp } from '@react-navigation/native';
@@ -65,14 +65,24 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, updatePlans })
       },
     ]);
 
+  const swipeableRef = useRef<Swipeable>(null);
+
+  const handleLongPress = () => {
+    if (swipeableRef.current) {
+      swipeableRef.current.openRight();
+    }
+  };
+
   return (
     <View style={styles.container}>
     <TouchableHighlight
       onPress={isSwipeableOpen ? handlePressDelete : navigateToUpdatePlan}
       underlayColor="transparent"
       disabled={!editionMode}
+      onLongPress={handleLongPress}
     >
       <Swipeable
+        ref={swipeableRef}
         enabled={editionMode}
         renderRightActions={renderRightActions}
         onSwipeableWillOpen={(direction) => {if (direction === 'right') handleOpenSwipeable}}
