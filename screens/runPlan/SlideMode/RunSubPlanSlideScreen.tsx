@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-//import { NavigationInjectedProps } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 
-import {Card, FlatButton, IconButton, StyledText} from '../../../components';
+import { Card, IconButton, StyledText } from '../../../components';
 import { i18n } from '../../../locale';
-import {ModelSubscriber, PlanItem, PlanSubItem, Student} from '../../../models';
+import { PlanSubItem } from '../../../models';
 import { Route } from '../../../navigation';
 import { palette, typography } from '../../../styles';
-import {SubPlanSlideItem} from './SubPlanSlideItem';
+import { SubPlanSlideItem } from './SubPlanSlideItem';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../../contexts/CurrentStudentContext';
-
-interface State {
-  pageNumber: number;
-  planItem: PlanItem;
-  planItemsAmount: number;
-  student: Student;
-  planSubItems: PlanSubItem[];
-  subPageNumber: number;
-}
 
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
+};
 
 export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
-  const navigationOptions = {
-    header: null,
-  };
   const {currentStudent} = useCurrentStudentContext();
 
   const [state, setState] = useState({
@@ -80,6 +67,18 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const timeout = useRef<NodeJS.Timeout>();
+
+  const onPressIn = () => {
+    timeout.current = setTimeout(() => {
+      ToastAndroid.show(i18n.t('runPlan:oneSecondMore'), ToastAndroid.SHORT);
+    }, 700);
+  };
+
+  const onPressOut = () => {
+    clearTimeout(timeout.current);
+  };
+
   const renderPlan = () => {
     const { student } = state;
     return (
@@ -94,13 +93,14 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
               isUpperCase={state.student.isUpperCase}
               planItem={state.planItem}
             />
-            {/*<Text>{state.pageNumber}</Text>*/}
           </View>
           <View style={styles.containerForArrows}>
             <IconButton name="arrow-back"
                         type="material"
                         size={50}
                         color="#E7DCDA"
+                        onPressIn={onPressIn}
+                        onPressOut={onPressOut}
                         onLongPress={goBack}
                         delayLongPress={2000}
             />
@@ -111,7 +111,6 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
                         onPress={nextPage}
             />
           </View>
-          {/*<FlatButton style={styles.button} onPress={nextPage} title={i18n.t('runPlan:next')} />*/}
         </Card>
       </View>
     );
@@ -123,7 +122,7 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
 
   return state.planSubItems?.length ? renderPlan() : renderLoader();
   
-}
+};
 
 const styles = StyleSheet.create({
   containerForArrows: {

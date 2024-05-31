@@ -1,36 +1,26 @@
-import {Card, FlatButton, IconButton, StyledText} from '../../../components';
+import {Card, IconButton, StyledText} from '../../../components';
 import {i18n} from '../../../locale';
-import {ModelSubscriber, PlanItem, PlanItemType, Student} from '../../../models';
+import {PlanItem, PlanItemType} from '../../../models';
 import {Route} from '../../../navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import {BackHandler, StyleSheet, Text, ToastAndroid, TouchableHighlight, TouchableHighlightComponent, View} from 'react-native';
+import {BackHandler, StyleSheet, ToastAndroid, View} from 'react-native';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {palette, typography} from '../../../styles';
 import {PlanSlideItem} from './PlanSlideItem';
 
-interface State {
-  planItems: PlanItem[];
-  pageNumber: number;
-  student: Student;
-  timerStop: boolean;
-}
-
 interface Props {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
-}
+};
 
 export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
-  const navigationOptions = {
-    header: null,
-  };
-
   const [state, setState] = useState({
     timerStop: false,
     planItems: [] as PlanItem[],
     pageNumber: route.params?.backPage ? route.params.backPage : 0,
     student: route.params?.student,
   });
+  const completion = useRef<boolean[]>([]);
 
   const handleBackButton = () => {
     navigation.navigate(Route.Dashboard);
@@ -41,13 +31,13 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     PlanItem.getPlanItems(route.params?.plan).then(planItems => {
       const pageNumber = planItems.findIndex(planItem => !planItem.completed);
-      //const filteredPlanItems = planItems.filter(item => !item.completed);
       setState(prevState => ({
         ...prevState,
         planItems: planItems,
         pageNumber: pageNumber
       }));
-    })
+      completion.current = planItems.map((item) => item.completed);
+    });
     return () => backHandler.remove();
   }, []);
 
@@ -69,25 +59,17 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     }
   }, [route, state, navigation]);
 
-  const markItemPlanAsCompleted = () => {
-    const planItemToUpdate = state.planItems[state.pageNumber];
-    planItemToUpdate.completed = true;
-    planItemToUpdate.complete();
+  const markCompletion = (value: boolean) => {
+    const updatedPlanItems = [...state.planItems];
+    updatedPlanItems[state.pageNumber].completed = value;
+    completion.current[state.pageNumber] = value;
+    value ? updatedPlanItems[state.pageNumber].complete() : updatedPlanItems[state.pageNumber].uncomplete();
+    setState(prevState => ({...prevState, planItems: updatedPlanItems}));
   };
 
-  const markItemPlanAsUncompleted = () => {
-    const planItemToUpdate = state.planItems[state.pageNumber];
-    planItemToUpdate.completed = false;
-    planItemToUpdate.uncomplete();
-  }
-
-  const setCurrentPageNumber = () => {
-    
-  }
-
   const nextPage = () => {
-    markItemPlanAsCompleted();
-    const newIdx = state.planItems.findIndex((planItem, index) => !planItem.completed && index > state.pageNumber);
+    markCompletion(true);
+    const newIdx = state.planItems.findIndex((planItem, index) => !completion.current[index] && index > state.pageNumber);
     if(state.planItems[state.pageNumber].type !== PlanItemType.ComplexTask) {
       if (newIdx !== -1) {
         setState(prevState => ({ 
@@ -98,7 +80,6 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
         navigation.navigate(Route.Dashboard);
       }
     } else {
-
       navigation.navigate(Route.RunSubPlanSlide, {
         pageNumber: state.pageNumber,
         nextPageNumber: newIdx !== -1 ? newIdx : state.planItems.length,
@@ -106,35 +87,16 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
         planItemsAmount: state.planItems.length,
         student: route.params?.student,
       });
-
-      // if (state.pageNumber + 1 < state.planItems.length) {
-      //   setState(state => ({ pageNumber: state.pageNumber + 1 }));
-      // }
     }
   };
 
   const goBack = async () => {
-    markItemPlanAsUncompleted();
+    markCompletion(false);
     if (state.pageNumber - 1 >= 0) {
       setState(prevState => ({ 
         ...prevState,
         pageNumber: prevState.pageNumber - 1 
       }));
-      // if (state.planItems[state.pageNumber-1].type !== PlanItemType.ComplexTask) {
-
-      // } else {
-        
-      //   navigation.navigate(Route.RunSubPlanSlide, {
-      //     pageNumber: state.pageNumber-1,
-      //     planItem: state.planItems[state.pageNumber],
-      //     planItemsAmount: state.planItems.length,
-      //     student: route.params?.student,
-      //   });
-      //   setState(prevState => ({ 
-      //     ...prevState,
-      //     timerStop: true
-      //   }));
-      // }
     } else {
       navigation.navigate(Route.Dashboard);
     }
@@ -145,12 +107,12 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   const onPressIn = () => {
     timeout.current = setTimeout(() => {
       ToastAndroid.show(i18n.t('runPlan:oneSecondMore'), ToastAndroid.SHORT);
-    }, 700)
-  }
+    }, 700);
+  };
 
   const onPressOut = () => {
-    clearTimeout(timeout.current)
-  }
+    clearTimeout(timeout.current);
+  };
 
   const renderPlan = () => {
     const { student } = state;
@@ -167,7 +129,6 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
               timerStop={state.timerStop}
             />
           </View>
-          {/*<Text>{state.pageNumber}</Text>*/}
           <View style={styles.containerForArrows}>
             <IconButton name="arrow-back"
                         type="material"
@@ -186,8 +147,6 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
                         onPress={nextPage}
             />
           </View>
-
-          {/*<FlatButton style={styles.button} onPress={nextPage} title={i18n.t('runPlan:next')} />*/}
         </Card>
       </View>
     );
@@ -197,9 +156,8 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
     return <StyledText>{i18n.t('runPlan:wait')}</StyledText>;
   };
 
-
   return state.planItems.length ? renderPlan() : renderLoader();
-}
+};
 
 const styles = StyleSheet.create({
   containerForArrows: {
