@@ -30,14 +30,14 @@ export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
   const resetTimer = () => {
     clearInterval(timerID.current);
     timerID.current = null;
-  }
+  };
 
   useEffect(() => {
     setTime(itemTime);
     timer.current = itemTime;
     pause.current = false;
     resetTimer();
-  }, [itemTime])
+  }, [itemTime]);
 
   useEffect(() => {
     soundTrack.current = new Sound(currentStudent ? currentStudent.timer : sounds.default, Sound.MAIN_BUNDLE);
@@ -50,9 +50,7 @@ export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
 
   const playAlarmInLoop = () => {
     soundTrack.current.play((success: boolean) => {
-      if (success) {
-        playAlarmInLoop();
-      }
+      if (success) { playAlarmInLoop(); }
     });
   };
 
@@ -68,7 +66,7 @@ export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
       playAlarmInLoop();
       resetTimer();
     }
-  }
+  };
 
   const onAlarmPress = () => {
     if (time == itemTime) {
@@ -80,11 +78,19 @@ export const PlanItemTimer: FC<Props> = ({ itemTime }) => {
       setTime(itemTime);
       timer.current = itemTime;
     }
-  }
+  };
+
+  const onAlarmLongPress = () => {
+    soundTrack.current.stop();
+    setTime(itemTime);
+    timer.current = itemTime;
+    pause.current = false;
+    resetTimer();
+  };
 
   return (
     <View style={styles.timeContainer}>
-      <Icon onPress={onAlarmPress} name="timer" size={64} />
+      <Icon onPress={onAlarmPress} onLongPress={onAlarmLongPress} name="timer" size={64} />
       <StyledText style={styles.timeText}>{currentTime()}</StyledText>
     </View>
   );
