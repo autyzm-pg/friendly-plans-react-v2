@@ -11,6 +11,8 @@ import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation';
 import {InnerGallery} from '../../../services/InnerGallery';
 import {SoundService} from '../../../services/SoundService';
+import { FormikProps } from 'formik';
+import { PlanItemFormData } from '../PlanItemForm';
 
 interface Props {
   closeModal?: () => void;
@@ -26,6 +28,7 @@ interface Props {
     lector: boolean;
     name?: string;
   };
+  formikProps: FormikProps<PlanItemFormData>;
   lector: boolean,
   navigation: NavigationProp<any>;
 }
@@ -37,7 +40,8 @@ export const VoicePickerModal: FC<Props> = ({
                         isComplexTask, selected,
                         setLector, lector,
                         planItem,
-                        navigation
+                        navigation,
+                        formikProps
                       }) => {
   const playerRef = useRef<any>(null);
 
@@ -78,8 +82,8 @@ export const VoicePickerModal: FC<Props> = ({
 
   const playAudio = async () => {
     // closeModal();
-    if ((!isComplexTask && lector && planItem.nameForChild) || (isComplexTask && selected?.lector && selected?.name)) {
-      const text = (isComplexTask && selected && selected.name) ? selected?.name : planItem.nameForChild;
+    if ((!isComplexTask && lector && formikProps.values.name) || (isComplexTask && selected?.lector && selected?.name)) {
+      const text = (isComplexTask && selected && selected.name) ? selected?.name : formikProps.values.name;
       if (!text) { return; }
       await SoundService.lectorSpeak(text);
     }

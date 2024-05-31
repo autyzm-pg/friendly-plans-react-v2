@@ -87,6 +87,7 @@ export const VoicePicker: FunctionComponent<Props> = ({
         <View>
             <ModalTrigger
                 modalContent={<VoicePickerModal planItem={planItem}
+                                                formikProps={formikProps}
                                                 voiceUriUpdate={setVoicePath}
                                                 deleteVoice={deleteVoice}
                                                 currentVoiceUri={voice.voicePath}
