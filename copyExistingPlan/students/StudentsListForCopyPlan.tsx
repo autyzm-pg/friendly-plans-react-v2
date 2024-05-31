@@ -1,5 +1,4 @@
 import {Separator, StyledText} from '../../components';
-import {sortBy} from 'lodash';
 import {Student} from '../../models';
 import React, {FC, ReactElement, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -7,14 +6,15 @@ import {dimensions, palette, typography} from '../../styles';
 import {StudentListElementForCopyPlan} from './StudentListElementForCopyPlan';
 import { NavigationProp } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import { i18n } from '../../locale';
 
 interface Props {
   students: Student[];
   navigation: NavigationProp<any>;
-}
+};
 
 export const StudentsListForCopyPlan: FC<Props> = ({navigation, students}) => {
-const [sortedStudents, setSortedStudents] = useState<Student[]>([])
+  const [sortedStudents, setSortedStudents] = useState<Student[]>([]);
 
   const renderLetterGroupLabel = (letter: string) => (
     <StyledText key={letter} style={styles.label}>
@@ -23,19 +23,18 @@ const [sortedStudents, setSortedStudents] = useState<Student[]>([])
   );
 
   useEffect(() => {
-    getFilteredStudents()
-  }, students)
+    getFilteredStudents();
+  }, [students]);
 
   const getFilteredStudents = async () => {
-    const filteredList = [] as Student[]
+    const filteredList = [] as Student[];
     for (const student of students) {
       const planCount = await Student.getPlansCount(student.id);
-      if (planCount > 0) {
-        filteredList.push(student)
-      }
+      if (planCount <= 0) { continue; }
+      filteredList.push(student);
     }
-    setSortedStudents(filteredList.sort((studentA: Student, studentB: Student) => studentA.name > studentB.name ? 1 : -1))
-  }
+    setSortedStudents(filteredList.sort((studentA: Student, studentB: Student) => studentA.name > studentB.name ? 1 : -1));
+  };
 
   const studentsLetterGrouped = sortedStudents.reduce((grouped: { [key: string]: Element[] }, student: Student) => {
     const firstLetter = student.name.charAt(0).toLowerCase();
@@ -62,7 +61,17 @@ const [sortedStudents, setSortedStudents] = useState<Student[]>([])
     );
   }
 
-  return <View>{Object.values(studentsLetterGrouped).flat() as ReactElement[]}</View>;
+  return (
+    sortedStudents.length > 0 
+    ?
+    <View>
+      {Object.values(studentsLetterGrouped).flat() as ReactElement[]}
+    </View>
+    :
+    <StyledText>
+      {i18n.t('forCopy:noPlans')}
+    </StyledText>
+  );
 };
 
 const styles = StyleSheet.create({

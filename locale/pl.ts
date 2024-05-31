@@ -1,4 +1,7 @@
 const translations = {
+  forCopy: {
+    noPlans: 'Żaden z dostępnych uczniów nie ma stworzonego planu.'
+  },
   planActivity: {
     planNamePlaceholder: 'Wpisz nazwę planu',
     newPlan: 'Nowy Plan #',
