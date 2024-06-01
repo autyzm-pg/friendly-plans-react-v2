@@ -21,6 +21,7 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
   soundTrack: any;
 
   componentDidMount() {
+    SoundService.lectorStop();
     if (this.props.planSubItem.voicePath?.length > 0) {
       this.soundTrack = new Sound(this.props.planSubItem.voicePath
           .replace('file:///', '/')

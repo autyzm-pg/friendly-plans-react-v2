@@ -21,6 +21,7 @@ export class PlanSlideItem extends React.PureComponent<Props> {
   soundTrack: any;
 
   componentDidMount() {
+    SoundService.lectorStop();
     if (this.props.planItem.voicePath.length > 0) {
       this.soundTrack = new Sound(this.props.planItem.voicePath
           .replace('file:///', '/')
@@ -32,6 +33,7 @@ export class PlanSlideItem extends React.PureComponent<Props> {
     if (this.soundTrack != null) {
       this.soundTrack.stop();
     }
+    SoundService.lectorStop();
 
     if (this.props.planItem.voicePath.length > 0) {
       this.soundTrack = new Sound(this.props.planItem.voicePath
@@ -45,6 +47,7 @@ export class PlanSlideItem extends React.PureComponent<Props> {
       this.soundTrack.stop();
       this.soundTrack.release();
     }
+    SoundService.lectorStop();
   }
 
   get showText(): boolean {

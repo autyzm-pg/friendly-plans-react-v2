@@ -12,4 +12,8 @@ export class SoundService {
             }
           });
     };
+
+    static lectorStop = async() => {
+      Tts.stop();
+  };
 }

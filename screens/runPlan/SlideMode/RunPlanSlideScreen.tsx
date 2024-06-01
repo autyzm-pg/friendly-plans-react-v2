@@ -107,7 +107,7 @@ export const RunPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
   const onPressIn = () => {
     timeout.current = setTimeout(() => {
       ToastAndroid.show(i18n.t('runPlan:oneSecondMore'), ToastAndroid.SHORT);
-    }, 700);
+    }, 900);
   };
 
   const onPressOut = () => {
