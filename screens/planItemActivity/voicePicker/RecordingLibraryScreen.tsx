@@ -194,7 +194,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                      title={selectedRecordings.length != recordings.length ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
                      buttonName={selectedRecordings.length != recordings.length ? 'check-square' : 'square'} 
                      buttonType='feather' 
-                     disabled={false}/>
+                     disabled={!recordings.length}/>
                     <View style={{ marginLeft: dimensions.spacingSmall }}/>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
                         <IconButton name={'information-circle'} type={'ionicon'} size={30} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} disabled color={palette.informationIcon}/>

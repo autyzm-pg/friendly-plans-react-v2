@@ -121,7 +121,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
                      title={selectedImages.length != images.length ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
                      buttonName={selectedImages.length != images.length ? 'check-square' : 'square'} 
                      buttonType='feather' 
-                     disabled={false}/>
+                     disabled={!images.length}/>
           <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} 
