@@ -1,7 +1,7 @@
 import React, { FC, useRef, useEffect, useState, } from 'react';
 import { View, StyleSheet, PermissionsAndroid } from 'react-native';
 import { StyledText, TextInput } from '../../../components'
-import { typography, dimensions } from '../../../styles';
+import { typography, dimensions, fonts } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
@@ -175,7 +175,9 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   time: {
-    ...typography.headline3, 
+    fontFamily: fonts.sansSerif.regular,
+    fontSize: 18,
+    letterSpacing: 0, 
     marginRight: dimensions.spacingSmall,
     paddingBottom: 5
   }

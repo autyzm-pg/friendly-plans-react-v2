@@ -20,8 +20,8 @@ const planNameTypography: Record<string, any> = {
     s: typography.headline4,
   },
   settingsPreview: {
-    xl: typography.headline3,
-    l: typography.headline4,
+    xl: typography.headline3Prev,
+    l: typography.headline4Prev,
     m: typography.headline5,
     s: typography.headline6,
   },

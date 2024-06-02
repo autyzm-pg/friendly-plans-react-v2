@@ -28,7 +28,7 @@ export const PlanDisplayPreview: FC<Props> = ({ displaySettings, textSize, isUpp
           planName={i18n.t('studentSettings:planCardPlacehorder')}
           textSize={textSize}
           isUpperCase={isUpperCase}
-          isSettingsPreview
+          isSettingsPreview={true}
           alignTextCenter
         />
       );

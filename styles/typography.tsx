@@ -6,26 +6,28 @@ import { StyleSheet } from 'react-native';
 
 import { fonts } from './fonts';
 
+const fontAddSize = 5;
+
 export const typography = StyleSheet.create({
   // TODO Precise the headline sizes in settings plan card preview and student view
   headline1: {
     fontFamily: fonts.sansSerif.regular,
-    fontSize: 48,
+    fontSize: fontAddSize + 48,
     letterSpacing: 0,
   },
   headline2: {
     fontFamily: fonts.sansSerif.regular,
-    fontSize: 34,
+    fontSize: fontAddSize + 34,
     letterSpacing: 0,
   },
   headline3: {
     fontFamily: fonts.sansSerif.regular,
-    fontSize: 18,
+    fontSize: fontAddSize + 18,
     letterSpacing: 0,
   },
   headline4: {
     fontFamily: fonts.sansSerif.regular,
-    fontSize: 16,
+    fontSize: fontAddSize + 16,
     letterSpacing: 0,
   },
   headline5: {
@@ -36,6 +38,16 @@ export const typography = StyleSheet.create({
   headline6: {
     fontFamily: fonts.sansSerif.regular,
     fontSize: 12,
+    letterSpacing: 0,
+  },
+  headline3Prev: {
+    fontFamily: fonts.sansSerif.regular,
+    fontSize: 18,
+    letterSpacing: 0,
+  },
+  headline4Prev: {
+    fontFamily: fonts.sansSerif.regular,
+    fontSize: 16,
     letterSpacing: 0,
   },
   // used for view header
