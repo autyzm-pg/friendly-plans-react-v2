@@ -160,6 +160,7 @@ const translations = {
     noTasksDescription: 'Plan \'{{name}}\' nie posiada żadnych zadań',
     allTasksCompleted: 'Zadania ukończone',
     allTasksCompletedDescription: 'Wszystkie zadania z planu \'{{name}}\' zostały ukończone.',
+    playFromBeginning: 'Włącz od początku',
     stateChangeInfo: 'Zmień stan wszystkich zadań na nieukończone (w widoku edycji planu), aby móc uruchomić go ponownie.',
   },
   planItemActivity: {

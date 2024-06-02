@@ -97,23 +97,23 @@ export const PlanForm: FC<Props> = ({
     };
   };
 
-  const changeStateOfMultiple = async() => {
-    const checked = planItems.filter((state) => state.checked);
+  const changeStateOfMultiple = async (all?: boolean) => {
+    const checked = all ? planItems : planItems.filter((state) => state.checked);
     const completed = checked.filter((state) => state.planItem.completed).length;
     let updated: PlanItemState[] = [];
     if (completed == checked.length) {
       updated = planItems.map((state) => {
-        if (!state.checked) { return state };
+        if (!state.checked && !all) { return state };
         return { ...state, planItem: { ...state.planItem, completed: false } };
       });
     } else {
       updated = planItems.map((state) => {
-        if (!state.checked) { return state };
+        if (!state.checked && !all) { return state };
         return { ...state, planItem: { ...state.planItem, completed: true }};
       });
     }
     updated.forEach(async(item) => { 
-      if (!item.checked) { return; }
+      if (!item.checked && !all) { return; }
       await changeState(item.planItem); 
     });
     setPlanItems(updated);
@@ -138,6 +138,10 @@ export const PlanForm: FC<Props> = ({
       </View>
     );
   };
+
+  const runPlanFromBeginning = async () => {
+    await changeStateOfMultiple(true);
+  }
 
   const renderFormControls = ({ values, handleChange, handleSubmit, errors }: any) => {
     const updateEmoji = async (emoji: string) => {
@@ -168,7 +172,15 @@ export const PlanForm: FC<Props> = ({
         </View>
         <View style={styles.buttonContainer}>
           {renderMultiButtons()}
-          <PlayButton plan={plan} disabled={!plan || !planItems} size={36} navigation={navigation} student={currentStudent} onPlanRun={onPlanRun}/>
+          <PlayButton
+            plan={plan} 
+            disabled={!plan || !planItems} 
+            size={36} 
+            navigation={navigation} 
+            student={currentStudent} 
+            onPlanRun={onPlanRun}
+            runPlanFromBeginning={runPlanFromBeginning}
+          />
         </View>
       </View>
     );

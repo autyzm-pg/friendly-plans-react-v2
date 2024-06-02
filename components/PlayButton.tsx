@@ -16,10 +16,11 @@ interface Props {
   size?: number;
   navigation: NavigationProp<any>;
   student?: Student;
+  runPlanFromBeginning: () => Promise<void>;
   onPlanRun?: () => void;
 }
 
-export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, student, onPlanRun }) => {
+export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, student, onPlanRun, runPlanFromBeginning }) => {
   const {currentStudent} = useCurrentStudentContext();
   const {editionMode} = useRootNavigatorContext();
 
@@ -40,8 +41,13 @@ export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, studen
     } else if (!items.find(item => !item.completed)) {
       Alert.alert(i18n.t('planList:allTasksCompleted'), 
       i18n.t('planList:allTasksCompletedDescription', {name: plan.name})
-      + ' ' + (editionMode ? i18n.t('planList:stateChangeInfo') : '')
       , [
+        {
+          text: i18n.t('planList:playFromBeginning'),
+          onPress: () => {
+            runPlanFromBeginning().then(() => navigateToRunPlan())
+          },
+        },
         {
           text: i18n.t('common:ok'),
           onPress: () => {},
