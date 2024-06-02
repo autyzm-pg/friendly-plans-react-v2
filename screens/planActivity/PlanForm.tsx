@@ -157,6 +157,7 @@ export const PlanForm: FC<Props> = ({
           )}
           <TextInput
             style={styles.textInput}
+            height={35}
             placeholder={i18n.t('planActivity:planNamePlaceholder')}
             value={values.planInput}
             onChangeText={handleChange('planInput')}
@@ -186,7 +187,7 @@ export const PlanForm: FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: 56,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

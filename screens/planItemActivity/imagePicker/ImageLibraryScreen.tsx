@@ -124,7 +124,9 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
                      disabled={false}/>
           <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-              <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon} 
+              <IconButton name={'information-circle'} type={'ionicon'} size={30} 
+                          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                          disabled color={palette.informationIcon} 
                           style={{marginRight: dimensions.spacingBig}}/>
           </ModalTrigger>
         </View>
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
   },
   trashIconContainer: {
     backgroundColor: palette.textWhite,
-    height: 56,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',

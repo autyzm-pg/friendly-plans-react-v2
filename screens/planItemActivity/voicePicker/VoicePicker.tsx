@@ -76,10 +76,10 @@ export const VoicePicker: FunctionComponent<Props> = ({
 
     const renderIcon = () => {
         if (voice.lector || voice.voicePath) {
-            return (<Icon name="volume-high" type="material-community" size={40} color={palette.primaryVariant}/>);
+            return (<Icon name="volume-high" type="material-community" size={50} color={palette.primaryVariant}/>);
         }
 
-        return (<Icon name="volume-off" type="material-community" size={40} color={palette.primaryVariant}/>);
+        return (<Icon name="volume-off" type="material-community" size={50} color={palette.primaryVariant}/>);
     };
 
 

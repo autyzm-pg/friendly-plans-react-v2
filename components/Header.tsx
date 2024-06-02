@@ -63,6 +63,7 @@ export const Header: React.FC<Props> = ({...props}) => {
             name='photo-library'
             type='material'
             size={24}
+            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
             color={palette.textWhite}
             containerStyle={styles.iconContainer}
             onPress={() => {navigation.current.navigate(Route.ImageLibrary)}}/>
@@ -70,6 +71,7 @@ export const Header: React.FC<Props> = ({...props}) => {
             name='library-music'
             type='material'
             size={24}
+            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
             color={palette.textWhite}
             containerStyle={styles.iconContainer}
             onPress={() => {navigation.current.navigate(Route.RecordingLibrary)}}/>
@@ -77,6 +79,7 @@ export const Header: React.FC<Props> = ({...props}) => {
             name='people'
             type='material'
             size={24}
+            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
             color={palette.textWhite}
             containerStyle={styles.iconContainer}
             onPress={navigateToStudentsList}
@@ -87,6 +90,7 @@ export const Header: React.FC<Props> = ({...props}) => {
               type='material'
               color={palette.textWhite}
               size={24}
+              hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
               containerStyle={styles.iconContainer}
               onPress={navigateToStudentSettings}
             />
@@ -105,6 +109,7 @@ export const Header: React.FC<Props> = ({...props}) => {
           type='material'
           onPress={goBack}
           size={24}
+          hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
           color={palette.textWhite}
           containerStyle={styles.iconContainer}
         />

@@ -99,7 +99,7 @@ export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) =>
       {(item.planItem.type === PlanItemType.ComplexTask)&&<Text style={styles.text}>{`(${subtaskCount})`}{' '}</Text>}
       <View style={{flex: 1, flexDirection: 'row-reverse', alignItems: 'center'}}>
         <View style={styles.deleteIcon}>
-          <IconButton name='delete' size={24} color={palette.primary} onPress={onDelete} />
+          <IconButton name='delete' size={24} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} color={palette.primary} onPress={onDelete} />
         </View>
         <IconButtonSwitch 
           iconNames={['check', 'close']} 

@@ -13,9 +13,10 @@ import { palette, typography } from '../styles';
 interface Props extends TextInputProps {
   hideUnderline?: boolean;
   textStyle?: StyleProp<TextStyle>;
+  height?: number
 }
 
-export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, ...inputProps}) => {
+export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, height=28, ...inputProps}) => {
   const [isEditable, setIsEditable] = useState<boolean>(!inputProps.value);
 
   const handleFocus = () => setIsEditable(true);
@@ -36,7 +37,7 @@ export const TextInput: FC<Props> = ({style, hideUnderline, textStyle, ...inputP
       ]}
     >
       <BaseTextInput
-        style={[styles.input, textStyle, (inputProps.editable === false ) && styles.inputDisabled]}
+        style={[{ height: height, textAlignVertical: 'center' }, styles.input, textStyle, (inputProps.editable === false ) && styles.inputDisabled]}
         placeholderTextColor={palette.textInputPlaceholder}
         autoCorrect={false}
         onFocus={handleFocus}
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   input: {
-    height: 28,
     ...typography.subtitle,
     paddingVertical: 1,
     color: palette.textBody,

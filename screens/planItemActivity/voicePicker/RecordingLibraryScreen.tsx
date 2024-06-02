@@ -101,7 +101,8 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                 <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.6 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
-                        <IconButton name='volume-high' type='material-community' size={40} onPress={() => playAudio(item)} style={{marginLeft: dimensions.spacingSmall}}/>
+                        <IconButton name='volume-high' type='material-community' size={40} 
+                                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={() => playAudio(item)} style={{marginLeft: dimensions.spacingSmall}}/>
                     </View>
                 </Card>
             </TouchableOpacity>
@@ -181,6 +182,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                 value={searchTerm}
                 onChangeText={onSearch}
                 placeholder={i18n.t('recGallery:find')}
+                height={35}
             />
             {!selectMode.current && 
                 <View style={styles.iconButtonContainer}>
@@ -195,7 +197,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                      disabled={false}/>
                     <View style={{ marginLeft: dimensions.spacingSmall }}/>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
-                        <IconButton name={'information-circle'} type={'ionicon'} size={30} disabled color={palette.informationIcon}/>
+                        <IconButton name={'information-circle'} type={'ionicon'} size={30} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} disabled color={palette.informationIcon}/>
                     </ModalTrigger>
                 </View>
             }
@@ -245,7 +247,7 @@ const styles = StyleSheet.create({
     },
     trashIconContainer: {
         backgroundColor: palette.textWhite,
-        height: 56,
+        height: 60,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 10,

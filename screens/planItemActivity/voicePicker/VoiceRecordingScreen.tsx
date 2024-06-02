@@ -139,8 +139,8 @@ export const VoiceRecorder: FC<Props> = ({ navigation, route }) => {
         <>
             <TextInput
                 style={{ marginTop: 20, marginBottom: 20, width: 380 }}
-                textStyle={{...typography.subtitle, textAlign: 'center'}}
-                placeholder={i18n.t('voiceRecorder:fileName')}
+                textStyle={{...typography.subtitle}}
+                placeholder={i18n.t('voiceRecorder:fileName') + '.mp4'}
                 value={text}
                 onChangeText={setText}
               />
