@@ -25,6 +25,7 @@ export const ModeSwitchButton: FC<Props> = ({navigation}) => {
         type="material"
         color={palette.textWhite}
         size={24}
+        hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
         containerStyle={styles.iconContainer}
         onLongPress={() => {}}
         onPress={() => (setEditionMode())}
@@ -35,6 +36,7 @@ export const ModeSwitchButton: FC<Props> = ({navigation}) => {
           type="material"
           color={palette.textDisabled}
           size={24}
+          hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
           containerStyle={styles.iconContainer}
           onLongPress={() => {
             navigation.navigate(Route.ModeSwitch);

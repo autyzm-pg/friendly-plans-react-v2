@@ -75,6 +75,7 @@ export const PlayButton: FC<Props> = ({ plan, disabled, size, navigation, studen
       name="play-circle"
       disabled={disabled}
       size={size}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       color={disabled ? palette.textDisabled : palette.playButton}
       onPress={navigateToRunPlan}
     />

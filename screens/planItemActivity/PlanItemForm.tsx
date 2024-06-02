@@ -86,6 +86,7 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, itemTyp
           <View>
             <TextInput
               style={styles.textInputContainer}
+              height={35}
               textStyle={styles.textInput}
               placeholder={i18n.t('planItemActivity:taskNamePlaceholder')}
               defaultValue={values.name}
@@ -134,7 +135,7 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, itemTyp
 const styles = StyleSheet.create({
   subHeaderContainer: {
     ...getElevation(5),
-    height: 56,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

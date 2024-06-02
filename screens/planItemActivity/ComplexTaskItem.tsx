@@ -42,6 +42,7 @@ export const ComplexTaskItem: FC<Props> = ({
                         color={selected ? palette.textWhite : palette.primary}
                     />
                     <IconButton type="material" name="delete" size={24} color={selected ? palette.textWhite : palette.primary}
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                                 onPress={onDelete}/>
                 </View>
                 <TouchableHighlight underlayColor={'none'} style={styles.rightContainer} onPress={onSelectChange}>
