@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: palette.informationIcon,
   },
   toggleButtonContainer: {
     borderRadius: 20,
