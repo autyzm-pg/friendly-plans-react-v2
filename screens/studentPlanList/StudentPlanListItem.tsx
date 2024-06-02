@@ -5,7 +5,7 @@ import { NavigationProp } from '@react-navigation/native';
 
 import { Card, Emoji, Icon, StyledText, PlayButton } from '../../components';
 import { i18n } from '../../locale';
-import { ModelSubscriber, Plan, Student } from '../../models';
+import { ModelSubscriber, Plan, PlanItem, PlanItemType, PlanSubItem } from '../../models';
 import { Route } from '../../navigation';
 import { dimensions, palette, typography } from '../../styles';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
@@ -72,6 +72,30 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, updatePlans })
       swipeableRef.current.openRight();
     }
   };
+  
+  const changeState = async(item: PlanItem) => {
+    await PlanItem.updatePlanItem(item);
+    if (item.type === PlanItemType.ComplexTask) {
+      await PlanSubItem.getPlanSubItems(item).then(subItems => {
+        subItems.forEach(async(subItem) => {
+          subItem.completed = item.completed;
+          await PlanSubItem.updatePlanSubItem(subItem);
+        });
+      });
+    };
+  };
+
+  const markPlanItemsAsNotCompleted = async () => {
+    const planItems = await PlanItem.getPlanItems(plan);
+    planItems.map((item) => {
+      item.uncomplete();
+    });
+  };
+
+  const runPlanFromBeginning = async () => {
+    await markPlanItemsAsNotCompleted();
+  }
+
 
   return (
     <View style={styles.container}>
@@ -93,7 +117,15 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, updatePlans })
             {!isSwipeableOpen && <Emoji symbol={emoji} />}
             <StyledText style={styles.cardText}>{name}</StyledText>
           </View>
-          {!isSwipeableOpen && <PlayButton plan={plan} size={50} navigation={navigation} student={currentStudent} />}
+          {!isSwipeableOpen && 
+            <PlayButton 
+              plan={plan} 
+              size={50} 
+              navigation={navigation} 
+              student={currentStudent} 
+              runPlanFromBeginning={runPlanFromBeginning}
+            />
+          }
         </Card>
       </Swipeable>
     </TouchableHighlight>
