@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {i18n} from '../../locale';
-import {dimensions, palette, typography} from '../../styles';
+import {dimensions, fonts, palette, typography} from '../../styles';
 
 import {StyledText} from '../../components/StyledText';
 import {TextInput} from '../../components/TextInput';
@@ -87,7 +87,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    ...typography.headline4,
+    fontFamily: fonts.sansSerif.regular,
+    fontSize: 16,
+    letterSpacing: 0,
     color: palette.textSettings,
   },
   taskViewLabel: {

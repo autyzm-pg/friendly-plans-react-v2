@@ -76,7 +76,7 @@ export const Header: React.FC<Props> = ({...props}) => {
             containerStyle={styles.iconContainer}
             onPress={() => {navigation.current.navigate(Route.RecordingLibrary)}}/>
           <IconButton
-            name='people'
+            name='person'
             type='material'
             size={24}
             hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
