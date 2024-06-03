@@ -21,9 +21,10 @@ export const Header: React.FC<Props> = ({...props}) => {
   const navigation = useRef(props.navigation);
 
   const getTitle = () => {
-    if (currentStudent) {
-      return i18n.t('header:activeStudent') + ': ' + currentStudent.name;
-    }
+    const { route } = props;
+    if (route.name === Route.ImageLibrary) { return i18n.t('imageGallery:title'); }
+    if (route.name == Route.RecordingLibrary) { return i18n.t('recGallery:title'); }
+    if (currentStudent) { return i18n.t('header:activeStudent') + ': ' + currentStudent.name; }
     return i18n.t('header:noStudentCreated');
   };
 
