@@ -44,6 +44,12 @@ const translations = {
     retryPassword: 'Try re-entering password',
     wrongPassword: 'Wrong password',
     factoryPassword: 'Enter factory password',
+    liteMode: 'Lite mode',
+    normalMode: 'Default mode',
+    liteInfo: 'In light mode, images set in tasks directly from the device are not copied to the app\'s internal gallery.',
+    normalInfo: 'In default mode, images are always copied to the app\'s internal gallery.',
+    liteNormTitle: 'Change mode',
+    liteQuestion: 'Change mode to \'{{mode}}\'?'
   },
   imageGallery: {
     zip: 'fpImages',
@@ -90,7 +96,7 @@ const translations = {
     addButton: 'Add',
     deleteButton: 'Remove',
     import: 'Import',
-    export: 'Export'
+    export: 'Export',
   },
   validation: {
     email: 'Must be a valid email',

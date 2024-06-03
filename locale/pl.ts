@@ -44,6 +44,12 @@ const translations = {
     retryPassword: 'Spróbuj wprowadzić hasło ponownie',
     wrongPassword: 'Hasło niepoprawne',
     factoryPassword: 'Wpisz hasło fabryczne',
+    liteMode: 'Tryb lekki',
+    normalMode: 'Tryb domyślny',
+    liteInfo: 'W trybie lekkim obrazy ustawiane w zadaniach bezpośrednio z urządzenia nie są kopiowane do wewnętrznej galerii aplikacji.',
+    normalInfo: 'W domyślnym trybie obrazy są zawsze kopiowane do wewnętrznej galerii aplikacji.',
+    liteNormTitle: 'Zmień tryb',
+    liteQuestion: 'Zmienić tryb na \'{{mode}}\'?'
   },
   imageGallery: {
     zip: 'ppObrazy',
@@ -90,7 +96,7 @@ const translations = {
     addButton: 'Dodaj',
     deleteButton: 'Usuń',
     import: 'Importuj',
-    export: 'Eksportuj'
+    export: 'Eksportuj',
   },
   validation: {
     email: 'Adres email musi być poprawny',

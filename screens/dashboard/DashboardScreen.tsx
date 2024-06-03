@@ -7,7 +7,7 @@ import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
-import DatabaseService from '../../services/DatabaseService';
+import DatabaseService, { executeQuery } from '../../services/DatabaseService';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { Route } from '../../navigation';
 
@@ -19,7 +19,7 @@ interface Props {
 export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   
-  const {loading, setLoading} = useRootNavigatorContext();
+  const {loading, setLoading, setLiteMode} = useRootNavigatorContext();
   const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
 
@@ -28,6 +28,11 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
     await db.initializeDatabase();
   }
 
+  const getLideMode = async () => {
+    const resultSet = await executeQuery(`SELECT * FROM Mode;`);
+    setLiteMode(resultSet.rows.item(0).mode);
+  };
+  
   useEffect(() => {    
     connectToDatabase().then(() => {
       Student.getStudents().then(studentsList => {
@@ -37,12 +42,10 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
           setLoading(false);
           navigation.navigate(Route.StudentCreate);
         }
-      })
-    });
-
+      });
+    }).then(async() => await getLideMode());
     InnerGallery.createDirectory(InnerGallery.imagesDir);
     InnerGallery.createDirectory(InnerGallery.recordingsDir);
-    
     return () => {};
   }, []);
 

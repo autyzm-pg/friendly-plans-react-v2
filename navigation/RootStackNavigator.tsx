@@ -37,11 +37,12 @@ export function RootStackNavigation() {
   const [editionMode, setEditionMode] = useState<boolean>(true);
   const [student, setStudent] = useState<Student | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [liteMode, setLiteMode] = useState<boolean>(false);
 
   return (
     <RootNavigatorContext.Provider value={{
       editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode),
-      loading: loading, setLoading: () => setLoading(false)}}>
+      loading: loading, setLoading: () => setLoading(false), liteMode: liteMode, setLiteMode: setLiteMode}}>
       <CurrentStudentContext.Provider value={{currentStudent: student, setCurrentStudent: setStudent}}>
       <Stack.Navigator
         initialRouteName={Route.Home}

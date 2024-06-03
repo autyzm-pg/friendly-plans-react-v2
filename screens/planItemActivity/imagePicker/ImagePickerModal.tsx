@@ -9,6 +9,7 @@ import {ImageAction} from '../ImageAction';
 import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation/routes';
 import {InnerGalleryService as InnerGallery} from '../../../services/InnerGalleryService';
+import { useRootNavigatorContext } from '../../../contexts/RootNavigatorContext';
 
 interface Props {
     closeModal?: () => void;
@@ -34,6 +35,8 @@ export const ImagePickerModal: FC<Props> = ({
                                             navigation
                                         }) => {
 
+    const { liteMode, setLiteMode } = useRootNavigatorContext();
+    
     useEffect(() => {
     }, []);
 
@@ -54,9 +57,13 @@ export const ImagePickerModal: FC<Props> = ({
             mediaType: 'photo'
         }).then(async (image) => {
             if(!image.path) { return; }
-            const fileName = InnerGallery.getFileName(image.path);
-            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
-            await InnerGallery.copyFile(image.path, fileTarPath, imageUriUpdate);
+            if (liteMode) {
+                imageUriUpdate(image.path);
+            } else {
+                const fileName = InnerGallery.getFileName(image.path);
+                const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+                await InnerGallery.copyFile(image.path, fileTarPath, imageUriUpdate);
+            }
         });
     };
 
