@@ -173,6 +173,20 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         }
     };
 
+    const renderSelectAllButton = () => {
+        if (!selectedRecordings.length) { return <></>; }
+        const selectAll = selectedRecordings.length != recordings.length;
+        return (<View style={{ alignItems: 'flex-start', 
+                     marginLeft: dimensions.spacingBig, 
+                     marginTop: dimensions.spacingSmall }}>
+            <MultiButton onPress={unSelectAll} 
+                        title={selectAll ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
+                        buttonName={selectAll ? 'check-square' : 'square'} 
+                        buttonType='feather' 
+                        disabled={false}/>
+        </View>);
+    };
+
     return (
     <>
         <View style={styles.trashIconContainer}>
@@ -190,11 +204,6 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                                  title={i18n.t('common:deleteButton')} disabled={selectedRecordings.length == 0}/>
                     <MultiButton onPress={loadMultiple} buttonName='file-download' buttonType='material'
                                  title={i18n.t('common:addButton')} disabled={false}/>
-                    <MultiButton onPress={unSelectAll} 
-                     title={selectedRecordings.length != recordings.length ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
-                     buttonName={selectedRecordings.length != recordings.length ? 'check-square' : 'square'} 
-                     buttonType='feather' 
-                     disabled={!recordings.length}/>
                     <View style={{ marginLeft: dimensions.spacingSmall }}/>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
                         <IconButton name={'information-circle'} type={'ionicon'} size={30} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} disabled color={palette.informationIcon}/>
@@ -203,6 +212,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
             }
         </View>
         <FullScreenTemplate padded darkBackground>
+        {renderSelectAllButton()}
         {recordings.length > 0 ?
             <FlatList
             data={filRecordings}

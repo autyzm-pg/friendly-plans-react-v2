@@ -110,6 +110,21 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
+  const renderSelectAllButton = () => {
+    if (!selectedImages.length) { return <></>; }
+    const selectAll = selectedImages.length != images.length;
+    return (
+      <View style={{ alignItems: 'flex-start', 
+                     marginLeft: dimensions.spacingBig, 
+                     marginTop: dimensions.spacingSmall }}>
+        <MultiButton onPress={unSelectAll} 
+                        title={selectAll ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
+                        buttonName={selectAll ? 'check-square' : 'square'} 
+                        buttonType='feather' 
+                        disabled={false}/>
+      </View>);
+  };
+
   return (
     <>
     {!selectMode.current && 
@@ -117,11 +132,6 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
           {/* <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text> */}
           <MultiButton onPress={deleteMultiple} title={i18n.t('common:deleteButton')} buttonName='trash' buttonType='font-awesome' disabled={selectedImages.length == 0}/>
           <MultiButton onPress={loadMultiple} title={i18n.t('common:addButton')} buttonName='file-download' buttonType='material' disabled={false}/>
-          <MultiButton onPress={unSelectAll} 
-                     title={selectedImages.length != images.length ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
-                     buttonName={selectedImages.length != images.length ? 'check-square' : 'square'} 
-                     buttonType='feather' 
-                     disabled={!images.length}/>
           <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} 
@@ -132,6 +142,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
     }
     <FullScreenTemplate darkBackground>
+      {renderSelectAllButton()}
       <View style={styles.container}>
         <FlatList
           data={images}
