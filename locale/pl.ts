@@ -66,9 +66,10 @@ const translations = {
   },
   export: {
     progress: 'Postęp:',
-    info: 'Wszystkie dane ({{size}}) po zaakceptowaniu zostaną wyeksportowane do folderu Pobrane w formacie ZIP.',
+    info: 'Wszystkie dane ({{size}}) po zaakceptowaniu zostaną wyeksportowane do folderu Pobrane w formacie ZIP. Sugerowane jest zaczekanie w obecnym widoku do końca eksportu.',
     titleImg: 'Wykesportuj obrazki',
     titleRec: 'Wykesportuj nagrania',
+    ready: 'Export zakończony'
   },
   common: {
     cancel: 'ANULUJ',

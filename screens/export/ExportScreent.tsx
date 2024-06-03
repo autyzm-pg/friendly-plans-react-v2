@@ -63,7 +63,7 @@ export const ExportScreen: FC<Props> = ({ navigation, route }) => {
                     />}
         {!exporting && finished && 
         <TextAction onPress={navigation.goBack} 
-                    title={i18n.t('common:ok')}
+                    title={i18n.t('export:ready')}
                     buttonName='check-circle'
                     buttonType='font-awesome'
                     />}

@@ -66,9 +66,10 @@ const translations = {
   },
   export: {
     progress: 'Progress:',
-    info: 'All data ({{size}}) will be exported to the Downloaded folder in ZIP format after acceptance.',
+    info: 'All data ({{size}}) will be exported to the Downloaded folder in ZIP format after acceptance. It is suggested to wait in the current view until the end of the export.',
     titleImg: 'Export images',
-    titleRec: 'Export recordings'
+    titleRec: 'Export recordings',
+    ready: 'Export finished'
   },
   common: {
     cancel: 'CANCEL',
