@@ -177,8 +177,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         if (!selectedRecordings.length) { return <></>; }
         const selectAll = selectedRecordings.length != recordings.length;
         return (<View style={{ alignItems: 'flex-start', 
-                     marginLeft: dimensions.spacingBig, 
-                     marginTop: dimensions.spacingSmall }}>
+                     marginLeft: dimensions.spacingBig }}>
             <MultiButton onPress={unSelectAll} 
                         title={selectAll ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
                         buttonName={selectAll ? 'check-square' : 'square'} 
