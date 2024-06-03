@@ -46,21 +46,29 @@ const translations = {
     factoryPassword: 'Wpisz hasło fabryczne',
   },
   imageGallery: {
+    zip: 'ppObrazy',
     title: 'Galeria obrazów',
     information: 'Aktualnie wybrane obrazy',
     warningHeader: 'USUŃ WYBRANE OBRAZY',
     warningInformation: 'Usuwanie wybranych obrazów jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.',
-    usage: 'Wszystkie obrazy użyte co najmniej raz w dowolnym zadaniu (z urządzenia, aparatu lub narzędzia do edycji) są przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte.',
+    usage: 'Wszystkie obrazy użyte co najmniej raz w dowolnym zadaniu (z urządzenia, aparatu lub narzędzia do edycji) są domyślnie przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte.',
   },
   recGallery: {
+    zip: 'ppNagrania',
     title: 'Galeria nagrań',
     information: 'Aktualnie wybrane nagrania',
     warningHeader: 'USUŃ WYBRANE NAGRANIA',
     warningInformation: 'Usuwanie wybranych nagrań jest nieodwracalne. Zostaną one usunięte ze wszystkich zadań, w których są używane, jak i z pamięci urządzenia.',
-    usage: 'Wszystkie dźwięki użyte co najmniej raz w dowolnym zadaniu (z urządzenia lub nagrane) są przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte. Przytrzymaj, aby zmienić nazwę.',
+    usage: 'Wszystkie dźwięki użyte co najmniej raz w dowolnym zadaniu (z urządzenia lub nagrane) są domyślnie przechowywane w wewnętrznej galerii aplikacji i mogą być ponownie wykorzystane później. Jeśli są pół-widoczne, oznacza to, że są obecnie używane przez jedno lub wiele zadań. Kliknij, aby wybrać, które z nich powinny zostać usunięte. Przytrzymaj, aby zmienić nazwę.',
     changeName: 'Zmień nazwę nagrania',
     save: 'Zapisz zmiany',
     find: 'Wyszukaj po nazwie nagrania',
+  },
+  export: {
+    progress: 'Postęp:',
+    info: 'Wszystkie dane ({{size}}) po zaakceptowaniu zostaną wyeksportowane do folderu Pobrane w formacie ZIP.',
+    titleImg: 'Wykesportuj obrazki',
+    titleRec: 'Wykesportuj nagrania',
   },
   common: {
     cancel: 'ANULUJ',
@@ -151,7 +159,7 @@ const translations = {
     dashboard: 'Uczniowie',
     studentNamePlaceholder: 'Wpisz nazwę ucznia...',
     removeStudentTitle: 'POTWIERDŹ',
-    removeStudentDescription: 'Czy na pewno chcesz usunąć {{name}} z listy uczniów?\n Tej czynności nie można cofnąć.',
+    removeStudentDescription: 'Czy na pewno chcesz usunąć \'{{name}}\' z listy uczniów?\n Tej czynności nie można cofnąć.',
   },
   planList: {
     viewTitle: 'Wszystkie plany',
@@ -227,9 +235,9 @@ const translations = {
     stopPlaying: 'Zatrzymaj odtwarzanie'
   },
   updatePlan: {
-    screenTitle: '{{studentName}} - Aktualizuj plan',
+    screenTitle: '\'{{studentName}}\' - Aktualizuj plan',
     removePlanTitle: 'POTWIERDŹ',
-    removePlanDescription: 'Czy na pewno chcesz plan "{{name}}" z listy planów ucznia?\n Tej czynności nie można cofnąć.',
+    removePlanDescription: 'Czy na pewno chcesz plan \'{{name}}\' z listy planów ucznia?\n Tej czynności nie można cofnąć.',
     addBreak: 'DODAJ PRZERWĘ',
     addInteraction: 'DODAJ INTERAKCJĘ',
     addTask: 'DODAJ ZADANIE',

@@ -203,7 +203,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                                  title={i18n.t('common:deleteButton')} disabled={selectedRecordings.length == 0}/>
                     <MultiButton onPress={loadMultiple} buttonName='file-download' buttonType='material'
                                  title={i18n.t('common:import')} disabled={false}/>
-                    <MultiButton onPress={()=>{}} title={i18n.t('common:export')} buttonName='upload' 
+                    <MultiButton onPress={() => { navigation.navigate(Route.Export, { images: false }); }} title={i18n.t('common:export')} buttonName='upload' 
                                  buttonType='material' disabled={selectedRecordings.length != 0}/>
                     <View style={{ marginLeft: dimensions.spacingSmall }}/>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>

@@ -38,4 +38,5 @@ export enum Route {
   Logout = 'Logout',
   // ModeSwitching
   ModeSwitch = 'ModeSwitch',
+  Export = 'Export'
 }

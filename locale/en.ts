@@ -46,21 +46,29 @@ const translations = {
     factoryPassword: 'Enter factory password',
   },
   imageGallery: {
+    zip: 'fpImages',
     title: 'Image gallery',
     information: 'Number of selected images',
     warningHeader: 'DELETE SELECTED IMAGES',
     warningInformation: 'Deleting selected images is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.',
-    usage: 'All images used at least once in any task (from device, camera or editing tool) are stored in the inner app gallery and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted.',
+    usage: 'All images used at least once in any task (from device, camera or editing tool) are stored in the inner app gallery by default and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted.',
   },
   recGallery: {
+    zip: 'fpRecordings',
     title: 'Recordings gallery',
     information: 'Number of selected recordings',
     warningHeader: 'DELETE SELECTED RECORDINGS',
     warningInformation: 'Deleting selected recordings is irreversible. They will be removed from all tasks where they are used, as well as from the device memory.',
-    usage: 'All sounds used at least once in any task (from device or recorded) are stored in the inner app gallery and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted. Hold down to change name.',
+    usage: 'All sounds used at least once in any task (from device or recorded) are stored in the inner app gallery by default and can be reused later. If they are semi-visible, it means they are currently in use by one or multiple tasks. Click to choose which ones should be deleted. Hold down to change name.',
     changeName: 'Change recording name',
     save: 'Save changes',
     find: 'Search by recording name',
+  },
+  export: {
+    progress: 'Progress:',
+    info: 'All data ({{size}}) will be exported to the Downloaded folder in ZIP format after acceptance.',
+    titleImg: 'Export images',
+    titleRec: 'Export recordings'
   },
   common: {
     cancel: 'CANCEL',
@@ -151,7 +159,7 @@ const translations = {
     dashboard: 'Student dashboard',
     studentNamePlaceholder: 'Enter Student name...',
     removeStudentTitle: 'CONFIRM',
-    removeStudentDescription: 'Are you sure you want to remove {{name}} from your student list?\n This action cannot be undone.',
+    removeStudentDescription: 'Are you sure you want to remove \'{{name}}\' from your student list?\n This action cannot be undone.',
   },
   planList: {
     viewTitle: 'All schedules',
@@ -226,9 +234,9 @@ const translations = {
     stopPlaying: 'Stop recording'
   },
   updatePlan: {
-    screenTitle: '{{studentName}} - Update a schedule',
+    screenTitle: '\'{{studentName}}\' - Update a schedule',
     removePlanTitle: 'CONFIRM',
-    removePlanDescription: 'Are you sure you want to schedule "{{name}}" from student schedule list?\n This action cannot be undone.',
+    removePlanDescription: 'Are you sure you want to schedule \'{{name}}\' from student schedule list?\n This action cannot be undone.',
     addBreak: 'ADD BREAK',
     addInteraction: 'ADD INTERACTION',
     addTask: 'ADD TASK',

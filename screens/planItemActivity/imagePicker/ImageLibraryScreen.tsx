@@ -132,7 +132,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
           {/* <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text> */}
           <MultiButton onPress={deleteMultiple} title={i18n.t('common:deleteButton')} buttonName='trash' buttonType='font-awesome' disabled={selectedImages.length == 0}/>
           <MultiButton onPress={loadMultiple} title={i18n.t('common:import')} buttonName='file-download' buttonType='material' disabled={false}/>
-          <MultiButton onPress={()=>{}} title={i18n.t('common:export')} buttonName='upload' buttonType='material' disabled={selectedImages.length != 0}/>
+          <MultiButton onPress={() => { navigation.navigate(Route.Export, { images: true }); }} title={i18n.t('common:export')} buttonName='upload' buttonType='material' disabled={selectedImages.length != 0}/>
           <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} 

@@ -1,12 +1,17 @@
-import RNFS from 'react-native-fs';
+import RNFS, { ReadDirItem } from 'react-native-fs';
 import { i18n } from '../locale';
 import uuid from 'react-native-uuid';
 import { Image } from 'react-native-image-crop-picker';
 import { DocumentPickerResponse } from 'react-native-document-picker';
+import _ from 'lodash';
+import { zip, subscribe } from 'react-native-zip-archive';
+
 
 export class InnerGalleryService {
     static imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
     static recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
+    static exportImgPath = RNFS.DownloadDirectoryPath + '/' + i18n.t('imageGallery:zip') + '.zip';
+    static exportRecPath = RNFS.DownloadDirectoryPath + '/' + i18n.t('recGallery:zip') + '.zip';
 
     static createDirectory = async(directory: string) => {
         /* Create directory if one doesn't exists. */
@@ -98,4 +103,22 @@ export class InnerGalleryService {
             });
         });
     };
+
+    static getGallerySize = async(directory: string) => {
+        const getFolderSize = async() => {
+            return await RNFS.readDir(directory).then((result: ReadDirItem[]) => {
+                const folderEntriesSizeInBytes: number = _.reduce(
+                  result,
+                  (sum: number, currentItem: ReadDirItem) => {
+                    return sum + Number(currentItem.size);
+                  },
+                  0
+                );
+                return folderEntriesSizeInBytes;
+              });
+            };
+        const size = await getFolderSize();
+        return (size / (1024 **2)).toFixed(0) + ' MB';
+    };
+
 };

@@ -28,6 +28,7 @@ import {
   RunSubPlanListScreen,
   ImageLibraryScreen,
   ModeSwitchScreen,
+  ExportScreen
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -161,6 +162,11 @@ export function RootStackNavigation() {
           name={Route.RunSubPlanList}
           component={RunSubPlanListScreen}
           options={{}}
+        />
+        <Stack.Screen
+          name={Route.Export}
+          component={ExportScreen}
+          options={{ headerShown: false }}
         />
         {/* TODO: uncomment working screen */}
       </Stack.Navigator>
