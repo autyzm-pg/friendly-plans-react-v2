@@ -17,6 +17,10 @@ const translations = {
     deleteTaskInfo: 'Deleting selected task(s) is irreversible. In the case of a complex task, it also means removing its subtasks.',
     completed: 'Did the student complete the task?',
     savedMessage: 'Saved',
+    infoBoxTaskButtons: 'Select tasks (checkbox) to perform actions on them:',
+    infoBoxTaskButtonsRotate: 'Shuffle the order of the selected tasks. The remaining ones will stay in place. Check “no breaks” to shuffle all tasks except breaks.',
+    infoBoxTaskButtonsDelete: 'Delete the selected tasks.',
+    infoBoxTaskButtonsChangeState: 'Change task state - whether the selected tasks have been completed.'
   },
   header: {
     activeStudent: 'Active student',

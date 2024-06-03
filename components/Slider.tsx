@@ -31,7 +31,7 @@ export const Slider: FC<Props> = ({ title, min, max, handleSliding, initValue })
     <>
     <View style={styles.sliderContainer}>
       <TouchableOpacity onPress={decrement} style={styles.button} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-          <Text>-</Text>
+          <Text style={{fontWeight: '600', fontSize: 20, color: palette.textWhite}}>—</Text>
       </TouchableOpacity>
       <Text>{min}</Text>
       <SliderRN
@@ -44,7 +44,7 @@ export const Slider: FC<Props> = ({ title, min, max, handleSliding, initValue })
       />
       <Text>{max}</Text>
       <TouchableOpacity onPress={increment} style={styles.button} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-        <Text>+</Text>
+          <Text style={{fontWeight: '400', fontSize: 28, color: palette.textWhite}}>+</Text>
       </TouchableOpacity>
     </View>
     <Text style={styles.time}>{title}: {initValue}</Text>
@@ -63,8 +63,12 @@ const styles = StyleSheet.create({
     height: 40,
   },
   button: {
-    padding: 15,
-    backgroundColor: palette.border,
+    height: 40,
+    width: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: palette.backgroundNeutral,
     borderRadius: 5,
   },
   time: {

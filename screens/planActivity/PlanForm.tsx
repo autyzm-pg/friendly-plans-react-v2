@@ -2,7 +2,7 @@ import { Formik, FormikHelpers } from 'formik';
 import React, { FC, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
-import { PlayButton, Emoji, Icon, ModalTrigger, TextInput, CheckboxInput } from '../../components';
+import { PlayButton, Emoji, Icon, ModalTrigger, TextInput, CheckboxInput, IconButton } from '../../components';
 import { i18n } from '../../locale';
 import { dimensions, palette } from '../../styles';
 import { DEFAULT_EMOJI } from '../../assets/emojis';
@@ -118,11 +118,34 @@ export const PlanForm: FC<Props> = ({
     });
     setPlanItems(updated);
   };
+  
+  const showInfo = () => {
+    return (
+      <View style={styles.infoBoxContainer}>
+        <Text style={{fontSize: 15, color: palette.textBody}}>
+          {i18n.t('planActivity:infoBoxTaskButtons')}
+        </Text>
+        <View style={styles.infoBoxContainerRow}>
+          <Icon name='trash' type='font-awesome'></Icon>
+          <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('planActivity:infoBoxTaskButtonsDelete')}</Text>
+        </View>
+        <View style={styles.infoBoxContainerRow}>
+          <Icon name='swap-horiz' type='material-community-icons'></Icon>
+          <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('planActivity:infoBoxTaskButtonsChangeState')}</Text>
+        </View>
+        <View style={styles.infoBoxContainerRow}>
+          <Icon name='shuffle' type='material-community-icons'></Icon>
+          <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('planActivity:infoBoxTaskButtonsRotate')}</Text>
+        </View>
+      </View>
+    );
+  };
 
   const renderMultiButtons = () => {
     const checked = planItems.filter((item) => { return item.checked; }).length;
     return (
       <View style={[styles.buttonContainer, { marginRight: dimensions.spacingBig }]}>
+        
         <MultiButton onPress={deleteMultiple} title={i18n.t('planActivity:deleteTasks')} 
                     buttonName='trash' buttonType='font-awesome' disabled={!checked}/>
         <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
@@ -135,6 +158,16 @@ export const PlanForm: FC<Props> = ({
                        onPress={setShuffleNoBreaks} 
                        hitSlope={{ top: 0, bottom: 0, left: 0, right: 0 }}
                        />
+        <ModalTrigger
+          title={i18n.t('planItemActivity:infoBox')}
+          modalContent={
+            showInfo()
+          }
+        >
+          <IconButton containerStyle={{marginLeft: 15, marginRight: 15}} name={'information-circle'}
+            type={'ionicon'}
+            size={34} disabled color={palette.informationIcon}/>
+        </ModalTrigger>
       </View>
     );
   };
@@ -225,4 +258,16 @@ const styles = StyleSheet.create({
     color: palette.error,
     marginLeft: dimensions.spacingSmall,
   },
+  infoBoxContainer: {
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginTop: dimensions.spacingLarge,
+  },
+  infoBoxContainerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: dimensions.spacingSmall,
+    marginTop: dimensions.spacingSmall,
+  }
 });

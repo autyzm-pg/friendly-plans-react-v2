@@ -17,6 +17,10 @@ const translations = {
     deleteTaskInfo: 'Usunięcie wybranego zadania/zadań jest nieodwracalne. W przypadku zadania złożonego oznacza również usunięcie jego podzadań.',
     completed: 'Czy uczeń ukończył zadanie?',
     savedMessage: 'Zapisano',
+    infoBoxTaskButtons: 'Zaznacz zadania (checkbox), aby wykonać na nich akcje:',
+    infoBoxTaskButtonsRotate: 'Przemieszaj kolejność zaznaczonych zadań. Pozostałe zostaną na swoim miejscu. Zaznacz "bez przerw", aby przemieszać wszystkie zadania oprócz przerw.',
+    infoBoxTaskButtonsDelete: 'Usuń wybrane zadania.',
+    infoBoxTaskButtonsChangeState: 'Zmień stan zadań - czy wybrane zadania zostały ukończone.'
   },
   header: {
     activeStudent: 'Aktywny uczeń',
