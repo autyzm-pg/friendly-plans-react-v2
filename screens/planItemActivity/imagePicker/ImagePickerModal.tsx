@@ -8,7 +8,7 @@ import {dimensions} from '../../../styles';
 import {ImageAction} from '../ImageAction';
 import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation/routes';
-import {InnerGallery} from '../../../services/InnerGallery';
+import {InnerGalleryService as InnerGallery} from '../../../services/InnerGalleryService';
 
 interface Props {
     closeModal?: () => void;

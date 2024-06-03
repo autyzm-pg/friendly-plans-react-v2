@@ -9,7 +9,7 @@ import {ImageAction} from '../ImageAction';
 import Sound from 'react-native-sound';
 import {NavigationProp} from '@react-navigation/native';
 import {Route} from '../../../navigation';
-import {InnerGallery} from '../../../services/InnerGallery';
+import {InnerGalleryService as InnerGallery} from '../../../services/InnerGalleryService';
 import {SoundService} from '../../../services/SoundService';
 import { FormikProps } from 'formik';
 import { PlanItemFormData } from '../PlanItemForm';

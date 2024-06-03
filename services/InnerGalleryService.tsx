@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import { Image } from 'react-native-image-crop-picker';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 
-export class InnerGallery {
+export class InnerGalleryService {
     static imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
     static recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
 
@@ -58,7 +58,7 @@ export class InnerGallery {
         let filePath = directory + fileName;
         const doesFileExist = await RNFS.exists(filePath);
         if (doesFileExist) { 
-            const [name, extension] = InnerGallery.splitToNameAndExtension(fileName);
+            const [name, extension] = InnerGalleryService.splitToNameAndExtension(fileName);
             filePath = directory + name + '_' + uuid.v4() + '.' + extension;
         }
         return filePath;
@@ -71,8 +71,8 @@ export class InnerGallery {
     static copyMultipleImages = async(images: Image[]) => {
         if (images.length == 0) { return; }
         images.forEach(async(img) => {
-            const fileName = InnerGallery.getFileName(img.path);
-            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+            const fileName = InnerGalleryService.getFileName(img.path);
+            const fileTarPath = await InnerGalleryService.createUniqueFilePath(InnerGalleryService.imagesDir, fileName);
             await RNFS.copyFile(img.path, fileTarPath);
           });
     };
@@ -81,7 +81,7 @@ export class InnerGallery {
         if (recordings.length == 0 ) { return; }
         recordings.forEach(async(rec) => {
             if (!rec.name) { return; }
-            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.recordingsDir, rec.name);
+            const fileTarPath = await InnerGalleryService.createUniqueFilePath(InnerGalleryService.recordingsDir, rec.name);
             await RNFS.copyFile(rec.uri, fileTarPath);
         });
     };

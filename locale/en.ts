@@ -79,7 +79,9 @@ const translations = {
     required: 'Field required!',
     incorrectFileName: 'Name should not contain special characters!',
     addButton: 'Add',
-    deleteButton: 'Remove'
+    deleteButton: 'Remove',
+    import: 'Import',
+    export: 'Export'
   },
   validation: {
     email: 'Must be a valid email',

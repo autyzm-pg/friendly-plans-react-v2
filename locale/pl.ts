@@ -79,7 +79,9 @@ const translations = {
     required: 'Pole wymagane!',
     incorrectFileName: 'Nazwa nie powinna zawierać znaków specjalnych!',
     addButton: 'Dodaj',
-    deleteButton: 'Usuń'
+    deleteButton: 'Usuń',
+    import: 'Importuj',
+    export: 'Eksportuj'
   },
   validation: {
     email: 'Adres email musi być poprawny',

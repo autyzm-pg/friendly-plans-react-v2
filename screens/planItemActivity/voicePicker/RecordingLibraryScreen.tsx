@@ -5,7 +5,7 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { dimensions, palette, typography } from '../../../styles';
 import Sound from 'react-native-sound';
 import { i18n } from '../../../locale';
-import { InnerGallery, PlanItem } from '../../../models';
+import { InnerGalleryService as InnerGallery, PlanItem } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 import DocumentPicker, {types} from 'react-native-document-picker';
@@ -202,7 +202,9 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                     <MultiButton onPress={deleteMultiple} buttonName='trash' buttonType='font-awesome'
                                  title={i18n.t('common:deleteButton')} disabled={selectedRecordings.length == 0}/>
                     <MultiButton onPress={loadMultiple} buttonName='file-download' buttonType='material'
-                                 title={i18n.t('common:addButton')} disabled={false}/>
+                                 title={i18n.t('common:import')} disabled={false}/>
+                    <MultiButton onPress={()=>{}} title={i18n.t('common:export')} buttonName='upload' 
+                                 buttonType='material' disabled={selectedRecordings.length != 0}/>
                     <View style={{ marginLeft: dimensions.spacingSmall }}/>
                     <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
                         <IconButton name={'information-circle'} type={'ionicon'} size={30} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} disabled color={palette.informationIcon}/>

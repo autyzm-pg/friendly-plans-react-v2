@@ -3,7 +3,7 @@ import { TextInput } from '../../../components'
 import { typography } from '../../../styles';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { i18n } from '../../../locale';
-import { InnerGallery, PlanItem } from '../../../models';
+import { InnerGalleryService as InnerGallery, PlanItem } from '../../../models';
 import { Route } from '../../../navigation';
 import { TextAction } from '../TextAction';
 import { ModalTemplate } from '../../../components/ModalTemplate';

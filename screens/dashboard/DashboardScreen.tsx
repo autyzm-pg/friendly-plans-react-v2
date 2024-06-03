@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 //import { NavigationInjectedProps, withNavigationFocus } from '@react-navigation/native';
 
-import { InnerGallery, Student } from '../../models';
+import { InnerGalleryService as InnerGallery, Student } from '../../models';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';

@@ -7,7 +7,7 @@ import { i18n } from '../../../locale';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { TextAction } from '../TextAction';
 import { ModalTemplate } from '../../../components/ModalTemplate';
-import { InnerGallery } from '../../../models';
+import { InnerGalleryService as InnerGallery } from '../../../models';
 
 interface Props {
   navigation: NavigationProp<any>;

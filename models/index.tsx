@@ -6,4 +6,4 @@ export * from './PlanItem';
 export * from './PlanSubItem';
 export * from './ModelSubscriber';
 export * from './PlanElement';
-export * from '../services/InnerGallery';
+export * from '../services/InnerGalleryService';

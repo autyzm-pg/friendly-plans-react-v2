@@ -3,7 +3,7 @@ import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, useWi
 import { FullScreenTemplate, IconButton, ModalTrigger } from '../../../components';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { dimensions, palette, typography } from '../../../styles';
-import { PlanItem, InnerGallery } from '../../../models';
+import { PlanItem, InnerGalleryService as InnerGallery } from '../../../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 import { i18n } from '../../../locale';
@@ -131,7 +131,8 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
       <View style={styles.trashIconContainer}>
           {/* <Text style={styles.text}>{i18n.t('imageGallery:information') + ` ${selectedImages.length ? selectedImages.length : 0}`}</Text> */}
           <MultiButton onPress={deleteMultiple} title={i18n.t('common:deleteButton')} buttonName='trash' buttonType='font-awesome' disabled={selectedImages.length == 0}/>
-          <MultiButton onPress={loadMultiple} title={i18n.t('common:addButton')} buttonName='file-download' buttonType='material' disabled={false}/>
+          <MultiButton onPress={loadMultiple} title={i18n.t('common:import')} buttonName='file-download' buttonType='material' disabled={false}/>
+          <MultiButton onPress={()=>{}} title={i18n.t('common:export')} buttonName='upload' buttonType='material' disabled={selectedImages.length != 0}/>
           <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} 
