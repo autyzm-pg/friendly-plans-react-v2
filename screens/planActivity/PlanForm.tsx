@@ -148,7 +148,7 @@ export const PlanForm: FC<Props> = ({
         
         <MultiButton onPress={deleteMultiple} title={i18n.t('planActivity:deleteTasks')} 
                     buttonName='trash' buttonType='font-awesome' disabled={!checked}/>
-        <MultiButton onPress={changeStateOfMultiple} title={i18n.t('planActivity:changeState')}
+        <MultiButton onPress={() => changeStateOfMultiple(false)} title={i18n.t('planActivity:changeState')}
                     buttonName='swap-horiz' buttonType='material-community-icons' disabled={!checked}/>
         <MultiButton onPress={shuffle} title={i18n.t('planActivity:shuffleTasks')}  
                     buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
