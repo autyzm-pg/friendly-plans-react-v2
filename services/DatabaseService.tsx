@@ -176,34 +176,34 @@ export const createSamplePlans = async () => {
   const students = await Student.getStudents();
   if (!students || students.length === 0) {
     const student = await Student.createStudent({
-    name: 'Samouczek', 
-    displaySettings: StudentDisplayOption.ImageWithTextSlide, 
-    textSize: StudentTextSizeOption.Medium, 
-    isUpperCase: true, 
-    isSwipeBlocked: false, 
-    timer: TimerSound.beep
-  })
-  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
-  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
-  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
-  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
-  const sampleData = require('../assets/sample_plan/plan_selfcare.json');
-  
-  for (const plan of sampleData) {
-    const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji);
+      name: 'Samouczek', 
+      displaySettings: StudentDisplayOption.ImageWithTextSlide, 
+      textSize: StudentTextSizeOption.Medium, 
+      isUpperCase: true, 
+      isSwipeBlocked: false, 
+      timer: TimerSound.beep
+    })
+    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
+    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
+    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
+    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
+    const sampleData = require('../assets/sample_plan/plan_selfcare.json');
     
-    let index = 0;
-    for (const planItem of plan.planItems) {
-      try {
-        const imageData = await RNFS.readFileAssets(planItem.imageUri, 'base64');
-        await RNFS.writeFile(`${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`, imageData, 'base64');
-      } catch(e) {
-        console.error(e)
+    for (const plan of sampleData) {
+      const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji);
+      
+      let index = 0;
+      for (const planItem of plan.planItems) {
+        try {
+          const imageData = await RNFS.readFileAssets(planItem.imageUri, 'base64');
+          await RNFS.writeFile(`${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`, imageData, 'base64');
+        } catch(e) {
+          console.error(e)
+        }
+        planItem.imageUri = `file://${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`
+        const newPlanItem = await PlanItem.createPlanItem(newPlan, planItem.type, planItem, index - 1);
+        index++;
       }
-      planItem.imageUri = `file://${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`
-      const newPlanItem = await PlanItem.createPlanItem(newPlan, planItem.type, planItem, index - 1);
-      index++;
     }
-  }
   }
 }
