@@ -1,0 +1,60 @@
+[
+    {
+        "name": "Samoobsługa",
+        "emoji": "🍀",
+        "planItems": [
+            {
+                "name": "Start",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Start",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/slides/slajd_start.jpg",
+                "voicePath": "",
+                "subItems": []
+            },
+            {
+                "name": "Biorę mydło",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Biorę mydło",
+                "itemOrder": 1,
+                "time": 25,
+                "imageUri": "sample_plan/selfcare/mycie_rak_biore_mydlo_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            
+            {
+                "name": "Koniec",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Koniec",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/slides/slajd_koniec.jpg",
+                "voicePath": ""
+            }
+        ]
+    },
+    {
+        "name": "Plan",
+        "emoji": "📋",
+        "planItems": [
+            {
+                "name": "Start",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Start",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/slides/slajd_start.jpg",
+                "voicePath": ""
+            }
+        ]
+    }
+]

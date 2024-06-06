@@ -1,4 +1,7 @@
 import SQLite, {ResultSet} from 'react-native-sqlite-storage';
+import * as SampleData from '../assets/sample_plan/plan_selfcare.json';
+import { Plan, PlanItem, Student, StudentDisplayOption, StudentTextSizeOption, TimerSound } from '../models';
+import RNFS, { ReadDirItem } from 'react-native-fs';
 export default class DatabaseService {
   private static database: SQLite.SQLiteDatabase | undefined;
   private readonly databaseName: string = 'test_db.db';
@@ -93,6 +96,8 @@ export const createTables = async () => {
   await executeQuery(createStudentDataTable);
   await executeQuery(createPasswordTable);
   await executeQuery(createModeTable);
+
+  createSamplePlans();
 }
 
 export const insertTestData = async () => {
@@ -165,4 +170,40 @@ export const executeQuery = async (query: string, params: (string | number | Dat
         });
     });
   })
+}
+
+export const createSamplePlans = async () => {
+  const students = await Student.getStudents();
+  if (!students || students.length === 0) {
+    const student = await Student.createStudent({
+    name: 'Samouczek', 
+    displaySettings: StudentDisplayOption.ImageWithTextSlide, 
+    textSize: StudentTextSizeOption.Medium, 
+    isUpperCase: true, 
+    isSwipeBlocked: false, 
+    timer: TimerSound.beep
+  })
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
+  const sampleData = require('../assets/sample_plan/plan_selfcare.json');
+  
+  for (const plan of sampleData) {
+    const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji);
+    
+    let index = 0;
+    for (const planItem of plan.planItems) {
+      try {
+        const imageData = await RNFS.readFileAssets(planItem.imageUri, 'base64');
+        await RNFS.writeFile(`${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`, imageData, 'base64');
+      } catch(e) {
+        console.error(e)
+      }
+      planItem.imageUri = `file://${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`
+      const newPlanItem = await PlanItem.createPlanItem(newPlan, planItem.type, planItem, index - 1);
+      index++;
+    }
+  }
+  }
 }

@@ -15,7 +15,7 @@ export class Plan {
   emoji!: string;
 
   
-  static createPlan = async (studentId: string, name: string): Promise<Plan> => {
+  static createPlan = async (studentId: string, name: string, emoji: string): Promise<Plan> => {
     const insertIntoPlanTable = `
       INSERT INTO Plan (name, studentId, emoji)
       VALUES ((?), (?), (?));
@@ -25,7 +25,7 @@ export class Plan {
     await executeQuery(insertIntoPlanTable, [
       name, 
       studentId, 
-      DEFAULT_EMOJI
+      emoji ?? DEFAULT_EMOJI
     ]);
     
     const resultSet = await executeQuery(`SELECT * FROM Plan WHERE name = (?) ORDER BY id DESC LIMIT 1`, [name])

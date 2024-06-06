@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Slider } from '../../components';
 import { i18n } from '../../locale';
@@ -60,4 +60,8 @@ export const TimeSlider: FC<Props> = ({ min, max, closeModal, onConfirm,
 const styles = StyleSheet.create({
   timeSlider: { flexDirection: 'row', alignSelf: 'flex-end' },
   confirmButton: { color: palette.textBody, marginLeft: 8 },
+  image: {
+    width: 200,
+    height: 200,
+  },
 });
