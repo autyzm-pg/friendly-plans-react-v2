@@ -90,11 +90,6 @@ export const createTables = async () => {
   const createPasswordTable = `CREATE TABLE IF NOT EXISTS Password (id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT)`;
   const createModeTable = `CREATE TABLE IF NOT EXISTS Mode (id INTEGER PRIMARY KEY AUTOINCREMENT, mode INTEGER DEFAULT 0)`;
   
-  await executeQuery('drop table StudentData;');
-  await executeQuery('drop table Plan;');
-  await executeQuery('drop table PlanItem;');
-  await executeQuery('drop table PlanElement;');
-  await executeQuery('drop table PlanSubItem;');
   await executeQuery(createPlanTable);
   await executeQuery(createPlanItemTable);
   await executeQuery(createPlanElementTable);
@@ -194,7 +189,7 @@ export const createSamplePlans = async () => {
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/tutorial/`);
-    
+
     const sampleData = require('../assets/sample_plan/plan_selfcare.json');
     
     for (const plan of sampleData) {
