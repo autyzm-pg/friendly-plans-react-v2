@@ -3,6 +3,8 @@ import * as SampleData from '../assets/sample_plan/plan_selfcare.json';
 import { Plan, PlanItem, Student, StudentDisplayOption, StudentTextSizeOption, TimerSound } from '../models';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { copyFromAssetsToRNFS } from '../helpers/copyFile';
+import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
+import { Route } from '../navigation';
 export default class DatabaseService {
   private static database: SQLite.SQLiteDatabase | undefined;
   private readonly databaseName: string = 'test_db.db';
@@ -97,8 +99,6 @@ export const createTables = async () => {
   await executeQuery(createStudentDataTable);
   await executeQuery(createPasswordTable);
   await executeQuery(createModeTable);
-
-  createSamplePlans();
 }
 
 export const insertTestData = async () => {
@@ -173,7 +173,7 @@ export const executeQuery = async (query: string, params: (string | number | Dat
   })
 }
 
-export const createSamplePlans = async () => {
+export const createTutorialWithSamplePlans = async (): Promise<Student | undefined> => {
   const students = await Student.getStudents();
   if (!students || students.length === 0) {
     const student = await Student.createStudent({
@@ -184,6 +184,7 @@ export const createSamplePlans = async () => {
       isSwipeBlocked: false, 
       timer: TimerSound.beep
     })
+
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
@@ -207,5 +208,6 @@ export const createSamplePlans = async () => {
         index++;
       }
     }
+    return student;
   }
 }

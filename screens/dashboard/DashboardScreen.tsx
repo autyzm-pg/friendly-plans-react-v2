@@ -7,7 +7,7 @@ import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
-import DatabaseService, { executeQuery } from '../../services/DatabaseService';
+import DatabaseService, { createTutorialWithSamplePlans, executeQuery } from '../../services/DatabaseService';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { Route } from '../../navigation';
 
@@ -39,8 +39,17 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
         if (studentsList.length) {
           setCurrentStudent(studentsList[0])
         } else {
-          setLoading(false);
-          navigation.navigate(Route.StudentCreate);
+          createTutorialWithSamplePlans().then((student) => {
+            if (student) {
+              setCurrentStudent(student);
+            } else {
+              setLoading(false);
+              navigation.navigate(Route.StudentCreate);
+            }
+          }).catch(() => {
+            setLoading(false);
+            navigation.navigate(Route.StudentCreate);
+          })
         }
       });
     }).then(async() => await getLideMode());
