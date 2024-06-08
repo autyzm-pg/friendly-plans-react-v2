@@ -2,6 +2,7 @@ import SQLite, {ResultSet} from 'react-native-sqlite-storage';
 import * as SampleData from '../assets/sample_plan/plan_selfcare.json';
 import { Plan, PlanItem, Student, StudentDisplayOption, StudentTextSizeOption, TimerSound } from '../models';
 import RNFS, { ReadDirItem } from 'react-native-fs';
+import { copyFromAssetsToRNFS } from '../helpers/copyFile';
 export default class DatabaseService {
   private static database: SQLite.SQLiteDatabase | undefined;
   private readonly databaseName: string = 'test_db.db';
@@ -89,6 +90,11 @@ export const createTables = async () => {
   const createPasswordTable = `CREATE TABLE IF NOT EXISTS Password (id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT)`;
   const createModeTable = `CREATE TABLE IF NOT EXISTS Mode (id INTEGER PRIMARY KEY AUTOINCREMENT, mode INTEGER DEFAULT 0)`;
   
+  await executeQuery('drop table StudentData;');
+  await executeQuery('drop table Plan;');
+  await executeQuery('drop table PlanItem;');
+  await executeQuery('drop table PlanElement;');
+  await executeQuery('drop table PlanSubItem;');
   await executeQuery(createPlanTable);
   await executeQuery(createPlanItemTable);
   await executeQuery(createPlanElementTable);
@@ -187,6 +193,8 @@ export const createSamplePlans = async () => {
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
+    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/tutorial/`);
+    
     const sampleData = require('../assets/sample_plan/plan_selfcare.json');
     
     for (const plan of sampleData) {
@@ -194,13 +202,12 @@ export const createSamplePlans = async () => {
       
       let index = 0;
       for (const planItem of plan.planItems) {
-        try {
-          const imageData = await RNFS.readFileAssets(planItem.imageUri, 'base64');
-          await RNFS.writeFile(`${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`, imageData, 'base64');
-        } catch(e) {
-          console.error(e)
+        planItem.imageUri = await copyFromAssetsToRNFS(planItem.imageUri);
+        if (planItem.type === 'complexTask') {
+          for (const subItem of planItem.subItems) {
+            subItem.image = await copyFromAssetsToRNFS(subItem.image);
+          }
         }
-        planItem.imageUri = `file://${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`
         const newPlanItem = await PlanItem.createPlanItem(newPlan, planItem.type, planItem, index - 1);
         index++;
       }

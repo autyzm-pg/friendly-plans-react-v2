@@ -1,5 +1,22 @@
 [
     {
+        "name": "Przewodnik",
+        "emoji": "⭐",
+        "planItems": [
+            {
+                "name": "Przewodnik po aplikacji Przyjazny Plan",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Przewodnik po aplikacji Przyjazny Plan",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/tutorial/ekran_powitalny.png",
+                "voicePath": ""
+            }
+        ]
+    },
+    {
         "name": "Samoobsługa",
         "emoji": "🍀",
         "planItems": [
@@ -8,51 +25,111 @@
                 "type": "simpleTask",
                 "completed": false,
                 "lector": true,
-                "nameForChild": "Start",
+                "nameForChild": "",
                 "itemOrder": 1,
                 "time": null,
                 "imageUri": "sample_plan/slides/slajd_start.jpg",
-                "voicePath": "",
-                "subItems": []
-            },
-            {
-                "name": "Biorę mydło",
-                "type": "simpleTask",
-                "completed": false,
-                "lector": true,
-                "nameForChild": "Biorę mydło",
-                "itemOrder": 1,
-                "time": 25,
-                "imageUri": "sample_plan/selfcare/mycie_rak_biore_mydlo_bez_podpisu.jpg",
                 "voicePath": ""
             },
-            
+            {
+                "name": "Mycie rąk",
+                "type": "complexTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Mycie rąk",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "",
+                "voicePath": "",
+                "subItems": [
+                    {
+                        "name": "Podciągam rękawy",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_podciagam_rekawy_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 1,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": "Podciągam rękawy"
+                    },
+                    {
+                        "name": "Odkręcam wodę",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_odkrecam_wode_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 2,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Odkręcam wodę"
+                    },
+                    {
+                        "name": "Biorę mydło",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_biore_mydlo_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 3,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Biorę mydło"
+                    },
+                    {
+                        "name": "Myję ręce",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_myje_rece_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 4,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Myję ręce"
+                    },
+                    {
+                        "name": "Zakręcam wodę",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_zakrecam_wode_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 5,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Zakręcam wodę"
+                    },
+                    {
+                        "name": "Wycieram ręce",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_wycieram_rece_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 6,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Wycieram ręce"
+                    },
+                    {
+                        "name": "Opuszczam rękawy",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_opuszczam_rekawy_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 6,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Opuszczam rękawy"
+                    }
+                ]
+            },
             {
                 "name": "Koniec",
                 "type": "simpleTask",
                 "completed": false,
-                "lector": true,
-                "nameForChild": "Koniec",
+                "lector": false,
+                "nameForChild": "",
                 "itemOrder": 1,
                 "time": null,
                 "imageUri": "sample_plan/slides/slajd_koniec.jpg",
-                "voicePath": ""
-            }
-        ]
-    },
-    {
-        "name": "Plan",
-        "emoji": "📋",
-        "planItems": [
-            {
-                "name": "Start",
-                "type": "simpleTask",
-                "completed": false,
-                "lector": true,
-                "nameForChild": "Start",
-                "itemOrder": 1,
-                "time": null,
-                "imageUri": "sample_plan/slides/slajd_start.jpg",
                 "voicePath": ""
             }
         ]
