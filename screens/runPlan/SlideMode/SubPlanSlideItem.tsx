@@ -90,7 +90,7 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
         </View>
         {this.showText && (
           <PlanNameText
-            planName={this.props.planSubItem.name}
+            planName={this.props.planSubItem.nameForChild}
             isUpperCase={this.props.isUpperCase}
             textSize={this.props.textSize}
             alignTextCenter
