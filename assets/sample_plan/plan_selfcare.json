@@ -32,6 +32,17 @@
                 "voicePath": ""
             },
             {
+                "name": "Bawię się",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Bawię się",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/czas_wolny_bawie_sie_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
                 "name": "Mycie rąk",
                 "type": "complexTask",
                 "completed": false,
@@ -39,7 +50,7 @@
                 "nameForChild": "Mycie rąk",
                 "itemOrder": 1,
                 "time": null,
-                "imageUri": "",
+                "imageUri": "sample_plan/plan_pictures/samoobsluga_myje_rece_bez_podpisu.jpg",
                 "voicePath": "",
                 "subItems": [
                     {
@@ -120,6 +131,184 @@
                         "nameForChild": "Opuszczam rękawy"
                     }
                 ]
+            },
+            {
+                "name": "Przerwa",
+                "type": "break",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "",
+                "itemOrder": 1,
+                "time": 120,
+                "imageUri": "sample_plan/slides/slajd_przerwa.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Czytam",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Czytam",
+                "itemOrder": 1,
+                "time": 120,
+                "imageUri": "sample_plan/plan_pictures/edukacja_czytam_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Bawię się z kolegą",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Bawię się z kolegą",
+                "itemOrder": 1,
+                "time": 300,
+                "imageUri": "sample_plan/plan_pictures/czas_wolny_bawie_sie_z_kolega_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Przerwa",
+                "type": "break",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "",
+                "itemOrder": 1,
+                "time": 120,
+                "imageUri": "sample_plan/slides/slajd_przerwa.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Rysuję",
+                "type": "complexTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Rysuję",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/edukacja_rysuje_bez_podpisu.jpg",
+                "voicePath": "",
+                "subItems": [
+                    {
+                        "name": "Statek kontur",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur.jpg",
+                        "time": null,
+                        "itemOrder": 1,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 1",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_1.jpg",
+                        "time": null,
+                        "itemOrder": 2,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 2",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_2.jpg",
+                        "time": null,
+                        "itemOrder": 3,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 3",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_3.jpg",
+                        "time": null,
+                        "itemOrder": 4,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 4",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_4.jpg",
+                        "time": null,
+                        "itemOrder": 5,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 5",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_5.jpg",
+                        "time": null,
+                        "itemOrder": 3,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 6",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_6.jpg",
+                        "time": null,
+                        "itemOrder": 4,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 7",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_7.jpg",
+                        "time": null,
+                        "itemOrder": 5,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    }
+                ]
+            },
+            {
+                "name": "Przerwa",
+                "type": "break",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "",
+                "itemOrder": 1,
+                "time": 120,
+                "imageUri": "sample_plan/slides/slajd_przerwa.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Słucham",
+                "type": "interaction",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Słucham",
+                "itemOrder": 1,
+                "time": 300,
+                "imageUri": "sample_plan/plan_pictures/edukacja_slucham_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Opowiadam",
+                "type": "interaction",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Opowiadam",
+                "itemOrder": 1,
+                "time": 120,
+                "imageUri": "sample_plan/plan_pictures/edukacja_opowiadam_opowiadam.jpg",
+                "voicePath": ""
             },
             {
                 "name": "Koniec",

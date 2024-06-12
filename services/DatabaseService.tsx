@@ -187,7 +187,7 @@ export const createTutorialWithSamplePlans = async (): Promise<Student | undefin
 
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
-    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphmotorics/`);
+    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphomotorics/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
     await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/tutorial/`);
 
