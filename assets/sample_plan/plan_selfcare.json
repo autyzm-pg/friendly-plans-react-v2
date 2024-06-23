@@ -37,7 +37,7 @@
                 "completed": false,
                 "lector": true,
                 "nameForChild": "Bawię się",
-                "itemOrder": 1,
+                "itemOrder": 2,
                 "time": null,
                 "imageUri": "sample_plan/plan_pictures/czas_wolny_bawie_sie_bez_podpisu.jpg",
                 "voicePath": ""
@@ -48,7 +48,7 @@
                 "completed": false,
                 "lector": true,
                 "nameForChild": "Mycie rąk",
-                "itemOrder": 1,
+                "itemOrder": 3,
                 "time": null,
                 "imageUri": "sample_plan/plan_pictures/samoobsluga_myje_rece_bez_podpisu.jpg",
                 "voicePath": "",
