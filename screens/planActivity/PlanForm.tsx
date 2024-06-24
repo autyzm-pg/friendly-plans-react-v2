@@ -68,14 +68,14 @@ export const PlanForm: FC<Props> = ({
   };
 
   const shuffle = () => {
-    let checkedItems = planItems.filter(item => item.checked);
-    if (shuffleNoBreaks) { checkedItems = checkedItems.filter(item => item.planItem.type !== PlanItemType.Break); }
+    let checkedItems = planItems.filter(item => item.checked && !item.locked);
+    //if (shuffleNoBreaks) { checkedItems = checkedItems.filter(item => item.planItem.type !== PlanItemType.Break); }
     for (let i = checkedItems.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [checkedItems[i], checkedItems[j]] = [checkedItems[j], checkedItems[i]];
     }
     const newPlanItems = planItems.map(item => {
-      if (!item.checked || (shuffleNoBreaks && item.planItem.type === PlanItemType.Break)) { return item; }
+      if (!item.checked  || item.locked /*|| (shuffleNoBreaks && item.planItem.type === PlanItemType.Break)*/) { return item; }
       const checkedItem = checkedItems.shift();
       return checkedItem;
     });
@@ -153,11 +153,11 @@ export const PlanForm: FC<Props> = ({
         <MultiButton onPress={shuffle} title={i18n.t('planActivity:shuffleTasks')}  
                     buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
         <View style={{ marginRight: dimensions.spacingSmall }}></View>
-        <CheckboxInput title={i18n.t('planActivity:withoutBreaks')} 
+        {/* <CheckboxInput title={i18n.t('planActivity:withoutBreaks')} 
                        checked={shuffleNoBreaks} 
                        onPress={setShuffleNoBreaks} 
                        hitSlope={{ top: 0, bottom: 0, left: 0, right: 0 }}
-                       />
+                       /> */}
         <ModalTrigger
           title={i18n.t('planItemActivity:infoBox')}
           modalContent={

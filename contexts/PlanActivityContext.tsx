@@ -4,6 +4,7 @@ import { Plan, PlanItem } from "../models";
 export interface PlanItemState {
     planItem: PlanItem;
     checked: boolean;
+    locked: boolean;
 };
 
 interface Props {
