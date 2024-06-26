@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {palette} from '../styles';
 
@@ -23,6 +23,7 @@ export class FullScreenTemplate extends React.PureComponent<Props> {
           extraStyles,
         ]}>
         <ScrollView
+          persistentScrollbar={true} 
           contentContainerStyle={[
             styles.contentContainer,
             padded && styles.padded,
