@@ -32,7 +32,12 @@ export const PlanActivityScreen: FC<Props> = ({navigation, route}) => {
   const getPlanItems = async () => {
     if (!plan) { return; }
     const planItems = await PlanItem.getPlanItems(plan);
-    const planItemsState = planItems.map((item) => { return { planItem: item, checked: false }; });
+    const min = planItems.reduce((min, item) => item.itemOrder < min ? item.itemOrder : min, planItems[0].itemOrder);
+    const max = planItems.reduce((max, item) => item.itemOrder > max ? item.itemOrder : max, planItems[0].itemOrder);
+    const planItemsState: PlanItemState[] = planItems.map((item) => { 
+      const isLocked: boolean = (item.type == PlanItemType.Break || item.itemOrder == min || item.itemOrder == max);
+      return { planItem: item, checked: false, locked: isLocked }; 
+    });
     setPlanItems(planItemsState);
   };
   

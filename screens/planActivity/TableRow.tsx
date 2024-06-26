@@ -81,6 +81,15 @@ export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) =>
     setPlanItems(updatedItems);
   };
 
+  const handleLock = async() => {
+    const updatedItems = planItems.map(state => 
+      state.planItem.id === item.planItem.id 
+      ? { ...state, locked: !state.locked } 
+      : state
+    );
+    setPlanItems(updatedItems);
+  };
+
   const hours = Math.floor(item.planItem.time / 3600);
   const minutes = Math.floor((item.planItem.time - hours*3600) / 60);
   const seconds = item.planItem.time - minutes*60 - hours*3600;
@@ -98,7 +107,7 @@ export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) =>
       <Text style={styles.textName}>{item.planItem.name}{' '}</Text>
       {(item.planItem.type === PlanItemType.ComplexTask)&&<Text style={styles.text}>{`(${subtaskCount})`}{' '}</Text>}
       <View style={{flex: 1, flexDirection: 'row-reverse', alignItems: 'center'}}>
-        <View style={styles.deleteIcon}>
+        <View style={styles.icon}>
           <IconButton name='delete' size={24} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} color={palette.primary} onPress={onDelete} />
         </View>
         <IconButtonSwitch 
@@ -107,6 +116,9 @@ export const TableRow: React.FC<Props> = ({ navigation, border, drag, item }) =>
           title={i18n.t('planActivity:completed')} 
           secondButtonOn={!item.planItem.completed} 
           onPress={handlePlanStateChange}/>
+        <View style={styles.icon}>
+          <IconButton name={item.locked ? 'lock' : 'lock-open'} size={24} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} color={palette.primary} onPress={handleLock} />
+        </View>
         {!!item.planItem.time && (
           <View style={styles.timeContainer}>
             <Icon name='timer' size={24} />
@@ -144,11 +156,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
   },
-  deleteIcon: {
-    marginLeft: 10,
-    marginRight: 10
-  },
-  pencilIcon: {
+  icon: {
     marginLeft: 10,
     marginRight: 10
   },
@@ -160,7 +168,7 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     marginLeft: 10,
-    marginRight: 10,
+    marginRight: 40,
     flexDirection: 'row',
     alignItems: 'center',
   },

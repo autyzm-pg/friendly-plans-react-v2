@@ -68,14 +68,14 @@ export const PlanForm: FC<Props> = ({
   };
 
   const shuffle = () => {
-    let checkedItems = planItems.filter(item => item.checked);
-    if (shuffleNoBreaks) { checkedItems = checkedItems.filter(item => item.planItem.type !== PlanItemType.Break); }
+    let checkedItems = planItems.filter(item => item.checked && !item.locked);
+    //if (shuffleNoBreaks) { checkedItems = checkedItems.filter(item => item.planItem.type !== PlanItemType.Break); }
     for (let i = checkedItems.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [checkedItems[i], checkedItems[j]] = [checkedItems[j], checkedItems[i]];
     }
     const newPlanItems = planItems.map(item => {
-      if (!item.checked || (shuffleNoBreaks && item.planItem.type === PlanItemType.Break)) { return item; }
+      if (!item.checked  || item.locked /*|| (shuffleNoBreaks && item.planItem.type === PlanItemType.Break)*/) { return item; }
       const checkedItem = checkedItems.shift();
       return checkedItem;
     });
@@ -118,6 +118,16 @@ export const PlanForm: FC<Props> = ({
     });
     setPlanItems(updated);
   };
+
+  const changeLockOfMultiple = async() => {
+    const checked = planItems.filter((state) => state.checked);
+    const locked = checked.filter((state) => state.locked);
+    let updated = planItems.map((item) => {
+      if (!item.checked) return item;
+      return {...item, locked: checked.length == locked.length ? false : true}
+    });
+    setPlanItems(updated);
+  };
   
   const showInfo = () => {
     return (
@@ -137,6 +147,10 @@ export const PlanForm: FC<Props> = ({
           <Icon name='shuffle' type='material-community-icons'></Icon>
           <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('planActivity:infoBoxTaskButtonsRotate')}</Text>
         </View>
+        <View style={styles.infoBoxContainerRow}>
+          <Icon name='lock' type='font-awesome'></Icon>
+          <Text style={{fontSize: 15, color: palette.textBody}}>{i18n.t('planActivity:infoBoxTaskButtonsLock')}</Text>
+        </View>
       </View>
     );
   };
@@ -152,12 +166,14 @@ export const PlanForm: FC<Props> = ({
                     buttonName='swap-horiz' buttonType='material-community-icons' disabled={!checked}/>
         <MultiButton onPress={shuffle} title={i18n.t('planActivity:shuffleTasks')}  
                     buttonName='shuffle' buttonType='material-community-icons' disabled={checked < 2}/>
-        <View style={{ marginRight: dimensions.spacingSmall }}></View>
-        <CheckboxInput title={i18n.t('planActivity:withoutBreaks')} 
+        <MultiButton onPress={changeLockOfMultiple} title={i18n.t('planActivity:lockTasks')}  
+                    buttonName='lock' buttonType='font-awesome' disabled={!checked}/>
+        {/* <View style={{ marginRight: dimensions.spacingSmall }}></View> */}
+        {/* <CheckboxInput title={i18n.t('planActivity:withoutBreaks')} 
                        checked={shuffleNoBreaks} 
                        onPress={setShuffleNoBreaks} 
                        hitSlope={{ top: 0, bottom: 0, left: 0, right: 0 }}
-                       />
+                       /> */}
         <ModalTrigger
           title={i18n.t('planItemActivity:infoBox')}
           modalContent={

@@ -6,6 +6,7 @@ const translations = {
     planNamePlaceholder: 'Type schedule name',
     newPlan: 'New schedule #',
     shuffleTasks: 'Shuffle',
+    lockTasks: '(Un)Lock',
     withoutBreaks: 'without breaks',
     deleteTasks: 'Delete',
     changeState: 'Change state',
@@ -18,7 +19,8 @@ const translations = {
     completed: 'Did the student complete the task?',
     savedMessage: 'Saved',
     infoBoxTaskButtons: 'Select tasks (checkbox) to perform actions on them:',
-    infoBoxTaskButtonsRotate: 'Shuffle the order of the selected tasks. The remaining ones will stay in place. Check “no breaks” to shuffle all tasks except breaks.',
+    infoBoxTaskButtonsRotate: 'Shuffle the order of the selected tasks. A closed padlock means that tasks will not be mixed (even when marked).',
+    infoBoxTaskButtonsLock: '(Un)Lock the selected tasks to mix their order.',
     infoBoxTaskButtonsDelete: 'Delete the selected tasks.',
     infoBoxTaskButtonsChangeState: 'Change task state - whether the selected tasks have been completed.'
   },
