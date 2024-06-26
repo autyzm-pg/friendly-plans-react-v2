@@ -6,6 +6,7 @@ const translations = {
     planNamePlaceholder: 'Wpisz nazwę planu',
     newPlan: 'Nowy Plan #',
     shuffleTasks: 'Rotuj',
+    lockTasks: '(Od)Blokuj',
     withoutBreaks: 'bez przerw',
     deleteTasks: 'Usuń',
     changeState: 'Zmień stan',
@@ -18,7 +19,8 @@ const translations = {
     completed: 'Czy uczeń ukończył zadanie?',
     savedMessage: 'Zapisano',
     infoBoxTaskButtons: 'Zaznacz zadania (checkbox), aby wykonać na nich akcje:',
-    infoBoxTaskButtonsRotate: 'Przemieszaj kolejność zaznaczonych zadań. Pozostałe zostaną na swoim miejscu. Zaznacz "bez przerw", aby przemieszać wszystkie zadania oprócz przerw.',
+    infoBoxTaskButtonsRotate: 'Przemieszaj kolejność zaznaczonych zadań. Zamknięta kłódka oznacza, że zadania nie będą mieszane (nawet, gdy są oznaczone).',
+    infoBoxTaskButtonsLock: '(Od)Blokuj oznaczone zadania w celu mieszania ich kolejności.',
     infoBoxTaskButtonsDelete: 'Usuń wybrane zadania.',
     infoBoxTaskButtonsChangeState: 'Zmień stan zadań - czy wybrane zadania zostały ukończone.'
   },
