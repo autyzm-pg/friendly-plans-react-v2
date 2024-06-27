@@ -25,7 +25,7 @@ export const TaskTable: FC<Props> = ({ navigation, updatePlanItemsOrder }) => {
   };
 
   return (
-    <FullScreenTemplate darkBackground extraStyles={styles.fullScreen}>
+    <FullScreenTemplate darkBackground extraStyles={styles.fullScreen} scrolling>
       <DraggableFlatList
         data={data}
         renderItem={({ item, getIndex, drag }: RenderItemParams<PlanItemState>) => {

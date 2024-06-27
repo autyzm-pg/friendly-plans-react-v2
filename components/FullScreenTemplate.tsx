@@ -10,11 +10,12 @@ interface Props {
   narrow?: boolean;
   darkBackground?: boolean;
   extraStyles?: object;
+  scrolling?: boolean;
 }
 
 export class FullScreenTemplate extends React.PureComponent<Props> {
   render() {
-    const {children, padded, narrow, darkBackground, extraStyles} = this.props;
+    const {children, padded, narrow, darkBackground, extraStyles, scrolling} = this.props;
     return (
       <SafeAreaView
         style={[
@@ -22,17 +23,21 @@ export class FullScreenTemplate extends React.PureComponent<Props> {
           darkBackground && styles.darkBackground,
           extraStyles,
         ]}>
-        <ScrollView
-          persistentScrollbar={true} 
-          contentContainerStyle={[
-            styles.contentContainer,
-            padded && styles.padded,
-            narrow && styles.narrowContainer,
-          ]}>
-          <View style={[styles.contentContainer, narrow && styles.narrow]}>
-            {children}
-          </View>
-        </ScrollView>
+        <View style={{ flexDirection: 'row'}}>
+          {scrolling && <View style={{backgroundColor: 'transparent', width: 30}}></View>}
+          <ScrollView
+            persistentScrollbar={true} 
+            contentContainerStyle={[
+              styles.contentContainer,
+              padded && styles.padded,
+              narrow && styles.narrowContainer,
+            ]}>
+            <View style={[styles.contentContainer, narrow && styles.narrow]}>
+              {children}
+            </View>
+          </ScrollView>
+          {scrolling && <View style={{backgroundColor: 'transparent', width: 30}}></View>}
+        </View>
       </SafeAreaView>
     );
   }
