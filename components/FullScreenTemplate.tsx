@@ -23,21 +23,22 @@ export class FullScreenTemplate extends React.PureComponent<Props> {
           darkBackground && styles.darkBackground,
           extraStyles,
         ]}>
-        <View style={{ flexDirection: 'row'}}>
-          {scrolling && <View style={{backgroundColor: 'transparent', width: 30}}></View>}
-          <ScrollView
-            persistentScrollbar={true} 
+        {/* Commented out lines that cause problems in scrolling and dragging items */}
+        {/* //<View style={{ flexDirection: 'row'}}>
+        //  {scrolling && <View style={{backgroundColor: 'transparent', width: 30}}></View>} */}
+          {/* <ScrollView
+            //persistentScrollbar={true} 
             contentContainerStyle={[
               styles.contentContainer,
               padded && styles.padded,
               narrow && styles.narrowContainer,
-            ]}>
+            ]}> */}
             <View style={[styles.contentContainer, narrow && styles.narrow]}>
               {children}
             </View>
-          </ScrollView>
-          {scrolling && <View style={{backgroundColor: 'transparent', width: 30}}></View>}
-        </View>
+          {/* </ScrollView> */}
+        {/* //  {scrolling && <View style={{backgroundColor: 'transparent', width: 30}}></View>}
+        //</View> */}
       </SafeAreaView>
     );
   }
