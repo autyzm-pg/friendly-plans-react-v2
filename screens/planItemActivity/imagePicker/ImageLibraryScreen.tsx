@@ -39,11 +39,12 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const isUsed = usedImages.includes(item);
     return (
       <TouchableOpacity onPress={() => handlePress(item)}>
-        <View style={isSelected && { borderWidth: 5, borderColor: palette.primary, backgroundColor: palette.primary, borderRadius: 10 }}>
+        <View style={isSelected ? { margin: 5, borderWidth: 5, borderColor: palette.primary, backgroundColor: palette.primary, borderRadius: 10 } : { margin: 10 }}>
           <Image
             source={{ uri: item }}
             style={[styles.image, 
               { width: 150, height: 150 }, 
+              // isSelected && { borderWidth: 5, borderColor: palette.primary },
               isUsed && { opacity: 0.5 }
             ]}
           />
@@ -150,7 +151,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
           data={images}
           renderItem={renderImageItem}
           keyExtractor={(item, index) => index.toString()}
-          numColumns={Math.floor(useWindowDimensions().width / 150)}
+          numColumns={Math.floor(useWindowDimensions().width / 150) - 1}
           contentContainerStyle={styles.flatListContainer}
         />
       </View>
