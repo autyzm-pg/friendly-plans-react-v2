@@ -94,7 +94,7 @@ export const StudentSettings: FC<Props> = ({student, onStudentCreate, onStudentR
       <DisplaySetting value={state.displaySettings} onValueChange={onDisplaySettingsChange}/>
       <TextSizeSetting value={state.textSize} onValueChange={onTextSizeChange}/>
       <TextCaseSetting value={state.isUpperCase} onValueChange={onTextCaseChange}/>
-      <SlideCardSetting value={state.isSwipeBlocked} onValueChange={onSwipeBlockedChange}/>
+      {/* <SlideCardSetting value={state.isSwipeBlocked} onValueChange={onSwipeBlockedChange}/> */}
       <Separator extraWide/>
       <StyledText
         style={[styles.label, styles.taskViewLabel]}>{i18n.t('studentSettings:soundSettings')}</StyledText>
