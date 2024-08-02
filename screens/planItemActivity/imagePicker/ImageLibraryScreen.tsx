@@ -39,14 +39,15 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
     const isUsed = usedImages.includes(item);
     return (
       <TouchableOpacity onPress={() => handlePress(item)}>
-        <Image
-          source={{ uri: item }}
-          style={[styles.image, 
-            { width: 150, height: 150 }, 
-            isSelected && { borderWidth: 5, borderColor: palette.primary },
-            isUsed && { opacity: 0.5 }
-          ]}
-        />
+        <View style={isSelected && { borderWidth: 5, borderColor: palette.primary, backgroundColor: palette.primary, borderRadius: 10 }}>
+          <Image
+            source={{ uri: item }}
+            style={[styles.image, 
+              { width: 150, height: 150 }, 
+              isUsed && { opacity: 0.5 }
+            ]}
+          />
+        </View>
       </TouchableOpacity>
     );
   };
