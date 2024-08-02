@@ -5,8 +5,6 @@ interface Props {
   setEditionMode: () => void;
   loading: boolean,
   setLoading: (loaded: boolean) => void;
-  liteMode: boolean;
-  setLiteMode: (loaded: boolean) => void;
 }
 
 export const RootNavigatorContext = createContext<Props | undefined>({
@@ -14,8 +12,6 @@ export const RootNavigatorContext = createContext<Props | undefined>({
   setEditionMode: () => {},
   loading: true,
   setLoading: () => {},
-  liteMode: false,
-  setLiteMode: () => {}
 });
 
 export function useRootNavigatorContext() {

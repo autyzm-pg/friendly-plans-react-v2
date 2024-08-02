@@ -34,8 +34,6 @@ export const ImagePickerModal: FC<Props> = ({
                                             selected,
                                             navigation
                                         }) => {
-
-    const { liteMode, setLiteMode } = useRootNavigatorContext();
     
     useEffect(() => {
     }, []);
@@ -57,13 +55,9 @@ export const ImagePickerModal: FC<Props> = ({
             mediaType: 'photo'
         }).then(async (image) => {
             if(!image.path) { return; }
-            if (liteMode) {
-                imageUriUpdate(image.path);
-            } else {
-                const fileName = InnerGallery.getFileName(image.path);
-                const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
-                await InnerGallery.copyFile(image.path, fileTarPath, imageUriUpdate);
-            }
+            const fileName = InnerGallery.getFileName(image.path);
+            const fileTarPath = await InnerGallery.createUniqueFilePath(InnerGallery.imagesDir, fileName);
+            await InnerGallery.copyFile(image.path, fileTarPath, imageUriUpdate);
         });
     };
 

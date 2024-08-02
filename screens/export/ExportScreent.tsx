@@ -33,7 +33,7 @@ export const ExportScreen: FC<Props> = ({ navigation, route }) => {
 
   const exportAll = async() => {
     setExporting(true);
-    const sub = subscribe(({ progress }) => { setExportProgress((progress*100).toFixed(0)); console.log(progress); });
+    const sub = subscribe(({ progress }) => { setExportProgress((progress*100).toFixed(0)); /*console.log(progress);*/ });
     if (route.params?.images) {
       await zip(InnerGallery.imagesDir, InnerGallery.exportImgPath);
     } else {

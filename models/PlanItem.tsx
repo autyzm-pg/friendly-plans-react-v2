@@ -220,7 +220,7 @@ export class PlanItem implements PlanElement {
       image: data.imageUri,
       voicePath: data.voicePath,
     }
-    console.log(data.imageUri)
+    //console.log(data.imageUri)
     
     const insertIntoPlanItemTable = `
       INSERT INTO PlanItem (planId, planElementId)

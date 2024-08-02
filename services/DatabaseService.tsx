@@ -90,7 +90,6 @@ export const createTables = async () => {
   )`;
 
   const createPasswordTable = `CREATE TABLE IF NOT EXISTS Password (id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT)`;
-  const createModeTable = `CREATE TABLE IF NOT EXISTS Mode (id INTEGER PRIMARY KEY AUTOINCREMENT, mode INTEGER DEFAULT 0)`;
   
   await executeQuery(createPlanTable);
   await executeQuery(createPlanItemTable);
@@ -98,7 +97,6 @@ export const createTables = async () => {
   await executeQuery(createPlanSubItemTable);
   await executeQuery(createStudentDataTable);
   await executeQuery(createPasswordTable);
-  await executeQuery(createModeTable);
 }
 
 export const insertTestData = async () => {

@@ -19,18 +19,13 @@ interface Props {
 export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   
-  const {loading, setLoading, setLiteMode} = useRootNavigatorContext();
+  const {loading, setLoading} = useRootNavigatorContext();
   const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
 
   const connectToDatabase = async () => {
     const db = new DatabaseService();
     await db.initializeDatabase();
-  }
-
-  const getLideMode = async () => {
-    const resultSet = await executeQuery(`SELECT * FROM Mode;`);
-    setLiteMode(resultSet.rows.item(0).mode);
   };
   
   useEffect(() => {    
@@ -52,7 +47,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
           })
         }
       });
-    }).then(async() => await getLideMode());
+    });
     InnerGallery.createDirectory(InnerGallery.imagesDir);
     InnerGallery.createDirectory(InnerGallery.recordingsDir);
     return () => {};

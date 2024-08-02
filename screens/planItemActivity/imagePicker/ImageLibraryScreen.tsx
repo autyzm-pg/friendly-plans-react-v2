@@ -8,8 +8,6 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { Route } from '../../../navigation';
 import { i18n } from '../../../locale';
 import { MultiButton } from '../../../components/MultiButton';
-import { useRootNavigatorContext } from '../../../contexts/RootNavigatorContext';
-import { executeQuery } from '../../../services/DatabaseService';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -21,7 +19,6 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   const [usedImages, setUsedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const selectMode = useRef<boolean>(route.params?.updateImage ? true : false);
-  const { liteMode, setLiteMode } = useRootNavigatorContext();
   const fetchImages = async () => {
       const isSelectMode = route.params?.updateImage ? true : false;
       if (!isSelectMode) {
@@ -128,39 +125,6 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
       </View>);
   };
 
-  const renderSwitchModeButton = (modeLite: boolean) => {
-    const name = modeLite ? i18n.t('modeSetting:liteMode') : i18n.t('modeSetting:normalMode');
-    return (
-      <MultiButton onPress={() => switchMode(modeLite, name)} 
-                       title={name} 
-                       buttonName={modeLite ? 'edgesensor-low' : 'edgesensor-high'} 
-                       buttonType='material' 
-                       disabled={false}/>
-    );
-  };
-
-  const switchMode = (modeLite: boolean, name: string) => {
-    Alert.alert('Zmień tryb', 
-    (modeLite ? i18n.t('modeSetting:liteInfo') : i18n.t('modeSetting:normalInfo')) + ' ' + i18n.t('modeSetting:liteQuestion', { mode: name }), 
-    [
-      {
-        text: i18n.t('common:no'),
-        onPress: () => {},
-      },
-      {
-        text: i18n.t('common:yes'),
-        onPress: async() => {
-            const updateMode = `
-            INSERT INTO Mode (id, mode) VALUES (?, ?)
-            ON CONFLICT(id) DO UPDATE SET mode = excluded.mode;
-          `;
-          await executeQuery(updateMode, [0, modeLite ? 1 : 0]);
-          setLiteMode(modeLite);
-        },
-      },
-    ]);
-  };
-
   return (
     <>
     {!selectMode.current && 
@@ -169,7 +133,6 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
           <MultiButton onPress={deleteMultiple} title={i18n.t('common:deleteButton')} buttonName='trash' buttonType='font-awesome' disabled={selectedImages.length == 0}/>
           <MultiButton onPress={loadMultiple} title={i18n.t('common:import')} buttonName='file-download' buttonType='material' disabled={false}/>
           <MultiButton onPress={() => { navigation.navigate(Route.Export, { images: true }); }} title={i18n.t('common:export')} buttonName='upload' buttonType='material' disabled={!images.length}/>
-          {renderSwitchModeButton(!liteMode)}
           <View style={{ marginRight: dimensions.spacingSmall }}></View>
           <ModalTrigger title={i18n.t('planItemActivity:infoBox')} modalContent={showInfo()}>
               <IconButton name={'information-circle'} type={'ionicon'} size={30} 
