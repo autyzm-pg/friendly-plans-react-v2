@@ -24,8 +24,8 @@ export const Header: React.FC<Props> = ({...props}) => {
     const { route } = props;
     if (route.name === Route.ImageLibrary) { return i18n.t('imageGallery:title'); }
     if (route.name == Route.RecordingLibrary) { return i18n.t('recGallery:title'); }
-    if (currentStudent) { return i18n.t('header:activeStudent') + ': ' + currentStudent.name; }
-    return i18n.t('header:noStudentCreated');
+    if (currentStudent) { return i18n.t('header:activeStudent') + ' / ' + currentStudent.name; }
+    return '';
   };
 
   const goBack = () => {
@@ -119,7 +119,7 @@ export const Header: React.FC<Props> = ({...props}) => {
       <>
         <StyledText style={styles.headerText}>{getTitle() as string}</StyledText>
         {renderButtons()}
-        {isDashboard() && <ModeSwitchButton navigation={navigation.current}/>}
+        {isDashboard() && currentStudent && <ModeSwitchButton navigation={navigation.current}/>}
       </>
       )}
     </View>

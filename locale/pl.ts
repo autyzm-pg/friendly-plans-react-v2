@@ -26,7 +26,6 @@ const translations = {
   },
   header: {
     activeStudent: 'Aktywny uczeń',
-    noStudentCreated: 'Kliknij ikonę ludzi po prawej stronie, aby utworzyć studenta.'
   },
   timerSounds: {
     default: 'domyślny',

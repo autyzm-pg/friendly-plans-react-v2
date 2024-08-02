@@ -10,6 +10,7 @@ import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
 import DatabaseService, { createTutorialWithSamplePlans, executeQuery } from '../../services/DatabaseService';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { Route } from '../../navigation';
+import { EmptyStudentList } from '../studentCreate/EmptyStudentList';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -71,6 +72,12 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
       <View style={!loading && styles.container}>
         <StudentPlanList navigation={navigation}/>
       </View>}
+      {
+        !currentStudent && !loading && 
+        <View style={!loading && styles.container}>
+          <EmptyStudentList navigation={navigation}/>
+        </View>
+      }
     </>
   );
 };
