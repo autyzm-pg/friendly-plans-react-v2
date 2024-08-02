@@ -101,8 +101,8 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                 <Card style={[styles.container, isSelected && { borderWidth: 5, borderColor: palette.primary }, isUsed && { opacity: 0.6 }]}>
                     <View style={styles.imageActionContainer}>
                         <Text style={{fontSize: 15, color: palette.textBody, marginRight: dimensions.spacingSmall}}>{item.split('/').pop()}</Text>
-                        <IconButton name='volume-high' type='material-community' size={40} 
-                                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={() => playAudio(item)} style={{marginLeft: dimensions.spacingSmall}}/>
+                        <IconButton name='volume-high' type='material-community' size={24} 
+                                    hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={() => playAudio(item)} style={{marginLeft: dimensions.spacingSmall}}/>
                     </View>
                 </Card>
             </TouchableOpacity>
@@ -177,7 +177,8 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
         if (!selectedRecordings.length) { return <></>; }
         const selectAll = selectedRecordings.length != recordings.length;
         return (<View style={{ alignItems: 'flex-start', 
-                     marginLeft: dimensions.spacingBig }}>
+                     marginLeft: dimensions.spacingBig,
+                     marginTop: dimensions.spacingSmall }}>
             <MultiButton onPress={unSelectAll} 
                         title={selectAll ? i18n.t('planActivity:selectTasks') : i18n.t('planActivity:unSelectTasks')}
                         buttonName={selectAll ? 'check-square' : 'square'} 
@@ -212,15 +213,17 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
                 </View>
             }
         </View>
-        <FullScreenTemplate padded darkBackground>
+        <FullScreenTemplate darkBackground>
         {renderSelectAllButton()}
         {recordings.length > 0 ?
-            <FlatList
-            data={filRecordings}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            style={styles.contentContainer}
-            />
+            <FullScreenTemplate darkBackground extraStyles={{ marginLeft: '2%', marginTop: 16, }}>
+                <FlatList
+                data={filRecordings}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                style={styles.contentContainer}
+                />
+            </FullScreenTemplate>
             :
             <></>
         }
@@ -237,24 +240,22 @@ const styles = StyleSheet.create({
         minWidth: 800
     },
     contentContainer: {
-        paddingTop: 12,
         width: '100%',
+        marginBottom: 16,
     },
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: dimensions.spacingTiny,
-        paddingBottom: dimensions.spacingLarge,
-        height: '20%',
-        margin: dimensions.spacingSmall
+        height: 64,
+        marginBottom: dimensions.spacingSmall,
+        width: '98%',
     },
     imageActionContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: dimensions.spacingLarge,
     },
     trashIconContainer: {
         backgroundColor: palette.textWhite,
