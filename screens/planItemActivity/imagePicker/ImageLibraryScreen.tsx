@@ -19,8 +19,6 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
   const [usedImages, setUsedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const selectMode = useRef<boolean>(route.params?.updateImage ? true : false);
-  const [refresh, setRefresh] = useState(true);
-
   const fetchImages = async () => {
       const isSelectMode = route.params?.updateImage ? true : false;
       if (!isSelectMode) {
@@ -34,8 +32,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchImages();
-    setSelectedImages([]);
-  }, [refresh]);
+  }, []);
 
   const renderImageItem = ({ item }: { item: string }) => {
     const isSelected = selectedImages.includes(item);
@@ -83,7 +80,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
         onPress: async() => {
           await PlanItem.removeNonExistingUris(selectedImages);
           selectedImages.forEach(async(uri) => { await ImagePicker.cleanSingle(uri).catch(() => {});});
-          setRefresh(refresh => !refresh);
+          navigation.navigate(Route.Dashboard);
         },
       },
     ]);
@@ -95,7 +92,7 @@ export const ImageLibraryScreen: React.FC<Props> = ({ navigation, route }) => {
       multiple: true
     }).then(async (images) => {
       await InnerGallery.copyMultipleImages(images);
-      setRefresh(refresh => !refresh);
+      navigation.goBack();
     });
   };
 
