@@ -28,6 +28,8 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filRecordings, setFilRecordings] = useState<string[]>([]);
 
+    const [refresh, setRefresh] = useState(true);
+
     const fetchRecordings = async () => {
         const isSelectMode = route.params?.updateRecording ? true : false;
         if (!isSelectMode) {
@@ -42,12 +44,14 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
 
     useEffect(()=> {
         fetchRecordings();
+        setSelectedRecordings([]);
+        setSearchTerm('');
         return () => {
             if (!playerRef.current) { return; }
             playerRef.current.stop();
             playerRef.current.release();
         };
-    }, []);
+    }, [refresh]);
 
     const playAudio = async (item: string) => {
         const fullVoicePath = item
@@ -116,7 +120,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
             onPress: async() => {
               await PlanItem.removeNonExistingRecs(selectedRecordings);
               selectedRecordings.forEach(async(uri) => { await ImagePicker.cleanSingle(uri).catch(() => {});});
-              navigation.navigate(Route.Dashboard);
+              setRefresh(refresh => !refresh);
             },
           },
         ]);
@@ -129,7 +133,7 @@ export const RecordingLibraryScreen: React.FC<Props> = ({ navigation, route }) =
           allowMultiSelection: true
         });
         await InnerGallery.copyMultipleRecs(response);
-        navigation.goBack();
+        setRefresh(refresh => !refresh);
     };
 
     const showInfo = () => {
