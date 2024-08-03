@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-//import { NavigationInjectedProps, withNavigationFocus } from '@react-navigation/native';
 
 import { InnerGalleryService as InnerGallery, Student } from '../../models';
 import { palette } from '../../styles';
 import { StudentPlanList } from '../studentPlanList/StudentPlanList';
 import { NavigationProp, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useCurrentStudentContext } from '../../contexts/CurrentStudentContext';
-import DatabaseService, { createTutorialWithSamplePlans, executeQuery } from '../../services/DatabaseService';
+import { createTutorialWithSamplePlans } from '../../services/DatabaseService';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { Route } from '../../navigation';
 import { EmptyStudentList } from '../studentCreate/EmptyStudentList';
@@ -23,14 +22,8 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
   const {loading, setLoading} = useRootNavigatorContext();
   const {currentStudent, setCurrentStudent} = useCurrentStudentContext();
   const [nextRoute, setNextRoute] = useState<any>(null);
-
-  const connectToDatabase = async () => {
-    const db = new DatabaseService();
-    await db.initializeDatabase();
-  };
   
   useEffect(() => {    
-    connectToDatabase().then(() => {
       Student.getStudents().then(studentsList => {
         if (studentsList.length) {
           setCurrentStudent(studentsList[0])
@@ -48,7 +41,6 @@ export const DashboardScreen: React.FC<Props> = ({ navigation, route }) => {
           })
         }
       });
-    });
     InnerGallery.createDirectory(InnerGallery.imagesDir);
     InnerGallery.createDirectory(InnerGallery.recordingsDir);
     return () => {};

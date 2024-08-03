@@ -28,7 +28,8 @@ import {
   RunSubPlanListScreen,
   ImageLibraryScreen,
   ModeSwitchScreen,
-  ExportScreen
+  ExportScreen,
+  WelcomeScreen
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -40,7 +41,7 @@ export function RootStackNavigation() {
 
   return (
     <RootNavigatorContext.Provider value={{
-      editionMode: editionMode, setEditionMode: () => setEditionMode(!editionMode),
+      editionMode: editionMode, setEditionMode: (editionMode) => setEditionMode(editionMode),
       loading: loading, setLoading: () => setLoading(false)}}>
       <CurrentStudentContext.Provider value={{currentStudent: student, setCurrentStudent: setStudent}}>
       <Stack.Navigator
@@ -63,6 +64,11 @@ export function RootStackNavigation() {
               navigation={navigation}
             />
           )})}>
+        <Stack.Screen
+          name={Route.Welcome}
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={Route.Dashboard}
           component={DashboardScreen}
@@ -173,4 +179,4 @@ export function RootStackNavigation() {
       </CurrentStudentContext.Provider>
     </RootNavigatorContext.Provider>
   );
-}
+};

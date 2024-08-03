@@ -30,58 +30,17 @@ import { Text } from 'react-native-elements';
 
 
 export default function App() {
-  const [splashScreenHidden, setSplashScreenHidden] = useState(false);
-
-  const hideSplashScreen = () => {
-    if (!splashScreenHidden) {
-      setSplashScreenHidden(true);
-    }
-  };
-
-  const handlePress = () => {
-    hideSplashScreen();
-  };
-  
   setTimeout(() => {
     SplashScreen.hide();
   }, 200)
 
   return (
-    <>
-      {!splashScreenHidden && <TouchableOpacity
-        onPress={handlePress}
-        style={{ flex: 1 }}
-        activeOpacity={1}
-      >
+    <NavigationContainer>
+      <I18nextProvider i18n={i18n}>
         <StatusBar hidden />
-        <View style={styles.container}>
-        <Image
-          source={require('./assets/images/launch_screen_pl.png')}
-          resizeMode="stretch"
-          style={{ flex: 1, width: "100%" }}
-        />
-      </View>
-      </TouchableOpacity>}
-      {splashScreenHidden ? (
-        <NavigationContainer>
-          <I18nextProvider i18n={i18n}>
-            <StatusBar hidden />
-            <RootStackNavigation />
-          </I18nextProvider>
-        </NavigationContainer>
-      ) : null}
-    </>
+        <RootStackNavigation />
+      </I18nextProvider>
+    </NavigationContainer>
   );
   
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    width: '100%',
-    height: '100%',
-  },
-});
+};

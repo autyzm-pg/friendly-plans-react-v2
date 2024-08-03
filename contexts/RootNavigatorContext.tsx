@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 interface Props {
   editionMode: boolean;
-  setEditionMode: () => void;
+  setEditionMode: (mode: boolean) => void;
   loading: boolean,
   setLoading: (loaded: boolean) => void;
 }

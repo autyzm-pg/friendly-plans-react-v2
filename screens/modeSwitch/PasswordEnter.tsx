@@ -11,6 +11,7 @@ import { FlatButton } from '../../components/FlatButton';
 import { useRootNavigatorContext } from '../../contexts/RootNavigatorContext';
 import { Route } from '../../navigation';
 import { IconButton } from '../../components';
+import { executeQuery } from '../../services/DatabaseService';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -23,6 +24,11 @@ export const PasswordEnter: FC<Props> = ({navigation, password, setForgotPasswor
   const {editionMode, setEditionMode} = useRootNavigatorContext();
   const [passVis, setPassVis] = useState(false);
   const [field, setField] = useState('');
+
+  const changeMode = async() => {
+    await executeQuery(`INSERT OR REPLACE INTO EditionMode (id, editionMode) VALUES (1, (?));`, [+(!editionMode)]);
+    setEditionMode(!editionMode);
+  };
 
   const enterPassword = () => {
     return (<>
@@ -46,7 +52,7 @@ export const PasswordEnter: FC<Props> = ({navigation, password, setForgotPasswor
       <StudentSettingsButton
             onPress={() => {
               if(field == password) {
-                setEditionMode();
+                changeMode();
                 navigation.navigate(Route.Dashboard);
               }
               else {

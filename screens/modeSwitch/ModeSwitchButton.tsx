@@ -6,6 +6,7 @@ import { IconButtonNoFeedback } from '../../components/IconButtonNoFeedback';
 import { IconButton } from '../../components/IconButton';
 import { NavigationProp } from '@react-navigation/native';
 import { Route } from '../../navigation';
+import { executeQuery } from '../../services/DatabaseService';
 
 const longPressTime = 500;
 
@@ -15,6 +16,11 @@ interface Props {
 
 export const ModeSwitchButton: FC<Props> = ({navigation}) => {
   const {editionMode, setEditionMode} = useRootNavigatorContext();
+
+  const changeMode = async() => {
+    await executeQuery(`INSERT OR REPLACE INTO EditionMode (id, editionMode) VALUES (1, (?));`, [+(!editionMode)]);
+    setEditionMode(!editionMode);
+  };
 
   return (
     <>
@@ -28,7 +34,7 @@ export const ModeSwitchButton: FC<Props> = ({navigation}) => {
         hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
         containerStyle={styles.iconContainer}
         onLongPress={() => {}}
-        onPress={() => (setEditionMode())}
+        onPress={changeMode}
       />
       :
         <IconButtonNoFeedback
