@@ -26,18 +26,20 @@ export const ExportScreen: FC<Props> = ({ navigation, route }) => {
       await InnerGallery.getGallerySize(InnerGallery.imagesDir)
       :
       await InnerGallery.getGallerySize(InnerGallery.recordingsDir);
-      setSize(dirSize);
+      setSize(dirSize == '0 MB' ? '>1 MB' : dirSize);
     };
-    setDirSize();
+    setDirSize();    
   }, []);
 
   const exportAll = async() => {
     setExporting(true);
     const sub = subscribe(({ progress }) => { setExportProgress((progress*100).toFixed(0)); /*console.log(progress);*/ });
+    const currentDateTime = (new Date()).toISOString().replace(/\D/g, '');
+    //console.log(currentDateTime)
     if (route.params?.images) {
-      await zip(InnerGallery.imagesDir, InnerGallery.exportImgPath);
+      await zip(InnerGallery.imagesDir, InnerGallery.exportImgPath + currentDateTime + '.zip');
     } else {
-      await zip(InnerGallery.recordingsDir, InnerGallery.exportRecPath);
+      await zip(InnerGallery.recordingsDir, InnerGallery.exportRecPath + currentDateTime + '.zip');
     }
     sub.remove();
     setExporting(false);

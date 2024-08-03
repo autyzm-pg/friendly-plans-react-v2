@@ -10,8 +10,8 @@ import { zip, subscribe } from 'react-native-zip-archive';
 export class InnerGalleryService {
     static imagesDir = RNFS.DocumentDirectoryPath + '/Images/';
     static recordingsDir = RNFS.DocumentDirectoryPath + '/Recordings/';
-    static exportImgPath = RNFS.DownloadDirectoryPath + '/' + i18n.t('imageGallery:zip') + '.zip';
-    static exportRecPath = RNFS.DownloadDirectoryPath + '/' + i18n.t('recGallery:zip') + '.zip';
+    static exportImgPath = RNFS.DownloadDirectoryPath + '/' + i18n.t('imageGallery:zip');
+    static exportRecPath = RNFS.DownloadDirectoryPath + '/' + i18n.t('recGallery:zip');
 
     static createDirectory = async(directory: string) => {
         /* Create directory if one doesn't exists. */
