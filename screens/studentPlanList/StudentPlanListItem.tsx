@@ -115,7 +115,7 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, updatePlans })
         <Card style={[styles.card, isSwipeableOpen && styles.swipeableContainerOpen]}>
           <View style={styles.cardTextContainer}>
             {!isSwipeableOpen && <Emoji symbol={emoji} />}
-            <StyledText style={styles.cardText}>{name}</StyledText>
+            <StyledText style={styles.cardText} ellipsizeMode='tail' numberOfLines={2}>{name}</StyledText>
           </View>
           {!isSwipeableOpen && 
             <PlayButton 
@@ -159,8 +159,9 @@ const styles = StyleSheet.create({
   },
   cardTextContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    flex: 1
   },
   deleteContainer: {
     backgroundColor: palette.purpleLightGray,
