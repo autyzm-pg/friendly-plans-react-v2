@@ -20,7 +20,7 @@ interface Props {
 
 
 export const PasswordDelete: FC<Props> = ({navigation, setForgotPassword, setNewPassword}) => {
-  const factoryPassword = 'Haslo'
+  const factoryPassword = 'PP2024'
   const [passVis, setPassVis] = useState(false);
   const [password, setPassword] = useState('');
 
