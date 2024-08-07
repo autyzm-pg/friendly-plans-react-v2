@@ -38,7 +38,7 @@ export const ModeSwitchScreen: FC<Props> = ({navigation}) => {
   }, []);
 
   return (
-    <NarrowScreenTemplate title={getScreenName()} navigation={navigation} canNavigateBack={password ? true : false}>
+    <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
         {loading &&
           <View style={styles.loadingContainer}>
             <ActivityIndicator size='large' color='#262a40' />
