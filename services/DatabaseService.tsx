@@ -29,6 +29,7 @@ export default class DatabaseService {
       });
       console.log('Database opened');
       await createTables();
+      await createInitPassword();
     } catch (error) {
       console.error('Error opening database:', error);
     }
@@ -38,6 +39,17 @@ export default class DatabaseService {
     if (DatabaseService.database) {
       await DatabaseService.database.close();
     }
+  }
+}
+
+export const createInitPassword = async () => {
+  const passwordTableEmptyCheck = `SELECT COUNT(*) as count FROM Password`;
+  const result = await executeQuery(passwordTableEmptyCheck);
+  const count = result.rows.item(0).count;
+
+  if (count === 0) {
+    const initPassword = `INSERT INTO Password (password) VALUES ('PP2024');`
+    await executeQuery(initPassword);
   }
 }
 

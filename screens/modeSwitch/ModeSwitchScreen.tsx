@@ -3,11 +3,10 @@ import { i18n } from '../../locale';
 
 import { NavigationProp } from '@react-navigation/native';
 import { executeQuery } from '../../services/DatabaseService';
-import { NarrowScreenTemplate, StyledText } from '../../components';
+import { NarrowScreenTemplate } from '../../components';
 import { PasswordEnter } from './PasswordEnter'
 import { PasswordDelete } from './PasswordDelete'
 import { PasswordCreation } from './PasswordCreation';
-import { palette, typography } from '../../styles';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 interface Props {
@@ -32,11 +31,11 @@ export const ModeSwitchScreen: FC<Props> = ({navigation}) => {
     }
     setPassword(resultSet.rows.item(0).password);
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     getPassword();
-  }, [])
+  }, []);
 
   return (
     <NarrowScreenTemplate title={getScreenName()} navigation={navigation}>
@@ -50,7 +49,7 @@ export const ModeSwitchScreen: FC<Props> = ({navigation}) => {
         {!loading && !password && <PasswordCreation navigation={navigation} setNewPassword={setPassword}/>}
     </NarrowScreenTemplate>
   );
-}
+};
 
 const styles = StyleSheet.create({
   loadingContainer: {
