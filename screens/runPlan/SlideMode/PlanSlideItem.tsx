@@ -7,6 +7,7 @@ import Sound from 'react-native-sound';
 import { palette } from '../../../styles';
 import { PlanItemTimer } from '../PlanItemTimer';
 import { SoundService } from '../../../services/SoundService';
+import { Text } from 'react-native-elements';
 
 interface Props {
   planItem: PlanItem;
@@ -15,6 +16,10 @@ interface Props {
   isUpperCase: boolean;
   type: StudentDisplayOption;
   timerStop: boolean;
+  onPressIn: () => void;
+  onPressOut: () => void;
+  goBack: () => void;
+  nextPage: () => void;
 }
 
 export class PlanSlideItem extends React.PureComponent<Props> {
@@ -74,32 +79,57 @@ export class PlanSlideItem extends React.PureComponent<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.timer}>
-          <View style={{justifyContent: 'flex-start', flex: 0}}>
-            {(this.props.planItem.lector || this.props.planItem.voicePath.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
+          <View style={styles.lectorContainer}>
+            {(this.props.planItem.lector || this.props.planItem.voicePath.length > 0) 
+              ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> 
+              : <View></View>
+            }
+            <IconButton name="arrow-back"
+                        type="material"
+                        size={50}
+                        color="#E7DCDA"
+                        onPressIn={this.props.onPressIn}
+                        onPressOut={this.props.onPressOut}
+                        onLongPress={this.props.goBack}
+                        delayLongPress={2000}
+                        style={{marginBottom: 35}}
+            />
           </View>
-          
-          {this.showImage && (
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.image}
-                source={{ uri: planItem.image }}
+          <View style={styles.imageAndTextContainer}>
+            {this.showImage && (
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.image}
+                  source={{ uri: planItem.image }}
+                />
+              </View>
+            )}
+            {this.showText && (
+              <PlanNameText
+                planName={this.props.planItem.nameForChild}
+                isUpperCase={this.props.isUpperCase}
+                textSize={this.props.textSize}
+                alignTextCenter
               />
-            </View>
-          )}
-          <View style={{justifyContent: 'flex-end', flex: 0}}>
-            {!!this.props.planItem.time ? <PlanItemTimer itemTime={this.props.planItem.time} /> : null}
+            )}
+
+          </View>
+          <View style={styles.timerContainer}>
+            {!!this.props.planItem.time 
+              ? <PlanItemTimer itemTime={this.props.planItem.time} /> 
+              : <View></View>
+            }
+            
+            <IconButton name="arrow-bold-right"
+                        type="entypo"
+                        size={120}
+                        color={palette.playButton}
+                        onPress={this.props.nextPage}
+            />
           </View>
         </View>
 
-        {this.showText && (
-          <PlanNameText
-            planName={this.props.planItem.nameForChild}
-            isUpperCase={this.props.isUpperCase}
-            textSize={this.props.textSize}
-            alignTextCenter
-          />
-        )}
       </View>
     );
   }
@@ -114,6 +144,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
+    height: '100%',
     justifyContent: 'center',
     backgroundColor: palette.background,
     flexDirection: 'column',
@@ -122,6 +153,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     marginBottom: 16,
+    backgroundColor: palette.break
   },
   image: {
     flex: 1,
@@ -129,4 +161,23 @@ const styles = StyleSheet.create({
   nameTextColor: {
     color: palette.textBlack,
   },
+  lectorContainer: {
+    flex: 0,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    width: 120
+  },
+  timerContainer: {
+    justifyContent: 'space-between',
+    flex: 0,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    width: 120
+  },
+  imageAndTextContainer: {
+    height: '100%',
+    flex: 1,
+    alignItems: 'center'
+  }
 });

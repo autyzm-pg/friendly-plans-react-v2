@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
   planNameText: {
     color: palette.textBody,
     textAlign: 'left',
+    paddingBottom: 32,
+    paddingTop: 16
   },
   textAlignLeft: {
     textAlign: 'left',
