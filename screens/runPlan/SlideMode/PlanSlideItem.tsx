@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     marginBottom: 16,
-    backgroundColor: palette.break
   },
   image: {
     flex: 1,

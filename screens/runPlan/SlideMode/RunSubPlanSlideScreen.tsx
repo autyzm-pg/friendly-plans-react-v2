@@ -92,23 +92,10 @@ export const RunSubPlanSlideScreen: React.FC<Props> = ({navigation, route}) => {
               textSize={state.student.textSize}
               isUpperCase={state.student.isUpperCase}
               planItem={state.planItem}
-            />
-          </View>
-          <View style={styles.containerForArrows}>
-            <IconButton name="arrow-back"
-                        type="material"
-                        size={50}
-                        color="#E7DCDA"
-                        onPressIn={onPressIn}
-                        onPressOut={onPressOut}
-                        onLongPress={goBack}
-                        delayLongPress={2000}
-            />
-            <IconButton name="arrow-bold-right"
-                        type="entypo"
-                        size={120}
-                        color={palette.playButton}
-                        onPress={nextPage}
+              onPressIn={onPressIn}
+              onPressOut={onPressOut}
+              goBack={goBack}
+              nextPage={nextPage}
             />
           </View>
         </Card>

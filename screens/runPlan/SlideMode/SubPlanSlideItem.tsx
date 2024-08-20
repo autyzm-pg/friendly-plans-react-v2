@@ -15,6 +15,10 @@ interface Props {
   isUpperCase: boolean;
   type: StudentDisplayOption;
   planItem?: PlanItem;
+  onPressIn: () => void;
+  onPressOut: () => void;
+  goBack: () => void;
+  nextPage: () => void;
 }
 
 export class SubPlanSlideItem extends React.PureComponent<Props> {
@@ -72,30 +76,54 @@ export class SubPlanSlideItem extends React.PureComponent<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.timer}>
-          <View style={{justifyContent: 'flex-start'}}>
-            {(this.props.planSubItem.lector || this.props.planSubItem.voicePath?.length > 0) ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> : null}
+          <View style={styles.lectorContainer}>
+            {(this.props.planSubItem.lector || this.props.planSubItem.voicePath?.length > 0) 
+              ? <IconButton size={64} onPress={this.speak} name="volume-high" type="material-community"/> 
+              : <View></View>
+            }
+            <IconButton name="arrow-back"
+                        type="material"
+                        size={50}
+                        color="#E7DCDA"
+                        onPressIn={this.props.onPressIn}
+                        onPressOut={this.props.onPressOut}
+                        onLongPress={this.props.goBack}
+                        delayLongPress={2000}
+                        style={{marginBottom: 35}}
+            />
           </View>
-          {this.showImage && (
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.image}
-                source={{ uri: planSubItem.image }}
+          <View style={styles.imageAndTextContainer}>
+            {this.showImage && (
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.image}
+                  source={{ uri: planSubItem.image }}
+                />
+              </View>
+            )}
+            {this.showText && (
+              <PlanNameText
+                planName={this.props.planSubItem.nameForChild}
+                isUpperCase={this.props.isUpperCase}
+                textSize={this.props.textSize}
+                alignTextCenter
               />
-            </View>
-          )}
-          <View style={{justifyContent: 'flex-end'}}>
-            {!!this.props.planSubItem.time ? <PlanItemTimer itemTime={this.props.planSubItem.time} /> : null}
+            )}
+          </View>
+          <View style={styles.timerContainer}>
+            {!!this.props.planSubItem.time 
+              ? <PlanItemTimer itemTime={this.props.planSubItem.time} /> 
+              : <View></View>
+            }
+            <IconButton name="arrow-bold-right"
+                        type="entypo"
+                        size={120}
+                        color={palette.playButton}
+                        onPress={this.props.nextPage}
+            />
           </View>
         </View>
-        {this.showText && (
-          <PlanNameText
-            planName={this.props.planSubItem.nameForChild}
-            isUpperCase={this.props.isUpperCase}
-            textSize={this.props.textSize}
-            alignTextCenter
-          />
-        )}
       </View>
     );
   }
@@ -113,6 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: palette.background,
     flexDirection: 'column',
+    height: '100%',
   },
   imageContainer: {
     flex: 1,
@@ -125,4 +154,23 @@ const styles = StyleSheet.create({
   nameTextColor: {
     color: palette.textBlack,
   },
+  lectorContainer: {
+    flex: 0,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    width: 120
+  },
+  timerContainer: {
+    justifyContent: 'space-between',
+    flex: 0,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    width: 120
+  },
+  imageAndTextContainer: {
+    height: '100%',
+    flex: 1,
+    alignItems: 'center'
+  }
 });
