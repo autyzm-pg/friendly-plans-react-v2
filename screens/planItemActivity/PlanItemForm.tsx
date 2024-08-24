@@ -66,8 +66,8 @@ export const PlanItemForm: FC<Props> = ({navigation, onSubmit, planItem, itemTyp
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(i18n.t('common:required')),
-    nameForChild: Yup.string(),
-    time: Yup.number(),
+    nameForChild: Yup.string().nullable(),
+    time: Yup.number().nullable(),
   });
 
   const renderFormControls = (formikProps: FormikProps<PlanItemFormData>) => {

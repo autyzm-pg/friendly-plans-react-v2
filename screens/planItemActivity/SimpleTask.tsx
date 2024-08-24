@@ -72,7 +72,7 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style,
 
   const saveNewTask = async () => {
     taskSaved.current = true;
-    formikProps.submitForm()
+    formikProps.submitForm();
     ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
   }
 
