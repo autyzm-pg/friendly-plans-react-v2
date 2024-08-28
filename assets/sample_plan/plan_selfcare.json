@@ -2,6 +2,7 @@
     {
         "name": "Przewodnik",
         "emoji": "✨",
+        "isReadonly": true,
         "planItems": [
             {
                 "name": "Przewodnik po aplikacji Przyjazny Plan",
@@ -19,6 +20,315 @@
     {
         "name": "Przykładowy plan",
         "emoji": "🍀",
+        "isReadonly": true,
+        "planItems": [
+            {
+                "name": "Start",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "",
+                "itemOrder": 1,
+                "time": null,
+                "imageUri": "sample_plan/slides/slajd_start.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Czytam",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Czytam",
+                "itemOrder": 2,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/edukacja_czytam_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Bawię się",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Bawię się",
+                "itemOrder": 3,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/czas_wolny_bawie_sie_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Rysuję",
+                "type": "complexTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Rysuję",
+                "itemOrder": 4,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/edukacja_rysuje_bez_podpisu.jpg",
+                "voicePath": "",
+                "subItems": [
+                    {
+                        "name": "Statek kontur",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur.jpg",
+                        "time": null,
+                        "itemOrder": 1,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 1",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_1.jpg",
+                        "time": null,
+                        "itemOrder": 2,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 2",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_2.jpg",
+                        "time": null,
+                        "itemOrder": 3,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 3",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_3.jpg",
+                        "time": null,
+                        "itemOrder": 4,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 4",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_4.jpg",
+                        "time": null,
+                        "itemOrder": 5,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 5",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_5.jpg",
+                        "time": null,
+                        "itemOrder": 6,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 6",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_6.jpg",
+                        "time": null,
+                        "itemOrder": 7,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Statek kontur 7",
+                        "completed": false,
+                        "image": "sample_plan/graphomotorics/statek_kontur_7.jpg",
+                        "time": null,
+                        "itemOrder": 8,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": ""
+                    },
+                    {
+                        "name": "Koniec",
+                        "completed": false,
+                        "image": "sample_plan/slides/slajd_koniec.jpg",
+                        "time": null,
+                        "itemOrder": 9,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": ""
+                    }
+                ]
+            },
+            {
+                "name": "Przerwa",
+                "type": "break",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "",
+                "itemOrder": 5,
+                "time": 120,
+                "imageUri": "sample_plan/slides/slajd_przerwa.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Słucham",
+                "type": "interaction",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Słucham",
+                "itemOrder": 6,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/edukacja_slucham_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Bawię się z kolegą",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Bawię się z kolegą",
+                "itemOrder": 7,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/czas_wolny_bawie_sie_z_kolega_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Myję ręce",
+                "type": "complexTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Myję ręce",
+                "itemOrder": 8,
+                "time": null,
+                "imageUri": "sample_plan/plan_pictures/samoobsluga_myje_rece_bez_podpisu.jpg",
+                "voicePath": "",
+                "subItems": [
+                    {
+                        "name": "Podciągam rękawy",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_podciagam_rekawy_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 1,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": null,
+                        "nameForChild": "Podciągam rękawy"
+                    },
+                    {
+                        "name": "Odkręcam wodę",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_odkrecam_wode_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 2,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Odkręcam wodę"
+                    },
+                    {
+                        "name": "Biorę mydło",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_biore_mydlo_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 3,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Biorę mydło"
+                    },
+                    {
+                        "name": "Myję ręce",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_myje_rece_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 4,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Myję ręce"
+                    },
+                    {
+                        "name": "Zakręcam wodę",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_zakrecam_wode_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 5,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Zakręcam wodę"
+                    },
+                    {
+                        "name": "Wycieram ręce",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_wycieram_rece_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 6,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Wycieram ręce"
+                    },
+                    {
+                        "name": "Opuszczam rękawy",
+                        "completed": false,
+                        "image": "sample_plan/selfcare/mycie_rak_opuszczam_rekawy_bez_podpisu.jpg",
+                        "time": null,
+                        "itemOrder": 7,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": "Opuszczam rękawy"
+                    },
+                    {
+                        "name": "Koniec",
+                        "completed": false,
+                        "image": "sample_plan/slides/slajd_koniec.jpg",
+                        "time": null,
+                        "itemOrder": 8,
+                        "type": "subElement",
+                        "lector": false,
+                        "voicePath": "",
+                        "nameForChild": ""
+                    }
+                ]
+            },
+            {
+                "name": "Śniadanie",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": true,
+                "nameForChild": "Śniadanie",
+                "itemOrder": 9,
+                "time": 120,
+                "imageUri": "sample_plan/plan_pictures/edukacja_sniadania_bez_podpisu.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "Koniec",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": false,
+                "nameForChild": "",
+                "itemOrder": 10,
+                "time": null,
+                "imageUri": "sample_plan/slides/slajd_koniec.jpg",
+                "voicePath": ""
+            }
+        ]
+    },
+    {
+        "name": "Przykładowy plan - do edycji",
+        "emoji": "📋",
+        "isReadonly": false,
         "planItems": [
             {
                 "name": "Start",

@@ -225,7 +225,7 @@ export const createTutorialWithSamplePlans = async (): Promise<Student | undefin
     const sampleData = require('../assets/sample_plan/plan_selfcare.json');
     
     for (const plan of sampleData) {
-      const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji);
+      const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji, plan.isReadonly);
       
       let index = 0;
       for (const planItem of plan.planItems) {

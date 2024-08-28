@@ -15,17 +15,18 @@ export class Plan {
   emoji!: string;
 
   
-  static createPlan = async (studentId: string, name: string, emoji: string): Promise<Plan> => {
+  static createPlan = async (studentId: string, name: string, emoji: string, isReadonly?: boolean): Promise<Plan> => {
     const insertIntoPlanTable = `
-      INSERT INTO Plan (name, studentId, emoji)
-      VALUES ((?), (?), (?));
+      INSERT INTO Plan (name, studentId, emoji, is_readonly)
+      VALUES ((?), (?), (?), (?));
     `;
     await executeQuery('BEGIN TRANSACTION;');
 
     await executeQuery(insertIntoPlanTable, [
       name, 
       studentId, 
-      emoji ?? DEFAULT_EMOJI
+      emoji ?? DEFAULT_EMOJI,
+      isReadonly ? 1 : 0
     ]);
     
     const resultSet = await executeQuery(`SELECT * FROM Plan WHERE name = (?) ORDER BY id DESC LIMIT 1`, [name])
