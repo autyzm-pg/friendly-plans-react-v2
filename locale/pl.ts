@@ -92,6 +92,7 @@ const translations = {
     deleteButton: 'Usuń',
     import: 'Importuj',
     export: 'Eksportuj',
+    close: 'Zamknij',
   },
   validation: {
     email: 'Adres email musi być poprawny',
@@ -180,6 +181,9 @@ const translations = {
     allTasksCompletedDescription: 'Wszystkie zadania z planu \'{{name}}\' zostały ukończone.',
     playFromBeginning: 'Włącz od początku',
     stateChangeInfo: 'Zmień stan wszystkich zadań na nieukończone (w widoku edycji planu), aby móc uruchomić go ponownie.',
+    planIsReadonlyTitle: 'PLAN TYLKO DO ODCZYTU',
+    planIsReadonly: 'Plan \'{{name}}\' służy jedynie prezentacji. Jeśli chcesz go edytować, utwórz jego kopię.',
+    createCopy: 'Skopiuj plan'
   },
   planItemActivity: {
     viewTitleTask: 'Zadanie',

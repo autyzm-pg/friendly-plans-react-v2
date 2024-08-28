@@ -92,6 +92,7 @@ const translations = {
     deleteButton: 'Remove',
     import: 'Import',
     export: 'Export',
+    close: 'Close',
   },
   validation: {
     email: 'Must be a valid email',
@@ -180,6 +181,9 @@ const translations = {
     allTasksCompletedDescription: 'All of the tasks in the plan \'{{name}}\' are completed.',
     playFromBeginning: 'Run from beginning',
     stateChangeInfo: 'Change the state of all tasks to unfinished (in the plan editing view) to enable running the plan again.',
+    planIsReadonlyTitle: 'PLAN IS READ-ONLY',
+    planIsReadonly: 'Plan \'{{name}}\' is read-only. If you want to make any changes, please make a copy of this plan.',
+    createCopy: 'Copy plan'
   },
   planItemActivity: {
     viewTitleTask: 'Task',

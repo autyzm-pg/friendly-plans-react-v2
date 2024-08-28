@@ -31,15 +31,40 @@ const StudentPlanListItem: React.FC<Props> = ({ navigation, plan, updatePlans })
     return unsubscribe;
   }, [navigation]);
 
+  const copyPlan = async () => {
+    if (currentStudent) {
+      const newPlan = await Plan.createPlan(currentStudent?.id, plan.name + ' [kopia]', plan.emoji);
+      const planItems = await PlanItem.getPlanItems(plan);
+      for (const item of planItems) {
+        await PlanItem.copyPlanItem(newPlan, item.type, item);
+      }
+      updatePlans()
+    }
+  }
+
   const navigateToUpdatePlan = () => {    
-    navigation.navigate(Route.PlanActivity, {
-      currentStudent,
-      plan,
-    });
+    if (!plan.isReadonly) {
+      navigation.navigate(Route.PlanActivity, {
+        currentStudent,
+        plan,
+      });
+    } else {
+      Alert.alert(i18n.t('planList:planIsReadonlyTitle'), i18n.t('planList:planIsReadonly', {name: plan.name}), [
+        {
+          text: i18n.t('planList:createCopy'),
+          onPress: () => {copyPlan()},
+        },
+        {
+          text: i18n.t('common:ok'),
+          onPress: () => {},
+        },
+      ]);
+    }
   };
 
   const renderRightActions = () => {
     return (
+      !plan.isReadonly &&
       <View style={[styles.deleteContainer]}>
         <Icon name="delete" onPress={handlePressDelete} />
       </View>
