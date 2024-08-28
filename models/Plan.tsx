@@ -13,11 +13,12 @@ export class Plan {
   id!: string;
   studentId!: string;
   emoji!: string;
+  isReadonly!: boolean;
 
   
   static createPlan = async (studentId: string, name: string, emoji: string, isReadonly?: boolean): Promise<Plan> => {
     const insertIntoPlanTable = `
-      INSERT INTO Plan (name, studentId, emoji, is_readonly)
+      INSERT INTO Plan (name, studentId, emoji, isReadonly)
       VALUES ((?), (?), (?), (?));
     `;
     await executeQuery('BEGIN TRANSACTION;');

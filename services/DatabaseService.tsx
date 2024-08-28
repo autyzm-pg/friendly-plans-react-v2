@@ -8,7 +8,7 @@ import { Route } from '../navigation';
 export default class DatabaseService {
   private static database: SQLite.SQLiteDatabase | undefined;
   private readonly databaseName: string = 'friendly_plans.db';
-  private readonly DATABASE_VERSION: number = 2;
+  private readonly DATABASE_VERSION: number = 3;
 
   constructor() {
   }
@@ -49,9 +49,9 @@ export default class DatabaseService {
         tx.executeSql('PRAGMA user_version;', [], (tx, result) => {
           let currentVersion = result.rows.item(0).user_version;
           if (DatabaseService.database) {
-            if (!currentVersion || currentVersion < 2) {
-              DatabaseService.database.executeSql('ALTER TABLE Plan ADD COLUMN is_readonly INTEGER DEFAULT 0;');
-              currentVersion = 2;
+            if (!currentVersion || currentVersion < 3) {
+              DatabaseService.database.executeSql('ALTER TABLE Plan ADD COLUMN isReadonly INTEGER DEFAULT 0;');
+              currentVersion = 3;
             }
             DatabaseService.database.executeSql(`PRAGMA user_version = ${this.DATABASE_VERSION};`);
           }
