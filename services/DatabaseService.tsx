@@ -7,8 +7,8 @@ import { useCurrentStudentContext } from '../contexts/CurrentStudentContext';
 import { Route } from '../navigation';
 export default class DatabaseService {
   private static database: SQLite.SQLiteDatabase | undefined;
-  private readonly databaseName: string = 'test_db.db';
-  private readonly databaseVersion: number = 1;
+  private readonly databaseName: string = 'friendly_plans.db';
+  private readonly DATABASE_VERSION: number = 2;
 
   constructor() {
   }
@@ -25,11 +25,13 @@ export default class DatabaseService {
     try {
       DatabaseService.database = await SQLite.openDatabase({
         name: this.databaseName,
-        location: 'default' 
+        location: 'default'
       });
+
       console.log('Database opened');
       await createTables();
       await createInitPassword();
+      await this.migrateDatabase();
     } catch (error) {
       console.error('Error opening database:', error);
     }
@@ -40,6 +42,23 @@ export default class DatabaseService {
       await DatabaseService.database.close();
     }
   }
+  
+  async migrateDatabase() {
+    if (DatabaseService.database) {
+      DatabaseService.database.transaction(tx => {
+        tx.executeSql('PRAGMA user_version;', [], (tx, result) => {
+          let currentVersion = result.rows.item(0).user_version;
+          if (DatabaseService.database) {
+            if (!currentVersion || currentVersion < 2) {
+              DatabaseService.database.executeSql('ALTER TABLE Plan ADD COLUMN is_readonly INTEGER DEFAULT 0;');
+              currentVersion = 2;
+            }
+            DatabaseService.database.executeSql(`PRAGMA user_version = ${this.DATABASE_VERSION};`);
+          }
+        });
+      });
+    }
+  };
 }
 
 export const createInitPassword = async () => {
