@@ -1,4 +1,4 @@
-import React, { ReactElement, FC, useState } from 'react';
+import React, { ReactElement, FC, useState, useEffect, Ref } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { dimensions, getElevation, palette, typography } from '../styles';
 import { IconButton } from './IconButton';
@@ -8,13 +8,21 @@ interface Props {
   children?: ReactElement;
   modalContent: ReactElement;
   title: string;
+  hide?: boolean;
 }
 
-export const ModalTrigger: FC<Props> = ({ children, modalContent, title }) => {
+export const ModalTrigger: FC<Props> = ({ children, modalContent, title, hide }) => {
   const [isVisible, setModalVisibility] = useState(false);
 
   const onOpen = () => setModalVisibility(true);
   const onClose = () => setModalVisibility(false);
+
+  useEffect(() => {
+    console.log(hide)
+    if (hide) {
+      onClose()
+    }
+  }, [hide])
 
   const renderModal = () => (
     <Modal transparent animationType="fade" visible={isVisible} onRequestClose={onClose}>

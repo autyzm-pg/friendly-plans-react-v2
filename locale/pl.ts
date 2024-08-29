@@ -183,7 +183,14 @@ const translations = {
     stateChangeInfo: 'Zmień stan wszystkich zadań na nieukończone (w widoku edycji planu), aby móc uruchomić go ponownie.',
     planIsReadonlyTitle: 'PLAN TYLKO DO ODCZYTU',
     planIsReadonly: 'Plan \'{{name}}\' służy jedynie prezentacji. Jeśli chcesz go edytować, utwórz jego kopię.',
-    createCopy: 'Skopiuj plan'
+    createCopy: 'Skopiuj plan',
+    help: 'Witaj w Przyjaznym Planie!',
+    helpDescription: 'Chcesz dowiedzieć się jak korzystać z aplikacji? Przygotowaliśmy dla Ciebie tutorial!',
+    helpDescriptionFunctions: 'Jeśli chcesz zobaczyć, jakie funkcje oferujemy, włącz plan "Przewodnik".',
+    helpDescriptionPlans: 'Jeśli chcesz zobaczyć jak wyglądają plany aktywności, skorzystaj z planu "Przykładowy plan".',
+    helpDescriptionGuide: 'Oba plany znajdziesz na liście ucznia "Samouczek". Jeśli go usunąłeś, możesz dodać go z powrotem, wybierając przycisk poniżej.',
+    addTutorial: 'Witaj w Przyjaznym Planie!',
+    addSampleStudent: 'Dodaj samouczek'
   },
   planItemActivity: {
     viewTitleTask: 'Zadanie',

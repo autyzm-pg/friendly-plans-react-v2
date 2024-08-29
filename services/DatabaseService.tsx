@@ -205,40 +205,38 @@ export const executeQuery = async (query: string, params: (string | number | Dat
 }
 
 export const createTutorialWithSamplePlans = async (): Promise<Student | undefined> => {
-  const students = await Student.getStudents();
-  if (!students || students.length === 0) {
-    const student = await Student.createStudent({
-      name: 'Samouczek', 
-      displaySettings: StudentDisplayOption.ImageWithTextSlide, 
-      textSize: StudentTextSizeOption.Medium, 
-      isUpperCase: true, 
-      isSwipeBlocked: false, 
-      timer: TimerSound.beep
-    })
+  const student = await Student.createStudent({
+    name: 'Samouczek', 
+    displaySettings: StudentDisplayOption.ImageWithTextSlide, 
+    textSize: StudentTextSizeOption.Medium, 
+    isUpperCase: true, 
+    isSwipeBlocked: false, 
+    timer: TimerSound.beep
+  })
 
-    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
-    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
-    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphomotorics/`);
-    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
-    await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/tutorial/`);
-
-    const sampleData = require('../assets/sample_plan/plan_selfcare.json');
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/selfcare/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/slides/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/graphomotorics/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/plan_pictures/`);
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/tutorial/`);
+  const sampleData = require('../assets/sample_plan/plan_selfcare.json');
+  
+  for (const plan of sampleData) {
+    const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji, plan.isReadonly);
     
-    for (const plan of sampleData) {
-      const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji, plan.isReadonly);
-      
-      let index = 0;
-      for (const planItem of plan.planItems) {
-        planItem.imageUri = await copyFromAssetsToRNFS(planItem.imageUri);
-        if (planItem.type === 'complexTask') {
-          for (const subItem of planItem.subItems) {
-            subItem.image = await copyFromAssetsToRNFS(subItem.image);
-          }
+    let index = 0;
+    for (const planItem of plan.planItems) {
+      if (!RNFS.readFile(`${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`, 'base64'))
+      planItem.imageUri = await copyFromAssetsToRNFS(planItem.imageUri);
+      if (planItem.type === 'complexTask') {
+        for (const subItem of planItem.subItems) {
+          if (!RNFS.readFile(`${RNFS.DocumentDirectoryPath}/${subItem.imageUri}`, 'base64'))
+          subItem.image = await copyFromAssetsToRNFS(subItem.image);
         }
-        const newPlanItem = await PlanItem.createPlanItem(newPlan, planItem.type, planItem, index - 1);
-        index++;
       }
+      const newPlanItem = await PlanItem.createPlanItem(newPlan, planItem.type, planItem, index - 1);
+      index++;
     }
-    return student;
   }
+  return student;
 }
