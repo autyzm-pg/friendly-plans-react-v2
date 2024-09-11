@@ -172,7 +172,7 @@
                 "type": "break",
                 "completed": false,
                 "lector": false,
-                "nameForChild": "",
+                "nameForChild": "Przerwa",
                 "itemOrder": 5,
                 "time": 120,
                 "imageUri": "sample_plan/plan_pictures/czas_wolny_przerwa_bez_podpisu.jpg",
