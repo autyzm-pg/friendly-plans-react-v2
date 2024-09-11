@@ -67,7 +67,7 @@
                 "voicePath": "",
                 "subItems": [
                     {
-                        "name": "Statek kontur",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur.jpg",
                         "time": null,
@@ -78,7 +78,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 1",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_1.jpg",
                         "time": null,
@@ -89,7 +89,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 2",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_2.jpg",
                         "time": null,
@@ -100,7 +100,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 3",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_3.jpg",
                         "time": null,
@@ -111,7 +111,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 4",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_4.jpg",
                         "time": null,
@@ -122,7 +122,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 5",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_5.jpg",
                         "time": null,
@@ -133,7 +133,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 6",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_6.jpg",
                         "time": null,
@@ -144,7 +144,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Statek kontur 7",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/graphomotorics/statek_kontur_7.jpg",
                         "time": null,
@@ -155,7 +155,7 @@
                         "nameForChild": ""
                     },
                     {
-                        "name": "Koniec",
+                        "name": "",
                         "completed": false,
                         "image": "sample_plan/slides/slajd_koniec.jpg",
                         "time": null,

@@ -192,7 +192,6 @@ export const executeQuery = async (query: string, params: (string | number | Dat
     }
     db.transaction((tx) => {
       tx.executeSql(query, params, (tx, results) => {
-          console.log("Query completed");
           resolve(results);
         }, (tx, error) => {
           console.log('Error:', error,);
@@ -227,7 +226,6 @@ export const createTutorialWithSamplePlans = async (): Promise<Student | undefin
     let index = 0;
     for (const planItem of plan.planItems) {
       planItem.imageUri = await copyFromAssetsToRNFS(planItem.imageUri);
-      console.log(planItem.imageUri)
       if (planItem.type === 'complexTask') {
         for (const subItem of planItem.subItems) {
           subItem.image = await copyFromAssetsToRNFS(subItem.image);

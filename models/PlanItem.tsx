@@ -29,59 +29,6 @@ export const PLAN_ITEMS_ICONS: PlanItemsIcons = {
 };
 
 export class PlanItem implements PlanElement {
-  // static create = (
-  //   plan: Plan,
-  //   type: PlanItemType,
-  //   name: string = i18n.t('updatePlan:planItemNamePlaceholder'),
-  //   lastItemOrder: number,
-  // ): Promise<RNFirebase.firestore.DocumentReference> =>
-  //   getPlanItemsRef(plan.studentId, plan.id).add({
-  //     name,
-  //     studentId: plan.studentId,
-  //     planId: plan.id,
-  //     type,
-  //     completed: false,
-  //     lector: false,
-  //     nameForChild: i18n.t('planItemActivity:taskNameForChild'),
-  //     itemOrder: lastItemOrder + 1,
-  //     voicePath: '',
-  //   });
-
-  // static async createPlanItem(
-  //   plan: Plan,
-  //   type: PlanItemType,
-  //   data: PlanItemFormData,
-  //   lastItemOrder: number,
-  // ): Promise<PlanItem> {
-  //   const { id } = await getPlanItemsRef(plan.studentId, plan.id).add({
-  //     name: data.name,
-  //     studentId: plan.studentId,
-  //     planId: plan.id,
-  //     type,
-  //     completed: false,
-  //     lector: data.lector,
-  //     nameForChild: data.nameForChild,
-  //     itemOrder: lastItemOrder + 1,
-  //     time: data.time,
-  //     image: data.imageUri,
-  //     voicePath: data.voicePath,
-  //   });
-
-  //   return Object.assign(new PlanItem(), {
-  //     id,
-  //     name: data.name,
-  //     studentId: plan.studentId,
-  //     planId: plan.id,
-  //     type,
-  //     completed: false,
-  //     lector: data.lector,
-  //     nameForChild: data.nameForChild,
-  //     itemOrder: lastItemOrder + 1,
-  //     time: data.time,
-  //     image: data.imageUri,
-  //     voicePath: data.voicePath,
-  //   });
-  // }
 
   id!: string;
   name!: string;
@@ -164,43 +111,6 @@ export class PlanItem implements PlanElement {
     this.update({ type });
   };
 
-  // update = (changes: object) => getPlanItemRef(this.studentId, this.planId, this.id).update(changes);
-  // delete = async () => {
-  //   await this.deleteChildren();
-  //   if(this.image) {
-  //     await ImagePicker.cleanSingle(this.image.substring(0, this.image.lastIndexOf('/')));
-  //   }
-
-  //   if(this.voicePath) {
-  //     await ImagePicker.cleanSingle(this.voicePath.substring(0, this.voicePath.lastIndexOf('/')));
-  //   }
-
-  //   await this.getRef().delete();
-  // };
-
-  // deleteChildren = async () => {
-  //  this.getChildCollectionRef().get().then(snap => {
-  //    snap.docs.forEach(doc => {
-  //      const image = doc.get('image');
-  //      const voicePath = doc.get('voicePath');
-  //      if (image) {
-  //        ImagePicker.cleanSingle(image.substring(0, image.lastIndexOf('/')));
-  //      }
-
-  //      if(voicePath) {
-  //        ImagePicker.cleanSingle(voicePath.substring(0, voicePath.lastIndexOf('/')));
-  //      }
-
-  //      doc.ref.delete();
-  //    });
-  //  });
-  // };
-
-  // getChildCollectionRef: () => RNFirebase.firestore.CollectionReference = () =>
-  //   getPlanSubItemsRef(this.studentId, this.planId, this.id);
-  // getChildType: () => ParameterlessConstructor<SubscribableModel> = () => PlanSubItem;
-  // getRef: () => RNFirebase.firestore.DocumentReference = () => getPlanItemRef(this.studentId, this.planId, this.id);
-
   static createPlanItem = async (
     plan: Plan,
     type: PlanItemType,
@@ -220,7 +130,6 @@ export class PlanItem implements PlanElement {
       image: data.imageUri,
       voicePath: data.voicePath,
     }
-    //console.log(data.imageUri)
     
     const insertIntoPlanItemTable = `
       INSERT INTO PlanItem (planId, planElementId)

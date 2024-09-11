@@ -221,7 +221,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerCompleted: {
-    // backgroundColor: palette.primaryVariant,
     backgroundColor: palette.background,
     flex: 6,
     flexDirection: 'row',

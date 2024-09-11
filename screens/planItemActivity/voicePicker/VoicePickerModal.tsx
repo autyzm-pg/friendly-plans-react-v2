@@ -94,13 +94,10 @@ export const VoicePickerModal: FC<Props> = ({
       playerRef.current = new Sound(fullVoicePath, Sound.MAIN_BUNDLE,
         (error) => {
           if(error) {
-            // console.log('Cannot load soundtrack:', error);
+            console.error('Cannot load soundtrack:', error);
           }
           else {
             playerRef.current.play((success:any) => {
-              if(!success) {
-                // console.log('Cannot play soundtrack.');
-              }
               playerRef.current.release();
             });
           }

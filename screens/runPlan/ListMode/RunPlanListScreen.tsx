@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 import { BackHandler, StyleSheet, View } from 'react-native';
-//import { NavigationInjectedProps } from '@react-navigation/native';
 
 import {FullScreenTemplate} from '../../../components';
 import { Route } from '../../../navigation';

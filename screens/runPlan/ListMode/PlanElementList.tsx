@@ -32,8 +32,6 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
   useEffect(() => {
     if (isEveryPlanItemCompleted()) {
       onGoBack();
-      // TODO: do we want to mark tasks as not completed automatically after finishing?
-      //updateAllItemsAsUncompleted();
     }
   }, [items])
 
@@ -71,7 +69,6 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
         item.completed = false;
       }
       else if (currentTaskId && currentTaskId + 1 > item.itemOrder && item.itemOrder > itemToUncomplete.itemOrder) {
-        // console.log(item.itemOrder);
         item.uncomplete();
         item.completed = false;
       }
@@ -81,9 +78,6 @@ export const PlanElementList: React.FC<Props> = ({itemParent, navigation, onGoBa
   }
 
   const renderItem = ({ item, index }: { item: PlanElement; index: number }) => {
-    // if (item.completed) {
-    //   return null;
-    // }
 
     return (
       <PlanElementListItem
