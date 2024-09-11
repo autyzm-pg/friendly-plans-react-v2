@@ -54,8 +54,14 @@ export function RootStackNavigation() {
           gestureEnabled: false, 
           headerShown: true,
           transitionSpec: {
-            open: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
-            close: { animation: 'timing', config: { duration: 200, easing: Easing.inOut(Easing.ease) } },
+            open: { 
+              animation: 'timing', 
+              config: { duration: 200, easing: Easing.inOut(Easing.ease) } 
+            },
+            close: { 
+              animation: 'timing', 
+              config: { duration: 200, easing: Easing.inOut(Easing.ease) } 
+            },
           },
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
           header: (headerProps) => (

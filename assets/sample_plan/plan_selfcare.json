@@ -171,11 +171,11 @@
                 "name": "Przerwa",
                 "type": "break",
                 "completed": false,
-                "lector": true,
-                "nameForChild": "",
+                "lector": false,
+                "nameForChild": "Przerwa",
                 "itemOrder": 5,
                 "time": 120,
-                "imageUri": "sample_plan/slides/slajd_przerwa.jpg",
+                "imageUri": "sample_plan/plan_pictures/czas_wolny_przerwa_bez_podpisu.jpg",
                 "voicePath": ""
             },
             {
@@ -308,7 +308,7 @@
                 "lector": true,
                 "nameForChild": "Śniadanie",
                 "itemOrder": 9,
-                "time": 120,
+                "time": null,
                 "imageUri": "sample_plan/plan_pictures/edukacja_sniadania_bez_podpisu.jpg",
                 "voicePath": ""
             },

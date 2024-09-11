@@ -221,16 +221,15 @@ export const createTutorialWithSamplePlans = async (): Promise<Student | undefin
   await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/sample_plan/tutorial/`);
   const sampleData = require('../assets/sample_plan/plan_selfcare.json');
   
-  for (const plan of sampleData) {
+  for (const plan of JSON.parse(JSON.stringify(sampleData))) {
     const newPlan = await Plan.createPlan(student.id, plan.name, plan.emoji, plan.isReadonly);
     
     let index = 0;
     for (const planItem of plan.planItems) {
-      if (!RNFS.readFile(`${RNFS.DocumentDirectoryPath}/${planItem.imageUri}`, 'base64'))
       planItem.imageUri = await copyFromAssetsToRNFS(planItem.imageUri);
+      console.log(planItem.imageUri)
       if (planItem.type === 'complexTask') {
         for (const subItem of planItem.subItems) {
-          if (!RNFS.readFile(`${RNFS.DocumentDirectoryPath}/${subItem.imageUri}`, 'base64'))
           subItem.image = await copyFromAssetsToRNFS(subItem.image);
         }
       }
