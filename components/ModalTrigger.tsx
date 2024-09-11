@@ -18,7 +18,6 @@ export const ModalTrigger: FC<Props> = ({ children, modalContent, title, hide })
   const onClose = () => setModalVisibility(false);
 
   useEffect(() => {
-    console.log(hide)
     if (hide) {
       onClose()
     }

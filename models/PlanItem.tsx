@@ -296,7 +296,7 @@ export class PlanItem implements PlanElement {
 
     const selectAllPlanItemsForPlan = `SELECT * FROM PlanItem WHERE planId = (?);`;
     const itemResultSet = await executeQuery(selectAllPlanItemsForPlan, [plan.id]);
-    let lastItemOrder = -1;
+
     let resultsArray: PlanItem[] = [];
     for (let i = 0; i < itemResultSet.rows.length; i++) {
       const item = itemResultSet.rows.item(i) as PlanItem;
@@ -388,14 +388,6 @@ export class PlanItem implements PlanElement {
     await executeQuery(deletePlanItem, [planItem.id]);
     await executeQuery(deletePlanElement, [planItem.planElementId]);
 
-    // const result1 = await executeQuery(`SELECT * FROM PlanItem;`, []);
-    // const result2 = await executeQuery(`SELECT * FROM PlanElement;`, []);
-    // const result3 = await executeQuery(`SELECT * FROM PlanSubItem;`, []);
-
-    // console.log('PLAN ITEM: ' + result1.rows.length);
-    // console.log('PLAN ELEMENT: ' + result2.rows.length);
-    // console.log('PLAN SUB ITEM: ' + result3.rows.length);
-
     return;
   };
 
@@ -465,11 +457,19 @@ export class PlanItem implements PlanElement {
     // Add subItems if it is a complex task
 
     if (element.type === PlanItemType.ComplexTask) {
-      const planSubItems = await PlanSubItem.getPlanSubItems(planItem);
-      for (const subItem of planSubItems) {
-        await PlanSubItem.createPlanSubItem(item, PlanItemType.SubElement, subItem, planItem.itemOrder -1)
+      try {
+        const planSubItems = await PlanSubItem.getPlanSubItems(planItem);
+        for (const subItem of planSubItems) {
+          await PlanSubItem.createPlanSubItem(item, PlanItemType.SubElement, subItem, planItem.itemOrder -1)
+        }
+      } catch (e) {
+         await executeQuery('ROLLBACK;');
+        throw new Error('Could not create new plan item: ' + e);
       }
     }
+    
+    await executeQuery('COMMIT;');
+
 
     return Object.assign(new PlanItem(), {
       id: item.id,
