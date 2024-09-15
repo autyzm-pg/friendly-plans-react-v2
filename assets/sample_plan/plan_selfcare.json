@@ -5,14 +5,25 @@
         "isReadonly": true,
         "planItems": [
             {
-                "name": "Przewodnik po aplikacji Przyjazny Plan",
+                "name": "1_EkranPowitalny",
                 "type": "simpleTask",
                 "completed": false,
-                "lector": true,
-                "nameForChild": "Przewodnik po aplikacji Przyjazny Plan",
+                "lector": false,
+                "nameForChild": "Przyjazny Plan wspiera terapię dzieci z zaburzeniami rozwojowymi wykorzystując techniki planów aktywności i skryptów. Jest przeznaczony na tablety z systemem Android.",
                 "itemOrder": 1,
                 "time": null,
-                "imageUri": "sample_plan/tutorial/ekran_powitalny.png",
+                "imageUri": "sample_plan/tutorial/1_EkranPowitalny.jpg",
+                "voicePath": ""
+            },
+            {
+                "name": "2_BrakUcznia1",
+                "type": "simpleTask",
+                "completed": false,
+                "lector": false,
+                "nameForChild": "Samouczek ma za zadanie pokazać podstawowe funkcjonalności aplikacji. Jeżeli chcesz się dowiedzieć więcej o terapii dzieci z zaburzeniami rozwojowymi i technikach uczenia skontaktuj się z Fundacją IWRD (https://iwrd.pl/).",
+                "itemOrder": 2,
+                "time": null,
+                "imageUri": "sample_plan/tutorial/2_BrakUcznia1.jpg",
                 "voicePath": ""
             }
         ]
