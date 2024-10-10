@@ -73,6 +73,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     const addSubItem = () => {
         const planSubItem = new PlanSubItem();
         planSubItem.name = '';
+        planSubItem.nameForChild = '';
         planSubItem.time = 0;
         planSubItem.image = '';
         planSubItem.itemOrder = state.subItems.length;
@@ -146,6 +147,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     const updateSubItemName = (text: string, indexToUpdate: number) => {
         const subItems = [...state.subItems];
         subItems[indexToUpdate].name = text;
+        subItems[indexToUpdate].nameForChild = text;
 
         state.formik.values.subItems = subItems;
         formikProps.values.subItems = subItems;
