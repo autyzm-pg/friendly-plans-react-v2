@@ -1,6 +1,4 @@
-[<img src="https://autyzm-pg-slack.herokuapp.com/badge.svg">](https://autyzm-pg-slack.herokuapp.com)
-
-# Friendly Plans
+# Friendly Plan
 <img src="./doc-assets/Przyjazny_plan_logo.png" width="200" height="200"/>
 
 ## About the App and Autism Therapy
@@ -89,10 +87,9 @@ Below are listed recommended versions of tools used for the app development:
 Note: newer/older versions may work as well. Versions listed above are currently used for development.
 
 ## License
-The project is developed by people who want to make other people's lives easier. Because of that Friendly Plans is going to be free to use, download and develop for everybody, forever.
+The project is developed by people who want to make other people's lives easier. Because of that Friendly Plan is going to be free to use, download and develop for everybody, forever.
 Except as otherwise noted, this software is licensed under the [GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.txt).
 
 ## Partners
-<img src="./doc-assets/kdp-logo.jpg" height="150" /><img src="/doc-assets/iwrd-logo.png" height="150" />
-<img src="./doc-assets/pg-logo.jpg" height="150" /><img src="/doc-assets/stx_logo.png" height="150" />
+<img src="./doc-assets/kdp-logo.jpg" height="150" /><img src="/doc-assets/iwrd-logo.png" height="150" /><img src="./doc-assets/pg-logo.jpg" height="150" /><img src="/doc-assets/bright_inventions_logo.png" height="150" /><img src="/doc-assets/stx_logo.png" height="150" />
 
