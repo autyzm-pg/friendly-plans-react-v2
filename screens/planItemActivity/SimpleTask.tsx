@@ -12,6 +12,8 @@ import {PlanItemFormData} from './PlanItemForm';
 import {TimeSlider} from './TimeSlider';
 import {VoicePicker} from './voicePicker/VoicePicker';
 import { NavigationProp } from '@react-navigation/native';
+import _ from 'lodash';
+
 
 interface Props {
   planItem: PlanItem;
@@ -72,8 +74,12 @@ export const SimpleTask: FC<Props> = ({navigation, planItem, formikProps, style,
 
   const saveNewTask = async () => {
     taskSaved.current = true;
+    const errors = await formikProps.validateForm();
     formikProps.submitForm();
-    ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
+
+    if(_.isEmpty(errors)){
+      ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
+    }
   }
 
   const taskNameForChildChanged = (name: string) => {
