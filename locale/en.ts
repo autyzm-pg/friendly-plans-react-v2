@@ -26,6 +26,9 @@ const translations = {
   },
   header: {
     activeStudent: 'Active student',
+    lockEditingMessage: 'Want to enable edit lock? Remember the unlock password: PP2024',
+    lockEditingConfirmButton: 'Confirm',
+    lockEditingCancelButton: 'Cancel'
   },
   timerSounds: {
     default: 'default',

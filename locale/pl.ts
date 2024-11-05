@@ -26,6 +26,9 @@ const translations = {
   },
   header: {
     activeStudent: 'Aktywny uczeń',
+    lockEditingMessage: 'Chcesz włączyć blokadę edycji? Pamiętaj hasło do odblokowania: PP2024',
+    lockEditingConfirmButton: 'Potwierdź',
+    lockEditingCancelButton: 'Anuluj'
   },
   timerSounds: {
     default: 'domyślny',
