@@ -11,6 +11,12 @@ import {ComplexTaskItem} from './ComplexTaskItem';
 import {ComplexTaskMainView} from './ComplexTaskMainView';
 import {PlanItemFormData} from './PlanItemForm';
 import { NavigationProp } from '@react-navigation/native';
+import DraggableFlatList, {
+    DragEndParams, NestableDraggableFlatList,
+    NestableScrollContainer,
+    RenderItemParams
+} from "react-native-draggable-flatlist";
+import { PlanItemState } from "../../contexts/PlanActivityContext.tsx";
 
 
 interface Props {
@@ -60,11 +66,13 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     const componentDidMount = () => {
         if (state.planItem && state.planItem.id) {
             PlanSubItem.getPlanSubItems(state.planItem).then(subItems => {
+                const sortedSubItems = subItems.sort((a, b) => a.itemOrder - b.itemOrder);
+
                 setState(prevState => ({
                     ...prevState,
-                    subItems: subItems
+                    subItems: sortedSubItems
                   }));
-                  subItemsRef.current = subItems;
+                  subItemsRef.current = sortedSubItems;
             })
         }
     }
@@ -212,20 +220,6 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         setState(prevState => ({...prevState, subItems: subItems}));
     };
 
-
-    const renderSubItems = () => {
-        const subItems = [...state.subItems];
-        const subItemsTSX = [];
-        for (let i = 0; i < subItems.length; i++) {
-            subItemsTSX.push(<ComplexTaskItem key={i} name={subItems[i].name} image={subItems[i].image}
-                                              selected={state.selected === i}
-                                              initialTime={subItems[i].time} onDelete={() => removeSubItem(i)}
-                                              onSelectChange={() => changeSelected(i)}/>);
-        }
-        return subItemsTSX;
-    };
-
-
     const renderMainView = () => {
         const itemInfo = {name: '', time: 0, key: -1, image: '', lector: false, voicePath: ''};
         if (state.selected === -1) {
@@ -280,11 +274,6 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         ToastAndroid.show(i18n.t('planItemActivity:savedMessage'), 2.5);
     }
 
-    const taskNameForChildChanged = (name: string) => {
-        state.formik.setFieldValue('nameForChild', name);
-        onTaskNameForChildChanged(name)
-    }
-    
     useEffect(
         () =>
         navigation.addListener('beforeRemove', (e) => {
@@ -339,6 +328,41 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         );
     };
 
+    const renderItem = ({ item, drag }: RenderItemParams<PlanSubItem>) => {
+        const index = state.subItems.findIndex(subItem => subItem.id === item.id);
+
+        return (
+          <ComplexTaskItem
+            key={item.id}
+            name={item.name}
+            image={item.image}
+            selected={state.selected === index}
+            initialTime={item.time}
+            onDelete={() => removeSubItem(index)}
+            onSelectChange={() => changeSelected(index)}
+            onLongPress={drag}
+          />
+        );
+    };
+
+    const keyExtractor = (item: PlanSubItem) => `draggable-item-${item.id}`;
+
+    const handleTaskSubItemsOrderChanged = ({ data, from, to }: DragEndParams<PlanSubItem>) => {
+        const reorderedSubItems = data.map((item, index) => {
+            return {...item, itemOrder: index, };
+        });
+
+        state.formik.values.subItems = reorderedSubItems;
+        formikProps.values.subItems = reorderedSubItems;
+        subItemsRef.current = reorderedSubItems;
+
+        setState(prevState => ({
+            ...prevState,
+            subItems: reorderedSubItems,
+            selected: to === state.selected ? to : from === state.selected ? to : state.selected,
+        }));
+    };
+
     return (
         <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.outerContainer}>
@@ -348,12 +372,18 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                         name={state.formik.values.nameForChild}
                         image={state.formik.values.imageUri}
                         onSelectChange={() => changeSelected(-1)}/>
-                    <ScrollView>
-                        {renderSubItems()}
+
+                    <NestableScrollContainer>
+                        <NestableDraggableFlatList
+                          data={state.subItems}
+                          renderItem={renderItem}
+                          keyExtractor={keyExtractor}
+                          onDragEnd={handleTaskSubItemsOrderChanged}
+                        />
                         {renderAddTaskButton()}
-                    </ScrollView>
+                    </NestableScrollContainer>
                 </View>
-                {renderMainView()}   
+                {renderMainView()}
             </View>
             <View style={{width: '100%', height: 'auto', paddingHorizontal: dimensions.spacingHuge, alignItems: 'center'}}>
                 <Button

@@ -13,12 +13,13 @@ interface Props {
     selected: boolean;
     onDelete: () => void;
     onSelectChange: () => void;
+    onLongPress?: () => void;
 }
 
 export const ComplexTaskItem: FC<Props> = ({
     name, image, initialTime,
     selected,
-    onDelete, onSelectChange
+    onDelete, onSelectChange, onLongPress
 }) => {
 
     const hours = Math.floor(initialTime / 3600);
@@ -45,7 +46,7 @@ export const ComplexTaskItem: FC<Props> = ({
                                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                                 onPress={onDelete}/>
                 </View>
-                <TouchableHighlight underlayColor={'none'} style={styles.rightContainer} onPress={onSelectChange}>
+                <TouchableHighlight underlayColor={'none'} style={styles.rightContainer} onPress={onSelectChange} onLongPress={onLongPress}>
                     <View>
                         <View style={styles.timeContainer}>
                             <View>
