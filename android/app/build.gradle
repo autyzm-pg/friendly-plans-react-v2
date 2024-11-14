@@ -84,7 +84,7 @@ android {
 
         def majorCodeEnv = System.getenv("MAJOR_COUNTER") ? System.getenv("MAJOR_COUNTER").toInteger() : 1
         def minorCodeEnv = System.getenv("MINOR_COUNTER") ? System.getenv("MINOR_COUNTER").toInteger() : 0
-        def patchCodeEnv = System.getenv("PATCH_COUNTER") ? System.getenv("PATCH_COUNTER").toInteger() : 0
+        def patchCodeEnv = System.getenv("PATCH_COUNTER") ? System.getenv("PATCH_COUNTER").toInteger() : 1
 
         versionCode patchCodeEnv
         versionName "${majorCodeEnv}.${minorCodeEnv}.${patchCodeEnv}"

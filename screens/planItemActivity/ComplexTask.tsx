@@ -32,7 +32,7 @@ interface State {
     planItem: PlanItem;
     subItems: PlanSubItem[];
     formik: FormikProps<PlanItemFormData>;
-    selected: number;
+    selectedItemOrder: number;
     deletedItems: PlanSubItem[];
 }
 
@@ -41,7 +41,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         planItem: planItem,
         subItems: [],
         formik: formikProps,
-        selected: -1,
+        selectedItemOrder: -1,
         deletedItems: [],
     })
     const subItemsRef = useRef<PlanSubItem[]>([]);
@@ -77,6 +77,14 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         }
     }
 
+    const getIndexOfItemOrder = (itemOrder: number) => {
+        if(itemOrder === -1) {
+            return -1;
+        }
+
+        return state.subItems.findIndex(subItem => subItem.itemOrder === itemOrder);
+    }
+
 
     const addSubItem = () => {
         const planSubItem = new PlanSubItem();
@@ -92,12 +100,12 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         setState(prevState => ({
             ...prevState,
             subItems: subItems,
-            selected: planSubItem.itemOrder
+            selectedItemOrder: planSubItem.itemOrder
           }));
     };
 
-
-    const removeSubItem = (indexToDelete: number) => {
+    const removeSubItem = (itemOrderToDelete: number) => {
+        const indexToDelete = getIndexOfItemOrder(itemOrderToDelete);
         const deletedItems = [...state.deletedItems];
         if (state.subItems[indexToDelete].id) {
             deletedItems.push(state.subItems[indexToDelete]);
@@ -114,7 +122,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         setState(prevState => ({
             ...prevState,
             subItems: subItems,
-            selected: (indexToDelete === state.selected ? -1 : indexToDelete < state.selected ? state.selected - 1 : state.selected),
+            selectedItemOrder: (itemOrderToDelete === state.selectedItemOrder ? -1 : itemOrderToDelete < state.selectedItemOrder ? state.selectedItemOrder - 1 : state.selectedItemOrder),
             deletedItems: deletedItems,
         }));
     };
@@ -188,8 +196,9 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     };
 
 
-    const changeSelected = (indexToSelect: number) => {
-        setState(prevState => ({...prevState, selected: indexToSelect}));
+    const changeSelected = (itemOrderToSelect: number) => {
+        const indexToSelect = getIndexOfItemOrder(itemOrderToSelect);
+        setState(prevState => ({...prevState, selectedItemOrder: indexToSelect}));
     };
 
 
@@ -222,35 +231,37 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
 
     const renderMainView = () => {
         const itemInfo = {name: '', time: 0, key: -1, image: '', lector: false, voicePath: ''};
-        if (state.selected === -1) {
+        if (state.selectedItemOrder === -1) {
+            const index = getIndexOfItemOrder(state.selectedItemOrder);
             itemInfo.name = state.formik.values.nameForChild;
             itemInfo.image = state.formik.values.imageUri;
             itemInfo.lector = state.formik.values.lector;
             itemInfo.voicePath = state.formik.values.voicePath;
 
             return <ComplexTaskMainView key={itemInfo.key}
-                                        updateImage={image => updateImage(image, state.selected)}
-                                        onTimeChange={time => handleTimeChange(time, state.selected)}
-                                        onChange={text => changeName(text, state.selected)}
-                                        voiceChange={voice => updateVoice(voice, state.selected)}
+                                        updateImage={image => updateImage(image, index)}
+                                        onTimeChange={time => handleTimeChange(time, index)}
+                                        onChange={text => changeName(text, index)}
+                                        voiceChange={voice => updateVoice(voice, index)}
                                         style={styles.simpleTask} planItem={planItem}
                                         formikProps={state.formik}
                                         itemInfo={itemInfo}
                                         navigation={navigation}/>;
         }
 
-        const subItem = state.subItems[state.selected];
-        itemInfo.key = state.selected;
+        const index = getIndexOfItemOrder(state.selectedItemOrder);
+        const subItem = state.subItems[index];
+        itemInfo.key = index;
         itemInfo.time = subItem.time;
         itemInfo.name = subItem.name;
         itemInfo.image = subItem.image;
         itemInfo.lector = subItem.lector;
         itemInfo.voicePath = subItem.voicePath;
         return <ComplexTaskMainView key={itemInfo.key}
-                                    updateImage={image => updateImage(image, state.selected)}
-                                    onTimeChange={time => handleTimeChange(time, state.selected)}
-                                    onChange={text => changeName(text, state.selected)}
-                                    voiceChange={voice => updateVoice(voice, state.selected)}
+                                    updateImage={image => updateImage(image, index)}
+                                    onTimeChange={time => handleTimeChange(time, index)}
+                                    onChange={text => changeName(text, index)}
+                                    voiceChange={voice => updateVoice(voice, index)}
                                     style={styles.simpleTask} planItem={planItem}
                                     formikProps={state.formik}
                                     itemInfo={itemInfo}
@@ -286,9 +297,9 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
                 i18n.t('planItemActivity:alertMessageSaveQuestionTitle'),
                 i18n.t('planItemActivity:alertMessageSaveQuestion'),
                 [
-                { 
-                    text: i18n.t('planItemActivity:alertMessageSaveQuestionDiscard'), 
-                    style: 'destructive', 
+                {
+                    text: i18n.t('planItemActivity:alertMessageSaveQuestionDiscard'),
+                    style: 'destructive',
                     onPress: () => navigation.dispatch(e.data.action) },
                 {
                     text: i18n.t('planItemActivity:alertMessageSaveQuestionSave'),
@@ -314,8 +325,8 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     const renderAddTaskButton = () => {
         const version = Platform.Version;
         if (version === 22) {
-            return (<TouchableOpacity onPress={addSubItem} 
-                        style={{borderRadius: 12, paddingBottom: 24, paddingTop: 24, 
+            return (<TouchableOpacity onPress={addSubItem}
+                        style={{borderRadius: 12, paddingBottom: 24, paddingTop: 24,
                         backgroundColor: palette.primary, alignItems: 'center'}}>
                         <Text style={{...typography.button, color: palette.textWhite}}>
                             {i18n.t('planItemActivity:complexTaskAddSubTaskButton')}
@@ -329,17 +340,15 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
     };
 
     const renderItem = ({ item, drag }: RenderItemParams<PlanSubItem>) => {
-        const index = state.subItems.findIndex(subItem => subItem.id === item.id);
-
         return (
           <ComplexTaskItem
             key={item.id}
             name={item.name}
             image={item.image}
-            selected={state.selected === index}
+            selected={state.selectedItemOrder === item.itemOrder}
             initialTime={item.time}
-            onDelete={() => removeSubItem(index)}
-            onSelectChange={() => changeSelected(index)}
+            onDelete={() => removeSubItem(item.itemOrder)}
+            onSelectChange={() => changeSelected(item.itemOrder)}
             onLongPress={drag}
           />
         );
@@ -356,10 +365,12 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         formikProps.values.subItems = reorderedSubItems;
         subItemsRef.current = reorderedSubItems;
 
+        const draggedItem = reorderedSubItems[to];
+
         setState(prevState => ({
             ...prevState,
             subItems: reorderedSubItems,
-            selected: to === state.selected ? to : from === state.selected ? to : state.selected,
+            selectedItemOrder: draggedItem.itemOrder,
         }));
     };
 
@@ -368,7 +379,7 @@ export const ComplexTask: FC<Props> = ({planItem, formikProps, navigation, taskN
         <View style={styles.outerContainer}>
             <View style={styles.container}>
                 <View style={styles.complexTask}>
-                    <ComplexTaskCoverCard selected={state.selected === -1}
+                    <ComplexTaskCoverCard selected={state.selectedItemOrder === -1}
                         name={state.formik.values.nameForChild}
                         image={state.formik.values.imageUri}
                         onSelectChange={() => changeSelected(-1)}/>
