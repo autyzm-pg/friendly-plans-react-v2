@@ -31,6 +31,7 @@ export default class DatabaseService {
       console.log('Database opened');
       await createTables();
       await createInitPassword();
+      await updateDefaultPassword();
       await this.migrateDatabase();
     } catch (error) {
       console.error('Error opening database:', error);
@@ -67,10 +68,25 @@ export const createInitPassword = async () => {
   const count = result.rows.item(0).count;
 
   if (count === 0) {
-    const initPassword = `INSERT INTO Password (password) VALUES ('PP2024');`
+    const initPassword = `INSERT INTO Password (password) VALUES ('123');`
     await executeQuery(initPassword);
   }
 }
+
+export const updateDefaultPassword = async () => {
+  const passwordCheckQuery = `SELECT password FROM Password LIMIT 1`;
+  const result = await executeQuery(passwordCheckQuery);
+
+  if (result.rows.length > 0) {
+    const currentPassword = result.rows.item(0).password;
+    const oldDefaultPassword = 'PP2024';
+
+    if (currentPassword === oldDefaultPassword) {
+      const updatePasswordQuery = `UPDATE Password SET password = '123'`;
+      await executeQuery(updatePasswordQuery);
+    }
+  }
+};
 
 export const createTables = async () => {
   // await executeQuery('DROP TABLE Plan');

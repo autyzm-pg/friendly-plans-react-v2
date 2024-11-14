@@ -438,7 +438,7 @@
                 "type": "simpleTask",
                 "completed": false,
                 "lector": false,
-                "nameForChild": "Domyślnie, aby odblokować funkcję edycyjne i konfiguracyjne aplikacji, należy wpisać hasło (1). W przypadku jego zapomnienia dostęp można odzyskać wpisując fabryczne PP2024 (2), a następnie tworząc nowe (3).",
+                "nameForChild": "Domyślnie, aby odblokować funkcję edycyjne i konfiguracyjne aplikacji, należy wpisać hasło (1). W przypadku jego zapomnienia dostęp można odzyskać wpisując fabryczne 123 (2), a następnie tworząc nowe (3).",
                 "itemOrder": 40,
                 "time": null,
                 "imageUri": "sample_plan/tutorial/39_Wprowadź hasło.jpg",
