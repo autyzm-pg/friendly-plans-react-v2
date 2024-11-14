@@ -81,8 +81,13 @@ android {
         applicationId "com.friendlyplans"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.0"
+
+        def majorCodeEnv = System.getenv("MAJOR_COUNTER") ? System.getenv("MAJOR_COUNTER").toInteger() : 1
+        def minorCodeEnv = System.getenv("MINOR_COUNTER") ? System.getenv("MINOR_COUNTER").toInteger() : 0
+        def patchCodeEnv = System.getenv("PATCH_COUNTER") ? System.getenv("PATCH_COUNTER").toInteger() : 0
+
+        versionCode versionCodeEnv ? versionCodeEnv.toInteger() : 0
+        versionName "${majorCodeEnv}.${minorCodeEnv}.${patchCodeEnv}"
     }
     signingConfigs {
         debug {

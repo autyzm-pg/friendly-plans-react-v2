@@ -2,6 +2,19 @@ name: Build and deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      major_counter:
+        description: "App version major counter"
+        required: true
+        default: "1"
+      minor_counter:
+        description: "App version minor counter"
+        required: true
+        default: "0"
+      patch_counter:
+        description: "App version patch counter"
+        required: true
+        default: "4"
 
 jobs:
   Build_and_Deploy:
@@ -9,6 +22,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Output build counter
+        env:
+          MAJOR_COUNTER: ${{ github.event.inputs.major_counter }}
+          MINOR_COUNTER: ${{ github.event.inputs.minor_counter }}
+          PATCH_COUNTER: ${{ github.event.inputs.patch_counter }}
+        run: |
+          echo "Version: $MAJOR_COUNTER.$MINOR_COUNTER.PATCH_COUNTER"
 
       - name: Set up Java 17
         uses: actions/setup-java@v3
@@ -37,6 +58,9 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          MAJOR_COUNTER: ${{ github.event.inputs.major_counter }}
+          MINOR_COUNTER: ${{ github.event.inputs.minor_counter }}
+          PATCH_COUNTER: ${{ github.event.inputs.patch_counter }}
         working-directory: ./android
         run: |
           ./gradlew bundleRelease
