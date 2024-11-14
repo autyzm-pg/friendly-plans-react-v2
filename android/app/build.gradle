@@ -86,7 +86,7 @@ android {
         def minorCodeEnv = System.getenv("MINOR_COUNTER") ? System.getenv("MINOR_COUNTER").toInteger() : 0
         def patchCodeEnv = System.getenv("PATCH_COUNTER") ? System.getenv("PATCH_COUNTER").toInteger() : 0
 
-        versionCode versionCodeEnv ? versionCodeEnv.toInteger() : 0
+        versionCode patchCodeEnv
         versionName "${majorCodeEnv}.${minorCodeEnv}.${patchCodeEnv}"
     }
     signingConfigs {

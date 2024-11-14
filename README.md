@@ -76,6 +76,18 @@ npm run android
 yarn android
 ```
 
+## Deploying the application
+
+To deploy the application to Google Play Store:
+1. Open repository on Github
+2. Go to `Actions` tab
+3. On the left panel select `Build and Deploy`
+4. On the right click on the `Run workflow` dropdown
+5. Set proper app version numbers and click `Run workflow`
+6. After build finishes (refresh the page to see it building) download `.aab` file from created Artifacts and create new internal release with it on Google Play Console.
+7. After tests are done on the internal track, promote version to production.
+
+
 ## Environment configuration 
 Below are listed recommended versions of tools used for the app development:
 
