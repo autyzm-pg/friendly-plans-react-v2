@@ -14,7 +14,7 @@ on:
       patch_counter:
         description: "App version patch counter"
         required: true
-        default: "4"
+        default: "6"
 
 jobs:
   Build_and_Deploy:
