@@ -1,7 +1,8 @@
 import {FormikProps} from 'formik';
 import React, {FC, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Image} from 'react-native-elements';
+import {Image, StyleSheet, View} from 'react-native';
+import RNFS from 'react-native-fs';
+import { useEffect } from 'react';
 
 import {Icon, ModalTrigger} from '../../../components';
 import {i18n} from '../../../locale';
@@ -52,16 +53,45 @@ export const ImagePicker: FC<Props> = ({
         setImageUri('');
     };
 
-    const renderImage = () => {
+
+    const [base64ImageUri, setBase64ImageUri] = useState<string | null>(null);
+
+    useEffect(() => {
         if (imageUri) {
-            return <Image source={{uri: imageUri}} style={styles.image} resizeMode={'contain'}/>;
+            RNFS.readFile(imageUri, 'base64')
+              .then(base64String => {
+                  const base64Uri = `data:image/jpeg;base64,${base64String}`;
+                  // console.log('Base64 image URI:', base64Uri);
+                  setBase64ImageUri(base64Uri);
+              })
+              .catch(error => {
+                  console.error('Error reading image file:', error);
+              });
         }
-        return (<View style={{height: 412, width: 412, justifyContent: 'center'}}>
-            <Icon name="add-a-photo" type="material" size={250} color={palette.textInputPlaceholder}/>
-        </View>);
-    };
+    }, [imageUri]);
 
-
+  const renderImage = () => {
+    console.log('Rendering image with URI:', imageUri);
+    if (base64ImageUri) {
+      return (
+        <Image
+          source={{ uri: base64ImageUri }}
+          style={styles.image}
+          resizeMode="contain"
+          onError={(error) => {
+            console.error('Error loading image:', error);
+            console.log('Image URI:', imageUri);
+          }}
+          onLoad={() => console.log('Image loaded successfully')}
+        />
+      );
+    }
+    return (
+      <View style={{ height: 412, width: 412, justifyContent: 'center' }}>
+        <Icon name="add-a-photo" type="material" size={250} color={palette.textInputPlaceholder} />
+      </View>
+    );
+  };
     return (
         <View style={styles.container}>
             <ModalTrigger
