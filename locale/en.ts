@@ -186,7 +186,14 @@ const translations = {
     stateChangeInfo: 'Change the state of all tasks to unfinished (in the plan editing view) to enable running the plan again.',
     planIsReadonlyTitle: 'PLAN IS READ-ONLY',
     planIsReadonly: 'Plan \'{{name}}\' is read-only. If you want to make any changes, please make a copy of this plan.',
-    createCopy: 'Copy plan'
+    createCopy: 'Copy plan',
+    help: 'Welcome to Friendly Plan!',
+    helpDescription: 'Would you like to learn how to use the app? We’ve prepared a tutorial for you!',
+    helpDescriptionFunctions: 'If you want to see what features we offer, check out the "Guide" plan.',
+    helpDescriptionPlans: 'If you want to see what activity schedules look like, use the "Sample schedule".',
+    helpDescriptionGuide: 'You’ll find both plans in the "Tutorial" student profile. If you deleted it, you can add it again using the button below.',
+    addTutorial: 'Welcome to Friendly Plan!',
+    addSampleStudent: 'Add tutorial'
   },
   planItemActivity: {
     viewTitleTask: 'Task',
