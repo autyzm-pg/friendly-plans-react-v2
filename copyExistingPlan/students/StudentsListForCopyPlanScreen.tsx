@@ -21,10 +21,8 @@ export const StudentsListForCopyPlanScreen: FC<Props> = ({ navigation, route }) 
     Student.getStudents().then(response => {
       setStudents(response);
     });
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    }
+     const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+            return () => backHandler.remove();
   }, []);
 
   const handleBackButtonPressAndroid = () => {
