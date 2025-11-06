@@ -22,7 +22,7 @@ export const StudentsListForCopyPlanScreen: FC<Props> = ({ navigation, route }) 
       setStudents(response);
     });
      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-            return () => backHandler.remove();
+     return () => backHandler.remove();
   }, []);
 
   const handleBackButtonPressAndroid = () => {
