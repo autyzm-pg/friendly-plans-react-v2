@@ -23,10 +23,8 @@ export const StudentCreateScreen: React.FC<Props> = ({navigation, route}) => {
 
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    }
+       const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+       return () => backHandler.remove();
   }, []);
 
   const handleBackButtonPressAndroid = () => {

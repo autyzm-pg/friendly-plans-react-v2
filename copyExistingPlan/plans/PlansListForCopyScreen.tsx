@@ -21,11 +21,8 @@ export const PlansListForCopyScreen: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     getPlans();
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    return () => {
-      handleBackButtonPressAndroid();
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    }
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    return () => backHandler.remove();
   }, []);
 
   const getPlans = async () => {

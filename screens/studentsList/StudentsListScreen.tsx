@@ -21,11 +21,8 @@ export const StudentsListScreen: React.FC<Props> = ({ navigation }) => {
     Student.getStudents().then(response => {
       setStudents(response);
     });
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonPressAndroid);
-    };
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonPressAndroid);
+    return () => backHandler.remove();
   }, []);
 
 
