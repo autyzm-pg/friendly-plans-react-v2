@@ -27,7 +27,8 @@ interface Props {
   onValidate: (values: PlanFormData) => void | Promise<any>;
   navigation: NavigationProp<any>;
   updatePlanItemsOrder: (items: PlanItemState[]) => Promise<void>;
-  onPlanRun: () => void
+  onPlanRun: () => void;
+  onPlanNameChange?: (name: string) => void;
 };
 
 export const PlanForm: FC<Props> = ({
@@ -35,7 +36,8 @@ export const PlanForm: FC<Props> = ({
   onValidate,
   navigation,
   updatePlanItemsOrder,
-  onPlanRun
+  onPlanRun,
+  onPlanNameChange,
 }) => {
   
   const {currentStudent} = useCurrentStudentContext();
@@ -213,7 +215,10 @@ export const PlanForm: FC<Props> = ({
             height={35}
             placeholder={i18n.t('planActivity:planNamePlaceholder')}
             value={values.planInput}
-            onChangeText={handleChange('planInput')}
+            onChangeText={(text: string) => {
+              handleChange('planInput')(text);
+              onPlanNameChange?.(text);
+            }}
             onBlur={handleSubmit}
             autoFocus={!plan?.name}
           />
